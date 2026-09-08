@@ -1,0 +1,158 @@
+/* ============================================================================
+   GLOBAL ENTRY — the only stylesheet imported by the layouts.
+   Order matters: Tailwind first, then font faces, then brand tokens.
+   ========================================================================== */
+@import 'tailwindcss';
+@import './fonts.css';
+@import './tokens.css';
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Anchors from the "at a glance" table scroll to day rows; keep the
+       sticky header from covering the target (Template Spec §5). */
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-offwhite);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.65; /* comfortable measure for Persona 2 */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  img,
+  picture,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Visible focus everywhere — never removed, only restyled. */
+  :focus-visible {
+    outline: 3px solid var(--color-crimson);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* On dark bands the crimson ring lacks contrast; yellow is legal here
+     because the surface is plum/burgundy (invariant #5). */
+  .on-plum :focus-visible,
+  .on-burgundy :focus-visible {
+    outline-color: var(--color-yellow);
+  }
+}
+
+@layer components {
+  /* ---- Section band rhythm: off-white / white / plum (PAGE_TEMPLATES) --- */
+  .band {
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem);
+  }
+
+  .band-offwhite {
+    background-color: var(--color-offwhite);
+  }
+
+  .band-white {
+    background-color: var(--color-white);
+  }
+
+  .band-plum {
+    background-color: var(--color-plum);
+    color: var(--color-on-dark);
+  }
+
+  .band-plum h1,
+  .band-plum h2,
+  .band-plum h3 {
+    color: var(--color-on-dark);
+  }
+
+  .container-content {
+    width: 100%;
+    max-width: var(--container-content);
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  }
+
+  /* ---- Skip link — first focusable element on every page --------------- */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100%;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* ---- Tap targets: 44px minimum (PRD §9.3) --------------------------- */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@layer utilities {
+  /* Section entrance — the sitewide DEFAULT (CSS + IntersectionObserver).
+     GSAP is reserved for 1–2 homepage set pieces only, and the whole thing
+     is opt-in via prefers-reduced-motion (PRD §9.4).
+     Animates transform/opacity only — never layout properties. */
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-up {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+      transition:
+        opacity var(--duration-slow) var(--ease-brand),
+        transform var(--duration-slow) var(--ease-brand);
+    }
+
+    .fade-up.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+}

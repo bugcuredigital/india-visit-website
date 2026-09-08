@@ -1,0 +1,286 @@
+---
+/**
+ * M1 scaffold verification page.
+ * ---------------------------------------------------------------------------
+ * This is the M1 gate artefact, not the homepage. It exists to prove that the
+ * tokens, both self-hosted fonts, the band rhythm, the focus states and the
+ * logo lockup all render — and to give Lighthouse something real to measure.
+ * M4 replaces this file with the actual homepage (PAGE_TEMPLATES T1).
+ *
+ * Ships zero JavaScript on purpose: that is the baseline every later
+ * milestone is measured against.
+ */
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import { siteSettings, verifiedTrustStats } from '../lib/site-settings';
+
+const stats = verifiedTrustStats();
+
+const swatches = [
+  { name: 'Crimson', token: '--color-crimson', hex: '#C3163A', use: 'Primary CTAs' },
+  { name: 'Burgundy', token: '--color-burgundy', hex: '#741238', use: 'Secondary dark' },
+  { name: 'Deep Plum', token: '--color-plum', hex: '#452B5E', use: 'Dark bands, footer' },
+  { name: 'Yellow', token: '--color-yellow', hex: '#E5C745', use: 'Accents on plum only' },
+  { name: 'Off White', token: '--color-offwhite', hex: '#F7F5F6', use: 'Page base' },
+];
+---
+
+<Base
+  title="India Visit — M1 Scaffold Verification"
+  description="Milestone 1 scaffold: brand tokens, self-hosted fonts and layout shell for the India Visit website."
+  noindex={true}
+>
+  <!-- Light band: the logo must be clearly visible here (M1 gate check). -->
+  <section class="band band-offwhite">
+    <div class="container-content">
+      <Logo />
+      <p class="eyebrow">Milestone 1 · Scaffold &amp; tokens</p>
+      <h1 class="display-xl">
+        Curating unhurried journeys across India
+      </h1>
+      <p class="lede">
+        This page is scaffolding, not design. It proves the brand tokens, the two
+        self-hosted typefaces and the band rhythm are wired correctly before any
+        component work begins in M3.
+      </p>
+      <p>
+        <a class="btn btn-crimson tap-target" href="#tokens">Inspect the tokens</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Dark band: yellow is legal here and nowhere else. -->
+  <section class="band band-plum">
+    <div class="container-content on-plum">
+      <h2>Verified trust claims only</h2>
+      <p class="lede lede-dark">
+        {stats.length} of 4 possible stats render. The rest stay hidden until the
+        client verifies them — an unanswered question means one fewer stat, never
+        a placeholder number.
+      </p>
+      <dl class="stats">
+        {
+          stats.map((stat) => (
+            <div class="stat">
+              <dt class="stat__value">{stat.value}</dt>
+              <dd class="stat__label">{stat.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="band band-white" id="tokens">
+    <div class="container-content">
+      <h2>Brand palette</h2>
+      <p class="lede">A closed set. Adding a colour is a brand decision.</p>
+      <ul class="swatches">
+        {
+          swatches.map((swatch) => (
+            <li class="swatch">
+              <span class="swatch__chip" style={`background-color: var(${swatch.token})`}></span>
+              <span class="swatch__name">{swatch.name}</span>
+              <span class="swatch__meta">{swatch.hex} · {swatch.use}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 class="section-gap">Typography</h2>
+      <p class="specimen-label">
+        Display — resolves through <code>--font-display</code> (currently Archivo
+        Expanded, standing in for Agrandir Grand)
+      </p>
+      <p class="display-lg">Kerala with Houseboat</p>
+      <p class="display-sm">11 Nights · 12 Days</p>
+      <p class="specimen-label">Body — Inter, 16px floor</p>
+      <p class="prose-sample">
+        Some places you visit. Kerala, you sink into. The backwaters slow
+        everything down — the light, the boats, the pace of the day — until the
+        only thing left to decide is whether to take the second cup of chai.
+      </p>
+
+      <h2 class="section-gap">Settings wiring</h2>
+      <p class="prose-sample">
+        Contact details below come from the <code>siteSettings</code> module, not
+        from this page. Every value is flagged <code>DUMMY DATA</code> until M5.
+      </p>
+      <ul class="settings-proof">
+        <li><strong>Phone</strong> <span>{siteSettings.phone}</span></li>
+        <li><strong>WhatsApp</strong> <span>{siteSettings.whatsappNumber}</span></li>
+        <li><strong>Email</strong> <span>{siteSettings.email}</span></li>
+        <li><strong>Address</strong> <span>{siteSettings.address}</span></li>
+        <li><strong>GTM container</strong> <span>{siteSettings.gtmContainerId ?? 'not set — no GTM emitted'}</span></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .eyebrow {
+    margin-top: 2.5rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-crimson);
+  }
+
+  .display-xl {
+    margin-top: 0.75rem;
+    font-size: var(--text-4xl);
+    max-width: 22ch;
+  }
+
+  .display-lg {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-3xl);
+    line-height: 1.1;
+  }
+
+  .display-sm {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--text-xl);
+    color: var(--color-ink-muted);
+    margin-top: 0.35rem;
+  }
+
+  .lede {
+    margin-top: 1.25rem;
+    font-size: var(--text-lg);
+    max-width: var(--container-prose);
+    color: var(--color-ink-muted);
+  }
+
+  .lede-dark {
+    color: var(--color-on-dark-muted);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .btn-crimson {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+    box-shadow: var(--shadow-lift);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn {
+      transition:
+        transform var(--duration-fast) var(--ease-brand),
+        box-shadow var(--duration-fast) var(--ease-brand);
+    }
+
+    .btn:hover {
+      transform: translate3d(0, -2px, 0);
+      box-shadow: var(--shadow-lift-hover);
+    }
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin: 2.5rem 0 0;
+  }
+
+  .stat__value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-3xl);
+    color: var(--color-yellow); /* legal: plum background */
+  }
+
+  .stat__label {
+    margin: 0.35rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-muted);
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .swatch {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .swatch__chip {
+    display: block;
+    height: 64px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-hairline);
+  }
+
+  .swatch__name {
+    font-weight: 600;
+  }
+
+  .swatch__meta {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .section-gap {
+    margin-top: 3.5rem;
+  }
+
+  .specimen-label {
+    margin: 2rem 0 0.6rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .prose-sample {
+    max-width: var(--container-prose);
+    font-size: var(--text-lg);
+  }
+
+  .settings-proof {
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+    max-width: 40rem;
+  }
+
+  .settings-proof li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-hairline);
+    font-size: var(--text-sm);
+  }
+
+  .settings-proof span {
+    color: var(--color-ink-muted);
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    background-color: var(--color-offwhite);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+  }
+</style>

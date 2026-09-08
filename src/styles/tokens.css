@@ -1,0 +1,68 @@
+/* ============================================================================
+   BRAND TOKENS — the single source of truth for colour, type and motion.
+   ----------------------------------------------------------------------------
+   Tailwind v4 CSS-first: every token declared in @theme becomes a utility
+   (--color-crimson -> bg-crimson / text-crimson, --font-display ->
+   font-display, --ease-brand -> ease-brand). There is no tailwind.config.mjs.
+
+   The palette is CLOSED (CLAUDE.md invariant #5). Five brand colours, plus
+   plain white and a small set of neutrals derived from plum for borders and
+   muted text. Adding a colour is a brand decision, not a styling decision.
+   ========================================================================== */
+
+@theme {
+  /* ---- Brand palette (closed set) ------------------------------------- */
+  --color-crimson: #c3163a; /* primary CTAs, accents */
+  --color-burgundy: #741238; /* secondary dark, gradients */
+  --color-plum: #452b5e; /* dark sections, footer, header band */
+  --color-yellow: #e5c745; /* accents — ONLY on plum/burgundy, never off-white */
+  --color-offwhite: #f7f5f6; /* page base */
+  --color-white: #ffffff; /* alternating band */
+
+  /* ---- Neutrals derived from plum (text, borders, never new hues) ------ */
+  --color-ink: #241733; /* body text on light — plum-derived, AA on off-white */
+  --color-ink-muted: #5b4a6b; /* secondary text on light */
+  --color-hairline: #e3dee6; /* borders/dividers on light */
+  --color-on-dark: #f7f5f6; /* body text on plum/burgundy */
+  --color-on-dark-muted: #cfc4d9; /* secondary text on dark */
+
+  /* ---- Type ------------------------------------------------------------
+     --font-display is THE display token. Swapping to Agrandir Grand means
+     changing this value plus the @font-face src in fonts.css. Never name a
+     display family anywhere else.                                          */
+  --font-display: 'Archivo Expanded', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Type scale — fluid, mobile-first. Body never below 16px (Persona 2). */
+  --text-xs: 0.8125rem; /* 13px — labels, legal only */
+  --text-sm: 0.9375rem; /* 15px */
+  --text-base: 1rem; /* 16px floor */
+  --text-lg: 1.125rem; /* 18px — intro paragraphs */
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
+  --text-4xl: clamp(2.25rem, 1.5rem + 3.2vw, 3.75rem);
+  --text-5xl: clamp(2.75rem, 1.6rem + 4.6vw, 4.75rem);
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --container-content: 1280px; /* PRD §9.2: max content width 1200–1280 */
+  --container-prose: 68ch; /* editorial reading measure */
+
+  /* ---- Motion (PRD §9.4) -----------------------------------------------
+     ONE easing family sitewide. Durations 200–600ms; the hero Ken Burns is
+     the only exemption.                                                    */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 450ms;
+  --duration-slower: 600ms;
+  --duration-kenburns: 12s; /* hero image only — exempt from the 200–600ms rule */
+
+  /* ---- Elevation — restrained: hover lift is 2–4px, never more --------- */
+  --shadow-lift: 0 2px 12px rgb(36 23 51 / 0.08);
+  --shadow-lift-hover: 0 6px 22px rgb(36 23 51 / 0.12);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+}

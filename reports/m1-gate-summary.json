@@ -1,0 +1,35 @@
+{
+  "milestone": "M1",
+  "gate": "empty styled page: Lighthouse mobile >= 95 performance, fonts render, logo visible",
+  "lighthouseVersion": "12.8.2",
+  "fetchTime": "2026-09-08T13:26:57.574Z",
+  "formFactor": "mobile",
+  "throttling": "simulate",
+  "screenEmulation": {
+    "mobile": true,
+    "width": 412,
+    "height": 823,
+    "deviceScaleFactor": 1.75,
+    "disabled": false
+  },
+  "url": "http://localhost:4321/",
+  "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 63
+  },
+  "metrics": {
+    "first-contentful-paint": "1.1\u00a0s",
+    "largest-contentful-paint": "1.4\u00a0s",
+    "total-blocking-time": "0\u00a0ms",
+    "cumulative-layout-shift": "0",
+    "speed-index": "1.1\u00a0s",
+    "interactive": "1.4\u00a0s"
+  },
+  "notes": {
+    "seo": "63 because this scaffold page sets noindex on purpose (it is not the homepage and must not be indexed). A control run with noindex removed scored SEO 100 with all other categories unchanged at 100.",
+    "lcpElement": "text paragraph \u2014 this page has no hero image; real hero LCP is measured from M4.",
+    "javascript": "zero page JS. The only inline script is Partytown loader (~2.6KB, runbook M1 step 4) plus JSON-LD."
+  }
+}

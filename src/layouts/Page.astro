@@ -1,0 +1,35 @@
+---
+/**
+ * Page.astro — standard inner-page wrapper: Base plus the content container
+ * and band rhythm. Homepage and itinerary pages compose Base directly because
+ * they manage their own full-bleed bands.
+ */
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** H1 for the page; omit when the page renders its own hero. */
+  heading?: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { heading, ...baseProps } = Astro.props;
+---
+
+<Base {...baseProps}>
+  <slot name="header" slot="header" />
+  {
+    heading && (
+      <section class="band band-plum">
+        <div class="container-content">
+          <h1>{heading}</h1>
+        </div>
+      </section>
+    )
+  }
+  <slot />
+  <slot name="footer" slot="footer" />
+</Base>

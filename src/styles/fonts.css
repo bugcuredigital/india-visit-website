@@ -1,0 +1,68 @@
+/* ============================================================================
+   FONT FACES
+   ----------------------------------------------------------------------------
+   THE DISPLAY-FONT SWAP (Agrandir Grand) IS A TWO-LINE CHANGE, BY DESIGN.
+
+   Agrandir Grand (Pangram Pangram, paid) is the brand's display face but is
+   NOT licensed yet (PRD Open Question #9). Archivo Expanded stands in: free,
+   from Google Fonts, self-hosted here, latin subset, pinned at wdth 125.
+
+   To swap in Agrandir once the licence lands:
+     1. drop the subset woff2 files into src/assets/fonts/
+     2. change the `src` + `font-family` in the @font-face blocks below
+     3. change --font-display in tokens.css to match the new family name
+   Nothing else moves. No component, utility or @theme entry may ever name a
+   display family directly — everything resolves through --font-display, so
+   there is nothing else to find and update.
+
+   Files are latin-subset only (Google's `latin` unicode-range) and live in
+   src/assets/ so Vite content-hashes them: immutable, cache-forever URLs.
+   ========================================================================== */
+
+/* Display — Archivo Expanded 400 (TEMPORARY STAND-IN for Agrandir Grand) */
+@font-face {
+  font-family: 'Archivo Expanded';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/archivo-expanded-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Display — Archivo Expanded 700 (TEMPORARY STAND-IN for Agrandir Grand) */
+@font-face {
+  font-family: 'Archivo Expanded';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/archivo-expanded-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Body — Inter 400 (confirmed for web body, PRD Open Question #8) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/inter-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Body — Inter 600 (buttons, labels, emphasis) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/inter-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}

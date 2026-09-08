@@ -1,0 +1,125 @@
+---
+/**
+ * Base.astro — the document shell for every page.
+ * Owns: meta/SEO, canonical, OG/Twitter, favicons, font preloads, skip link,
+ * global JSON-LD, and the GTM-via-Partytown stub.
+ *
+ * Deliberately NOT here yet: Header, Footer, StickyMobileBar (M3) and
+ * View Transitions (M4). Those slot in without touching this contract.
+ */
+import '../styles/global.css';
+import { siteSettings } from '../lib/site-settings';
+
+// Vite hashes these, so the preload href and the @font-face src resolve to
+// the same immutable, cache-forever URL.
+import interRegular from '../assets/fonts/inter-400-latin.woff2?url';
+import displayBold from '../assets/fonts/archivo-expanded-700-latin.woff2?url';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Defaults to the current URL; pass explicitly for paginated/duplicate views. */
+  canonical?: string;
+  /** Per-page OG image (per-journey hero in M4+); falls back to the brand card. */
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.jpg',
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+
+/**
+ * Global organisation schema. Only emits the fields that hold real values —
+ * dummy contact details and unverified trust numbers must never be published
+ * as structured data (they would be machine-readable claims).
+ * The `DUMMY DATA` flags in site-settings.ts are the tripwire: while they are
+ * still there, telephone/email/address stay out of the graph.
+ */
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  name: siteSettings.siteName,
+  description: siteSettings.tagline,
+  url: Astro.site?.href,
+};
+
+const gtmId = siteSettings.gtmContainerId;
+---
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Fonts: preload only the two faces used above the fold. Both are
+         latin-subset and self-hosted; `swap` keeps text painting immediately. -->
+    <link rel="preload" href={displayBold} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interRegular} as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#452B5E" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteSettings.siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+
+    {
+      /* GTM via Partytown — off the main thread, so the tag stack costs no LCP.
+         GA4, Meta Pixel and every future tag are configured in the GTM UI, never
+         in code. Renders nothing at all until the client's container ID is set,
+         which keeps the M1 gate clean. */
+      gtmId && (
+        <>
+          <script
+            is:inline
+            type="text/partytown"
+            set:html={`
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            `}
+          />
+          <script
+            is:inline
+            type="text/partytown"
+            src={`https://www.googletagmanager.com/gtm.js?id=${gtmId}`}
+          />
+        </>
+      )
+    }
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot name="header" />
+    <main id="main">
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>
