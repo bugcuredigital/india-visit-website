@@ -286,3 +286,161 @@ against the window).
    placeholder), verified trust numbers (#2), consented testimonials (#3),
    pricing decision (#1), GSA disclosure wording and schedule-publishing
    answer (#15), and the items in `docs/CLIENT_REVIEW_SHEET.md`.
+
+---
+
+## 2026-09-09 — M4 (part 1 of 2): itinerary template + homepage
+
+**Branch:** `m4-templates` → PR into `main`. M3 gate approved and PR #2 merged.
+
+### Completed
+
+**Doc patches first, per the client's design-process decision.** The separate
+mockup track is cancelled: removed as an M0 checklist item and gate condition
+in `EXECUTION_RUNBOOK.md`, removed from `PAGE_TEMPLATES.md`'s preamble, and
+replaced in `CLAUDE.md` invariant #5 with a note that the M4 preview URL *is*
+the design review and that any "approved mockups" language is stale. The M4
+gate now records the client's review loop — desktop + mobile captures in the PR
+alongside the preview URL, styling feedback applied as token/CSS edits rather
+than rebuilds, homepage sign-off before the register rolls onward. Also patched
+Template Spec §6, whose checklist still said "body always Inter on off-white",
+to match the white-primary ruling.
+
+**Design references studied** (`docs/references/`, seven full-page captures).
+Properties taken, not pixels: display type stays huge even at 390px — Star
+Alliance's mobile H1 is around 44px and our `clamp(2.5rem, 6vw, 4.5rem)`
+already lands in that register, so no token changed; crimson all-caps section
+labels over one calm sub-line; a quiet outline "view all" pill on the heading's
+baseline; image cards as rounded frames with the label inside a bottom-up
+gradient; and a dotted rail with circular nodes for process steps, which is
+what How It Works uses. Their layouts, nav structures and booking widgets were
+not imported. The 90MB of PNGs are documented in `docs/references/README.md`
+and deliberately left untracked — **a ruling is wanted** on whether to commit
+web-optimised JPEG derivatives instead.
+
+**`src/pages/journeys/[slug].astro`** — one template, both variants, in
+Template Spec §3's order, with Variant B's five extra modules gated on the
+discriminated union. Two spec tensions were resolved in comments rather than
+silently: §3's Variant B chain omits the ●-required S13 Practical Notes (it
+renders on B too, after the booking process), and §6's "ends at the convert
+band before Related" reads against §3 putting B's policies after that band —
+§3 wins, and §6's actual failure condition, a page *ending* on policy text,
+still cannot happen. The S3 intro expander is CSS-only via `:has()`, gated
+behind `@supports selector(:has(*))` so a browser without `:has()` shows the
+whole intro rather than a clipped one with a dead control, and the clamp
+applies below 64rem only.
+
+**`src/pages/index.astro`** — all eleven T1 sections, replacing the M1 scaffold
+page. Exactly two plum bands besides the footer (How It Works, lead capture),
+which is the whole allowance the design direction gives. The founding-year line
+is absent because `foundingYear` is null and the year is never guessed; the
+supporting line uses `yearsExperience`, which is verified. The association logo
+row is omitted entirely, as T1 instructs when none are supplied.
+
+New: `ArticleCard.astro`, `lib/hero-image.ts`, `lib/destinations-strip.ts`.
+View Transitions are global from `Base.astro`, and `RevealScript` now re-arms
+on `astro:page-load` with each element stamped once.
+
+### Three real defects, found by gating rather than by reading
+
+1. **Hero grid blowout, hidden by `overflow: clip`.** `.hero` used the implicit
+   `auto` grid track, whose automatic minimum is the item's min-content — the
+   `white-space: nowrap` route strip grew the content box to 775px inside a
+   390px hero, and the clip silently swallowed it. The H1, the badges and both
+   CTAs were cut off on every phone, while `check:responsive` reported a clean
+   pass because the *document* never scrolled sideways. Fixed with
+   `grid-template-columns: minmax(0, 1fr)`.
+2. **Yellow on a light surface** — DayAccordion's provisional notice carried a
+   yellow left rule on off-white, which invariant #5 forbids outright. Now
+   burgundy, the documented role for a fine rule on a light surface. This one
+   shipped through the M3 gate.
+3. **Contrast failure, 1.08:1, on the hero route strip.** Because the strip is
+   its own scroll region, a checker resolves its background to the page white
+   behind the hero rather than to the scrim — and it was right in substance:
+   legibility of 12px uppercase text would otherwise depend on whichever
+   photograph an editor uploads. The strip now carries its own plum ground,
+   which also puts its yellow separators on plum, where yellow is legal.
+
+**Invariant #3's hero preload existed only on paper.** There is now a head
+preload whose candidate set matches the `<picture>` AVIF source byte-for-byte
+(verified against the built HTML on all three pages), and heroes emit
+AVIF + WebP — 15KB against 29KB at 960w.
+
+### Two checks were reporting green over real bugs
+
+- **`check-responsive.mjs`** now also detects content *clipped* inside an
+  overflow box. Document `scrollWidth` cannot see that class of bug: there is
+  no scrollbar, the content is simply gone. This is what caught the hero
+  blowout. Deliberate scrollers opt out with `data-allow-clip`, and SVG
+  internals are excluded because a `<path>` extending past its viewBox is
+  intrinsic to SVG.
+- **`screenshot.mjs`** was producing convincing but wrong images, twice over.
+  `captureBeyondViewport` rasterised the hero content box at its pre-layout
+  width, giving captures indistinguishable from a genuine responsive bug — a
+  DOM probe at the same instant reported the correct 390px widths. It now
+  stitches viewport-only captures, each cropped to the exact gap between
+  *settled* scroll offsets, with smooth scrolling disabled for the capture:
+  `global.css` sets `scroll-behavior: smooth`, so `scrollTo` animates and
+  earlier attempts read the offset at one moment and captured pixels at
+  another, duplicating a strip of the page — it made a trust stat and a form
+  label appear twice, which reads as a component bug.
+- **`check-template-spec.mjs`** is new and automates the structural half of
+  Template Spec §6, which the M5 gate needs across all 20 journey pages. Its
+  first two runs failed on correct pages — it was matching class names inside
+  the inlined `<style>` block ahead of the markup — so it now reads the body
+  with styles stripped.
+
+### Gate status — M4 part 1: evidence delivered, awaiting review
+
+| Check | / | Variant A | Variant B |
+|---|---|---|---|
+| Lighthouse performance | 100 | 100 | 100 |
+| Accessibility | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / 1.7s | 1.1s / 1.7s | 1.1s / 1.7s |
+| TBT / CLS | 0ms / 0 | 0ms / 0 | 0ms / 0 |
+| Keyboard pass | 57 stops | 67 stops | 67 stops |
+| Content visible without JS | 0/18 hidden | 0/12 | 0/22 |
+| No overflow **or clipping** 360–1440px | PASS | PASS | PASS |
+| Template Spec §6 (automated half) | — | PASS | PASS |
+
+`astro check` clean across 40 files; `audit:hardcoded` and `gate:m2` still
+pass. Evidence in `reports/m4-gate-summary.json`, captures in `reports/m4/`.
+
+**Target not met, stated plainly: LCP is 1.7s against the 1.5s working
+target.** Every code-side lever is in place and verified — matched preload,
+AVIF, `fetchpriority="high"`, eager, no render-blocking JS, TBT 0ms — and the
+*observed* LCP subparts total about 56ms. The 1.7s is Lighthouse's throttling
+model, dominated by FCP at 1.1s for a 27KB gzipped document. The runbook
+specifies WebPageTest 4G Moto-class for this gate, which needs the deployed
+preview URL and real photography to mean anything.
+
+**Every image in the evidence is a flagged placeholder**, both testimonials are
+flagged placeholder text, and the seeded catalogue means the featured row shows
+2 of 6 cards, the destination strip resolves 1 of 7 tiles from content, the
+travel-guide teaser 1 of 3, and related journeys 1 card. The layout and
+typography are real; the imagery is not.
+
+### Open question needing a ruling
+
+`/destinations/` — the index route the homepage strip's "View all destinations"
+link points at **is not in CLAUDE.md's locked URL list** and has no template in
+PAGE_TEMPLATES, yet T1 specifies the link. Either the index page joins the URL
+structure (and M4 step 3) or the link comes off the homepage. Not improvised
+either way.
+
+### Exact next action
+
+1. **Client:** review the `m4-templates` PR — the six desktop/mobile captures
+   plus the preview URL. **The homepage needs explicit sign-off before the
+   register rolls across the remaining templates**, per the M4 review loop.
+2. Rule on `/destinations/`, and on whether the reference captures should be
+   committed as optimised JPEGs.
+3. **Then:** M4 part 2 — destination template, journeys index, luxury-trains
+   landing, travel-guide index + article, corporate, about, reviews,
+   plan-my-trip, policy pages, custom 404, and the journey-card → hero View
+   Transition verified end to end once `/journeys/` exists.
+4. Still outstanding from the client: photo archive, verified trust numbers
+   (#2), consented testimonials (#3), pricing decision (#1), GSA disclosure
+   wording and schedule publishing (#15), and `docs/CLIENT_REVIEW_SHEET.md`.
