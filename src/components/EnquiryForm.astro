@@ -56,7 +56,8 @@ const MONTHS = [
 
   <!-- Honeypot: real people never fill this in. Not display:none, which some
        bots detect — off-screen and removed from the a11y tree instead. -->
-  <div class="form__honeypot" aria-hidden="true">
+  <!-- data-allow-clip: parked off-screen on purpose (spam honeypot). -->
+  <div class="form__honeypot" aria-hidden="true" data-allow-clip>
     <label for={id('company-url')}>Website</label>
     <input type="text" id={id('company-url')} name="companyUrl" tabindex="-1" autocomplete="off" />
   </div>

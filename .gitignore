@@ -32,3 +32,10 @@ reports/*.report.html
 
 # Regenerable brand master (npm run brand:logo reproduces it exactly)
 docs/brand/processed/logo-badge-master.png
+
+# Reference captures — client-supplied design ground truth, 90MB of full-page
+# PNGs. Kept local rather than committed: see docs/references/README.md.
+docs/references/*.png
+
+# Raw review captures. The committed evidence is the JPEG set beside them.
+reports/**/*.png

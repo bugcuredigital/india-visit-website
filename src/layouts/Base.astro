@@ -4,12 +4,13 @@
  * Owns: meta/SEO, canonical, OG/Twitter, favicons, font preloads, skip link,
  * global JSON-LD, and the GTM-via-Partytown stub.
  *
- * Deliberately NOT here yet: Header, Footer, StickyMobileBar (M3) and
- * View Transitions (M4). Those slot in without touching this contract.
+ * Header, Footer and StickyMobileBar arrive through the named slots — every
+ * page composes its own chrome. View Transitions are global from M4.
  */
 import '../styles/global.css';
 import { getSiteSettings } from '../lib/site-settings';
 import { travelAgencySchema } from '../lib/schema';
+import { ClientRouter } from 'astro:transitions';
 import JsonLd from '../components/JsonLd.astro';
 import RevealScript from '../components/RevealScript.astro';
 
@@ -94,6 +95,12 @@ const gtmId = siteSettings.gtmContainerId;
     <meta name="twitter:image" content={ogImageUrl} />
 
     <JsonLd schema={orgSchema} />
+    <!-- Global cross-document transitions. Astro's default is a cross-fade;
+         a journey card morphs into the itinerary hero where the card and the
+         hero share a `transition:name`. Astro's own animations carry a
+         `prefers-reduced-motion` fallback, so the motion spec holds. -->
+    <ClientRouter />
+
     <slot name="head" />
 
     {

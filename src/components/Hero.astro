@@ -11,7 +11,8 @@
  *
  * If you find yourself adding opacity or a transform to the <img>, stop.
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+import { HERO_WIDTHS, HERO_SIZES, HERO_FORMATS } from '../lib/hero-image';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
@@ -24,6 +25,9 @@ interface Props {
   kenBurns?: boolean;
   /** Widest rendered width; heroes are full-bleed so this is large. */
   widths?: number[];
+  /** View-transition name. Pair with the matching JourneyCard image so the
+   *  card morphs into this hero on navigation (M4). Omit and nothing morphs. */
+  transitionName?: string;
 }
 
 const {
@@ -31,21 +35,30 @@ const {
   alt,
   height = 'full',
   kenBurns = false,
-  widths = [640, 960, 1280, 1920, 2400],
+  widths = HERO_WIDTHS,
+  transitionName,
 } = Astro.props;
 ---
 
 <section class:list={['hero', `hero--${height}`]}>
-  <div class:list={['hero__media', { 'hero__media--kenburns': kenBurns }]}>
-    <Image
+  <!-- data-allow-clip: Ken Burns scales the image past the hero on purpose. -->
+  <div data-allow-clip class:list={['hero__media', { 'hero__media--kenburns': kenBurns }]}>
+    <!-- AVIF first, WebP fallback (invariant #3). The head preload targets the
+         AVIF set, so a browser that supports it has the file in flight before
+         the parser reaches this element. -->
+    <Picture
       src={image}
       alt={alt}
       widths={widths}
-      sizes="100vw"
+      sizes={HERO_SIZES}
+      formats={[...HERO_FORMATS]}
+      fallbackFormat="webp"
       loading="eager"
       decoding="sync"
       fetchpriority="high"
       class="hero__img"
+      pictureAttributes={{ class: 'hero__picture' }}
+      transition:name={transitionName}
     />
   </div>
 
@@ -62,6 +75,13 @@ const {
   .hero {
     position: relative;
     display: grid;
+    /* minmax(0, 1fr), NOT the implicit `auto` track. An auto track takes its
+       automatic minimum from the item's min-content, so one `white-space:
+       nowrap` descendant (the itinerary route strip) grew the track to 775px
+       inside a 390px hero. `overflow: clip` below then hid the damage instead
+       of reporting it, and a document-scrollWidth check cannot see it — the
+       headline and both CTAs were simply cut off on a phone. */
+    grid-template-columns: minmax(0, 1fr);
     align-items: end;
     isolation: isolate;
     overflow: clip;
@@ -86,6 +106,13 @@ const {
     z-index: -2;
   }
 
+  /* <Picture> wraps the img, so the wrapper has to carry the fill too. */
+  .hero__picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   .hero__img {
     width: 100%;
     height: 100%;
@@ -108,6 +135,9 @@ const {
   }
 
   .hero__content {
+    /* Belt and braces on the same blowout: a grid item's default min-width is
+       auto, which is min-content. */
+    min-width: 0;
     position: relative;
     padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
     color: var(--color-white);

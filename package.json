@@ -21,7 +21,8 @@
     "brand:favicons": "node scripts/brand/make-favicons.mjs",
     "check:nojs": "node scripts/check-nojs.mjs",
     "shot": "node scripts/screenshot.mjs",
-    "check:keyboard": "node scripts/check-keyboard.mjs"
+    "check:keyboard": "node scripts/check-keyboard.mjs",
+    "check:template-spec": "node scripts/check-template-spec.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",

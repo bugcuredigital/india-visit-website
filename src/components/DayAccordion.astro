@@ -141,7 +141,10 @@ const hasProvisional = days.some((day) => day.provisional);
   .days__notice {
     margin-bottom: 1.5rem;
     padding: 0.85rem 1rem;
-    border-left: 3px solid var(--color-yellow);
+    /* Burgundy, not yellow: yellow is legal on plum/burgundy ONLY, never on
+       a light surface (CLAUDE.md invariant #5). A fine rule on a light
+       surface is burgundy's role per the design direction. */
+    border-left: 3px solid var(--color-burgundy);
     background-color: var(--color-offwhite);
     font-size: var(--text-sm);
     color: var(--color-ink-muted);

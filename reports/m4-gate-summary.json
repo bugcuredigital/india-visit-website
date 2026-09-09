@@ -1,0 +1,134 @@
+{
+  "milestone": "M4 (partial) — journey template both variants + homepage",
+  "branch": "m4-templates",
+  "date": "2026-09-09",
+  "instrument": "Lighthouse 13 mobile, simulated throttling, against `astro preview` on localhost",
+  "pages": [
+    {
+      "route": "/",
+      "lighthouse": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "1.1 s",
+        "lcp": "1.7 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "lcpObservedSubpartsMs": {
+        "timeToFirstByte": 5,
+        "resourceLoadDelay": 24,
+        "resourceLoadDuration": 4,
+        "elementRenderDelay": 60
+      },
+      "lcpDiscovery": {
+        "priorityHinted": true,
+        "requestDiscoverable": true,
+        "eagerlyLoaded": true
+      },
+      "auditsBelowPerfect": [
+        "first-contentful-paint (0.99)",
+        "largest-contentful-paint (0.99)",
+        "network-dependency-tree-insight (0.00)"
+      ],
+      "hardFailures": []
+    },
+    {
+      "route": "/journeys/kerala-with-houseboat-11n-12d/ — Variant A",
+      "lighthouse": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "1.1 s",
+        "lcp": "1.7 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "lcpObservedSubpartsMs": {
+        "timeToFirstByte": 4,
+        "resourceLoadDelay": 4,
+        "resourceLoadDuration": 6,
+        "elementRenderDelay": 42
+      },
+      "lcpDiscovery": {
+        "priorityHinted": true,
+        "requestDiscoverable": true,
+        "eagerlyLoaded": true
+      },
+      "auditsBelowPerfect": [
+        "first-contentful-paint (0.99)",
+        "largest-contentful-paint (0.99)",
+        "network-dependency-tree-insight (0.00)"
+      ],
+      "hardFailures": []
+    },
+    {
+      "route": "/journeys/palace-on-wheels-7n-8d/ — Variant B",
+      "lighthouse": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "1.1 s",
+        "lcp": "1.7 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "lcpObservedSubpartsMs": {
+        "timeToFirstByte": 4,
+        "resourceLoadDelay": 5,
+        "resourceLoadDuration": 5,
+        "elementRenderDelay": 37
+      },
+      "lcpDiscovery": {
+        "priorityHinted": true,
+        "requestDiscoverable": true,
+        "eagerlyLoaded": true
+      },
+      "auditsBelowPerfect": [
+        "largest-contentful-paint (0.99)",
+        "network-dependency-tree-insight (0.00)"
+      ],
+      "hardFailures": []
+    }
+  ],
+  "scriptedChecks": {
+    "astro check": "0 errors, 0 warnings, 0 hints across 40 files",
+    "check:template-spec": "PASS — both journey pages, automated half of Template Spec section 6",
+    "check:responsive": "PASS on all 3 pages, 360-1440px. Now also detects content clipped inside overflow boxes, which is how the hero grid blowout was found",
+    "check:nojs": "PASS on all 3 pages — 0 of 18/12/22 animated elements hidden with scripting disabled",
+    "check:keyboard": "PASS on all 3 pages — 57/67/67 tab stops, skip link first, every stop named and focus-ringed, no trap",
+    "audit:hardcoded": "PASS — no contact details, no operator tariffs, no third-party agency branding",
+    "gate:m2": "PASS — 5 of 5 schema-safety cases still hold"
+  },
+  "targetNotMet": {
+    "metric": "LCP <= 1.5s working target, CLAUDE.md invariant 3",
+    "measured": "1.7s on all three pages in Lighthouse simulated mobile",
+    "note": "Every code-side lever is in place and verified: a head preload whose candidate set matches the picture element AVIF source byte-for-byte, AVIF plus WebP with AVIF at 15KB against WebP 29KB at 960w, fetchpriority high, eager loading, no render-blocking JS, TBT 0ms. Observed LCP subparts total about 56ms; the 1.7s figure is Lighthouse throttling model, dominated by FCP at 1.1s. The runbook specifies WebPageTest 4G Moto-class for this gate, which needs the deployed preview URL and real photography to mean anything."
+  },
+  "placeholdersInEvidence": [
+    "every hero and card image is the flagged PLACEHOLDER-IMAGE graphic — the photo archive is still client-side",
+    "both testimonials are flagged PLACEHOLDER TESTIMONIAL, PRD Open Question 3",
+    "siteSettings still carries 14 dummy-data flags: phone, WhatsApp, email, address, socials, GTM container, founding year, traveller count, destination count, rating, response SLA",
+    "featured journeys row shows 2 of 6 cards — only two journeys are seeded",
+    "destination strip: 1 of 7 tiles resolves from a content entry, the other 6 fall back to the locked labels in CLAUDE.md",
+    "travel guide teaser shows 1 of 3 article cards",
+    "related journeys shows 1 card — with two seeds there is only one sibling"
+  ],
+  "deliberateTradeOffs": [
+    "network-dependency-tree-insight scores 0 on every page. The critical chain is document then inter-600-latin.woff2 at 24.7KB, discovered from the inlined CSS rather than preloaded. Left alone on purpose: the LCP element is the hero image, and a fourth font preload would compete with the hero AVIF for bandwidth and make LCP worse, not better. font-display swap means semibold text paints in the fallback first. Trimming that subset further is M9 work.",
+    "build.inlineStylesheets is always, so each page carries every component style it uses in the head — 27KB gzipped for the whole document. Moving CSS to an external file would save bytes on repeat views but costs a round trip on the first, which is the visit that decides LCP."
+  ],
+  "knownDeadLinks": [
+    "/journeys/, /luxury-trains/, /travel-guide/, /travel-guide/{slug}/, /corporate/, /plan-my-trip/, /destinations/{slug}/, /privacy/ — all built later in M4 step 3",
+    "/destinations/ — the index route the homepage strip links to is NOT in the locked URL list in CLAUDE.md and has no template in PAGE_TEMPLATES. Needs a ruling: add the index page, or drop the View all destinations link"
+  ]
+}
