@@ -57,7 +57,7 @@ Rules: every component reads editable values from props/settings (invariant #1);
 4. Populate real siteSettings (phone, WA number + prefill, email, socials)
 5. Cross-link pass: related journeys, article↔journey embeds, destination↔journey listings
 
-**Gate:** all 20 journey pages pass Template Spec §6 checklist; content spot-check by client ⚑; every page has unique title/meta; sitemap contains all routes; **`docs/CLIENT_REVIEW_SHEET.md` generated** listing every provisional value (pace, idealFor, trust numbers, empty priceFrom) for one-shot client sign-off; **USD/price-pattern grep across all three train pages returns nothing** — this is a permanent regression check, not a one-off.
+**Gate:** all 20 journey pages pass Template Spec §6 checklist; content spot-check by client ⚑; every page has unique title/meta; sitemap contains all routes; **`docs/CLIENT_REVIEW_SHEET.md` complete** (created early, in M2) listing every provisional value (pace, idealFor, trust numbers, empty priceFrom) for one-shot client sign-off; **USD/price-pattern grep across all three train pages returns nothing** — this is a permanent regression check, not a one-off.
 
 ## M6 — Interactivity & motion (Day 8–11)
 

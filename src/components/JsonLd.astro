@@ -1,0 +1,12 @@
+---
+/**
+ * Emits one JSON-LD graph node. Builders live in src/lib/schema.ts, which drops
+ * null and placeholder fields so nothing unverified reaches structured data.
+ */
+interface Props {
+  schema: Record<string, unknown>;
+}
+const { schema } = Astro.props;
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

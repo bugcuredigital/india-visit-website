@@ -1,0 +1,126 @@
+---
+/**
+ * S12 — Policies (Variant B).
+ * Present for transparency and legal cover, and deliberately quiet: collapsed
+ * by default so it never competes visually with the sell. No page ever ends on
+ * policy text — the convert band comes after it (Template Spec §6).
+ *
+ * The operator disclosure sits in the section header, not buried in a panel:
+ * the client's own document limits liability to that of booking agent, so the
+ * site has to say so plainly.
+ */
+interface Props {
+  policies: Array<{ heading: string; body: string }>;
+  operatorDisclosure?: string;
+  operatorName?: string;
+  bookingTermsUrl?: string;
+  heading?: string;
+}
+
+const {
+  policies,
+  operatorDisclosure,
+  operatorName,
+  bookingTermsUrl = '/booking-terms/',
+  heading = 'Policies & cancellation',
+} = Astro.props;
+---
+
+<section class="band" id="policies">
+  <div class="container-content">
+    <h2 class="policies__heading">{heading}</h2>
+
+    {operatorDisclosure && (
+      <p class="policies__disclosure">
+        {operatorDisclosure}
+        {operatorName && <><br /><span class="policies__operator">Operated by {operatorName}.</span></>}
+        {' '}
+        <a href={bookingTermsUrl}>Full booking terms</a>
+      </p>
+    )}
+
+    <div class="policies">
+      {policies.map((policy) => (
+        <details class="policy">
+          <summary class="policy__summary">
+            <span>{policy.heading}</span>
+            <svg class="policy__chevron" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+              <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </summary>
+          <p class="policy__body">{policy.body}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .policies__heading {
+    font-size: var(--text-2xl);
+  }
+
+  .policies__disclosure {
+    max-width: var(--container-prose);
+    margin-top: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .policies__operator {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .policies {
+    margin-top: 2rem;
+    max-width: var(--container-prose);
+  }
+
+  .policy {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .policy:last-child {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .policy__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    font-size: var(--text-base);
+  }
+
+  .policy__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .policy__chevron {
+    width: 12px;
+    height: 8px;
+    flex: none;
+    color: var(--color-ink-muted);
+  }
+
+  .policy__body {
+    padding-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .policy__chevron {
+      transition: transform var(--duration-base) var(--ease-brand);
+    }
+
+    .policy[open] .policy__chevron {
+      transform: rotate(180deg);
+    }
+  }
+</style>

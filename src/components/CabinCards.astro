@@ -1,0 +1,151 @@
+---
+/**
+ * S9 — Cabin Categories (Variant B only).
+ * ---------------------------------------------------------------------------
+ * NO PRICES, EVER. Operator tariffs are never published (invariant #6,
+ * permanent), so every card renders "Enquire for pricing" and there is no
+ * price prop to pass. The schema has nowhere to put one either.
+ *
+ * The operator disclosure renders in this section's header when supplied,
+ * because the Template Spec §6 checklist requires it above the fold-adjacent
+ * area and explicitly says not to bury it.
+ */
+interface Props {
+  cabins: Array<{ name: string; facilities: string[]; flagship?: boolean }>;
+  operatorDisclosure?: string;
+  bookingTermsUrl?: string;
+  heading?: string;
+}
+
+const {
+  cabins,
+  operatorDisclosure,
+  bookingTermsUrl = '/booking-terms/',
+  heading = 'Cabin Categories',
+} = Astro.props;
+---
+
+<section class="band" id="cabins">
+  <div class="container-content">
+    <h2>{heading}</h2>
+
+    {operatorDisclosure && (
+      <p class="cabins__disclosure">
+        {operatorDisclosure}{' '}
+        <a href={bookingTermsUrl}>Booking terms</a>
+      </p>
+    )}
+
+    <ul class="cabins fade-up-stagger">
+      {cabins.map((cabin) => (
+        <li class:list={['cabin', { 'cabin--flagship': cabin.flagship }]}>
+          {cabin.flagship && <p class="cabin__flag">Top tier</p>}
+          <h3 class="cabin__name">{cabin.name}</h3>
+          <ul class="cabin__facilities">
+            {cabin.facilities.map((facility) => <li>{facility}</li>)}
+          </ul>
+          <p class="cabin__price">Enquire for pricing</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cabins__disclosure {
+    max-width: var(--container-prose);
+    margin-top: 1.25rem;
+    padding: 1rem 1.15rem;
+    background-color: var(--color-offwhite);
+    border-left: 3px solid var(--color-crimson);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .cabins {
+    display: grid;
+    gap: 1.25rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .cabins {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .cabins {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .cabin {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-md);
+  }
+
+  /* The top tier is flagged with a plum edge, not a colour flood. */
+  .cabin--flagship {
+    background-color: var(--color-offwhite);
+    border-color: var(--color-plum);
+  }
+
+  .cabin__flag {
+    margin-bottom: 0.6rem;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-crimson);
+  }
+
+  .cabin__name {
+    font-size: var(--text-2xl);
+  }
+
+  .cabin__facilities {
+    flex: 1;
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0 1.25rem;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .cabin__facilities li {
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--color-hairline);
+  }
+
+  .cabin__price {
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-hairline);
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cabin {
+      transition:
+        transform var(--duration-fast) var(--ease-brand),
+        box-shadow var(--duration-fast) var(--ease-brand);
+    }
+
+    .cabin:hover {
+      transform: translate3d(0, -3px, 0);
+      box-shadow: var(--shadow-lift-hover);
+    }
+  }
+</style>

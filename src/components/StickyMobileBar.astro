@@ -1,0 +1,211 @@
+---
+/**
+ * Persistent contact — ONE pattern, two form factors (b6 ruling):
+ *   · mobile: sticky bottom bar
+ *   · desktop: floating bottom-right WhatsApp button
+ *
+ * Present on every page EXCEPT policy pages and /plan-my-trip/. Default order
+ * is [WhatsApp][Call][Enquire]; on /corporate/ it reorders to
+ * [Call][Form][WhatsApp] — WhatsApp stays present everywhere, Corporate just
+ * leads with Call.
+ *
+ * Slides in after the first scroll (PRD §9.4), via the same sentinel-observer
+ * approach the header uses — no per-frame scroll handler.
+ */
+import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+
+interface Props {
+  /** `corporate` leads with Call and points at the form instead of enquiry. */
+  layout?: 'default' | 'corporate';
+  /** Appended to the WhatsApp prefill so the lead arrives with context. */
+  waContext?: string;
+  enquireHref?: string;
+}
+
+const { layout = 'default', waContext, enquireHref = '/plan-my-trip/' } = Astro.props;
+const settings = await getSiteSettings();
+
+const wa = {
+  key: 'wa',
+  href: whatsappLink(settings, waContext),
+  label: 'WhatsApp',
+  analytics: 'wa_click',
+  external: true,
+};
+const call = {
+  key: 'call',
+  href: settings.phoneHref,
+  label: 'Call',
+  analytics: 'call_click',
+  external: false,
+};
+const enquire = {
+  key: 'enquire',
+  href: enquireHref,
+  label: layout === 'corporate' ? 'Form' : 'Enquire',
+  analytics: 'enquire_click',
+  external: false,
+};
+
+const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquire];
+---
+
+<div id="bar-sentinel" aria-hidden="true"></div>
+
+<div class="bar" data-sticky-bar>
+  <nav class="bar__inner" aria-label="Contact us">
+    {actions.map((action) => (
+      <a
+        class:list={['bar__action', `bar__action--${action.key}`]}
+        href={action.href}
+        data-analytics={action.analytics}
+        {...(action.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
+        {action.label}
+      </a>
+    ))}
+  </nav>
+</div>
+
+<!-- Desktop: the same WhatsApp action as a floating button. -->
+<a
+  class="floater"
+  href={wa.href}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Message us on WhatsApp (opens in a new tab)"
+  data-analytics="wa_click"
+  data-sticky-bar
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M12 3a9 9 0 0 0-7.7 13.7L3 21l4.4-1.3A9 9 0 1 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+    <path d="M8.6 8.5c.4-.7 1.2-.6 1.5-.1l.6 1.2c.2.3 0 .6-.2.8l-.4.4c.5 1 1.2 1.7 2.2 2.2l.4-.4c.2-.2.5-.4.8-.2l1.2.6c.5.3.6 1.1-.1 1.5-1.4.7-3.1-.2-4.3-1.4S7.9 9.9 8.6 8.5Z" fill="currentColor"/>
+  </svg>
+</a>
+
+<script is:inline>
+  (() => {
+    const sentinel = document.getElementById('bar-sentinel');
+    const bars = document.querySelectorAll('[data-sticky-bar]');
+    if (!sentinel || !bars.length || !('IntersectionObserver' in window)) {
+      bars.forEach((bar) => bar.classList.add('is-in'));
+      return;
+    }
+    new IntersectionObserver(
+      ([entry]) => bars.forEach((bar) => bar.classList.toggle('is-in', !entry.isIntersecting)),
+      { threshold: 0 },
+    ).observe(sentinel);
+  })();
+</script>
+
+<style>
+  #bar-sentinel {
+    position: absolute;
+    top: 0;
+    height: 60vh;
+    width: 1px;
+    pointer-events: none;
+  }
+
+  /* ---- Mobile bar ------------------------------------------------------ */
+  .bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    background-color: var(--color-white);
+    border-top: 1px solid var(--color-hairline);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  @media (min-width: 48rem) {
+    .bar {
+      display: none;
+    }
+  }
+
+  .bar__inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .bar__action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .bar__action + .bar__action {
+    border-left: 1px solid var(--color-hairline);
+  }
+
+  /* Exactly one crimson action in the bar, per the colour ruling. */
+  .bar__action--enquire {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+  }
+
+  /* ---- Desktop floating button ---------------------------------------- */
+  .floater {
+    display: none;
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 40;
+    width: 52px;
+    height: 52px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-plum);
+    color: var(--color-white);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-lift-hover);
+  }
+
+  @media (min-width: 48rem) {
+    .floater {
+      display: flex;
+    }
+  }
+
+  .floater svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .floater:hover {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+  }
+
+  /* Slide in after the first scroll. Transform only. */
+  @media (prefers-reduced-motion: no-preference) {
+    .bar {
+      transform: translate3d(0, 100%, 0);
+      transition: transform var(--duration-base) var(--ease-brand);
+    }
+
+    .floater {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+      transition:
+        opacity var(--duration-base) var(--ease-brand),
+        transform var(--duration-base) var(--ease-brand),
+        background-color var(--duration-fast) var(--ease-brand);
+    }
+
+    .bar.is-in {
+      transform: translate3d(0, 0, 0);
+    }
+
+    .floater.is-in {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+</style>

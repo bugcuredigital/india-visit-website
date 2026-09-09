@@ -1,0 +1,95 @@
+---
+/**
+ * Article body blocks — prose styling plus the callout, image-frame and
+ * inline-journey blocks the article template composes (PAGE_TEMPLATES T9).
+ *
+ * Photography rule from the design direction: outside full-bleed heroes,
+ * images sit in clean rounded frames on white, gallery-style. That is what
+ * `.prose :global(img)` does here.
+ *
+ * The measure is capped at ~68ch — the editorial reading width — which is why
+ * the wrapper, not each paragraph, owns the constraint.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['prose', className]}>
+  <slot />
+</div>
+
+<style>
+  .prose {
+    max-width: var(--container-prose);
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+  }
+
+  .prose :global(> * + *) {
+    margin-top: 1.25rem;
+  }
+
+  .prose :global(h2) {
+    margin-top: 3rem;
+    font-size: var(--text-h2);
+  }
+
+  .prose :global(h3) {
+    margin-top: 2.25rem;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.5rem;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  .prose :global(img) {
+    /* Gallery-style frame on white, never full-bleed inside prose. */
+    margin-block: 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-card-border);
+  }
+
+  .prose :global(blockquote) {
+    margin-block: 2rem;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--color-crimson);
+    font-size: var(--text-xl);
+    font-style: italic;
+    color: var(--color-ink-muted);
+  }
+
+  .prose :global(figcaption) {
+    margin-top: -1rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .prose :global(hr) {
+    margin-block: 3rem;
+    border: 0;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .prose :global(a) {
+    color: var(--color-crimson);
+    text-decoration: underline;
+  }
+
+  .prose :global(a:hover) {
+    color: var(--color-burgundy);
+  }
+
+  .prose :global(code) {
+    padding: 0.1em 0.35em;
+    background-color: var(--color-offwhite);
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+/**
+ * S15 — Related journeys. Three cards, editorially assigned, and the place the
+ * custom-journey → luxury-train upsell path lives (Template Spec S15).
+ * Renders nothing at all when no siblings are assigned, rather than an empty
+ * heading — relevant while the catalogue is still being seeded.
+ */
+import JourneyCard from './JourneyCard.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  journeys: Array<{
+    slug: string;
+    title: string;
+    image: ImageMetadata;
+    imageAlt: string;
+    nights: number;
+    days: number;
+    routeCities: string[];
+    variant: 'A' | 'B';
+    signatureFeature?: string;
+  }>;
+  heading?: string;
+}
+
+const { journeys, heading = 'Trips like this' } = Astro.props;
+---
+
+{journeys.length > 0 && (
+  <section class="band band-offwhite">
+    <div class="container-content">
+      <h2>{heading}</h2>
+      <div class="related fade-up-stagger">
+        {journeys.map((journey) => <JourneyCard {...journey} />)}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .related {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .related {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .related {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

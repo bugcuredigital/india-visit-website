@@ -316,11 +316,12 @@ The single most important trust page for this brand.
 
 What separates this from a budget-operator site (and from the current template look of sites like luxuriousheritagetravel.com):
 
-- **Whitespace is the luxury signal.** Generous padding, max content width ~1200–1280px, airy sections. Off-white base, deep plum for contrast sections.
+- **Whitespace is the luxury signal.** Generous padding, max content width ~1200–1280px, airy sections. **White base** (v1.5 ruling — off-white demoted to a secondary surface), with deep plum reserved for rare, intentional contrast bands.
 - **Photography carries the site.** Large, warm, golden-hour imagery; real places from actual itineraries. No cheesy stock, no watermarked images, consistent colour grading (warm, slightly desaturated). Budget line item for licensed/original photography.
 - **Editorial typography.** Big confident Agrandir headlines, restrained body sizes, no more than 2 weights per block.
 - **Micro-restraint.** Subtle hover lifts and fades only. No autoplay carousels spinning fast, no popups in first 30 seconds, no discount stickers, no countdown timers.
 - **Reference direction:** Enchanting Travels' structure and calm (destination-led browsing, expert-led trust, review-heavy) + Revealed Journeys' boutique intimacy ("we work with a limited number of clients") — executed in India Visit's crimson/plum identity.
+- **Design language (v1.5, locked):** **white-canvas premium.** Translate the school of `staralliance.com` (grid discipline, type scale, restraint) and `airindia.com` (warm premium, photography-led, deep red as accent) without cloning either. Type carries the design — big confident display headings on white, ink `#1A1523` rather than black. Crimson is punctuation, not upholstery. Explicitly **not** imported: booking-widget UI, mega-nav complexity, carousel-heavy homepages, or Star Alliance's cool corporate tone — our voice stays warm. Full ruling in CLAUDE.md's brand section.
 
 ### 9.3 Responsive & accessibility
 

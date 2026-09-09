@@ -1,0 +1,117 @@
+---
+/**
+ * S14 — Customise / Convert band. One of the sanctioned plum bands.
+ * Every template ends with a conversion opportunity before the footer, and no
+ * page ever ends on policy text (Template Spec §6).
+ *
+ * Variant A asks to tailor the journey; Variant B asks about availability,
+ * because a fixed departure cannot be customised. The Namaste motif belongs to
+ * the success state, which M6 builds.
+ */
+import EnquiryForm from './EnquiryForm.astro';
+import Button from './Button.astro';
+import Lotus from './Lotus.astro';
+import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+
+interface Props {
+  heading?: string;
+  body?: string;
+  leadType?: 'general' | 'journey' | 'corporate' | 'callback';
+  journeySlug?: string;
+  journeyTitle?: string;
+  /** Context appended to the WhatsApp prefill. */
+  waContext?: string;
+}
+
+const {
+  heading = 'Shall we start planning?',
+  body,
+  leadType = 'general',
+  journeySlug,
+  journeyTitle,
+  waContext,
+} = Astro.props;
+
+const settings = await getSiteSettings();
+---
+
+<section class="band band-plum on-dark convert">
+  <div class="container-content convert__inner">
+    <div class="convert__copy">
+      <p class="eyebrow">
+        <Lotus size={16} />
+        <span>Speak to a person, not a portal</span>
+      </p>
+      <h2 class="convert__heading">{heading}</h2>
+      {body && <p class="convert__body">{body}</p>}
+
+      <ul class="convert__alt">
+        <li>
+          <Button
+            href={whatsappLink(settings, waContext)}
+            variant="on-dark"
+            external
+            data-analytics="wa_click"
+          >
+            WhatsApp us
+          </Button>
+        </li>
+        <li>
+          <Button href={settings.phoneHref} variant="on-dark" data-analytics="call_click">
+            {settings.phone}
+          </Button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="convert__form">
+      <EnquiryForm
+        leadType={leadType}
+        journeySlug={journeySlug}
+        journeyTitle={journeyTitle}
+        onDark
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .convert__inner {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .convert__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .convert__heading {
+    margin-top: 1rem;
+    font-size: var(--text-h2);
+  }
+
+  .convert__body {
+    margin-top: 1.25rem;
+    max-width: 46ch;
+    color: var(--color-on-dark-muted);
+  }
+
+  .convert__alt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

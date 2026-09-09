@@ -1,0 +1,132 @@
+---
+/**
+ * Hero — full-bleed photograph, plum gradient ONLY at the text zone.
+ * ---------------------------------------------------------------------------
+ * LCP PROTECTION (invariant #3) is the whole point of this component:
+ *   · the image is `fetchpriority="high"`, eager, and NOT lazy
+ *   · it is NEVER entrance-animated — it paints at full opacity immediately
+ *   · Ken Burns applies to a separate wrapper and is opt-in, so the pixels are
+ *     never hidden behind an animation that has yet to run
+ *   · the gradient is a CSS overlay, so it costs no extra request
+ *
+ * If you find yourself adding opacity or a transform to the <img>, stop.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  /** `full` for the homepage (85svh), `short` for destinations (55svh),
+   *  `compact` for index/tool pages that are not a story. */
+  height?: 'full' | 'short' | 'compact';
+  /** Slow scale on the image. Exempt from the 200–600ms rule (PRD §9.4). */
+  kenBurns?: boolean;
+  /** Widest rendered width; heroes are full-bleed so this is large. */
+  widths?: number[];
+}
+
+const {
+  image,
+  alt,
+  height = 'full',
+  kenBurns = false,
+  widths = [640, 960, 1280, 1920, 2400],
+} = Astro.props;
+---
+
+<section class:list={['hero', `hero--${height}`]}>
+  <div class:list={['hero__media', { 'hero__media--kenburns': kenBurns }]}>
+    <Image
+      src={image}
+      alt={alt}
+      widths={widths}
+      sizes="100vw"
+      loading="eager"
+      decoding="sync"
+      fetchpriority="high"
+      class="hero__img"
+    />
+  </div>
+
+  <!-- Gradient sits only where the text is, so the photograph stays a
+       photograph everywhere else (design direction). -->
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="container-content hero__content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    align-items: end;
+    isolation: isolate;
+    overflow: clip;
+    background-color: var(--color-plum);
+  }
+
+  .hero--full {
+    min-height: 85svh;
+  }
+
+  .hero--short {
+    min-height: 55svh;
+  }
+
+  .hero--compact {
+    min-height: 34svh;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: -1;
+    /* Only the lower text zone is tinted — roughly the bottom 62%. */
+    height: 62%;
+    background-image: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-plum) 92%, transparent) 0%,
+      color-mix(in srgb, var(--color-plum) 62%, transparent) 42%,
+      transparent 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    color: var(--color-white);
+  }
+
+  /* Ken Burns runs on the WRAPPER, never on the LCP image's visibility.
+     8s+ and subtle, per PRD §9.4. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__media--kenburns {
+      animation: hero-kenburns var(--duration-kenburns) var(--ease-brand) both;
+    }
+  }
+
+  @keyframes hero-kenburns {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+</style>

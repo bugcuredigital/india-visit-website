@@ -1,0 +1,234 @@
+---
+/**
+ * S6 — Day-by-Day itinerary.
+ * ---------------------------------------------------------------------------
+ * Built on native <details>/<summary>, which gives keyboard operation, Esc
+ * behaviour and find-in-page for free, and means the content is present for
+ * search engines whether or not a day is open.
+ *
+ * Per the Template Spec: first three days expanded by default, days 8+ stay
+ * collapsed so a 13-day trip does not become an endless page, and an
+ * "Expand all" control is available.
+ *
+ * IDs are `day-{n}` to match the anchors GlanceTable emits.
+ *
+ * The height transition is deliberately absent: animating a <details> panel
+ * means animating height, which the motion spec forbids outright (layout
+ * thrash kills INP). The chevron rotate is transform-only and does the work.
+ */
+import TransportChip from './TransportChip.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Day {
+  dayNo: number;
+  title: string;
+  narrative: string;
+  overnight: string;
+  transport?: { mode: 'flight' | 'overnight-train' | 'train' | 'drive' | 'boat' | 'walk'; detail: string };
+  image?: ImageMetadata;
+  provisional?: boolean;
+}
+
+interface Props {
+  days: Day[];
+  heading?: string;
+  /** Shows a build-time notice when any day's copy is unapproved. */
+  showProvisionalNotice?: boolean;
+}
+
+const { days, heading = 'Day by Day', showProvisionalNotice = false } = Astro.props;
+const hasProvisional = days.some((day) => day.provisional);
+---
+
+<section class="band" id="day-by-day">
+  <div class="container-content">
+    <div class="days__head">
+      <h2>{heading}</h2>
+      <button type="button" class="days__toggle tap-target" data-expand-all>
+        Expand all
+      </button>
+    </div>
+
+    {showProvisionalNotice && hasProvisional && (
+      <p class="days__notice">
+        Some day descriptions are drafted from the published route and are
+        awaiting the operator's confirmed copy.
+      </p>
+    )}
+
+    <ol class="days">
+      {days.map((day, index) => (
+        <li class="days__item">
+          <details class="day" id={`day-${day.dayNo}`} open={index < 3}>
+            <summary class="day__summary">
+              <span class="day__no">Day {String(day.dayNo).padStart(2, '0')}</span>
+              <span class="day__title">{day.title}</span>
+              <svg class="day__chevron" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+                <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </summary>
+
+            <div class="day__body">
+              {day.transport && (
+                <p class="day__transport">
+                  <TransportChip mode={day.transport.mode} detail={day.transport.detail} />
+                </p>
+              )}
+              <p class="day__narrative">{day.narrative}</p>
+              {day.image && (
+                <Image
+                  src={day.image}
+                  alt=""
+                  widths={[480, 800]}
+                  sizes="(min-width: 48rem) 40rem, 100vw"
+                  loading="lazy"
+                  class="day__image"
+                />
+              )}
+              <p class="day__overnight">{day.overnight}</p>
+            </div>
+          </details>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    document.querySelectorAll('[data-expand-all]').forEach((button) => {
+      const section = button.closest('section');
+      if (!section) return;
+      button.addEventListener('click', () => {
+        const panels = section.querySelectorAll('details.day');
+        const shouldOpen = button.dataset.state !== 'open';
+        panels.forEach((panel) => {
+          panel.open = shouldOpen;
+        });
+        button.dataset.state = shouldOpen ? 'open' : 'closed';
+        button.textContent = shouldOpen ? 'Collapse all' : 'Expand all';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .days__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .days__toggle {
+    padding: 0 0.25rem;
+    background: none;
+    border: 0;
+    color: var(--color-crimson);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .days__toggle:hover {
+    color: var(--color-burgundy);
+    text-decoration: underline;
+  }
+
+  .days__notice {
+    margin-bottom: 1.5rem;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--color-yellow);
+    background-color: var(--color-offwhite);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .days {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .day {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .days__item:last-child .day {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .day__summary {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    /* 44px+ target across the full row width. */
+    padding: 1.15rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .day__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .day__no {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--color-crimson);
+    white-space: nowrap;
+  }
+
+  .day__title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    color: var(--color-ink);
+  }
+
+  .day__chevron {
+    width: 12px;
+    height: 8px;
+    color: var(--color-ink-muted);
+  }
+
+  .day__body {
+    padding-bottom: 1.75rem;
+    /* Align with the title column on wide viewports. */
+    max-width: var(--container-prose);
+  }
+
+  .day__transport {
+    margin-bottom: 0.9rem;
+  }
+
+  .day__image {
+    margin-top: 1.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .day__overnight {
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-ink-muted);
+  }
+
+  /* Transform-only: chevron rotates, nothing animates height. */
+  @media (prefers-reduced-motion: no-preference) {
+    .day__chevron {
+      transition: transform var(--duration-base) var(--ease-brand);
+    }
+
+    .day[open] .day__chevron {
+      transform: rotate(180deg);
+    }
+  }
+</style>

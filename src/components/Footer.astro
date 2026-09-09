@@ -1,0 +1,192 @@
+---
+/**
+ * Footer — one of the few sanctioned deep-plum bands (design direction).
+ * Every contact detail and social URL comes from siteSettings (invariant #1);
+ * socials that are null simply do not render, so an unsupplied handle leaves
+ * no empty icon behind.
+ */
+import Logo from './Logo.astro';
+import Lotus from './Lotus.astro';
+import { NAV_ITEMS, POLICY_ITEMS } from '../lib/nav';
+import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+
+const settings = await getSiteSettings();
+const year = new Date().getFullYear();
+
+const socialEntries: Array<[string, string | null]> = [
+  ['Instagram', settings.socials.instagram],
+  ['Facebook', settings.socials.facebook],
+  ['YouTube', settings.socials.youtube],
+  ['LinkedIn', settings.socials.linkedin],
+];
+/** Unsupplied handles leave no empty icon behind. */
+const socials = socialEntries.filter(
+  (entry): entry is [string, string] => entry[1] !== null,
+);
+---
+
+<footer class="footer on-dark">
+  <div class="container-content footer__inner">
+    <div class="footer__brand">
+      <Logo height={44} variant="on-dark" />
+      <p class="footer__tagline">{settings.tagline}</p>
+      <p class="footer__years">
+        <Lotus size={16} />
+        <span>{settings.yearsExperience}+ years · {settings.supportPromise}</span>
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label="Explore">
+      <h2 class="footer__heading">Explore</h2>
+      <ul class="footer__list">
+        <li><a href="/destinations/" class="footer__link">Destinations</a></li>
+        {NAV_ITEMS.map((item) => (
+          <li><a href={item.href} class="footer__link">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h2 class="footer__heading">Talk to us</h2>
+      <ul class="footer__list">
+        <li>
+          <a href={settings.phoneHref} class="footer__link" data-analytics="call_click">
+            {settings.phone}
+          </a>
+        </li>
+        <li>
+          <a
+            href={whatsappLink(settings)}
+            class="footer__link"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-analytics="wa_click"
+          >
+            WhatsApp
+          </a>
+        </li>
+        <li><a href={`mailto:${settings.email}`} class="footer__link">{settings.email}</a></li>
+        <li class="footer__address">{settings.address}</li>
+      </ul>
+
+      {socials.length > 0 && (
+        <ul class="footer__socials" aria-label="Social profiles">
+          {socials.map(([label, url]) => (
+            <li>
+              <a href={url} class="footer__link" target="_blank" rel="noopener noreferrer">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <nav class="footer__col" aria-label="Policies">
+      <h2 class="footer__heading">Policies</h2>
+      <ul class="footer__list">
+        {POLICY_ITEMS.map((item) => (
+          <li><a href={item.href} class="footer__link">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container-content footer__base">
+    <p>© {year} {settings.siteName}. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-plum);
+    color: var(--color-on-dark);
+    padding-block: var(--space-section-tight) 0;
+  }
+
+  .footer__inner {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .footer__inner {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .footer__inner {
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .footer__tagline {
+    margin-top: 1rem;
+    max-width: 26ch;
+    color: var(--color-on-dark-muted);
+    font-size: var(--text-sm);
+  }
+
+  .footer__years {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    /* Yellow is legal here: the surface is plum (invariant #5). */
+    color: var(--color-yellow);
+  }
+
+  .footer__heading {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-yellow);
+  }
+
+  .footer__list {
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .footer__link {
+    color: var(--color-on-dark);
+    font-size: var(--text-sm);
+    text-decoration: none;
+  }
+
+  .footer__link:hover {
+    color: var(--color-yellow);
+    text-decoration: underline;
+  }
+
+  .footer__address {
+    color: var(--color-on-dark-muted);
+    font-size: var(--text-sm);
+    max-width: 24ch;
+  }
+
+  .footer__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer__base {
+    margin-top: var(--space-section-tight);
+    padding-block: 1.5rem;
+    border-top: 1px solid rgb(247 245 246 / 0.15);
+    color: var(--color-on-dark-muted);
+    font-size: var(--text-xs);
+  }
+</style>

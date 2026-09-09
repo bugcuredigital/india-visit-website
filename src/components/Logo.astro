@@ -20,17 +20,19 @@ interface Props {
   height?: number;
   /** Home page suppresses the link — you are already there. */
   isHome?: boolean;
+  /** `on-dark` is for plum/burgundy bands; the badge itself is unchanged. */
+  variant?: 'default' | 'on-dark';
   class?: string;
 }
 
-const { height = 48, isHome = false, class: className = '' } = Astro.props;
+const { height = 48, isHome = false, variant = 'default', class: className = '' } = Astro.props;
 const width = Math.round(height * 1.695);
 
 const Tag = isHome ? 'span' : 'a';
 const linkProps = isHome ? {} : { href: '/', 'aria-label': 'India Visit — home' };
 ---
 
-<Tag {...linkProps} class:list={['logo', className]}>
+<Tag {...linkProps} class:list={['logo', `logo--${variant}`, className]}>
   <Picture
     src={logoBadge}
     formats={['webp']}
