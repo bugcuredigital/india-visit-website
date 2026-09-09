@@ -194,3 +194,95 @@ guards against third-party agency branding (see below).
    raster is wired and approved), the photo archive, verified trust numbers
    (#2), testimonials with consent (#3), pricing decision (#1), and the GSA
    disclosure wording plus schedule-publishing answer (#15).
+
+---
+
+## 2026-09-09 (later) — design direction locked, M3 component library
+
+**Branch:** `m3-components` → PR into `main` · PR #1 merged, production branch
+flipped to `main`, auto-deploys on.
+
+### Completed
+
+**Design direction patched into the docs first**, so the spec cannot drift from
+the ruling: surfaces (white is the page; off-white demoted to card fills, alt
+sections and form fields; plum bands rare and intentional — footer,
+How-It-Works, one homepage moment, ConvertBand), the typography scale, colour
+as punctuation, component conventions, the reference school
+(staralliance.com + airindia.com, translated not cloned) and the
+do-not-import list. CLAUDE.md brand section, PAGE_TEMPLATES global rules and
+PRD §9.2 all updated. The `_dummyDataFlags` JSON convention is documented.
+
+**`docs/CLIENT_REVIEW_SHEET.md` created early** (was scheduled for M5) because
+the Palace on Wheels port produced provisional content that needed recording
+immediately. 13 sections covering the GSA wording, the eight provisional day
+narratives, cabin descriptions, pace/idealFor/bestSeason, trust numbers,
+pricing, placeholder contact details, testimonials and photography.
+
+**Tokens rebuilt** on the ruling: white base, ink `#1A1523` rather than black,
+display sizes that go big with tight leading, 96–128px desktop section rhythm,
+hover-only shadows, card borders at plum 8%.
+
+**27 components** in the runbook's order, leaning on native semantics wherever
+that buys accessibility for free — `details`/`summary` for the day accordion,
+policies accordion and both nav menus, so keyboard operation and find-in-page
+work with no script at all.
+
+Notable decisions: the day accordion deliberately does **not** animate open,
+because that means animating height, which the motion spec forbids outright;
+the lotus is a single `currentColor` path serving crimson bullets, yellow
+footer marks and the favicon; cabin cards have **no price prop at all** and
+always render "Enquire for pricing"; the operator disclosure renders in the
+section header, never inside a collapsed panel.
+
+**Favicon swapped to the lotus** — the badge is 1.7:1, so a square icon had to
+letterbox it and the wordmark was illegible below 32px. The lotus reads at
+16px. Yellow on plum, which is legal per invariant #5.
+
+### Two real bugs the gate caught
+
+1. **Entrance animations hid content when JavaScript did not run.** The CSS
+   started `.fade-up` elements at opacity 0 and relied on the observer to
+   reveal them, so any scripting failure left whole sections permanently
+   invisible — silent content loss on a static-first, SEO-driven site. Rules
+   are now scoped to `html.js`, set in `<head>` before first paint. No JS means
+   no animation, never no content. `npm run check:nojs` asserts it (0/24
+   hidden with scripting disabled).
+2. **TestimonialCarousel orphaned its list items.** `role="group"` on the
+   `<ul>` overrides the implicit list role, so every `<li>` lost its list
+   parent in the accessibility tree. The scroll region and the list are now
+   separate elements; accessibility went 97 → 100.
+
+### Gate status — M3 gate: PASSED
+
+| Check | Result |
+|---|---|
+| Demo page renders all components | PASS — `/dev/components/`, real seed content, both variants |
+| Lighthouse mobile Performance | **100** |
+| Lighthouse Accessibility | **100** (after the carousel fix) |
+| Lighthouse Best Practices | **100** |
+| Keyboard pass | PASS — 80 tab stops, skip link first, focus ring on every stop, no trap |
+| Content visible without JS | PASS — 0/24 animated elements hidden |
+| No horizontal overflow 360–1440px | PASS |
+| Invariant audits | PASS — contact details, tariffs, third-party branding |
+
+Evidence in `reports/m3-gate-summary.json`. SEO 66 is the demo page's
+deliberate `noindex`; DOM size 50 is one page rendering all 27 components.
+
+Four checks are now scripted and re-runnable: `check:nojs`, `check:keyboard`,
+`check:responsive`, and `shot` (full-page screenshots at a realistic viewport
+— naive headless captures get this wrong because `svh` heroes size themselves
+against the window).
+
+### Exact next action
+
+1. **Client:** review the `m3-components` PR against the preview URL — this is
+   the first look at the design language in real components, ahead of M4's
+   formal design review.
+2. **Then, on approval:** begin **M4 — page templates**, starting with
+   `journeys/[slug].astro` rendering both variants from one template and
+   verified against the two seed journeys, then the homepage per T1.
+3. Still outstanding from the client: photo archive (every hero is a flagged
+   placeholder), verified trust numbers (#2), consented testimonials (#3),
+   pricing decision (#1), GSA disclosure wording and schedule-publishing
+   answer (#15), and the items in `docs/CLIENT_REVIEW_SHEET.md`.
