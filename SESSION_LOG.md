@@ -444,3 +444,122 @@ either way.
 4. Still outstanding from the client: photo archive, verified trust numbers
    (#2), consented testimonials (#3), pricing decision (#1), GSA disclosure
    wording and schedule publishing (#15), and `docs/CLIENT_REVIEW_SHEET.md`.
+
+---
+
+## 2026-09-09 — M4 part 1, revision 2: real photography and the placeholder overhaul
+
+**Branch:** `m4-templates` (PR #3, not yet merged). Homepage register **not
+approved** at first review; the client's diagnosis was that brand-gradient
+placeholders were making a photography-led design impossible to judge. That
+diagnosis was correct.
+
+### The six items
+
+1. **Temporary real photography.** 15 Unsplash images (licence permits
+   commercial use, no attribution required; Unsplash+ `premium_photo-*` files
+   deliberately excluded as a paid licence we do not hold), all named
+   `TEMP-PHOTO-*` so `grep -rn "TEMP-PHOTO" src/` finds every reference and the
+   audit counts them. Wired to the homepage hero, both seed journey heroes, the
+   luxury-rail banner, all nine locked destination tiles and the travel-guide
+   card. `npm run temp:photos` regenerates; provenance and per-file attribution
+   in `docs/brand/processed/TEMP-PHOTO-PROVENANCE.md`.
+   **The grade needed a second pass.** The first curve *lifted* saturation,
+   which amplified how differently the photographs were lit — turquoise ones
+   read tropical, sandstone ones read desert, and the strip looked like a stock
+   grid. Pulling colour slightly **down** while pushing the warm bias **up** is
+   what made an unrelated set read as one collection.
+   Heroes are also now cropped to a predictable 3:2 master. Three of the
+   sources were portrait, and a portrait photograph cover-cropped into a wide
+   hero loses its subject — the Kerala one became palms and a sun flare with no
+   boat in it, so that source was swapped for a landscape frame. It also halved
+   the bytes: we had been sending 1280px of image height to fill a 470px band.
+2. **Placeholder overhaul.** Neutral warm grey `#ECE9E6`, hairline border,
+   small centred label, and nothing else. `npm run brand:placeholders`.
+3. **Stripes removed sitewide.** They were baked into the placeholder graphics
+   rather than set in CSS, so replacing those removed them everywhere at once.
+   The hero gradient is confined to the text zone (bottom 58%).
+4. **Trust bar: four stats** — 20+ Years · N Curated Journeys · 9 Regions ·
+   24/7 On-Trip Support — restyled as full-width display numerals divided by
+   hairlines. The two middle stats are **derived from our own catalogue**, not
+   claimed, which is what makes them legitimate while PRD Open Question #2 is
+   still open: a number we compute cannot be an unverified claim and cannot go
+   stale. It reads "2 Curated Journeys" today and reaches 20 in M5 with nobody
+   editing anything.
+5. **Hero H1** desktop cap raised 4.5rem → 5.25rem (72px → 84px). The mobile
+   floor is unchanged, because 40px at 390px already matched the reference.
+6. **The reported blank sections were not a bug.** Both sections render fully —
+   all seven highlights and all four practical notes are present and visible,
+   verified by cropping the delivered JPEG at 1:1. The cause was **scale**: a
+   1440×7616 full-page capture viewed fit-to-screen is about 10% zoom, at which
+   15px body copy is sub-pixel and simply disappears. Practical notes were the
+   worst case at 15px in muted grey. Fixed anyway, because both sections were
+   genuinely too quiet: practical-notes body → `--text-base` in full ink,
+   labels → `--text-lg`, highlight text → `--text-lg`. Review captures now also
+   ship as 1:1 crops so copy is legible without zooming.
+
+### Two contrast failures the real photography exposed
+
+Both were invisible while every image was a flat gradient:
+
+- **The overlay header's white nav links** sat directly on a pale sunrise sky
+  and were unreadable. The transparent header now carries its own soft
+  top-down scrim, which disappears the moment it solidifies.
+- **The hero gradient was too timid.** Confined to the text zone as ruled, but
+  the first attempt left the H1 and the lede on bright sandstone and genuinely
+  hard to read. A label gradient has to actually work as a reading ground; it
+  is now ramped firmly, because an editor may upload any photograph.
+
+### LCP: real photography cost 0.7s, and 0.4s of it came back
+
+| Stage | Homepage LCP |
+|---|---|
+| Flat placeholder graphic | 1.7s |
+| Real photography, unoptimised | 2.4s |
+| After the two fixes below | **2.0s** |
+
+1. Hero AVIF quality 42 rather than Astro's default — the 960w candidate drops
+   from 76KB to 56KB with no visible difference at 1:1 (checked).
+2. A **768 rung** added to the hero srcset: a 412px phone at DPR 1.75 needs
+   721px and was being served the 960px candidate, a third more pixels than it
+   could display, on the LCP resource.
+
+FCP is 1.1s on all three pages, so the hero has a 0.9s budget in this
+instrument. **A decision is needed:** the 1.5s working target in invariant #3
+was set when heroes were flat graphics, and the code-side levers are now
+exhausted short of visibly degrading imagery on a photography-led premium site.
+2.0s is comfortably inside the 2.5s Core Web Vitals pass mark. Either the
+working target moves, or hero art direction changes.
+
+### Gate — revision 2
+
+| Check | / | Variant A | Variant B |
+|---|---|---|---|
+| Performance | 99 | 99 | 100 |
+| Accessibility | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / 2.0s | 1.1s / 2.0s | 1.1s / 1.7s |
+| TBT / CLS | 0ms / 0 | 0ms / 0 | 0ms / 0 |
+| Keyboard | PASS | PASS | PASS |
+| Visible without JS | 0/18 hidden | 0/12 | 0/22 |
+| No overflow or clipping | PASS | PASS | PASS |
+| Template Spec §6 | — | PASS | PASS |
+
+`astro check` clean; `audit:hardcoded` and `gate:m2` pass. Evidence in
+`reports/m4-gate-summary.json`.
+
+### Exact next action
+
+1. **Client:** re-review the homepage register on the PR #3 preview. **No
+   rollout to the remaining templates until that sign-off.**
+2. Rule on: the LCP working target vs real photography; the `/destinations/`
+   index route; and whether `docs/references/` should be committed as
+   optimised JPEGs.
+3. Note that filling all six featured-journey slots needs four more itineraries
+   ported from `docs/itineraries/` — genuine M5 content work, not done here
+   because M5 has not been authorised.
+4. Still outstanding from the client: the real photo archive (all 15 images are
+   TEMP-PHOTO), verified trust numbers (#2), consented testimonials (#3),
+   pricing decision (#1), GSA wording and schedule publishing (#15), and
+   `docs/CLIENT_REVIEW_SHEET.md`.

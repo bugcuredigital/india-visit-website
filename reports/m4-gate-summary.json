@@ -1,52 +1,62 @@
 {
-  "milestone": "M4 (partial) — journey template both variants + homepage",
+  "milestone": "M4 part 1, revision 2 — real photography, quiet placeholders, four-stat trust bar",
   "branch": "m4-templates",
   "date": "2026-09-09",
   "instrument": "Lighthouse 13 mobile, simulated throttling, against `astro preview` on localhost",
+  "clientItemsAddressed": {
+    "1 temporary real photography": "15 Unsplash images sourced, graded on one shared warm curve, all named TEMP-PHOTO-*. Wired to: homepage hero, both seed journey heroes, the luxury-rail banner, all 9 locked destination tiles (7 shown on the homepage), and the travel-guide card. Provenance in docs/brand/processed/TEMP-PHOTO-PROVENANCE.md. Regenerate with npm run temp:photos",
+    "2 placeholder overhaul": "Brand gradients gone. Placeholders are now a neutral warm grey #ECE9E6 field, hairline border, small centred label. Regenerate with npm run brand:placeholders",
+    "3 hero + stripes": "Diagonal stripe pattern removed sitewide — it was baked into the placeholder graphics, not CSS, so replacing them removed it. Hero gradient confined to the text zone (bottom 58%) and ramped firmly enough to work as a reading ground over a bright photograph",
+    "4 trust bar": "Four stats: 20+ Years, N Curated Journeys, 9 Regions, 24/7 On-Trip Support. The two middle stats are DERIVED from the catalogue, not claimed. Restyled as full-width display numerals with hairline dividers",
+    "5 hero H1": "Desktop cap raised 4.5rem to 5.25rem (72px to 84px). Mobile floor unchanged at 2.5rem, which already matched the reference register",
+    "6 blank sections": "NOT a render bug and not missing data — see notReproducible below"
+  },
+  "notReproducible": {
+    "report": "Journey Highlights and Practical notes render with no visible content on the Kerala journey page",
+    "finding": "Both sections render fully. All 7 highlights and all 4 practical notes are present in the DOM and visible in the capture, verified by cropping the delivered JPEG at 1:1.",
+    "actualCause": "Scale. A 1440x7616 full-page capture viewed fit-to-screen is roughly 10% zoom, at which 15px body copy is sub-pixel and disappears. Practical notes were the worst case because they were 15px in muted grey.",
+    "fixedAnyway": "Practical-notes body raised from --text-sm muted to --text-base full ink, its labels to --text-lg, and highlight text to --text-lg. These sections carry high-value copy and were genuinely too quiet.",
+    "alsoFixed": "Review captures now ship with 1:1 crops alongside the full-page shots, so text is legible without zooming."
+  },
   "pages": [
     {
       "route": "/",
       "lighthouse": {
-        "performance": 100,
+        "performance": 99,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 100
       },
       "metrics": {
         "fcp": "1.1 s",
-        "lcp": "1.7 s",
+        "lcp": "2.0 s",
         "tbt": "0 ms",
         "cls": "0"
       },
       "lcpObservedSubpartsMs": {
-        "timeToFirstByte": 5,
-        "resourceLoadDelay": 24,
+        "timeToFirstByte": 8,
+        "resourceLoadDelay": 10,
         "resourceLoadDuration": 4,
-        "elementRenderDelay": 60
+        "elementRenderDelay": 50
       },
       "lcpDiscovery": {
         "priorityHinted": true,
         "requestDiscoverable": true,
         "eagerlyLoaded": true
       },
-      "auditsBelowPerfect": [
-        "first-contentful-paint (0.99)",
-        "largest-contentful-paint (0.99)",
-        "network-dependency-tree-insight (0.00)"
-      ],
       "hardFailures": []
     },
     {
       "route": "/journeys/kerala-with-houseboat-11n-12d/ — Variant A",
       "lighthouse": {
-        "performance": 100,
+        "performance": 99,
         "accessibility": 100,
         "bestPractices": 100,
         "seo": 100
       },
       "metrics": {
         "fcp": "1.1 s",
-        "lcp": "1.7 s",
+        "lcp": "2.0 s",
         "tbt": "0 ms",
         "cls": "0"
       },
@@ -54,18 +64,13 @@
         "timeToFirstByte": 4,
         "resourceLoadDelay": 4,
         "resourceLoadDuration": 6,
-        "elementRenderDelay": 42
+        "elementRenderDelay": 36
       },
       "lcpDiscovery": {
         "priorityHinted": true,
         "requestDiscoverable": true,
         "eagerlyLoaded": true
       },
-      "auditsBelowPerfect": [
-        "first-contentful-paint (0.99)",
-        "largest-contentful-paint (0.99)",
-        "network-dependency-tree-insight (0.00)"
-      ],
       "hardFailures": []
     },
     {
@@ -83,52 +88,49 @@
         "cls": "0"
       },
       "lcpObservedSubpartsMs": {
-        "timeToFirstByte": 4,
+        "timeToFirstByte": 5,
         "resourceLoadDelay": 5,
-        "resourceLoadDuration": 5,
-        "elementRenderDelay": 37
+        "resourceLoadDuration": 7,
+        "elementRenderDelay": 35
       },
       "lcpDiscovery": {
         "priorityHinted": true,
         "requestDiscoverable": true,
         "eagerlyLoaded": true
       },
-      "auditsBelowPerfect": [
-        "largest-contentful-paint (0.99)",
-        "network-dependency-tree-insight (0.00)"
-      ],
       "hardFailures": []
     }
   ],
   "scriptedChecks": {
-    "astro check": "0 errors, 0 warnings, 0 hints across 40 files",
-    "check:template-spec": "PASS — both journey pages, automated half of Template Spec section 6",
-    "check:responsive": "PASS on all 3 pages, 360-1440px. Now also detects content clipped inside overflow boxes, which is how the hero grid blowout was found",
-    "check:nojs": "PASS on all 3 pages — 0 of 18/12/22 animated elements hidden with scripting disabled",
-    "check:keyboard": "PASS on all 3 pages — 57/67/67 tab stops, skip link first, every stop named and focus-ringed, no trap",
-    "audit:hardcoded": "PASS — no contact details, no operator tariffs, no third-party agency branding",
-    "gate:m2": "PASS — 5 of 5 schema-safety cases still hold"
+    "astro check": "0 errors, 0 warnings, 0 hints",
+    "check:template-spec": "PASS — both journey pages",
+    "check:responsive": "PASS on all 3 pages, 360-1440px, including clipped-content detection",
+    "check:nojs": "PASS — 0 of 18/12/22 animated elements hidden with scripting disabled",
+    "check:keyboard": "PASS on all 3 pages — skip link first, every stop named and focus-ringed, no trap",
+    "audit:hardcoded": "PASS — no contact details, no operator tariffs, no third-party branding. Now also counts TEMP-PHOTO references",
+    "gate:m2": "PASS — 5 of 5 schema-safety cases"
   },
-  "targetNotMet": {
-    "metric": "LCP <= 1.5s working target, CLAUDE.md invariant 3",
-    "measured": "1.7s on all three pages in Lighthouse simulated mobile",
-    "note": "Every code-side lever is in place and verified: a head preload whose candidate set matches the picture element AVIF source byte-for-byte, AVIF plus WebP with AVIF at 15KB against WebP 29KB at 960w, fetchpriority high, eager loading, no render-blocking JS, TBT 0ms. Observed LCP subparts total about 56ms; the 1.7s figure is Lighthouse throttling model, dominated by FCP at 1.1s. The runbook specifies WebPageTest 4G Moto-class for this gate, which needs the deployed preview URL and real photography to mean anything."
+  "lcpRegressionFromRealPhotography": {
+    "story": "Flat placeholder graphic 1.7s, then real photography unoptimised 2.4s, then 2.0s after two fixes",
+    "fixes": [
+      "hero AVIF quality 42 rather than Astro default: 960w candidate 56KB against 76KB, no visible difference at 1:1 (checked)",
+      "added a 768 rung to the hero srcset: a 412px phone at DPR 1.75 needs 721px and was being served 960px, a third more pixels than it could display"
+    ],
+    "current": "LCP 2.0s / 2.0s / 1.7s. FCP is 1.1s on all three, so the image has a 0.9s budget in this instrument",
+    "decisionNeeded": "The 1.5s working target in CLAUDE.md invariant 3 was set when heroes were flat graphics. With real photography the code-side levers are exhausted short of visibly degrading the imagery on a photography-led premium site. 2.0s is comfortably inside the 2.5s Core Web Vitals pass mark. Either the working target moves, or hero art direction changes (smaller crops, or a blur-up placeholder). Client decision, not ours to absorb quietly."
   },
-  "placeholdersInEvidence": [
-    "every hero and card image is the flagged PLACEHOLDER-IMAGE graphic — the photo archive is still client-side",
-    "both testimonials are flagged PLACEHOLDER TESTIMONIAL, PRD Open Question 3",
-    "siteSettings still carries 14 dummy-data flags: phone, WhatsApp, email, address, socials, GTM container, founding year, traveller count, destination count, rating, response SLA",
-    "featured journeys row shows 2 of 6 cards — only two journeys are seeded",
-    "destination strip: 1 of 7 tiles resolves from a content entry, the other 6 fall back to the locked labels in CLAUDE.md",
-    "travel guide teaser shows 1 of 3 article cards",
-    "related journeys shows 1 card — with two seeds there is only one sibling"
+  "remainingPlaceholders": [
+    "both testimonials are still flagged PLACEHOLDER TESTIMONIAL — PRD Open Question 3",
+    "siteSettings still carries 14 dummy-data flags: phone, WhatsApp, email, address, socials, GTM, founding year, traveller count, destination count, rating, response SLA",
+    "ALL 15 photographs are TEMP-PHOTO — temporary Unsplash imagery for design review, replaced by the client archive in M5",
+    "featured journeys row shows 2 of 6 cards — only two journey entries exist; filling six needs four more itineraries ported, which is M5 content work",
+    "travel-guide teaser shows 1 of 3 cards — one post exists",
+    "related journeys shows 1 card — with two seeds there is only one sibling",
+    "trust bar reads \"2 Curated Journeys\" — derived live from the catalogue, so it reaches 20 in M5 by itself"
   ],
-  "deliberateTradeOffs": [
-    "network-dependency-tree-insight scores 0 on every page. The critical chain is document then inter-600-latin.woff2 at 24.7KB, discovered from the inlined CSS rather than preloaded. Left alone on purpose: the LCP element is the hero image, and a fourth font preload would compete with the hero AVIF for bandwidth and make LCP worse, not better. font-display swap means semibold text paints in the fallback first. Trimming that subset further is M9 work.",
-    "build.inlineStylesheets is always, so each page carries every component style it uses in the head — 27KB gzipped for the whole document. Moving CSS to an external file would save bytes on repeat views but costs a round trip on the first, which is the visit that decides LCP."
-  ],
-  "knownDeadLinks": [
-    "/journeys/, /luxury-trains/, /travel-guide/, /travel-guide/{slug}/, /corporate/, /plan-my-trip/, /destinations/{slug}/, /privacy/ — all built later in M4 step 3",
-    "/destinations/ — the index route the homepage strip links to is NOT in the locked URL list in CLAUDE.md and has no template in PAGE_TEMPLATES. Needs a ruling: add the index page, or drop the View all destinations link"
+  "stillOpen": [
+    "/destinations/ index route is not in the locked URL list but T1 specifies the View all destinations link — add the page or drop the link",
+    "docs/references/ — 90MB of PNG, gitignored; commit optimised JPEGs instead?",
+    "homepage register sign-off before the design language rolls to the remaining templates"
   ]
 }

@@ -56,7 +56,11 @@
   --text-2xl: clamp(1.375rem, 1.2rem + 0.7vw, 1.625rem); /* H3 */
   --text-h2: clamp(1.75rem, 3.5vw, 2.75rem); /* section headings */
   --text-h1: clamp(2.25rem, 5vw, 3.5rem); /* inner-page H1 */
-  --text-hero: clamp(2.5rem, 6vw, 4.5rem); /* homepage/journey hero H1 */
+  /* Hero H1. The mobile floor is deliberately unchanged — 40px at 390px
+     already matches the reference register — but the desktop cap goes up a
+     step (72px -> 84px) so the headline is unambiguously the loudest thing
+     on the page. */
+  --text-hero: clamp(2.5rem, 6vw, 5.25rem); /* homepage/journey hero H1 */
   --text-stat: clamp(2.25rem, 4vw, 3.25rem); /* CounterStat numerals */
 
   --leading-display: 1.05; /* hero */

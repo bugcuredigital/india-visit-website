@@ -43,13 +43,13 @@ import Lotus from '../components/Lotus.astro';
 
 import { getSiteSettings, verifiedTrustStats } from '../lib/site-settings';
 import { heroPreload } from '../lib/hero-image';
-import { DESTINATION_STRIP } from '../lib/destinations-strip';
+import { DESTINATION_STRIP, REGION_COUNT } from '../lib/destinations-strip';
 
-import homeHero from '../assets/placeholders/journey-hero.jpg';
-import destinationPlaceholder from '../assets/placeholders/destination-hero.jpg';
+/* TEMP-PHOTO — temporary Unsplash image for design review only; the client's
+   archive replaces it in M5. See docs/brand/processed/TEMP-PHOTO-PROVENANCE.md */
+import homeHero from '../assets/temp-photos/TEMP-PHOTO-home-hero-udaipur.jpg';
 
 const settings = await getSiteSettings();
-const stats = verifiedTrustStats(settings);
 const heroLink = await heroPreload(homeHero);
 
 /* ------------------------------------------------------- featured journeys --
@@ -58,6 +58,15 @@ const heroLink = await heroPreload(homeHero);
    domestic, international and one train — that mix becomes real in M5, and
    sorting trains last is what keeps the upsell at the end of the row. */
 const journeys = await getCollection('journeys', ({ data }) => !data.draft);
+
+/* Two of the four trust stats are counted, not claimed: the published journey
+   count and the length of the locked destination list. Today that reads
+   "2 Curated Journeys"; it reaches 20 in M5 with nobody editing anything. */
+const stats = verifiedTrustStats(settings, {
+  journeyCount: journeys.length,
+  regionCount: REGION_COUNT,
+});
+
 const featuredJourneys = [...journeys]
   .sort((a, b) => {
     const byFeatured = Number(b.data.featured) - Number(a.data.featured);
@@ -75,8 +84,8 @@ const destinationTiles = await Promise.all(
     return {
       slug: tile.slug,
       label: entry?.data.shortLabel ?? tile.fallbackLabel,
-      image: entry?.data.heroImage ?? destinationPlaceholder,
-      alt: entry?.data.heroImageAlt ?? `PLACEHOLDER-IMAGE — ${tile.fallbackLabel}`,
+      image: entry?.data.heroImage ?? tile.fallbackImage,
+      alt: entry?.data.heroImageAlt ?? tile.fallbackAlt,
       hasEntry: Boolean(entry),
     };
   }),
@@ -167,7 +176,7 @@ const WHY_US = [
   <!-- 1 · Hero ---------------------------------------------------------- -->
   <Hero
     image={homeHero}
-    alt="PLACEHOLDER-IMAGE awaiting the client photo archive — homepage hero"
+    alt="The City Palace at Udaipur catching the last of the light across Lake Pichola"
     height="full"
     kenBurns={true}
   >
@@ -184,7 +193,10 @@ const WHY_US = [
     </p>
   </Hero>
 
-  <!-- 2 · Trust bar ----------------------------------------------------- -->
+  <!-- 2 · Trust bar -----------------------------------------------------
+       Four stats, two of them counted from our own catalogue rather than
+       claimed — see verifiedTrustStats. No association logo row: T1 says omit
+       it entirely when none are supplied, and none are. -->
   <CounterStat stats={stats} surface="offwhite" />
 
   <!-- 3 · Featured journeys --------------------------------------------- -->

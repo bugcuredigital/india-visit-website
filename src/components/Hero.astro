@@ -12,7 +12,7 @@
  * If you find yourself adding opacity or a transform to the <img>, stop.
  */
 import { Picture } from 'astro:assets';
-import { HERO_WIDTHS, HERO_SIZES, HERO_FORMATS } from '../lib/hero-image';
+import { HERO_WIDTHS, HERO_SIZES, HERO_FORMATS, HERO_QUALITY } from '../lib/hero-image';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
@@ -53,6 +53,7 @@ const {
       sizes={HERO_SIZES}
       formats={[...HERO_FORMATS]}
       fallbackFormat="webp"
+      quality={HERO_QUALITY}
       loading="eager"
       decoding="sync"
       fetchpriority="high"
@@ -124,12 +125,17 @@ const {
     inset-inline: 0;
     bottom: 0;
     z-index: -1;
-    /* Only the lower text zone is tinted — roughly the bottom 62%. */
-    height: 62%;
+    /* The text zone only — the top ~42% of the photograph is untouched. The
+       ramp is deliberately firm rather than subtle: the first attempt at 52%
+       with a gentle curve left the H1 and the lede sitting on bright sandstone
+       and genuinely hard to read. A label gradient has to actually work as a
+       reading ground. */
+    height: 58%;
     background-image: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-plum) 92%, transparent) 0%,
-      color-mix(in srgb, var(--color-plum) 62%, transparent) 42%,
+      color-mix(in srgb, var(--color-plum) 96%, transparent) 0%,
+      color-mix(in srgb, var(--color-plum) 88%, transparent) 45%,
+      color-mix(in srgb, var(--color-plum) 50%, transparent) 76%,
       transparent 100%
     );
   }

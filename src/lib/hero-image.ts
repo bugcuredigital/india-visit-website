@@ -20,8 +20,14 @@
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
-/** Heroes are full-bleed, so the top end is deliberately large. */
-export const HERO_WIDTHS = [640, 960, 1280, 1920, 2400];
+/**
+ * Heroes are full-bleed, so the top end is deliberately large. The 768 rung
+ * exists for a specific reason: a 412px phone at DPR 1.75 needs 721px, and
+ * with only 640 and 960 on offer the browser must take 960 — a third more
+ * pixels than it can display, on the LCP resource. Rungs are cheap; wasted
+ * bytes on the largest-contentful paint are not.
+ */
+export const HERO_WIDTHS = [640, 768, 960, 1280, 1920, 2400];
 
 /** Heroes always span the viewport. */
 export const HERO_SIZES = '100vw';
@@ -32,6 +38,23 @@ export const HERO_SIZES = '100vw';
  * that has one; WebP is the fallback for Safari before 16.4.
  */
 export const HERO_FORMATS = ['avif', 'webp'] as const;
+
+/**
+ * Hero encode quality. Lower than you might reach for by default, and
+ * deliberately so: the hero is the LCP resource on every page that has one, and
+ * with real photography it went from a 15KB flat graphic to a 75KB photograph —
+ * which moved LCP from 1.7s to 2.4s on its own. AVIF holds detail well down
+ * here: 42 lands the 960w candidate at 56KB against 76KB at Astro's default,
+ * a 26% saving on the LCP resource, and the difference is not visible at any
+ * size a hero is actually displayed. 35 would save more but starts to soften
+ * fine architectural detail, which is the one thing these photographs are for.
+ *
+ * It MUST be the same value on both sides. `<Picture>` and the head preload
+ * both read it from here, because a quality mismatch would generate two
+ * different files and the preload would become a second download rather than a
+ * head start.
+ */
+export const HERO_QUALITY = 42;
 
 export interface HeroPreload {
   href: string;
@@ -57,6 +80,7 @@ export async function heroPreload(
     widths,
     sizes: HERO_SIZES,
     format: 'avif',
+    quality: HERO_QUALITY,
   });
 
   return {

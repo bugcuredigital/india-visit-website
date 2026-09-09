@@ -5,8 +5,9 @@ tagline: Hill tea, tiger country and a network of canals that sets its own pace.
 region: india
 order: 2
 
-heroImage: ../../assets/placeholders/destination-hero.jpg
-heroImageAlt: PLACEHOLDER-IMAGE awaiting the client photo archive — Kerala backwaters
+# TEMP-PHOTO — temporary Unsplash image for design review only (replaced in M5)
+heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-kerala.jpg
+heroImageAlt: A traditional houseboat moored on a palm-lined backwater channel near Alappuzha
 
 practicalNotes:
   - icon: calendar

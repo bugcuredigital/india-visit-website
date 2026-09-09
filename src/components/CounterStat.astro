@@ -80,25 +80,79 @@ const bandClass =
 </script>
 
 <style>
+  /* Full-width row of big display numerals divided by hairlines — the bar
+     should read as one confident band, not four cards. Two columns on a
+     phone, four across from 48rem. */
   .stats {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
     margin: 0;
+  }
+
+  .stat {
+    padding: 0.75rem 1.25rem 0.9rem;
+  }
+
+  /* Hairlines BETWEEN cells only, never on the outer edges. Drawn with
+     borders on the cell rather than a separate element so they cannot fall
+     out of step with the grid when it reflows. */
+  .stat:nth-child(odd) {
+    border-inline-end: 1px solid var(--color-hairline);
+    padding-inline-start: 0;
+  }
+
+  .stat:nth-child(even) {
+    padding-inline-end: 0;
+  }
+
+  .stat:nth-child(n + 3) {
+    border-block-start: 1px solid var(--color-hairline);
+    margin-block-start: 0.75rem;
+    padding-block-start: 1.5rem;
   }
 
   @media (min-width: 48rem) {
     .stats {
-      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+
+    .stat {
+      padding-block: 0;
+      border-inline-end: 1px solid var(--color-hairline);
+    }
+
+    .stat:first-child {
+      padding-inline-start: 0;
+    }
+
+    /* Last cell carries no divider, and nothing carries a top rule once the
+       row is a single line. */
+    .stat:last-child {
+      border-inline-end: 0;
+      padding-inline-end: 0;
+    }
+
+    .stat:nth-child(n + 3) {
+      border-block-start: 0;
+      margin-block-start: 0;
+      padding-block-start: 0;
+    }
+  }
+
+  .on-dark .stat,
+  .on-dark .stat:nth-child(odd) {
+    border-color: color-mix(in srgb, var(--color-on-dark) 22%, transparent);
   }
 
   .stat__value {
     font-family: var(--font-display);
-    font-size: var(--text-stat);
+    /* A step up from --text-stat: these numerals are meant to be the second
+       loudest thing on the homepage, after the hero H1. */
+    font-size: clamp(2.5rem, 4.5vw, 3.75rem);
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     color: var(--color-ink);
     /* Reserve the line box so the count-up cannot shift layout (CLS). */
     font-variant-numeric: tabular-nums;
@@ -109,9 +163,12 @@ const bandClass =
   }
 
   .stat__label {
-    margin: 0.6rem 0 0;
+    margin: 0.5rem 0 0;
     font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.01em;
     color: var(--color-ink-muted);
+    text-wrap: balance;
   }
 
   .on-dark .stat__label {

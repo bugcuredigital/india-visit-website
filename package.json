@@ -22,7 +22,9 @@
     "check:nojs": "node scripts/check-nojs.mjs",
     "shot": "node scripts/screenshot.mjs",
     "check:keyboard": "node scripts/check-keyboard.mjs",
-    "check:template-spec": "node scripts/check-template-spec.mjs"
+    "check:template-spec": "node scripts/check-template-spec.mjs",
+    "temp:photos": "node scripts/brand/fetch-temp-photos.mjs",
+    "brand:placeholders": "node scripts/brand/make-placeholders.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",

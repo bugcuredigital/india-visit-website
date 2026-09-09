@@ -208,6 +208,15 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
     background-color: transparent;
     border-bottom-color: transparent;
     color: var(--color-white);
+    /* Legibility scrim. Without it the white links sit on whatever the top of
+       the photograph happens to be — a pale sunrise sky in the homepage hero,
+       where they vanished. Soft enough to read as depth, not as a bar. */
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-plum) 55%, transparent),
+      color-mix(in srgb, var(--color-plum) 22%, transparent) 60%,
+      transparent
+    );
   }
 
   .header--overlay :is(.header__link, .header__icon, .header__summary) {
@@ -216,6 +225,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
 
   .header--overlay.is-solid {
     background-color: var(--color-white);
+    background-image: none;
     border-bottom-color: var(--color-hairline);
     color: var(--color-ink);
   }
