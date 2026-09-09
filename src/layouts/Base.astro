@@ -8,7 +8,7 @@
  * View Transitions (M4). Those slot in without touching this contract.
  */
 import '../styles/global.css';
-import { siteSettings } from '../lib/site-settings';
+import { getSiteSettings } from '../lib/site-settings';
 
 // Vite hashes these, so the preload href and the @font-face src resolve to
 // the same immutable, cache-forever URL.
@@ -33,6 +33,8 @@ const {
   noindex = false,
 } = Astro.props;
 
+const siteSettings = await getSiteSettings();
+
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 
@@ -40,8 +42,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
  * Global organisation schema. Only emits the fields that hold real values —
  * dummy contact details and unverified trust numbers must never be published
  * as structured data (they would be machine-readable claims).
- * The `DUMMY DATA` flags in site-settings.ts are the tripwire: while they are
- * still there, telephone/email/address stay out of the graph.
+ * The collection's `_dummyDataFlags` array is the tripwire: while it is
+ * non-empty, telephone/email/address stay out of the graph.
  */
 const orgSchema = {
   '@context': 'https://schema.org',

@@ -1,0 +1,397 @@
+/**
+ * Content collections — Zod schemas for all five collections.
+ * ---------------------------------------------------------------------------
+ * CLAUDE.md invariant #8: a malformed CMS entry must fail the build LOUDLY.
+ * Never render a broken page silently. That is why almost nothing here is
+ * `.optional()` without a reason, and why Variant B's extra modules are
+ * enforced structurally rather than by editor discipline.
+ *
+ * Field naming is camelCase everywhere (CLAUDE.md). The Template Spec §4
+ * listing is the field inventory; its snake_case is illustrative only.
+ *
+ * `tina/config.ts` must mirror these field-for-field in M7.
+ */
+import { defineCollection, reference, z } from 'astro:content';
+import { glob, file } from 'astro/loaders';
+
+/* ---------------------------------------------------------------- shared -- */
+
+const PACE = ['relaxed', 'moderate', 'active'] as const;
+const IDEAL_FOR = ['couples', 'families', 'seniors', 'first-timers', 'solo', 'groups'] as const;
+const TRANSPORT = ['flight', 'overnight-train', 'train', 'drive', 'boat', 'walk'] as const;
+
+/** Per-day transfer chip. The Western & Southern India doc mixes flights and
+ *  overnight trains mid-trip, so this is per-day, never per-trip. */
+const transportSchema = z.object({
+  mode: z.enum(TRANSPORT),
+  /** Human detail shown on the chip, e.g. "Drive 172 km" or "Overnight train". */
+  detail: z.string().min(1),
+});
+
+const faqSchema = z
+  .array(
+    z.object({
+      question: z.string().min(1),
+      answer: z.string().min(1),
+    }),
+  )
+  .min(1);
+
+const seoSchema = z.object({
+  metaTitle: z.string().min(1).max(70),
+  metaDescription: z.string().min(1).max(180),
+  /** Falls back to the hero image, then to the sitewide brand card. */
+  ogImage: z.string().optional(),
+});
+
+/* -------------------------------------------------------------- journeys -- */
+
+/**
+ * Fields common to both variants. Everything the Template Spec marks ● is
+ * required here, which is what guarantees all 20 pages look like one another.
+ */
+const journeyBase = (image: () => z.ZodTypeAny) => ({
+  title: z.string().min(1),
+  /** "Custom Journey" (A) / "Luxury Train — Fixed Departures" (B). */
+  tripTypeTag: z.string().min(1),
+
+  heroImage: image(),
+  heroImageAlt: z.string().min(1),
+  gallery: z.array(image()).default([]),
+
+  nights: z.number().int().nonnegative(),
+  days: z.number().int().positive(),
+  routeCities: z.array(z.string().min(1)).min(2),
+  startCity: z.string().min(1),
+  endCity: z.string().min(1),
+
+  signatureFeature: z.string().min(1).optional(),
+
+  /** Editorial fields the client assigns per trip (PRD Open Question #14).
+   *  Required — they drive the Quick Facts bar, which is a required section. */
+  pace: z.enum(PACE),
+  idealFor: z.array(z.enum(IDEAL_FOR)).min(1),
+  bestSeason: z.string().min(1),
+
+  /** S4 — verb-led highlight, rendered with the lotus glyph. */
+  highlights: z
+    .array(
+      z.object({
+        /** The bold verb-led lead, e.g. "Cruise". */
+        lead: z.string().min(1),
+        text: z.string().min(1),
+      }),
+    )
+    .min(5)
+    .max(8),
+
+  /** S5 — the scannable table; each row anchors to its day in S6. */
+  glanceRows: z
+    .array(
+      z.object({
+        dayNo: z.number().int().positive(),
+        destination: z.string().min(1),
+        signatureExperience: z.string().min(1),
+      }),
+    )
+    .min(1),
+
+  /** S6 — day-by-day accordion. */
+  itineraryDays: z
+    .array(
+      z.object({
+        dayNo: z.number().int().positive(),
+        title: z.string().min(1),
+        transport: transportSchema.optional(),
+        narrative: z.string().min(1),
+        /** "Overnight in Munnar" — always the last line of a day. */
+        overnight: z.string().min(1),
+        image: image().optional(),
+        /** Set when the copy still needs the client's sign-off (M5). */
+        provisional: z.boolean().default(false),
+      }),
+    )
+    .min(1),
+
+  mapGraphic: image().optional(),
+
+  /** S13 — icon-led practical grid. High SEO value. */
+  practicalNotes: z
+    .array(
+      z.object({
+        icon: z.string().min(1),
+        label: z.string().min(1),
+        text: z.string().min(1),
+      }),
+    )
+    .min(1),
+
+  /** S14 — has a sensible default in the template, overridable per journey. */
+  customiseCopy: z.string().optional(),
+
+  /** S15 — editorially assigned, 3 cards. Empty until siblings exist. */
+  related: z.array(reference('journeys')).max(3).default([]),
+
+  /** Gated PDF download; generated in M5, so optional until then. */
+  pdfFile: z.string().optional(),
+
+  /** Optional "from" price in INR. Rendered ONLY when siteSettings.showPrices
+   *  is true (PRD Open Question #1). Train pages never show pricing at all. */
+  priceFrom: z.number().int().positive().optional(),
+
+  featured: z.boolean().default(false),
+  draft: z.boolean().default(false),
+  seo: seoSchema,
+});
+
+const inclusionsSchema = z.array(z.string().min(1)).min(1);
+
+/**
+ * Variant A — Custom Journey. Inclusions stay optional until the client
+ * decides between per-trip lists and a standardised block (Open Question #13).
+ */
+const journeyVariantA = (image: () => z.ZodTypeAny) =>
+  z.object({
+    ...journeyBase(image),
+    variant: z.literal('A'),
+    inclusions: inclusionsSchema.optional(),
+    exclusions: inclusionsSchema.optional(),
+  });
+
+/**
+ * Variant B — Fixed-Departure Luxury Train. The five extra modules are
+ * REQUIRED, so a train page physically cannot ship without its operator
+ * disclosure, cancellation policies or booking process.
+ *
+ * Note what is absent: any tariff field. Operator tariffs are never published
+ * (CLAUDE.md invariant #6, permanent). There is deliberately nowhere to put a
+ * price on a train page, and `priceFrom` is rejected below.
+ */
+const journeyVariantB = (image: () => z.ZodTypeAny) =>
+  z
+    .object({
+      ...journeyBase(image),
+      variant: z.literal('B'),
+
+      /** Verbatim from the operator — required on B. */
+      inclusions: inclusionsSchema,
+      exclusions: inclusionsSchema,
+
+      cabinCategories: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            facilities: z.array(z.string().min(1)).min(1),
+            /** Top tier is visually flagged. */
+            flagship: z.boolean().default(false),
+          }),
+        )
+        .min(2),
+
+      /** Season-labelled; changes yearly, so it is a plain editable string.
+       *  Stays generic until the schedule half of Open Question #15 resolves. */
+      departureInfo: z.string().min(1),
+      departureSeasonLabel: z.string().min(1),
+
+      /** The 6-step confirmation process, as a numbered stepper. */
+      bookingSteps: z
+        .array(
+          z.object({
+            step: z.number().int().positive(),
+            title: z.string().min(1),
+            detail: z.string().min(1),
+          }),
+        )
+        .min(3),
+
+      policies: z
+        .array(
+          z.object({
+            heading: z.string().min(1),
+            body: z.string().min(1),
+          }),
+        )
+        .min(1),
+
+      /** "India Visit is an authorised booking agent (GSA); the train is
+       *  operated by RTDC. Operator terms apply." Never buried. */
+      operatorDisclosure: z.string().min(1),
+      operatorName: z.string().min(1),
+      /** Every B page links here (invariant #6). */
+      bookingTermsUrl: z.string().default('/booking-terms/'),
+    });
+
+const journeys = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/journeys' }),
+  schema: ({ image }) =>
+    z
+      .discriminatedUnion('variant', [journeyVariantA(image), journeyVariantB(image)])
+      /**
+       * Cross-field rules live here rather than inside a variant, because
+       * discriminatedUnion members must stay plain objects.
+       *
+       * Refinements are used deliberately: Astro's error formatter rewrites
+       * the messages attached to type-level checks (a rejected `priceFrom`
+       * would print "Expected type undefined, received number"), but it prints
+       * a refinement's message verbatim. Invariant #8 asks for failures that
+       * are LOUD, which means the message has to explain itself to whoever is
+       * editing content — not just name the field.
+       */
+      .superRefine((data, ctx) => {
+        if (data.variant === 'B' && data.priceFrom !== undefined) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['priceFrom'],
+            message:
+              'Operator tariffs are never published (CLAUDE.md invariant #6). Remove priceFrom from this luxury-train page — cabin cards render "Enquire for pricing".',
+          });
+        }
+        if (data.glanceRows.length !== data.itineraryDays.length) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['glanceRows'],
+            message:
+              `The at-a-glance table has ${data.glanceRows.length} rows but the itinerary has ${data.itineraryDays.length} days. Each glance row anchors to its day (Template Spec S5), so the two must match.`,
+          });
+        }
+      }),
+});
+
+/* ---------------------------------------------------------- destinations -- */
+
+const destinations = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/destinations' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string().min(1),
+      /** One evocative line under the H1. */
+      tagline: z.string().min(1),
+      heroImage: image(),
+      heroImageAlt: z.string().min(1),
+      /** Short label for the homepage tile strip (7 curated tiles). */
+      shortLabel: z.string().min(1),
+      region: z.enum(['india', 'beyond-india']),
+      practicalNotes: z
+        .array(
+          z.object({
+            icon: z.string().min(1),
+            label: z.string().min(1),
+            text: z.string().min(1),
+          }),
+        )
+        .min(1),
+      /** SEO workhorse — 4 to 6 questions. */
+      faq: faqSchema.max(8),
+      /** Auto-listed by tag; this is the manual ordering override. */
+      relatedJourneys: z.array(reference('journeys')).default([]),
+      order: z.number().int().default(99),
+      seo: seoSchema,
+    }),
+});
+
+/* ----------------------------------------------------------------- posts -- */
+
+const posts = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().min(1),
+      category: z.enum(['planning-visas', 'best-time', 'guides']),
+      heroImage: image(),
+      heroImageAlt: z.string().min(1),
+      excerpt: z.string().min(1).max(300),
+      publishDate: z.coerce.date(),
+      /** Freshness signal for search. */
+      updatedDate: z.coerce.date().optional(),
+      author: z.string().default('India Visit'),
+      /** Every article's conversion job: at least one embedded journey card. */
+      embeddedJourneys: z.array(reference('journeys')).min(1),
+      faq: faqSchema.optional(),
+      featured: z.boolean().default(false),
+      draft: z.boolean().default(false),
+      seo: seoSchema,
+    }),
+});
+
+/* ---------------------------------------------------------- testimonials -- */
+
+const testimonials = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/testimonials' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string().min(1),
+      /** City or country — foreign and Indian mix matters for the personas. */
+      origin: z.string().min(1),
+      tripRef: reference('journeys').optional(),
+      tripLabel: z.string().min(1),
+      quote: z.string().min(1),
+      photo: image().optional(),
+      /**
+       * MUST be true to render. Never publish a testimonial without recorded
+       * consent — the component filters on this and the schema refuses false,
+       * so an un-consented entry fails the build rather than leaking.
+       */
+      consentConfirmed: z.boolean().refine((v) => v === true, {
+        message:
+          'consentConfirmed must be true. A testimonial without recorded consent must never be published — get written consent or delete the entry.',
+      }),
+      category: z.enum(['india', 'international', 'trains', 'corporate']),
+      featured: z.boolean().default(false),
+    }),
+});
+
+/* --------------------------------------------------------- siteSettings -- */
+
+/**
+ * The singleton. Everything user-editable that is not page content lives here
+ * (CLAUDE.md invariant #1). Trust figures are NULLABLE on purpose: null means
+ * the stat is not rendered, so an unverified number is structurally impossible
+ * to publish (PRD Open Question #2).
+ */
+const siteSettings = defineCollection({
+  loader: file('./src/content/siteSettings/settings.json'),
+  schema: z.object({
+    siteName: z.string().min(1),
+    tagline: z.string().min(1),
+
+    phone: z.string().min(1),
+    phoneHref: z.string().startsWith('tel:'),
+    whatsappNumber: z.string().min(1),
+    whatsappDefaultMessage: z.string().min(1),
+    email: z.string().email(),
+    address: z.string().min(1),
+
+    socials: z.object({
+      instagram: z.string().url().nullable(),
+      facebook: z.string().url().nullable(),
+      youtube: z.string().url().nullable(),
+      linkedin: z.string().url().nullable(),
+    }),
+
+    gtmContainerId: z.string().regex(/^GTM-[A-Z0-9]+$/).nullable(),
+    metaPixelId: z.string().regex(/^\d+$/).nullable(),
+
+    foundingYear: z.number().int().min(1900).max(2100).nullable(),
+    travellerCount: z.number().int().positive().nullable(),
+    destinationCount: z.number().int().positive().nullable(),
+    aggregateRating: z.number().min(1).max(5).nullable(),
+    yearsExperience: z.number().int().positive(),
+    supportPromise: z.string().min(1),
+
+    /** Global gate for every priceFrom on the site. Default off. */
+    showPrices: z.boolean(),
+
+    responseSla: z.string().nullable(),
+
+    /**
+     * Greppable inventory of fields still holding placeholder values.
+     * JSON cannot carry comments, so this array is where the `DUMMY DATA`
+     * flags live — `grep -rn "DUMMY DATA" src/content/` finds them, and
+     * `npm run audit:hardcoded` fails the launch check while it is non-empty.
+     * Empty this array only when every listed field holds a real value.
+     */
+    _dummyDataFlags: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = { journeys, destinations, posts, testimonials, siteSettings };

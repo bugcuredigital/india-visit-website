@@ -1,0 +1,51 @@
+{
+  "settings": {
+    "siteName": "India Visit",
+    "tagline": "Curated journeys across India and beyond",
+
+    "phone": "+91 0000000000",
+    "phoneHref": "tel:+910000000000",
+    "whatsappNumber": "+91 0000000000",
+    "whatsappDefaultMessage": "Hello India Visit, I'd like help planning a trip.",
+    "email": "hello@example.com",
+    "address": "Dummy Address, New Delhi",
+
+    "socials": {
+      "instagram": null,
+      "facebook": null,
+      "youtube": null,
+      "linkedin": null
+    },
+
+    "gtmContainerId": null,
+    "metaPixelId": null,
+
+    "foundingYear": null,
+    "travellerCount": null,
+    "destinationCount": null,
+    "aggregateRating": null,
+    "yearsExperience": 20,
+    "supportPromise": "24/7 On-Trip Support",
+
+    "showPrices": false,
+
+    "responseSla": null,
+
+    "_dummyDataFlags": [
+      "phone — DUMMY DATA, real number due in M5, verified in M9",
+      "phoneHref — DUMMY DATA, must match phone",
+      "whatsappNumber — DUMMY DATA, real number due in M5",
+      "whatsappDefaultMessage — DUMMY DATA, client to approve wording",
+      "email — DUMMY DATA, real address due in M5",
+      "address — DUMMY DATA, real address due in M5",
+      "socials.* — DUMMY DATA, handles pending (PRD Open Question #7)",
+      "gtmContainerId — DUMMY DATA, container ID pending; null emits no GTM",
+      "metaPixelId — DUMMY DATA, pixel is managed inside GTM, not in code",
+      "foundingYear — BLOCKED on PRD Open Question #2, never guess the year",
+      "travellerCount — BLOCKED on PRD Open Question #2",
+      "destinationCount — BLOCKED on PRD Open Question #2",
+      "aggregateRating — BLOCKED on PRD Open Question #3",
+      "responseSla — BLOCKED on PRD Open Question #12"
+    ]
+  }
+}

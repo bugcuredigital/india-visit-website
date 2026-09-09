@@ -16,7 +16,8 @@
     "check:responsive": "node scripts/check-responsive.mjs",
     "gate:lighthouse": "lighthouse http://localhost:4321/ --only-categories=performance,accessibility,seo,best-practices --output=json --output=html --output-path=./reports/gate-lighthouse --chrome-flags=\"--headless=new --no-sandbox\" --quiet",
     "brand:logo": "node scripts/brand/extract-logo.mjs build",
-    "brand:lotus": "node scripts/brand/extract-lotus.mjs"
+    "brand:lotus": "node scripts/brand/extract-lotus.mjs",
+    "gate:m2": "./scripts/gate-m2-schema.sh"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
