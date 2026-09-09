@@ -17,7 +17,11 @@
     "gate:lighthouse": "lighthouse http://localhost:4321/ --only-categories=performance,accessibility,seo,best-practices --output=json --output=html --output-path=./reports/gate-lighthouse --chrome-flags=\"--headless=new --no-sandbox\" --quiet",
     "brand:logo": "node scripts/brand/extract-logo.mjs build",
     "brand:lotus": "node scripts/brand/extract-lotus.mjs",
-    "gate:m2": "./scripts/gate-m2-schema.sh"
+    "gate:m2": "./scripts/gate-m2-schema.sh",
+    "brand:favicons": "node scripts/brand/make-favicons.mjs",
+    "check:nojs": "node scripts/check-nojs.mjs",
+    "shot": "node scripts/screenshot.mjs",
+    "check:keyboard": "node scripts/check-keyboard.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",

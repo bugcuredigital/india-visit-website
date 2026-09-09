@@ -1,0 +1,120 @@
+---
+/**
+ * Trust stats with count-up on scroll into view.
+ * ---------------------------------------------------------------------------
+ * Renders 2–4 stats gracefully, because it is fed `verifiedTrustStats()` and
+ * an unanswered open question means one fewer stat, never a placeholder number
+ * (PRD Open Question #2). Nothing here invents a figure.
+ *
+ * The count-up is a ~20-line vanilla island (PRD §9.4). Two accessibility
+ * details that matter more than the effect:
+ *   · the final value is in the HTML, so it is correct with JS off and for
+ *     screen readers reading before animation finishes
+ *   · under prefers-reduced-motion the number simply appears
+ *
+ * Only the numeric portion animates; suffixes like "+" and strings like "24/7"
+ * are left exactly as authored.
+ */
+interface Props {
+  stats: Array<{ value: string; label: string }>;
+  surface?: 'white' | 'offwhite' | 'plum';
+}
+
+const { stats, surface = 'offwhite' } = Astro.props;
+
+const bandClass =
+  surface === 'plum' ? 'band-plum on-dark' : surface === 'offwhite' ? 'band-offwhite' : '';
+---
+
+<section class:list={['band band-tight', bandClass]}>
+  <div class="container-content">
+    <dl class="stats">
+      {stats.map((stat) => (
+        <div class="stat">
+          <dt class="stat__value" data-countup={stat.value}>{stat.value}</dt>
+          <dd class="stat__label">{stat.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const targets = document.querySelectorAll('[data-countup]');
+    if (!targets.length) return;
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    const run = (el) => {
+      const final = el.dataset.countup ?? '';
+      const match = final.match(/^(\D*)(\d[\d,]*)(.*)$/);
+      if (!match) return; // "24/7" and similar are left alone
+      const [, prefix, digits, suffix] = match;
+      const target = Number(digits.replace(/,/g, ''));
+      const duration = 900;
+      const start = performance.now();
+      const tick = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        // Same easing family as the CSS, so motion feels of a piece.
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = prefix + Math.round(target * eased).toLocaleString('en-IN') + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = final;
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          run(entry.target);
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.4 },
+    );
+    targets.forEach((el) => io.observe(el));
+  })();
+</script>
+
+<style>
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
+    margin: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .stats {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    }
+  }
+
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: var(--text-stat);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    /* Reserve the line box so the count-up cannot shift layout (CLS). */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .on-dark .stat__value {
+    color: var(--color-yellow);
+  }
+
+  .stat__label {
+    margin: 0.6rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .on-dark .stat__label {
+    color: var(--color-on-dark-muted);
+  }
+</style>

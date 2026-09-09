@@ -1,30 +1,44 @@
 /* ============================================================================
-   BRAND TOKENS — the single source of truth for colour, type and motion.
+   BRAND TOKENS — the single source of truth for colour, type, space and motion.
    ----------------------------------------------------------------------------
    Tailwind v4 CSS-first: every token declared in @theme becomes a utility
-   (--color-crimson -> bg-crimson / text-crimson, --font-display ->
-   font-display, --ease-brand -> ease-brand). There is no tailwind.config.mjs.
+   (--color-crimson -> bg-crimson/text-crimson, --font-display -> font-display,
+   --ease-brand -> ease-brand). There is no tailwind.config.mjs.
 
-   The palette is CLOSED (CLAUDE.md invariant #5). Five brand colours, plus
-   plain white and a small set of neutrals derived from plum for borders and
-   muted text. Adding a colour is a brand decision, not a styling decision.
+   DESIGN DIRECTION: white-canvas premium (locked — CLAUDE.md brand section).
+   Translating the school of staralliance.com (grid discipline, type scale,
+   restraint) and airindia.com (warm premium, photography-led, red as accent).
+
+   Two rules do most of the work here:
+     1. WHITE is the page. Off-white is a secondary surface — card fills,
+        alternate sections, form fields. Plum bands are rare and intentional.
+     2. CRIMSON IS PUNCTUATION. It marks the one action that matters in a
+        viewport. It never floods a section.
+
+   The palette is CLOSED (invariant #5). Adding a colour is a brand decision,
+   not a styling decision.
    ========================================================================== */
 
 @theme {
   /* ---- Brand palette (closed set) ------------------------------------- */
-  --color-crimson: #c3163a; /* primary CTAs, accents */
-  --color-burgundy: #741238; /* secondary dark, gradients */
-  --color-plum: #452b5e; /* dark sections, footer, header band */
-  --color-yellow: #e5c745; /* accents — ONLY on plum/burgundy, never off-white */
-  --color-offwhite: #f7f5f6; /* page base */
-  --color-white: #ffffff; /* alternating band */
+  --color-crimson: #c3163a; /* CTAs, active states, small accents */
+  --color-burgundy: #741238; /* hover/pressed, fine rules, quiet details */
+  --color-plum: #452b5e; /* RARE dark bands + footer */
+  --color-yellow: #e5c745; /* micro-doses, ONLY on plum/burgundy */
 
-  /* ---- Neutrals derived from plum (text, borders, never new hues) ------ */
-  --color-ink: #241733; /* body text on light — plum-derived, AA on off-white */
+  /* ---- Surfaces -------------------------------------------------------- */
+  --color-white: #ffffff; /* PRIMARY background, sitewide */
+  --color-offwhite: #f7f5f6; /* SECONDARY: card fills, alt sections, inputs */
+
+  /* ---- Ink & neutrals (plum-derived — never pure black) --------------- */
+  --color-ink: #1a1523; /* body + headings on light */
   --color-ink-muted: #5b4a6b; /* secondary text on light */
-  --color-hairline: #e3dee6; /* borders/dividers on light */
-  --color-on-dark: #f7f5f6; /* body text on plum/burgundy */
+  --color-hairline: #e6e2ea; /* borders on light — plum at low opacity */
+  --color-on-dark: #f7f5f6; /* text on plum/burgundy */
   --color-on-dark-muted: #cfc4d9; /* secondary text on dark */
+
+  /* Card border: plum at ~8%, per the component ruling. */
+  --color-card-border: color-mix(in srgb, var(--color-plum) 8%, transparent);
 
   /* ---- Type ------------------------------------------------------------
      --font-display is THE display token. Swapping to Agrandir Grand means
@@ -33,20 +47,31 @@
   --font-display: 'Archivo Expanded', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  /* Type scale — fluid, mobile-first. Body never below 16px (Persona 2). */
+  /* Type IS the design. Display goes big and confident; body stays quiet. */
   --text-xs: 0.8125rem; /* 13px — labels, legal only */
   --text-sm: 0.9375rem; /* 15px */
-  --text-base: 1rem; /* 16px floor */
-  --text-lg: 1.125rem; /* 18px — intro paragraphs */
-  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
-  --text-3xl: clamp(1.875rem, 1.4rem + 2vw, 2.75rem);
-  --text-4xl: clamp(2.25rem, 1.5rem + 3.2vw, 3.75rem);
-  --text-5xl: clamp(2.75rem, 1.6rem + 4.6vw, 4.75rem);
+  --text-base: 1rem; /* 16px floor (Persona 2) */
+  --text-lg: 1.0625rem; /* 17px — body on wide viewports */
+  --text-xl: 1.1875rem; /* 19px — intro/lede */
+  --text-2xl: clamp(1.375rem, 1.2rem + 0.7vw, 1.625rem); /* H3 */
+  --text-h2: clamp(1.75rem, 3.5vw, 2.75rem); /* section headings */
+  --text-h1: clamp(2.25rem, 5vw, 3.5rem); /* inner-page H1 */
+  --text-hero: clamp(2.5rem, 6vw, 4.5rem); /* homepage/journey hero H1 */
+  --text-stat: clamp(2.25rem, 4vw, 3.25rem); /* CounterStat numerals */
+
+  --leading-display: 1.05; /* hero */
+  --leading-heading: 1.15; /* H2/H3 */
+  --leading-body: 1.65; /* 1.6–1.7 band */
 
   /* ---- Layout ---------------------------------------------------------- */
-  --container-content: 1280px; /* PRD §9.2: max content width 1200–1280 */
-  --container-prose: 68ch; /* editorial reading measure */
+  --container-content: 1280px;
+  --container-prose: 68ch; /* editorial measure cap */
+
+  /* Section rhythm: 96–128px desktop, 56–72px mobile. Whitespace is the
+     luxury signal — when in doubt add space, not decoration. */
+  --space-section: clamp(3.5rem, 2rem + 6vw, 8rem);
+  --space-section-tight: clamp(3rem, 1.75rem + 4vw, 6rem);
+  --space-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
 
   /* ---- Motion (PRD §9.4) -----------------------------------------------
      ONE easing family sitewide. Durations 200–600ms; the hero Ken Burns is
@@ -56,13 +81,14 @@
   --duration-base: 300ms;
   --duration-slow: 450ms;
   --duration-slower: 600ms;
-  --duration-kenburns: 12s; /* hero image only — exempt from the 200–600ms rule */
+  --duration-kenburns: 12s; /* hero image only — exempt */
 
-  /* ---- Elevation — restrained: hover lift is 2–4px, never more --------- */
-  --shadow-lift: 0 2px 12px rgb(36 23 51 / 0.08);
-  --shadow-lift-hover: 0 6px 22px rgb(36 23 51 / 0.12);
+  /* ---- Elevation — shadow appears on HOVER, not at rest --------------- */
+  --shadow-lift: 0 1px 2px rgb(26 21 35 / 0.04);
+  --shadow-lift-hover: 0 8px 28px rgb(26 21 35 / 0.10);
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
+  --radius-sm: 6px;
+  --radius-md: 12px; /* cards: 12–16px */
+  --radius-lg: 16px;
+  --radius-pill: 999px;
 }

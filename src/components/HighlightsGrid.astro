@@ -1,0 +1,75 @@
+---
+/**
+ * S4 — Journey Highlights. Two-column grid, 5–8 items, each a bold verb-led
+ * lead plus one line.
+ *
+ * THIS is where the brand mark earns its keep: the lotus glyph replaces the
+ * client's ✦ character as the functional bullet. Never a generic checkmark,
+ * never ✦ (invariant #5). The glyph inherits crimson here via currentColor.
+ */
+import Lotus from './Lotus.astro';
+
+interface Props {
+  highlights: Array<{ lead: string; text: string }>;
+  heading?: string;
+}
+
+const { highlights, heading = 'Journey Highlights' } = Astro.props;
+---
+
+<section class="band">
+  <div class="container-content">
+    <h2 class="highlights__heading">{heading}</h2>
+    <ul class="highlights fade-up-stagger">
+      {highlights.map((item) => (
+        <li class="highlights__item">
+          <span class="highlights__glyph"><Lotus size={20} /></span>
+          <p class="highlights__text">
+            <strong class="highlights__lead">{item.lead}</strong>{' '}{item.text}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .highlights__heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .highlights {
+    display: grid;
+    gap: 1.5rem 3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .highlights {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .highlights__item {
+    display: flex;
+    align-items: start;
+    gap: 0.85rem;
+  }
+
+  .highlights__glyph {
+    /* Optical alignment with the first line of text. */
+    margin-top: 0.28em;
+    color: var(--color-crimson);
+  }
+
+  .highlights__text {
+    max-width: 46ch;
+  }
+
+  .highlights__lead {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+/**
+ * Button / CTA set.
+ * ---------------------------------------------------------------------------
+ * Crimson is punctuation (design direction): the solid crimson `primary` marks
+ * the single most important action in a viewport. Everything else is
+ * `secondary` (outline ink) or `ghost` (text). If a screen has two crimson
+ * buttons competing, one of them is wrong.
+ *
+ * Renders an <a> when given `href`, otherwise a <button> — so a CTA is always
+ * the correct element for what it does.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'on-dark';
+  size?: 'sm' | 'md' | 'lg';
+  type?: 'button' | 'submit';
+  /** Full width on mobile, auto from 480px up — the common CTA pattern. */
+  block?: boolean;
+  external?: boolean;
+  class?: string;
+  'aria-label'?: string;
+  id?: string;
+  disabled?: boolean;
+  'data-analytics'?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  block = false,
+  external = false,
+  class: className = '',
+  disabled = false,
+  ...rest
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const tagProps = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : { type, disabled };
+---
+
+<Tag
+  class:list={['btn', `btn--${variant}`, `btn--${size}`, { 'btn--block': block }, className]}
+  {...tagProps}
+  {...rest}
+>
+  <span class="btn__label"><slot /></span>
+  {external && <span class="visually-hidden">(opens in a new tab)</span>}
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* 44px minimum tap target (PRD §9.3) at every size. */
+    min-height: 44px;
+    padding-inline: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--text-base);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ---- Variants ------------------------------------------------------- */
+  .btn--primary {
+    background-color: var(--color-crimson);
+    border-color: var(--color-crimson);
+    color: var(--color-white);
+  }
+
+  .btn--primary:hover:not(:disabled) {
+    background-color: var(--color-burgundy);
+    border-color: var(--color-burgundy);
+    color: var(--color-white);
+  }
+
+  .btn--secondary {
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+
+  .btn--secondary:hover:not(:disabled) {
+    background-color: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .btn--ghost {
+    padding-inline: 0.5rem;
+    color: var(--color-crimson);
+  }
+
+  .btn--ghost:hover:not(:disabled) {
+    color: var(--color-burgundy);
+  }
+
+  /* On plum/burgundy: white outline, since crimson lacks contrast there. */
+  .btn--on-dark {
+    border-color: var(--color-on-dark);
+    color: var(--color-on-dark);
+  }
+
+  .btn--on-dark:hover:not(:disabled) {
+    background-color: var(--color-on-dark);
+    color: var(--color-plum);
+  }
+
+  /* ---- Sizes ---------------------------------------------------------- */
+  .btn--sm {
+    min-height: 44px;
+    padding-inline: 1rem;
+    font-size: var(--text-sm);
+  }
+
+  .btn--lg {
+    min-height: 52px;
+    padding-inline: 2rem;
+    font-size: var(--text-xl);
+  }
+
+  .btn--block {
+    width: 100%;
+  }
+
+  @media (min-width: 30rem) {
+    .btn--block {
+      width: auto;
+    }
+  }
+
+  /* Hover lift 2px, 200ms, transform only (PRD §9.4). */
+  @media (prefers-reduced-motion: no-preference) {
+    .btn {
+      transition:
+        background-color var(--duration-fast) var(--ease-brand),
+        border-color var(--duration-fast) var(--ease-brand),
+        color var(--duration-fast) var(--ease-brand),
+        transform var(--duration-fast) var(--ease-brand),
+        box-shadow var(--duration-fast) var(--ease-brand);
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translate3d(0, -2px, 0);
+    }
+
+    .btn--primary:hover:not(:disabled) {
+      box-shadow: var(--shadow-lift-hover);
+    }
+  }
+</style>

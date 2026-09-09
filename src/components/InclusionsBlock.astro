@@ -1,0 +1,108 @@
+---
+/**
+ * S8 — Inclusions & Exclusions, two columns.
+ * Required and verbatim from the operator on Variant B; optional on Variant A
+ * until the client decides between per-trip lists and a standardised block
+ * (PRD Open Question #13), which is why `exclusions` may be absent.
+ *
+ * Lotus marks inclusions. Exclusions use a plain rule rather than a cross —
+ * a red ✗ on a luxury page reads as a warning, and the heading already says
+ * what the list is.
+ */
+import Lotus from './Lotus.astro';
+
+interface Props {
+  inclusions: string[];
+  exclusions?: string[];
+  /** Variant A shows a caveat: the final list lands in the custom quote. */
+  standardisedCaveat?: boolean;
+}
+
+const { inclusions, exclusions, standardisedCaveat = false } = Astro.props;
+---
+
+<section class="band">
+  <div class="container-content">
+    <div class="incl">
+      <div>
+        <h2 class="incl__heading">What's included</h2>
+        <ul class="incl__list">
+          {inclusions.map((item) => (
+            <li class="incl__item">
+              <span class="incl__glyph"><Lotus size={16} /></span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        {standardisedCaveat && (
+          <p class="incl__caveat">
+            Typical inclusions for a journey of this shape. The final list is
+            confirmed in your custom quote.
+          </p>
+        )}
+      </div>
+
+      {exclusions && exclusions.length > 0 && (
+        <div>
+          <h2 class="incl__heading">Not included</h2>
+          <ul class="incl__list incl__list--plain">
+            {exclusions.map((item) => <li class="incl__item-plain">{item}</li>)}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .incl {
+    display: grid;
+    gap: 3rem;
+  }
+
+  @media (min-width: 48rem) {
+    .incl {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .incl__heading {
+    font-size: var(--text-2xl);
+    margin-bottom: 1.5rem;
+  }
+
+  .incl__list {
+    display: grid;
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .incl__item {
+    display: flex;
+    align-items: start;
+    gap: 0.7rem;
+    font-size: var(--text-base);
+  }
+
+  .incl__glyph {
+    margin-top: 0.3em;
+    color: var(--color-crimson);
+  }
+
+  .incl__item-plain {
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-hairline);
+    font-size: var(--text-base);
+    color: var(--color-ink-muted);
+  }
+
+  .incl__caveat {
+    margin-top: 1.25rem;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-ink-muted);
+  }
+</style>

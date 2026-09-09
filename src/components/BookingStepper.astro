@@ -1,0 +1,80 @@
+---
+/**
+ * S11 — Booking Process (Variant B).
+ * A genuine trust asset: it shows exactly what happens after you enquire,
+ * which most competitors leave vague. Rendered as an ordered list so the
+ * sequence survives without CSS, and laid out as a horizontal stepper from
+ * the medium breakpoint up.
+ */
+interface Props {
+  steps: Array<{ step: number; title: string; detail: string }>;
+  heading?: string;
+}
+
+const { steps, heading = 'How booking works' } = Astro.props;
+---
+
+<section class="band band-offwhite" id="booking-process">
+  <div class="container-content">
+    <h2>{heading}</h2>
+    <ol class="stepper fade-up-stagger">
+      {steps.map((step) => (
+        <li class="step">
+          <span class="step__no" aria-hidden="true">{String(step.step).padStart(2, '0')}</span>
+          <h3 class="step__title">{step.title}</h3>
+          <p class="step__detail">{step.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .stepper {
+    display: grid;
+    gap: 2rem 1.75rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  @media (min-width: 48rem) {
+    .stepper {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .stepper {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  .step {
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-crimson);
+  }
+
+  .step__no {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--color-crimson);
+  }
+
+  .step__title {
+    margin-top: 0.5rem;
+    font-size: var(--text-base);
+    line-height: 1.3;
+  }
+
+  .step__detail {
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+</style>

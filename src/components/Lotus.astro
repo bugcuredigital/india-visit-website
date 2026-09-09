@@ -1,0 +1,48 @@
+---
+/**
+ * Lotus — the brand's functional glyph.
+ * ---------------------------------------------------------------------------
+ * Vector paths extracted verbatim from page 7 of the brand kit PDF, so this is
+ * the original artwork rather than an approximation (see CLAUDE.md brand
+ * section). It is the highlight-bullet mark SITEWIDE — never ✦, never a
+ * generic checkmark (invariant #5).
+ *
+ * Single-colour with fill="currentColor", so it inherits crimson on light
+ * surfaces and yellow on plum without needing variants. The SVG carries only a
+ * viewBox, so it scales to whatever width it is given.
+ */
+import lotusRaw from '../assets/brand/lotus.svg?raw';
+
+interface Props {
+  /** Rendered width in px. Aspect is ~1.394:1. */
+  size?: number;
+  class?: string;
+  /** Decorative by default; give it a label only when it carries meaning. */
+  label?: string;
+}
+
+const { size = 18, class: className = '', label } = Astro.props;
+---
+
+<span
+  class:list={['lotus', className]}
+  style={`--lotus-size: ${size}px`}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  set:html={lotusRaw}
+/>
+
+<style>
+  .lotus {
+    display: inline-flex;
+    flex: none;
+    line-height: 0;
+  }
+
+  .lotus :global(svg) {
+    width: var(--lotus-size);
+    height: auto;
+    display: block;
+  }
+</style>

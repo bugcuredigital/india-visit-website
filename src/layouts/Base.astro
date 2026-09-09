@@ -9,6 +9,9 @@
  */
 import '../styles/global.css';
 import { getSiteSettings } from '../lib/site-settings';
+import { travelAgencySchema } from '../lib/schema';
+import JsonLd from '../components/JsonLd.astro';
+import RevealScript from '../components/RevealScript.astro';
 
 // Vite hashes these, so the preload href and the @font-face src resolve to
 // the same immutable, cache-forever URL.
@@ -39,19 +42,13 @@ const canonicalUrl = new URL(canonical ?? Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 
 /**
- * Global organisation schema. Only emits the fields that hold real values —
- * dummy contact details and unverified trust numbers must never be published
- * as structured data (they would be machine-readable claims).
- * The collection's `_dummyDataFlags` array is the tripwire: while it is
- * non-empty, telephone/email/address stay out of the graph.
+ * Global organisation schema. The builder drops every null or placeholder
+ * field, so dummy contact details and unverified trust numbers never reach
+ * structured data — a machine-readable claim is worse than an on-screen one,
+ * since aggregators may republish it. The collection's `_dummyDataFlags`
+ * array is what the builder checks.
  */
-const orgSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'TravelAgency',
-  name: siteSettings.siteName,
-  description: siteSettings.tagline,
-  url: Astro.site?.href,
-};
+const orgSchema = travelAgencySchema(siteSettings, Astro.site?.href ?? '/');
 
 const gtmId = siteSettings.gtmContainerId;
 ---
@@ -61,6 +58,12 @@ const gtmId = siteSettings.gtmContainerId;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Marks that scripting is available, BEFORE first paint. Entrance
+         animations are scoped to `html.js`, so without this the sections that
+         fade in would stay invisible for anyone whose JavaScript did not run.
+         Content-first: no JS means no animation, never no content. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -90,7 +93,8 @@ const gtmId = siteSettings.gtmContainerId;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    <JsonLd schema={orgSchema} />
+    <slot name="head" />
 
     {
       /* GTM via Partytown — off the main thread, so the tag stack costs no LCP.
@@ -124,5 +128,7 @@ const gtmId = siteSettings.gtmContainerId;
       <slot />
     </main>
     <slot name="footer" />
+    <slot name="after-footer" />
+    <RevealScript />
   </body>
 </html>

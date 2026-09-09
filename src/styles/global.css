@@ -1,5 +1,5 @@
 /* ============================================================================
-   GLOBAL ENTRY — the only stylesheet imported by the layouts.
+   GLOBAL ENTRY — the only stylesheet the layouts import.
    Order matters: Tailwind first, then font faces, then brand tokens.
    ========================================================================== */
 @import 'tailwindcss';
@@ -14,8 +14,8 @@
   }
 
   html {
-    /* Anchors from the "at a glance" table scroll to day rows; keep the
-       sticky header from covering the target (Template Spec §5). */
+    /* Glance-table rows anchor to their day; keep the sticky header off the
+       target (Template Spec S5). */
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
@@ -29,13 +29,20 @@
 
   body {
     margin: 0;
-    background-color: var(--color-offwhite);
+    /* WHITE is the page (design direction). */
+    background-color: var(--color-white);
     color: var(--color-ink);
     font-family: var(--font-body);
     font-size: var(--text-base);
-    line-height: 1.65; /* comfortable measure for Persona 2 */
+    line-height: var(--leading-body);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  @media (min-width: 48rem) {
+    body {
+      font-size: var(--text-lg);
+    }
   }
 
   h1,
@@ -44,15 +51,39 @@
   h4 {
     font-family: var(--font-display);
     font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    line-height: var(--leading-heading);
+    letter-spacing: -0.015em;
     margin: 0;
     text-wrap: balance;
+    color: var(--color-ink);
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--leading-display);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+  }
+
+  h3 {
+    font-size: var(--text-2xl);
   }
 
   p {
     margin: 0;
     text-wrap: pretty;
+  }
+
+  a {
+    color: var(--color-crimson);
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+
+  a:hover {
+    color: var(--color-burgundy);
   }
 
   img,
@@ -68,29 +99,31 @@
   :focus-visible {
     outline: 3px solid var(--color-crimson);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
 
-  /* On dark bands the crimson ring lacks contrast; yellow is legal here
-     because the surface is plum/burgundy (invariant #5). */
-  .on-plum :focus-visible,
-  .on-burgundy :focus-visible {
+  /* On plum/burgundy the crimson ring lacks contrast; yellow is legal here
+     because the surface is dark (invariant #5). */
+  .on-dark :focus-visible {
     outline-color: var(--color-yellow);
   }
 }
 
 @layer components {
-  /* ---- Section band rhythm: off-white / white / plum (PAGE_TEMPLATES) --- */
+  /* ---- Section surfaces ------------------------------------------------
+     White is the default and needs no class. `band-offwhite` is the whisper
+     of contrast; `band-plum` is rare and intentional (footer, How-It-Works,
+     one homepage moment, ConvertBand).                                     */
   .band {
-    padding-block: clamp(3rem, 2rem + 5vw, 6rem);
+    padding-block: var(--space-section);
+  }
+
+  .band-tight {
+    padding-block: var(--space-section-tight);
   }
 
   .band-offwhite {
     background-color: var(--color-offwhite);
-  }
-
-  .band-white {
-    background-color: var(--color-white);
   }
 
   .band-plum {
@@ -98,9 +131,7 @@
     color: var(--color-on-dark);
   }
 
-  .band-plum h1,
-  .band-plum h2,
-  .band-plum h3 {
+  .band-plum :is(h1, h2, h3, h4) {
     color: var(--color-on-dark);
   }
 
@@ -108,10 +139,53 @@
     width: 100%;
     max-width: var(--container-content);
     margin-inline: auto;
-    padding-inline: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+    padding-inline: var(--space-gutter);
   }
 
-  /* ---- Skip link — first focusable element on every page --------------- */
+  .prose-measure {
+    max-width: var(--container-prose);
+  }
+
+  /* ---- Eyebrow: small crimson label above a heading ------------------- */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-crimson);
+  }
+
+  .on-dark .eyebrow {
+    color: var(--color-yellow);
+  }
+
+  /* ---- Hairline rule --------------------------------------------------- */
+  .hairline {
+    border: 0;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  /* ---- Tap targets: 44px minimum (PRD §9.3) --------------------------- */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* ---- Screen-reader-only, but focusable when it needs to be ---------- */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---- Skip link — first focusable element on every page -------------- */
   .skip-link {
     position: absolute;
     left: 1rem;
@@ -128,21 +202,22 @@
   .skip-link:focus {
     top: 1rem;
   }
-
-  /* ---- Tap targets: 44px minimum (PRD §9.3) --------------------------- */
-  .tap-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
 }
 
 @layer utilities {
-  /* Section entrance — the sitewide DEFAULT (CSS + IntersectionObserver).
-     GSAP is reserved for 1–2 homepage set pieces only, and the whole thing
-     is opt-in via prefers-reduced-motion (PRD §9.4).
-     Animates transform/opacity only — never layout properties. */
+  /* Section entrance — the sitewide DEFAULT is CSS + IntersectionObserver.
+     GSAP is reserved for 1–2 homepage set pieces (PRD §9.4). Animates
+     transform/opacity only, and only when motion is welcome.
+
+     EVERY RULE HERE IS SCOPED TO `html.js`, AND THAT IS LOAD-BEARING.
+     These styles start content at opacity 0 and rely on script to reveal it.
+     Without the scope, a visitor with JavaScript unavailable — or any script
+     error at all — would get permanently invisible sections. On a static-first,
+     SEO-driven site that is silent content loss, which invariant #8's spirit
+     forbids. Base.astro adds the `js` class in <head> before first paint, so
+     no-JS visitors simply see everything, immediately. */
   @media (prefers-reduced-motion: no-preference) {
-    .fade-up {
+    html.js .fade-up {
       opacity: 0;
       transform: translate3d(0, 16px, 0);
       transition:
@@ -150,9 +225,29 @@
         transform var(--duration-slow) var(--ease-brand);
     }
 
-    .fade-up.is-visible {
+    html.js .fade-up.is-visible {
       opacity: 1;
       transform: translate3d(0, 0, 0);
     }
+
+    /* Staggered children, max 80ms apart, triggers once. */
+    html.js .fade-up-stagger > * {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
+      transition:
+        opacity var(--duration-slow) var(--ease-brand),
+        transform var(--duration-slow) var(--ease-brand);
+    }
+
+    html.js .fade-up-stagger.is-visible > * {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    html.js .fade-up-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; }
+    html.js .fade-up-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; }
+    html.js .fade-up-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; }
+    html.js .fade-up-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; }
+    html.js .fade-up-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
   }
 }

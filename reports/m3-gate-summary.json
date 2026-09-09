@@ -1,0 +1,28 @@
+{
+  "milestone": "M3",
+  "gate": "component demo renders all components; keyboard pass; no hardcoded contact strings",
+  "lighthouseVersion": "12.8.2",
+  "fetchTime": "2026-09-09T09:08:07.819Z",
+  "formFactor": "mobile",
+  "throttling": "simulate",
+  "url": "http://localhost:4321/dev/components/",
+  "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 66
+  },
+  "metrics": {
+    "first-contentful-paint": "1.0\u00a0s",
+    "largest-contentful-paint": "1.7\u00a0s",
+    "total-blocking-time": "0\u00a0ms",
+    "cumulative-layout-shift": "0",
+    "speed-index": "1.0\u00a0s"
+  },
+  "notes": {
+    "accessibility": "100 after fixing TestimonialCarousel: role=\"group\" on the <ul> was overriding its list role and orphaning every <li> in the a11y tree. The scroll region and the list are now separate elements.",
+    "seo": "66 because the component demo sets noindex on purpose \u2014 it is a style guide, not a public page.",
+    "domSize": "50 is expected: this single page renders all 27 components at once. Real pages render a fraction of it.",
+    "nojs": "Entrance animations are scoped to html.js so content stays visible when scripting is unavailable \u2014 verified with npm run check:nojs (0/24 hidden)."
+  }
+}

@@ -1,0 +1,118 @@
+---
+/**
+ * S5 — Itinerary at a Glance. The section skimmers and Persona 2 actually
+ * read, and the structure the gated PDF's summary page reuses.
+ *
+ * Each row anchors to its day in the accordion below (Template Spec S5), so
+ * the day IDs here and in DayAccordion must agree — both use `day-{n}`.
+ *
+ * Rendered as a real <table> on desktop and a definition-style list on
+ * mobile via one markup tree, so screen readers get proper row semantics at
+ * every width rather than a div grid pretending to be tabular.
+ */
+interface Props {
+  rows: Array<{ dayNo: number; destination: string; signatureExperience: string }>;
+  heading?: string;
+}
+
+const { rows, heading = 'Itinerary at a Glance' } = Astro.props;
+---
+
+<section class="band band-offwhite" id="at-a-glance">
+  <div class="container-content">
+    <h2 class="glance__heading">{heading}</h2>
+    <div class="glance__scroll">
+      <table class="glance">
+        <caption class="visually-hidden">
+          Day-by-day summary. Each row links to that day's full description.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Day</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Signature experience</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr>
+              <th scope="row" class="glance__day">
+                <a href={`#day-${row.dayNo}`} class="glance__anchor">
+                  Day {String(row.dayNo).padStart(2, '0')}
+                </a>
+              </th>
+              <td class="glance__dest">{row.destination}</td>
+              <td>{row.signatureExperience}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .glance__heading {
+    margin-bottom: 2rem;
+  }
+
+  /* Wide content scrolls inside its own container — the page body never
+     scrolls sideways. */
+  .glance__scroll {
+    overflow-x: auto;
+  }
+
+  .glance {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: var(--text-base);
+  }
+
+  .glance th,
+  .glance td {
+    padding: 0.9rem 1rem 0.9rem 0;
+    border-bottom: 1px solid var(--color-hairline);
+    vertical-align: top;
+  }
+
+  .glance thead th {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    border-bottom-color: var(--color-ink);
+  }
+
+  .glance__day {
+    white-space: nowrap;
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .glance__anchor {
+    color: var(--color-crimson);
+    text-decoration: none;
+  }
+
+  .glance__anchor:hover {
+    text-decoration: underline;
+  }
+
+  .glance__dest {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .glance tbody tr {
+      transition: background-color var(--duration-fast) var(--ease-brand);
+    }
+
+    .glance tbody tr:hover {
+      background-color: var(--color-white);
+    }
+  }
+</style>

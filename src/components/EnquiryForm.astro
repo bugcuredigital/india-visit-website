@@ -1,0 +1,226 @@
+---
+/**
+ * Enquiry form SHELL. M3 builds the markup and states; M6 wires the logic and
+ * the Cloudflare Pages Function (`functions/api/lead.ts`).
+ *
+ * Already correct here, because retrofitting them is worse than building them:
+ *   · honeypot field, visually hidden and aria-hidden (PRD §8.3)
+ *   · hidden context fields — page URL, journey slug, lead type — so every
+ *     lead arrives tagged (PRD §8.2)
+ *   · consent checkbox referencing the Privacy Policy, required
+ *   · labels tied to inputs, no placeholder-as-label
+ *   · Turnstile mounts into the marked container in M6
+ */
+import Button from './Button.astro';
+
+interface Props {
+  /** Tags the lead so corporate enquiries route separately. */
+  leadType?: 'general' | 'journey' | 'corporate' | 'callback';
+  /** Prefills the journey context on itinerary pages. */
+  journeySlug?: string;
+  journeyTitle?: string;
+  compact?: boolean;
+  onDark?: boolean;
+}
+
+const {
+  leadType = 'general',
+  journeySlug,
+  journeyTitle,
+  compact = false,
+  onDark = false,
+} = Astro.props;
+
+const uid = Math.random().toString(36).slice(2, 8);
+const id = (name: string) => `${name}-${uid}`;
+
+const MONTHS = [
+  'Not sure yet', 'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+---
+
+<form
+  class:list={['form', { 'form--compact': compact, 'form--on-dark': onDark }]}
+  method="post"
+  action="/api/lead"
+  data-lead-form
+  novalidate
+>
+  <!-- Context so every lead is attributable. Populated in M6. -->
+  <input type="hidden" name="leadType" value={leadType} />
+  <input type="hidden" name="pageUrl" value={Astro.url.pathname} />
+  {journeySlug && <input type="hidden" name="journeySlug" value={journeySlug} />}
+  {journeyTitle && <input type="hidden" name="journeyTitle" value={journeyTitle} />}
+  <input type="hidden" name="utm" value="" data-utm />
+
+  <!-- Honeypot: real people never fill this in. Not display:none, which some
+       bots detect — off-screen and removed from the a11y tree instead. -->
+  <div class="form__honeypot" aria-hidden="true">
+    <label for={id('company-url')}>Website</label>
+    <input type="text" id={id('company-url')} name="companyUrl" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="form__grid">
+    <p class="form__field">
+      <label class="form__label" for={id('name')}>Your name</label>
+      <input class="form__input" type="text" id={id('name')} name="name" autocomplete="name" required />
+    </p>
+
+    <p class="form__field">
+      <label class="form__label" for={id('phone')}>Phone or WhatsApp</label>
+      <input class="form__input" type="tel" id={id('phone')} name="phone" autocomplete="tel" inputmode="tel" required />
+    </p>
+
+    {!compact && (
+      <p class="form__field">
+        <label class="form__label" for={id('email')}>Email</label>
+        <input class="form__input" type="email" id={id('email')} name="email" autocomplete="email" />
+      </p>
+    )}
+
+    <p class="form__field">
+      <label class="form__label" for={id('month')}>Travel month</label>
+      <select class="form__input" id={id('month')} name="travelMonth">
+        {MONTHS.map((month) => <option value={month}>{month}</option>)}
+      </select>
+    </p>
+
+    {!compact && (
+      <p class="form__field form__field--wide">
+        <label class="form__label" for={id('message')}>
+          Anything you'd like us to know? <span class="form__optional">(optional)</span>
+        </label>
+        <textarea class="form__input" id={id('message')} name="message" rows="3"></textarea>
+      </p>
+    )}
+  </div>
+
+  <p class="form__consent">
+    <input type="checkbox" id={id('consent')} name="consent" required />
+    <label for={id('consent')}>
+      I agree to India Visit contacting me about this enquiry, per the
+      <a href="/privacy/">Privacy Policy</a>.
+    </label>
+  </p>
+
+  <!-- Turnstile mounts here in M6; invisible, so no visible CAPTCHA friction. -->
+  <div data-turnstile></div>
+
+  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size="lg" block>
+    Start planning
+  </Button>
+
+  <p class="form__note">We reply personally — no call centre, no spam.</p>
+</form>
+
+<style>
+  .form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form__grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .form__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form__field--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .form__field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .form__label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .form__optional {
+    font-weight: 400;
+    color: var(--color-ink-muted);
+  }
+
+  .form__input {
+    /* Off-white is the field fill — the secondary-surface role. */
+    min-height: 48px;
+    padding: 0.7rem 0.9rem;
+    background-color: var(--color-offwhite);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-ink);
+  }
+
+  .form__input:focus {
+    border-color: var(--color-crimson);
+    background-color: var(--color-white);
+  }
+
+  textarea.form__input {
+    min-height: auto;
+    resize: vertical;
+  }
+
+  .form__consent {
+    display: flex;
+    align-items: start;
+    gap: 0.6rem;
+    margin: 1.25rem 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .form__consent input {
+    /* Keeps the 44px hit area without a 44px-tall visual box. */
+    width: 20px;
+    height: 20px;
+    margin-top: 0.15em;
+    flex: none;
+    accent-color: var(--color-crimson);
+  }
+
+  .form__note {
+    margin-top: 0.85rem;
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- On plum bands ---------------------------------------------------- */
+  .form--on-dark .form__label {
+    color: var(--color-on-dark);
+  }
+
+  .form--on-dark .form__input {
+    background-color: rgb(255 255 255 / 0.08);
+    border-color: rgb(247 245 246 / 0.28);
+    color: var(--color-on-dark);
+  }
+
+  .form--on-dark .form__input:focus {
+    border-color: var(--color-yellow);
+    background-color: rgb(255 255 255 / 0.14);
+  }
+
+  .form--on-dark :is(.form__consent, .form__note, .form__optional) {
+    color: var(--color-on-dark-muted);
+  }
+
+  .form--on-dark .form__consent a {
+    color: var(--color-yellow);
+  }
+</style>
