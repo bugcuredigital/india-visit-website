@@ -1,143 +1,98 @@
 /**
- * siteSettings — M1 typed stub.
+ * siteSettings accessor.
  * ---------------------------------------------------------------------------
  * CLAUDE.md invariant #1: nothing user-editable is hardcoded. Every phone
  * number, link target, tag ID and trust figure on the site resolves through
- * this object. If you are about to type a phone number into a component,
- * stop and read it from here instead.
+ * here. If you are about to type a phone number into a component, stop.
  *
- * SCOPE OF THIS FILE: M1 only. In M2 this is promoted to a Zod-validated
- * `siteSettings` content-collection singleton with the identical field names,
- * so components written against it now keep working unchanged. The field
- * shape below is deliberately the full invariant-#1 list, not just what M1
- * renders, so the M2 promotion is a move rather than a redesign.
+ * M1 shipped this as a typed literal. It is now backed by the Zod-validated
+ * `siteSettings` content collection (src/content/siteSettings/settings.json),
+ * so a malformed edit fails the build instead of rendering a broken page.
+ * The field names did not change in the promotion.
  *
- * EVERY PLACEHOLDER VALUE CARRIES A `DUMMY DATA` COMMENT so a pre-launch
- * `npm run audit:hardcoded` (or a plain grep) finds all of them:
- *     grep -rn "DUMMY DATA" src/
+ * Placeholder values are inventoried in the collection's own
+ * `_dummyDataFlags` array — JSON cannot carry comments, so that array is where
+ * the `DUMMY DATA` markers live. `npm run audit:hardcoded` reports them.
  */
+import { getCollection, type CollectionEntry } from 'astro:content';
 
-export interface SiteSettings {
-  siteName: string;
-  tagline: string;
+export type SiteSettings = CollectionEntry<'siteSettings'>['data'];
 
-  /** Contact channels — every CTA on the site resolves to one of these. */
-  phone: string;
-  phoneHref: string;
-  whatsappNumber: string;
-  /** Default prefill; per-page components append their own context. */
-  whatsappDefaultMessage: string;
-  email: string;
-  address: string;
+let cached: SiteSettings | undefined;
 
-  socials: {
-    instagram: string | null;
-    facebook: string | null;
-    youtube: string | null;
-    linkedin: string | null;
-  };
+/**
+ * Reads the singleton, enforcing that it really is one.
+ * A missing or duplicated settings entry is a build-stopping error rather than
+ * a silent fallback — a site rendering default contact details would be worse
+ * than a site that fails to build.
+ */
+export async function getSiteSettings(): Promise<SiteSettings> {
+  if (cached) return cached;
 
-  /** Tag IDs — managed by the client in the GTM UI, never in code. */
-  gtmContainerId: string | null;
-  metaPixelId: string | null;
+  const entries = await getCollection('siteSettings');
+  if (entries.length !== 1) {
+    throw new Error(
+      `siteSettings must contain exactly one entry (found ${entries.length}). ` +
+        'It is a singleton — see src/content/siteSettings/settings.json.',
+    );
+  }
 
-  /**
-   * Trust figures — NULLABLE ON PURPOSE (PRD Open Question #2).
-   * null means the stat is not rendered at all. Never publish an
-   * unverified number and never ship a placeholder one.
-   * Launch set is the verifiable pair: "20+ Years" and "24/7 On-Trip Support".
-   */
-  foundingYear: number | null;
-  travellerCount: number | null;
-  destinationCount: number | null;
-  aggregateRating: number | null;
-  yearsExperience: number;
-  supportPromise: string;
-
-  /**
-   * Pricing (PRD Open Question #1). Journeys carry an optional `priceFrom`;
-   * this flag globally gates whether any of it renders. Train pages are
-   * exempt regardless — operator tariffs are never published.
-   */
-  showPrices: boolean;
-
-  /** Response-time promise shown on form success states (Open Question #12). */
-  responseSla: string | null;
+  cached = entries[0]!.data;
+  return cached;
 }
-
-export const siteSettings: SiteSettings = {
-  siteName: 'India Visit',
-  tagline: 'Curated journeys across India and beyond',
-
-  phone: '+91 0000000000', // DUMMY DATA — real number arrives in M5, verified in M9
-  phoneHref: 'tel:+910000000000', // DUMMY DATA — must match `phone`
-  whatsappNumber: '+91 0000000000', // DUMMY DATA — real number arrives in M5
-  whatsappDefaultMessage:
-    "Hello India Visit, I'd like help planning a trip.", // DUMMY DATA — client to approve wording
-  email: 'hello@example.com', // DUMMY DATA — real address arrives in M5
-  address: 'Dummy Address, New Delhi', // DUMMY DATA — real address arrives in M5
-
-  socials: {
-    instagram: null, // DUMMY DATA — handles pending (PRD Open Question #7)
-    facebook: null, // DUMMY DATA — handles pending
-    youtube: null, // DUMMY DATA — handles pending
-    linkedin: null, // DUMMY DATA — handles pending
-  },
-
-  gtmContainerId: null, // DUMMY DATA — container ID pending; null = no GTM emitted
-  metaPixelId: null, // DUMMY DATA — pixel managed inside GTM, not in code
-
-  // Verified claims only. The two non-null values below are the launch set.
-  foundingYear: null, // BLOCKED — PRD Open Question #2 (never guess the year)
-  travellerCount: null, // BLOCKED — PRD Open Question #2
-  destinationCount: null, // BLOCKED — PRD Open Question #2
-  aggregateRating: null, // BLOCKED — PRD Open Question #3 (testimonials + consent)
-  yearsExperience: 20, // Verified: the anchor claim, "20+ years" (CONTEXT.md)
-  supportPromise: '24/7 On-Trip Support', // Verified: core service promise
-
-  showPrices: false, // Default OFF until PRD Open Question #1 is decided
-
-  responseSla: null, // BLOCKED — PRD Open Question #12
-};
 
 /**
  * WhatsApp deep link with page context.
- * Kept here rather than in a component so the number and the default message
+ * Lives here rather than in a component so the number and the default message
  * have exactly one home.
  */
-export function whatsappLink(context?: string): string {
-  const digits = siteSettings.whatsappNumber.replace(/[^\d]/g, '');
+export function whatsappLink(settings: SiteSettings, context?: string): string {
+  const digits = settings.whatsappNumber.replace(/\D/g, '');
   const message = context
-    ? `${siteSettings.whatsappDefaultMessage} (${context})`
-    : siteSettings.whatsappDefaultMessage;
+    ? `${settings.whatsappDefaultMessage} (${context})`
+    : settings.whatsappDefaultMessage;
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
 /**
  * The trust stats that actually have verified values.
- * CounterStat renders whatever this returns — 2 to 4 items — so an
- * unanswered open question simply means one fewer stat, never a placeholder.
+ * CounterStat renders whatever this returns — 2 to 4 items — so an unanswered
+ * open question simply means one fewer stat, never a placeholder number
+ * (PRD Open Question #2).
  */
-export function verifiedTrustStats(): Array<{ value: string; label: string }> {
+export function verifiedTrustStats(
+  settings: SiteSettings,
+): Array<{ value: string; label: string }> {
   const stats: Array<{ value: string; label: string }> = [
-    { value: `${siteSettings.yearsExperience}+`, label: 'Years of Experience' },
+    { value: `${settings.yearsExperience}+`, label: 'Years of Experience' },
   ];
 
-  if (siteSettings.travellerCount !== null) {
+  if (settings.travellerCount !== null) {
     stats.push({
-      value: `${siteSettings.travellerCount.toLocaleString('en-IN')}+`,
+      value: `${settings.travellerCount.toLocaleString('en-IN')}+`,
       label: 'Travellers Hosted',
     });
   }
 
-  if (siteSettings.destinationCount !== null) {
-    stats.push({
-      value: `${siteSettings.destinationCount}+`,
-      label: 'Destinations',
-    });
+  if (settings.destinationCount !== null) {
+    stats.push({ value: `${settings.destinationCount}+`, label: 'Destinations' });
   }
 
   stats.push({ value: '24/7', label: 'On-Trip Support' });
 
   return stats;
+}
+
+/**
+ * Per-journey "from" price, or null when it must not be shown.
+ * Gated globally by `showPrices` (PRD Open Question #1), and train pages are
+ * exempt regardless — operator tariffs are never published (invariant #6).
+ */
+export function displayPrice(
+  settings: SiteSettings,
+  priceFrom: number | undefined,
+  variant: 'A' | 'B',
+): string | null {
+  if (!settings.showPrices || variant === 'B' || priceFrom === undefined) return null;
+  return `From ₹${priceFrom.toLocaleString('en-IN')}`;
 }

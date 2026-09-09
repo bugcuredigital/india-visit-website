@@ -42,7 +42,29 @@ else
 fi
 
 echo
-echo "── 3. Placeholder debt (informational) ──────────────────────────────"
+echo "── 3. Third-party agency names in content (invariant: our own brand) ─"
+# The Palace on Wheels source doc is another agency's material. Their brand
+# name and their commercial terms must never reach our pages.
+third=$(grep -rniE "luxury india|travelpalaceonwheels" src/content src 2>/dev/null || true)
+if [ -n "$third" ]; then
+  echo "$third"
+  echo "FAIL: third-party agency branding found in content."
+  fail=1
+else
+  echo "PASS: no third-party agency branding in content."
+fi
+
+echo
+echo "── 4. Placeholder debt (informational) ──────────────────────────────"
+echo "PLACEHOLDER content flags: $(grep -rc "PLACEHOLDER" src/content 2>/dev/null | grep -v ':0$' | wc -l | tr -d ' ') file(s)"
+grep -rn "PLACEHOLDER" src/content 2>/dev/null | cut -c1-110 | sed 's/^/    /' | head -10
+echo "siteSettings _dummyDataFlags still listed: $(python3 -c "
+import json,sys
+try:
+    d=json.load(open('src/content/siteSettings/settings.json'))
+    print(len(d['settings'].get('_dummyDataFlags',[])))
+except Exception: print('?')
+" 2>/dev/null)"
 echo "TEMP-ASSET flags:  $(grep -rl "TEMP-ASSET" src public 2>/dev/null | wc -l | tr -d ' ') file(s)"
 grep -rn "TEMP-ASSET" src public 2>/dev/null | sed 's/^/    /' | head -20
 echo "DUMMY DATA flags:  $(grep -rn "DUMMY DATA" src astro.config.mjs 2>/dev/null | wc -l | tr -d ' ') occurrence(s)"

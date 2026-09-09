@@ -1,104 +1,69 @@
 ---
 /**
- * Logo — TEMP-ASSET (grep: TEMP-ASSET)
+ * Logo — the approved India Visit badge.
  * ---------------------------------------------------------------------------
- * THIS IS NOT THE APPROVED LOGO. It is a temporary typographic stand-in.
+ * RASTER BY OWNER-APPROVED EXCEPTION. The delivered brand file contains no
+ * vector artwork (see CLAUDE.md brand section and
+ * docs/brand/processed/PROVENANCE.md), so the badge is a PNG extracted from it
+ * by silhouette mask. Regenerate with `npm run brand:logo`.
  *
- * Why: the supplied docs/brand/india_visit_logo.svg contains no vector
- * artwork. It is a single 5910x4128 PNG embedded twice (once as the image,
- * once as a luminance mask) inside an SVG wrapper; its only <path> is a
- * full-canvas clip rectangle. So there is no background NODE to remove
- * structurally, and colour-keying the raster is forbidden — it would delete
- * the white wordmark along with the black background (CLAUDE.md invariant #5).
- * EXECUTION_RUNBOOK M1 step 6 pre-authorises this fallback so M1 is not
- * blocked while real vector artwork is sourced.
- *
- * Replace by: dropping logo-white.svg into docs/brand/processed/ + src/assets/,
- * then swapping the markup below for an <img>/inline SVG. The usage rule still
- * applies — the white wordmark never sits directly on off-white or white, so
- * the plum/crimson badge container stays.
- *
- * The lotus glyph is ALSO unavailable as vector and is required sitewide as
- * the highlight-bullet mark (invariant #5) — that lands as an M3 blocker.
+ * The badge carries its own crimson->plum ground, so unlike a bare white
+ * wordmark it may sit directly on off-white. Swapping to true SVG artwork
+ * later is a drop-in: replace src/assets/brand/logo-badge.png with the SVG and
+ * change the <Picture> below to an inline <svg> or <img>.
  */
+import { Picture } from 'astro:assets';
+import logoBadge from '../assets/brand/logo-badge.png';
+
 interface Props {
-  /** `badge` is the light-background lockup (the default header case). */
-  variant?: 'badge' | 'on-dark';
+  /** Rendered height in px. Badge aspect is 1.695:1. */
+  height?: number;
+  /** Home page suppresses the link — you are already there. */
+  isHome?: boolean;
   class?: string;
 }
 
-const { variant = 'badge', class: className = '' } = Astro.props;
+const { height = 48, isHome = false, class: className = '' } = Astro.props;
+const width = Math.round(height * 1.695);
+
+const Tag = isHome ? 'span' : 'a';
+const linkProps = isHome ? {} : { href: '/', 'aria-label': 'India Visit — home' };
 ---
 
-<a
-  href="/"
-  class:list={['logo', `logo--${variant}`, className]}
-  data-temp-asset="logo"
-  aria-label="India Visit — home"
->
-  <span class="logo__badge">
-    <span class="logo__india">INDIA</span>
-    <span class="logo__visit">visit</span>
-  </span>
-</a>
+<Tag {...linkProps} class:list={['logo', className]}>
+  <Picture
+    src={logoBadge}
+    formats={['webp']}
+    fallbackFormat="png"
+    densities={[1, 2]}
+    width={width}
+    height={height}
+    alt={isHome ? 'India Visit' : ''}
+    loading="eager"
+    decoding="sync"
+  />
+</Tag>
 
 <style>
   .logo {
     display: inline-flex;
     align-items: center;
-    text-decoration: none;
-    /* 44px tap target (PRD §9.3) */
+    /* 44px minimum tap target (PRD §9.3) even when the badge is shorter. */
     min-height: 44px;
+    text-decoration: none;
   }
 
-  /* The badge container is not decoration — it is the usage rule. The
-     wordmark is white, so it must never sit directly on off-white/white. */
-  .logo__badge {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0.05em;
-    padding: 0.5rem 1.1rem 0.55rem;
-    background-image: linear-gradient(
-      110deg,
-      var(--color-crimson) 0%,
-      var(--color-burgundy) 55%,
-      var(--color-plum) 100%
-    );
-    border-radius: var(--radius-md);
-    line-height: 1;
-  }
-
-  .logo__india {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.375rem;
-    letter-spacing: 0.02em;
-    color: var(--color-white);
-  }
-
-  .logo__visit {
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: 1.125rem;
-    letter-spacing: 0.06em;
-    color: var(--color-white);
-  }
-
-  /* On plum/burgundy the badge would disappear into the band, so the
-     lockup sits bare — which is what the real white artwork will do too. */
-  .logo--on-dark .logo__badge {
-    background-image: none;
-    padding-inline: 0;
+  .logo :global(img) {
+    display: block;
+    height: auto;
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .logo__badge {
+    a.logo :global(img) {
       transition: transform var(--duration-fast) var(--ease-brand);
     }
 
-    .logo:hover .logo__badge {
+    a.logo:hover :global(img) {
       transform: translate3d(0, -2px, 0);
     }
   }

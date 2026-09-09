@@ -12,9 +12,10 @@
  */
 import Base from '../layouts/Base.astro';
 import Logo from '../components/Logo.astro';
-import { siteSettings, verifiedTrustStats } from '../lib/site-settings';
+import { getSiteSettings, verifiedTrustStats } from '../lib/site-settings';
 
-const stats = verifiedTrustStats();
+const siteSettings = await getSiteSettings();
+const stats = verifiedTrustStats(siteSettings);
 
 const swatches = [
   { name: 'Crimson', token: '--color-crimson', hex: '#C3163A', use: 'Primary CTAs' },
