@@ -14,7 +14,9 @@
     "check": "astro check",
     "audit:hardcoded": "./scripts/audit-hardcoded.sh",
     "check:responsive": "node scripts/check-responsive.mjs",
-    "gate:lighthouse": "lighthouse http://localhost:4321/ --only-categories=performance,accessibility,seo,best-practices --output=json --output=html --output-path=./reports/gate-lighthouse --chrome-flags=\"--headless=new --no-sandbox\" --quiet"
+    "gate:lighthouse": "lighthouse http://localhost:4321/ --only-categories=performance,accessibility,seo,best-practices --output=json --output=html --output-path=./reports/gate-lighthouse --chrome-flags=\"--headless=new --no-sandbox\" --quiet",
+    "brand:logo": "node scripts/brand/extract-logo.mjs build",
+    "brand:lotus": "node scripts/brand/extract-lotus.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",

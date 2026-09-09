@@ -1,8 +1,0 @@
-<!-- TEMP-ASSET: placeholder favicon. Replace with a mark derived from the
-     approved logo once real vector artwork is supplied (see src/components/Logo.astro). -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="India Visit">
-  <rect width="64" height="64" rx="12" fill="#452B5E"/>
-  <path d="M32 8 L56 56 L8 56 Z" fill="none"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif"
-        font-size="30" font-weight="700" fill="#F7F5F6" letter-spacing="-1">IV</text>
-</svg>

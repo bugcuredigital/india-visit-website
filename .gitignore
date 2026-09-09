@@ -29,3 +29,6 @@ npm-debug.log*
 # Lighthouse raw reports — large; the committed evidence is reports/*-summary.json
 reports/*.report.json
 reports/*.report.html
+
+# Regenerable brand master (npm run brand:logo reproduces it exactly)
+docs/brand/processed/logo-badge-master.png
