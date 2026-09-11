@@ -183,6 +183,7 @@ Trailing slashes on. Never change a published URL without a 301 in `_redirects`.
 npm run dev        # plain `astro dev` until M7; becomes tinacms dev -c "astro dev" when Tina lands
 npm run build      # production build (must pass before any push to main)
 npm run preview    # verify built output locally
+npm run pdf:build  # print the 20 branded itinerary PDFs from the built journey pages (needs preview running)
 ```
 
 Deploy = push to `main` (Cloudflare Pages auto-builds). Feature work on branches → PR → preview URL → merge.

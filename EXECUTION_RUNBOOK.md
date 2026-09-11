@@ -56,7 +56,7 @@ Rules: every component reads editable values from props/settings (invariant #1);
 
 1. Port the remaining itineraries per Template Spec §5 migration map (14 at the start of M5 — six were built during M4 to prove both variants) (upgrade older docs to canonical format; full rewrite for Leh Ladakh; benchmark voice throughout)
 2. Write 9 destination pages; port/draft 8 launch articles with embedded journey cards; enter client-supplied testimonials (consent flag on)
-3. Generate 20 branded PDFs (from the same content) → wire as gated downloads
+3. Generate 20 branded PDFs (from the same content) → wire as gated downloads. **Done as:** `scripts/build-pdfs.mjs` prints each built journey page through the print stylesheet in headless Chrome, so the PDF *is* the page; the gate form is the shared `EnquiryForm` in its `pdf` layout; the release is M6 step 2a
 4. Populate real siteSettings (phone, WA number + prefill, email, socials)
 5. Cross-link pass: related journeys, article↔journey embeds, destination↔journey listings
 
@@ -86,6 +86,7 @@ webhook and GTM all sit on the built output and the settings singleton).
 
 1. Multi-step Plan-My-Trip form logic + per-journey prefilled enquiry forms
 2. `functions/api/lead.ts`: validate → Turnstile verify → Resend email → Sheet webhook → JSON response; honeypot; rate limit; hidden fields (page URL, UTM, journey slug, lead type incl. corporate tag)
+   **2a. PDF release (added M5).** The twenty branded PDFs are generated in M5 (`npm run pdf:build`) and the gate form (`leadType: pdf`, name + email + phone) exists on every journey page. In M6: the function derives the file from `journeySlug` and returns it only after a valid, Turnstile-verified submit; **the files move out of `public/downloads/` behind the function** (or a signed URL) so the gate is real. Until that lands the paths are guessable — the site must not launch with them in `public/`.
 3. Form success states (Namaste motif) + auto-response email copy
 4. WhatsApp deep links with per-page context; click-to-call; sticky mobile bar behavior
 5. Section entrances are CSS + IntersectionObserver sitewide (the default); GSAP + ScrollTrigger only for 1–2 homepage set pieces, lazy-loaded, + CounterStat islands; verify ≤ 40KB budget & reduced-motion
