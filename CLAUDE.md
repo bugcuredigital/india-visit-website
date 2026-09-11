@@ -18,6 +18,15 @@ Portfolio + lead-generation website for **India Visit**, a travel consultancy (2
 
 Rejected (do not reintroduce, reasons in CONTEXT.md): WordPress, Strapi, Next.js, Vercel, Tina hosted media, client-side CMS fetching.
 
+## Skill precedence
+
+The globally installed **`ui-ux-pro-max`** skill does not get to design this site.
+
+- **Overridden here:** its design-system generation — palette, typography, styles, patterns. The locked brand system and design direction in this file win outright. A general-purpose generator will propose a coherent palette and type scale of its own, and adopting any part of it would quietly break a brand system the client authored and has signed off in stages.
+- **Usable here:** its **UX guidelines, accessibility rules and anti-pattern checklists**, as a *supplementary review lens* — a second opinion on flows, states, affordances and WCAG issues, applied on top of the locked design rather than in place of it.
+
+General shape of the rule: where a global skill and this project's locked specifications disagree, the specifications win. Treat the skill as a reviewer, never as an art director.
+
 ## Non-negotiable invariants
 
 1. **Nothing user-editable is hardcoded.** Phone, WhatsApp number + prefill text, email, address, social URLs, CTA link targets, GTM container ID, Meta Pixel ID → all read from the `siteSettings` singleton. If you find yourself typing a phone number in a component, stop and wire it to settings.
