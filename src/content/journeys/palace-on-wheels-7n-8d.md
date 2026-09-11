@@ -280,7 +280,12 @@ customiseCopy: >-
   Departures fill early, and cabin categories sell out at different rates —
   tell us your dates and we will check live availability with the operator.
 
-related: []
+related:
+  - deccan-odyssey-7n-8d
+  - golden-chariot-5n-6d
+  - rajasthan-jawai-10n-11d
+# Gated branded PDF — regenerated from this entry by `npm run pdf:build`.
+pdfFile: /downloads/palace-on-wheels-7n-8d.pdf
 featured: true
 
 seo:

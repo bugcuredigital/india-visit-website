@@ -15,7 +15,7 @@ import Button from './Button.astro';
 
 interface Props {
   /** Tags the lead so corporate enquiries route separately. */
-  leadType?: 'general' | 'journey' | 'corporate' | 'callback';
+  leadType?: 'general' | 'journey' | 'corporate' | 'callback' | 'pdf';
   /** Prefills the journey context on itinerary pages. */
   journeySlug?: string;
   journeyTitle?: string;
@@ -27,13 +27,18 @@ interface Props {
    *   full    — the page form: name, phone, email, month, message
    *   compact — a narrow column: name, phone, month
    *   footer  — the footer strip (round 3, item 8): name, phone, message
+   *   pdf     — the itinerary-PDF gate (M5): name, email, phone. PRD §8.1
+   *             gates the download on email AND phone, so both are required.
+   *             The file path is never in the markup: the lead function (M6)
+   *             derives it from `journeySlug` and releases it after a valid
+   *             submit, which is what makes the gate a gate.
    *
    * Every layout shares the same honeypot, the same hidden context fields and
    * the same required consent checkbox. That machinery is the reason the
    * footer form is a mode of this component rather than a second form: a
    * second form is a second place for the consent checkbox to go missing.
    */
-  layout?: 'full' | 'compact' | 'footer';
+  layout?: 'full' | 'compact' | 'footer' | 'pdf';
   onDark?: boolean;
 }
 
@@ -48,6 +53,7 @@ const {
 
 const isCompact = layout === 'compact';
 const isFooter = layout === 'footer';
+const isPdf = layout === 'pdf';
 
 const uid = Math.random().toString(36).slice(2, 8);
 const id = (name: string) => `${name}-${uid}`;
@@ -92,14 +98,14 @@ const MONTHS = [
       <input class="form__input" type="tel" id={id('phone')} name="phone" autocomplete="tel" inputmode="tel" required />
     </p>
 
-    {layout === 'full' && (
+    {(layout === 'full' || isPdf) && (
       <p class="form__field">
         <label class="form__label" for={id('email')}>Email</label>
-        <input class="form__input" type="email" id={id('email')} name="email" autocomplete="email" />
+        <input class="form__input" type="email" id={id('email')} name="email" autocomplete="email" required={isPdf} />
       </p>
     )}
 
-    {!isFooter && (
+    {!isFooter && !isPdf && (
       <p class="form__field">
         <label class="form__label" for={id('month')}>Travel month</label>
         <select class="form__input" id={id('month')} name="travelMonth">
@@ -108,7 +114,7 @@ const MONTHS = [
       </p>
     )}
 
-    {!isCompact && (
+    {!isCompact && !isPdf && (
       <p class="form__field form__field--wide">
         <label class="form__label" for={id('message')}>
           {isFooter ? 'Where would you like to go?' : (
@@ -132,10 +138,11 @@ const MONTHS = [
   <div data-turnstile></div>
 
   <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block>
-    {isFooter ? 'Send enquiry' : 'Start planning'}
+    {isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
   </Button>
 
-  {!isFooter && <p class="form__note">We reply personally — no call centre, no spam.</p>}
+  {!isFooter && !isPdf && <p class="form__note">We reply personally — no call centre, no spam.</p>}
+  {isPdf && <p class="form__note">The PDF is the same itinerary as this page, section for section. We may follow up once — no list, no spam.</p>}
 </form>
 
 <style>
