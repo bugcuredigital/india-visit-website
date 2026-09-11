@@ -325,3 +325,88 @@
     html.js .fade-up-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
   }
 }
+
+/* ============================================================================
+   PRINT — the branded itinerary PDF (M5).
+   ----------------------------------------------------------------------------
+   The gated PDF for every journey is printed FROM THE JOURNEY PAGE ITSELF by
+   scripts/build-pdfs.mjs, so "matches the web page section-for-section"
+   (Template Spec §6) is a property of the build rather than a thing to check:
+   there is one source, and this stylesheet only decides what a printer sees.
+   Chrome, interaction furniture and the conversion band are removed; the
+   `.print-only` brand header is revealed; nothing is restyled beyond that.
+   ========================================================================== */
+@page {
+  size: A4;
+  margin: 14mm 12mm 16mm;
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  .header,
+  .footer,
+  .bar,
+  #bar-sentinel,
+  #header-sentinel,
+  .convert,
+  .pdfgate,
+  .hero__video,
+  .hero__cue,
+  .intro__expander,
+  section:has(.related__head),
+  section:has(.quotes__head),
+  .band-watermark {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  html {
+    font-size: 11pt;
+  }
+
+  body {
+    background: #fff !important;
+    color: var(--color-ink);
+  }
+
+  .band {
+    padding-block: 1rem;
+  }
+
+  /* The hero is a photograph with copy, not a full screen — cap it. */
+  .hero {
+    min-height: 0 !important;
+    max-height: 90mm;
+    break-after: avoid;
+  }
+
+  /* The intro's read-more clamp is a screen affordance. */
+  .intro__body--clamped {
+    max-height: none !important;
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
+  }
+
+  /* Every day is opened by the print script; keep each one on one page. */
+  details.day,
+  .stat,
+  .card {
+    break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

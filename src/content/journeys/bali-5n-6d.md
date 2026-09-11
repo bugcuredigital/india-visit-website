@@ -129,7 +129,12 @@ practicalNotes:
     label: Getting around
     text: A private car with a driver is by far the easiest way to move between Ubud and the coast, and costs less than you would expect.
 
-related: []
+related:
+  - vietnam-hanoi-halong-hoian-7n-8d
+  - bhutan-paro-thimphu-punakha-7n-8d
+  - kerala-in-a-week-7n-8d
+# Gated branded PDF — regenerated from this entry by `npm run pdf:build`.
+pdfFile: /downloads/bali-5n-6d.pdf
 featured: true
 
 seo:

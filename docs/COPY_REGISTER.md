@@ -187,6 +187,50 @@ and then appear on every page.
 
 ---
 
+## L. Travel Guide articles (M5) — all DRAFT
+
+Seven new articles, every word agency-drafted. Titles and excerpts are below;
+the bodies are on the pages. Facts come from your itinerary documents and the
+destination pages; regulatory facts carry a "rules change" line.
+
+| # | Article | Status | Note |
+|---|---|---|---|
+| L1 | "Best Time to Visit Ladakh — Month by Month" | **DRAFT** | Names two "windows we would pick" — an opinion in your voice |
+| L2 | "Bhutan for Indian Travellers — Permits, the Daily Fee, Air or Road" | **DRAFT** | ⚑ Regulatory; no fee figure printed |
+| L3 | "Bali Visa on Arrival for Indians, and When to Go" | **DRAFT** | ⚑ Regulatory |
+| L4 | "Vietnam E-Visa Guide for Indian Passport Holders" | **DRAFT** | ⚑ Regulatory |
+| L5 | "Palace on Wheels — The Complete Guide to Cabins, Route and Booking" | **DRAFT** | Restates the journey entry; no tariff |
+| L6 | "Golden Triangle — 5 Days or 10? Which Itinerary Suits You" | **DRAFT** | ⚑ Contains recommendations ("choose it if…") in your voice |
+| L7 | "Your First Trip to India — A Practical Guide for Foreign Visitors" | **DRAFT** | ⚑ Contains general health/safety advice in your voice |
+
+## M. The fourteen journeys ported in M5
+
+Titles, signature features, highlights, day titles and intros were **written or
+rewritten by the agency** from your documents (the Template Spec calls for
+intro, highlights and glance table to be added to the mid-format documents and
+for Leh Ladakh to be rewritten entirely). Day narratives follow your documents
+closely and are content rather than chrome — they are reviewed through
+`CLIENT_REVIEW_SHEET.md` §23, not here. The chrome that is ours:
+
+| # | Where | Status | Note |
+|---|---|---|---|
+| M1 | The fourteen page **titles** — e.g. "Majestic Rajasthan", "Kerala in a Week", "Leh, Ladakh and Kashmir", "North East India — Root Bridges and Majuli" | **DRAFT** | Your documents' titles were filenames; these are ours |
+| M2 | The fourteen **signature-feature lines** under each title | **DRAFT** | |
+| M3 | The **intro paragraphs** on all fourteen | **DRAFT** | |
+| M4 | The **highlights** on all fourteen (verb-led) | **DRAFT** | Distilled from your day plans |
+| M5 | The **practical notes** where your document had none (Golden Triangle ×3, Rajasthan ×2, the trains) | **DRAFT** | |
+| M6 | "Departures fill early…" customise copy on the trains | **DRAFT** | |
+| M7 | The Deccan Odyssey day entries | **PLACEHOLDER** | ⚑ See review sheet §22 — the operator's programme is missing |
+
+## N. Destination page prose (M5)
+
+The long-form body on all nine destination pages was written in M5 and
+replaces the pull-forward stubs. All nine are **DRAFT** (§D3 above now covers
+the bodies as well as the intros). Two things in them are positions rather
+than descriptions and are worth a specific look: the Wildlife page's "we would
+rather say so than sell you a tiger", and the Ladakh page's "we will not sell
+one without them" on acclimatisation days.
+
 ## What to do with this file
 
 1. Read the **DRAFT** rows, especially the ones marked ⚑ — those are claims,

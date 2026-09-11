@@ -54,26 +54,25 @@ Rules: every component reads editable values from props/settings (invariant #1);
 
 ## M5 — Content migration (Day 7–10, parallelizable with M6)
 
-1. Port remaining 17 itineraries per Template Spec §5 migration map (upgrade older docs to canonical format; full rewrite for Leh Ladakh; benchmark voice throughout)
+1. Port the remaining itineraries per Template Spec §5 migration map (14 at the start of M5 — six were built during M4 to prove both variants) (upgrade older docs to canonical format; full rewrite for Leh Ladakh; benchmark voice throughout)
 2. Write 9 destination pages; port/draft 8 launch articles with embedded journey cards; enter client-supplied testimonials (consent flag on)
-3. Generate 20 branded PDFs (from the same content) → wire as gated downloads
+3. Generate 20 branded PDFs (from the same content) → wire as gated downloads. **Done as:** `scripts/build-pdfs.mjs` prints each built journey page through the print stylesheet in headless Chrome, so the PDF *is* the page; the gate form is the shared `EnquiryForm` in its `pdf` layout; the release is M6 step 2a
 4. Populate real siteSettings (phone, WA number + prefill, email, socials)
 5. Cross-link pass: related journeys, article↔journey embeds, destination↔journey listings
 
 **Gate:** all 20 journey pages pass Template Spec §6 checklist; content spot-check by client ⚑; every page has unique title/meta; sitemap contains all routes; **`docs/CLIENT_REVIEW_SHEET.md` complete** (created early, in M2) listing every provisional value (pace, idealFor, trust numbers, empty priceFrom) for one-shot client sign-off; **USD/price-pattern grep across all three train pages returns nothing** — this is a permanent regression check, not a one-off.
 
-## M6 — Interactivity & motion (Day 8–11)
+## Execution order (resequenced 2026-09-11, client ruling)
 
-1. Multi-step Plan-My-Trip form logic + per-journey prefilled enquiry forms
-2. `functions/api/lead.ts`: validate → Turnstile verify → Resend email → Sheet webhook → JSON response; honeypot; rate limit; hidden fields (page URL, UTM, journey slug, lead type incl. corporate tag)
-3. Form success states (Namaste motif) + auto-response email copy
-4. WhatsApp deep links with per-page context; click-to-call; sticky mobile bar behavior
-5. Section entrances are CSS + IntersectionObserver sitewide (the default); GSAP + ScrollTrigger only for 1–2 homepage set pieces, lazy-loaded, + CounterStat islands; verify ≤ 40KB budget & reduced-motion
-6. Wire GTM via Partytown reading container ID from settings; define events: `lead_form_submit`, `wa_click`, `call_click`, `pdf_download`, `corporate_submit`
+**M5 → M7 → M6 → M8 → M9.** The Tina dashboard is pulled forward ahead of the
+forms work because the owner needs hands-on content and image control as early
+as possible. The milestone numbers, their contents and their gate definitions
+are unchanged — only the order of execution moves. Nothing in M6 assumed Tina
+existed first (verified: there is no `tina/` or `functions/` directory yet, and
+no M6 step reads from the CMS — the lead function, Turnstile, Resend, the Sheet
+webhook and GTM all sit on the built output and the settings singleton).
 
-**Gate:** test lead arrives in inbox + Sheet in < 1 min with correct tags; forms unusable by a simple bot (Turnstile verified server-side); Lighthouse unchanged (≥ 90 perf) WITH GTM firing — proves Partytown is doing its job.
-
-## M7 — Tina wiring (Day 10–12)
+## M7 — Tina wiring (Day 10–12) — *runs immediately after M5 since the 2026-09-11 resequence*
 
 1. `tina/config.ts` mirroring the Zod schemas field-for-field; repo-based media to `/public/uploads/`
 2. Visual editing on: journeys, posts, destinations, siteSettings; forms-only fallback acceptable for testimonials
@@ -82,6 +81,18 @@ Rules: every component reads editable values from props/settings (invariant #1);
 5. Client walkthrough ⚑ + one-page cheat sheet (edit, publish, undo)
 
 **Gate:** the client herself successfully edits text, swaps an image, changes a phone number, and publishes a draft article on a screen-share — without touching code.
+
+## M6 — Interactivity & motion (Day 8–11) — *runs after M7 since the 2026-09-11 resequence*
+
+1. Multi-step Plan-My-Trip form logic + per-journey prefilled enquiry forms
+2. `functions/api/lead.ts`: validate → Turnstile verify → Resend email → Sheet webhook → JSON response; honeypot; rate limit; hidden fields (page URL, UTM, journey slug, lead type incl. corporate tag)
+   **2a. PDF release (added M5).** The twenty branded PDFs are generated in M5 (`npm run pdf:build`) and the gate form (`leadType: pdf`, name + email + phone) exists on every journey page. In M6: the function derives the file from `journeySlug` and returns it only after a valid, Turnstile-verified submit; **the files move out of `public/downloads/` behind the function** (or a signed URL) so the gate is real. Until that lands the paths are guessable — the site must not launch with them in `public/`.
+3. Form success states (Namaste motif) + auto-response email copy
+4. WhatsApp deep links with per-page context; click-to-call; sticky mobile bar behavior
+5. Section entrances are CSS + IntersectionObserver sitewide (the default); GSAP + ScrollTrigger only for 1–2 homepage set pieces, lazy-loaded, + CounterStat islands; verify ≤ 40KB budget & reduced-motion
+6. Wire GTM via Partytown reading container ID from settings; define events: `lead_form_submit`, `wa_click`, `call_click`, `pdf_download`, `corporate_submit`
+
+**Gate:** test lead arrives in inbox + Sheet in < 1 min with correct tags; forms unusable by a simple bot (Turnstile verified server-side); Lighthouse unchanged (≥ 90 perf) WITH GTM firing — proves Partytown is doing its job.
 
 ## M8 — SEO, analytics, hardening (Day 12–13)
 

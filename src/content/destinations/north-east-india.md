@@ -1,10 +1,7 @@
 ---
-# PROVISIONAL — agency-drafted so the T2 v2 template and the /destinations/
-# index have real content to be reviewed against, and so the M4 click-through
-# has no dead links. Writing the nine destination pages is M5 work
-# (EXECUTION_RUNBOOK M5 step 2); this is a pull-forward of the prose only.
-# Every entry is logged in docs/CLIENT_REVIEW_SHEET.md §17.
-# Imagery is TEMP-PHOTO (Unsplash), replaced by the client's archive in M5.
+# DRAFT prose — agency-written for M5 (word control, invariant #9); listed in
+# docs/COPY_REGISTER.md §D and CLIENT_REVIEW_SHEET.md §17. Imagery is
+# TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: North East India
 shortLabel: North East
 tagline: Living root bridges, the wettest villages on earth, and the quietest corner of the country.
@@ -59,6 +56,7 @@ faq:
 
 relatedJourneys:
   - north-east-india-6n-7d
+  - north-east-root-bridges-majuli-6n-7d
 
 seo:
   metaTitle: North East India Tours — Meghalaya, Assam & the Khasi Hills
@@ -66,12 +64,25 @@ seo:
 ---
 
 The North East is where India stops resembling itself. The hills are Khasi,
-Garo and Naga; the architecture is timber and tin rather than sandstone; and the
+Garo and Naga; the architecture is timber and tin rather than sandstone; the
 rain, when it comes, arrives in quantities that have to be seen to be
-understood.
+understood; and the visitor numbers are a fraction of anywhere else in the
+country, which is the reason to go now.
 
-Most journeys here centre on Meghalaya — Shillong, the Cherrapunji plateau, the
-living root bridges at Nongriat and Mawlynnong — with Assam's tea estates and
-Kaziranga's one-horned rhinos added where there is time. It is the quietest
-travel we sell, and the travellers who take it tend to come back for the states
-further east.
+We run two journeys here, and they are deliberately different. The first is
+the Meghalaya and Assam circuit — Shillong, the Cherrapunji plateau, the clear
+river at Dawki, and then Kaziranga for the one-horned rhino — which is the
+route for a first visit and for anyone who wants the region's set pieces. The
+second is the experiential route: Khasi homestays at Mawlynnong, the trek down
+three and a half thousand steps to the double-decker root bridge at Nongriat,
+Shillong's food and music, and two nights on Majuli, the largest river island
+in the world, among the Vaishnavite satras and the mask-makers. It trades
+comfort for immersion, and it asks a little fitness of you.
+
+Both begin and end at Guwahati, both run from October to April — the monsoon
+makes the root-bridge treks unsafe and the roads slow — and Indian nationals
+need no permit for Meghalaya or Assam. Foreign nationals should ask us about
+current requirements when booking.
+
+It is the quietest travel we sell, and the travellers who take it tend to come
+back for the states further east.

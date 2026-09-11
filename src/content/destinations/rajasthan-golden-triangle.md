@@ -1,10 +1,7 @@
 ---
-# PROVISIONAL — agency-drafted so the T2 v2 template and the /destinations/
-# index have real content to be reviewed against, and so the M4 click-through
-# has no dead links. Writing the nine destination pages is M5 work
-# (EXECUTION_RUNBOOK M5 step 2); this is a pull-forward of the prose only.
-# Every entry is logged in docs/CLIENT_REVIEW_SHEET.md §17.
-# Imagery is TEMP-PHOTO (Unsplash), replaced by the client's archive in M5.
+# DRAFT prose — agency-written for M5 (word control, invariant #9); listed in
+# docs/COPY_REGISTER.md §D and CLIENT_REVIEW_SHEET.md §17. Imagery is
+# TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: Rajasthan & the Golden Triangle
 shortLabel: Rajasthan
 tagline: Forts on every ridge, and the three cities most people meet India through.
@@ -79,7 +76,13 @@ faq:
 
 relatedJourneys:
   - golden-triangle-5n-6d
+  - golden-triangle-jhalana-6n-7d
+  - golden-triangle-varanasi-9n-10d
+  - golden-triangle-amritsar-11n-12d
+  - rajasthan-jawai-10n-11d
+  - rajasthan-classic-12n-13d
   - palace-on-wheels-7n-8d
+  - deccan-odyssey-7n-8d
 
 seo:
   metaTitle: Rajasthan & Golden Triangle Tours — Delhi, Agra, Jaipur
@@ -93,7 +96,20 @@ state runs on a scale that makes sense only when you are standing in it.
 
 The Golden Triangle is the entry point — Delhi's layered capitals, the Taj
 Mahal at Agra, and Jaipur's planned grid of nine sectors — and it is genuinely
-the best week-long introduction to the country. Beyond it the state opens out:
-Udaipur's lake palaces, Jodhpur's blue old city under Mehrangarh, Jaisalmer's
-sandstone fort still lived in after eight hundred years, and the tiger reserves
-at Ranthambore and Jawai.
+the best week-long introduction to the country. We run it four ways: the
+six-day classic, a week with the leopards of Jhalana, ten days with Varanasi
+by train, and twelve from the Golden Temple at Amritsar. The article on
+choosing between them is below.
+
+Beyond the Triangle the state opens out, and this is where the longer journeys
+go: Udaipur's lake palaces and a heritage walk through its lanes, Jodhpur's
+blue old city under Mehrangarh and a Bishnoi village by jeep, Jaisalmer's
+sandstone fort still lived in after eight centuries, Pushkar's lake, and the
+leopard hills at Jawai. Two luxury trains — the Palace on Wheels and the
+Deccan Odyssey — cover the same ground with one unpacking.
+
+What we do differently is the hour. Amer before the heat, the Taj at first
+light, the Jama Masjid when the courtyard is quiet, a rooftop in Jodhpur as
+the light goes: Rajasthan is a state of extraordinary buildings, and almost all
+of them are better at seven in the morning than at eleven. Two nights in each
+city is what makes that possible, and it is how every itinerary here is built.

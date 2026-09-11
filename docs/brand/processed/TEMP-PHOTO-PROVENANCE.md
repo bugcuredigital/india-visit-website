@@ -38,6 +38,17 @@ Encoded as mozjpeg quality 82.
 | `TEMP-PHOTO-journey-bali.jpg` | A figure walking through bright green rice terraces below a misty ridge at dawn | Unsplash contributor | [source](https://unsplash.com/photos/1558005530-a7958896ec60) | 2400×1599 | journey hero — Bali 5N/6D |
 | `TEMP-PHOTO-journey-north-east.jpg` | A lush green valley in the Khasi Hills with a distant waterfall | Unsplash contributor | [source](https://unsplash.com/photos/1689089526066-c7e6e95ee265) | 2400×1600 | journey hero — North East India 6N/7D |
 | `TEMP-PHOTO-journey-western-southern.jpg` | A stone temple on a hilltop above a wide valley | Unsplash contributor | [source](https://unsplash.com/photos/1559318246-114068fc532e) | 2400×1600 | journey hero — Western & Southern India 12N/13D |
+| `TEMP-PHOTO-journey-gt-amritsar.jpg` | The Golden Temple at Amritsar reflected in the Amrit Sarovar | helen chevrier | [source](https://unsplash.com/photos/1761924422461-2aad2800020b) | 2400×1600 | journey hero — Golden Triangle from Amritsar 11N/12D |
+| `TEMP-PHOTO-journey-gt-varanasi.jpg` | Boats on the Ganges below the Varanasi ghats | Vizag Explore | [source](https://unsplash.com/photos/1762513839526-c596f5e99a9a) | 2400×1600 | journey hero — Golden Triangle with Varanasi 9N/10D |
+| `TEMP-PHOTO-journey-gt-jhalana.jpg` | A leopard standing on a rock | Gurth Bramall | [source](https://unsplash.com/photos/1659531166056-2b96f0c6259d) | 2400×1600 | journey hero — Golden Triangle with Jhalana Leopard Reserve 6N/7D |
+| `TEMP-PHOTO-journey-rajasthan-tour.jpg` | A chhatri at the Jagmandir island palace on Lake Pichola, Udaipur | Vikram Chouhan | [source](https://unsplash.com/photos/1655106606416-f65f790cff66) | 2268×1600 | journey hero — Rajasthan Tour 12N/13D |
+| `TEMP-PHOTO-journey-kerala-week.jpg` | The Varkala cliff and beach at daybreak | Anand S | [source](https://unsplash.com/photos/1610817201767-793a9130ce07) | 2400×1600 | journey hero — Kerala in a Week 7N/8D |
+| `TEMP-PHOTO-journey-kerala-trivandrum.jpg` | Kovalam beach with the lighthouse in the distance | Ananya Anand | [source](https://unsplash.com/photos/1701793035486-c6b4368aa842) | 2400×1600 | journey hero — Kerala & the Southern Coast 12N/13D |
+| `TEMP-PHOTO-journey-leh-ladakh.jpg` | Thiksey monastery rising above the Indus valley, Ladakh | Ben Gillam | [source](https://unsplash.com/photos/1760835251791-1fda687de791) | 2400×1600 | journey hero — Leh, Ladakh & Kashmir 10N/11D |
+| `TEMP-PHOTO-journey-north-east-roots.jpg` | The double-decker living root bridge at Nongriat, Meghalaya | Abhishek Tirkey | [source](https://unsplash.com/photos/1742494340594-f745a81e2136) | 2400×1600 | journey hero — North East India: Root Bridges & Majuli 6N/7D |
+| `TEMP-PHOTO-journey-vietnam.jpg` | A lantern-lit bridge in Hoi An at night | Daniele Franchi | [source](https://unsplash.com/photos/1741274236412-b6760ff6c01b) | 2400×1600 | journey hero — Vietnam 7N/8D |
+| `TEMP-PHOTO-journey-bhutan.jpg` | Punakha Dzong in the Bhutan Himalaya | Raimond Klavins | [source](https://unsplash.com/photos/1608236475016-1dcc7a260326) | 2400×1600 | journey hero — Bhutan 7N/8D |
+| `TEMP-PHOTO-journey-golden-chariot.jpg` | Mysore Palace seen through its arched gateway | Mahendra Maddirala | [source](https://unsplash.com/photos/1659126574791-13313aa424bd) | 2400×1350 | journey hero — Golden Chariot: Jewels of the South 5N/6D |
 | `TEMP-PHOTO-dest-rajasthan.jpg` | Jaisalmer rooftops and fort from a high vantage | Unsplash contributor | [source](https://unsplash.com/photos/1710347454810-e3d493dcc538) | 1400×787 | destination tile — rajasthan-golden-triangle |
 | `TEMP-PHOTO-dest-kerala.jpg` | Traditional houseboat on palm-lined Alappuzha backwaters | Unsplash contributor | [source](https://unsplash.com/photos/1593693411515-c20261bcad6e) | 1400×935 | destination tile — kerala |
 | `TEMP-PHOTO-dest-south-west.jpg` | Hampi temple ruins across open ground | Unsplash contributor | [source](https://unsplash.com/photos/1722934804353-0d9f6a55ab5e) | 1400×962 | destination tile — south-west-india |
@@ -72,4 +83,4 @@ Encoded as mozjpeg quality 82.
 | `TEMP-PHOTO-city-kochi-strip-2.jpg` | A wooded island surrounded by water | Unsplash contributor | [source](https://unsplash.com/photos/1582537683185-922141f18eaa) | 1000×748 | city photo strip — Kochi |
 | `TEMP-PHOTO-city-kochi-strip-3.jpg` | Palms against the sea under a clear sky | Unsplash contributor | [source](https://unsplash.com/photos/1599328431991-365a583f09f5) | 1000×750 | city photo strip — Kochi |
 
-40 of 40 fetched successfully.
+52 of 52 fetched successfully.
