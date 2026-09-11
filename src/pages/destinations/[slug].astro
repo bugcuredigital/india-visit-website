@@ -1,0 +1,501 @@
+---
+/**
+ * Destination page — PAGE_TEMPLATES T2 v2.
+ * ---------------------------------------------------------------------------
+ * The v2 revision moved the journey cards UP, directly after a two-or-three
+ * sentence intro, because they are the conversion core of the page and were
+ * previously buried under editorial. Everything below them is depth for the
+ * readers who want it.
+ *
+ * The long-form prose still exists — it is the markdown body — but it sits
+ * behind an expander under the intro rather than in front of the product.
+ * That is what T2 v2 means by "expandable if longer".
+ *
+ * Sections that have nothing to show render NOTHING, rather than a heading
+ * over an empty grid: four of the nine destinations have no journeys in the
+ * catalogue yet, most have no experience tiles until the client's photography
+ * lands, and testimonials are gated on written consent. Omitting beats faking
+ * — the same rule the association-logos row and the corporate proof section
+ * follow.
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Hero from '../../components/Hero.astro';
+import JourneyCard from '../../components/JourneyCard.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import PracticalNotesGrid from '../../components/PracticalNotesGrid.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import ConvertBand from '../../components/ConvertBand.astro';
+import StickyMobileBar from '../../components/StickyMobileBar.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import Lotus from '../../components/Lotus.astro';
+
+import { heroPreload } from '../../lib/hero-image';
+import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const destinations = await getCollection('destinations');
+  return destinations.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const destination = entry.data;
+const { Content } = await render(entry);
+
+const heroLink = await heroPreload(destination.heroImage);
+
+/**
+ * Journeys come from the entry's own `relatedJourneys` and nowhere else.
+ *
+ * CLAUDE.md describes this as "auto by tag + manual override", and the
+ * automatic half is deliberately NOT implemented yet: journeys carry no
+ * destination reference, so the only automatic basis available would be
+ * fuzzy-matching a region name against a title or a route. That would file
+ * trips wrongly and do it silently, which is worse on a conversion section
+ * than showing fewer cards. The tag arrives in M5 with the other 17 journeys.
+ */
+const journeys = (
+  await Promise.all(destination.relatedJourneys.map((ref) => getEntry('journeys', ref.id)))
+).filter((journey) => journey !== undefined && !journey.data.draft);
+
+/* One destination-specific testimonial, and only with recorded consent.
+   `beyond-india` destinations take an international voice. */
+const wantedCategory = destination.region === 'india' ? 'india' : 'international';
+const testimonial = (await getCollection('testimonials', ({ data }) => data.consentConfirmed)).find(
+  (item) => item.data.category === wantedCategory,
+);
+
+/* Related articles: posts that embed one of this destination's journeys. A
+   computed relation rather than a second list to keep in step by hand. */
+const journeyIds = new Set(journeys.map((journey) => journey!.id));
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .filter((post) => post.data.embeddedJourneys.some((ref) => journeyIds.has(ref.id)))
+  .slice(0, 3);
+
+const pageUrl = new URL(`/destinations/${entry.id}/`, Astro.site).href;
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: 'Destinations', url: new URL('/destinations/', Astro.site).href },
+  { name: destination.name, url: pageUrl },
+]);
+const faq = faqSchema(destination.faq);
+---
+
+<Base
+  title={destination.seo.metaTitle}
+  description={destination.seo.metaDescription}
+  ogImage={destination.seo.ogImage}
+>
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      href={heroLink.href}
+      imagesrcset={heroLink.imagesrcset}
+      imagesizes={heroLink.imagesizes}
+      type={heroLink.type}
+      fetchpriority="high"
+    />
+    <JsonLd schema={crumbs} />
+    <JsonLd schema={faq} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1 · Hero ---------------------------------------------------------- -->
+  <Hero image={destination.heroImage} alt={destination.heroImageAlt} height="short">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/destinations/">Destinations</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{destination.shortLabel}</span>
+    </nav>
+    <h1 class="dest__title">{destination.name}</h1>
+    <p class="dest__tagline">{destination.tagline}</p>
+  </Hero>
+
+  <!-- 2 · Short intro, with the long version behind an expander ---------- -->
+  <section class="band band-tight" aria-labelledby="intro-heading">
+    <div class="container-content">
+      <h2 id="intro-heading" class="visually-hidden">About {destination.name}</h2>
+      <p class="dest__intro prose-measure">{destination.intro}</p>
+
+      <!--
+        Native <details>: the long prose is in the HTML whether or not it is
+        open, so search engines and find-in-page get all of it while the
+        journey cards stay within one scroll. A JavaScript "read more" would
+        trade the second thing for the first.
+      -->
+      <details class="more">
+        <summary class="more__summary">
+          <span class="more__label">More about {destination.shortLabel}</span>
+          <svg class="more__chevron" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+            <path
+              d="M1 1.5 6 6.5l5-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </summary>
+        <div class="more__body prose-measure">
+          <Content />
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- 3 · Journeys — MOVED UP (T2 v2). The conversion core. -------------- -->
+  {
+    journeys.length > 0 && (
+      <section class="band band-offwhite" aria-labelledby="journeys-heading">
+        <div class="container-content">
+          <div class="sectionhead">
+            <div>
+              <p class="eyebrow">Journeys</p>
+              <h2 id="journeys-heading">Journeys in {destination.shortLabel}</h2>
+            </div>
+            <a class="pill tap-target" href="/journeys/">
+              All journeys
+              <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+                <path
+                  d="M1 5h13M10 1l4 4-4 4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <div class="cards fade-up-stagger">
+            {journeys.map((journey) => (
+              <JourneyCard
+                slug={journey!.id}
+                title={journey!.data.title}
+                image={journey!.data.heroImage}
+                imageAlt={journey!.data.heroImageAlt}
+                nights={journey!.data.nights}
+                days={journey!.data.days}
+                routeCities={journey!.data.routeCities}
+                variant={journey!.data.variant}
+                signatureFeature={journey!.data.signatureFeature}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 4 · What defines {Destination} ------------------------------------- -->
+  {
+    destination.experiences && destination.experiences.length > 0 && (
+      <section class="band band-tight" aria-labelledby="defines-heading">
+        <div class="container-content">
+          <p class="eyebrow">What defines it</p>
+          <h2 id="defines-heading">What defines {destination.shortLabel}</h2>
+
+          <ul class="tiles fade-up-stagger">
+            {destination.experiences.map((experience) => (
+              <li class="tile">
+                <span class="tile__frame">
+                  <Image
+                    src={experience.image}
+                    alt={experience.imageAlt}
+                    widths={[320, 480, 720]}
+                    sizes="(min-width: 64rem) 21rem, (min-width: 40rem) 30vw, 90vw"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                    quality={58}
+                    class="tile__img"
+                  />
+                </span>
+                <h3 class="tile__name">{experience.name}</h3>
+                <p class="tile__text">{experience.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 5 · Practical strip -------------------------------------------------- -->
+  <PracticalNotesGrid
+    notes={destination.practicalNotes}
+    heading={`Practical notes — ${destination.shortLabel}`}
+    surface={destination.experiences ? 'offwhite' : 'white'}
+  />
+
+  <!-- 6 · Testimonial ------------------------------------------------------ -->
+  {
+    testimonial && (
+      <section class="band band-tight" aria-labelledby="quote-heading">
+        <div class="container-content">
+          <h2 id="quote-heading" class="visually-hidden">What travellers say</h2>
+          <figure class="quote fade-up">
+            <Lotus size={22} class="quote__mark" />
+            <blockquote class="quote__text">
+              <p>{testimonial.data.quote}</p>
+            </blockquote>
+            <figcaption class="quote__by">
+              {testimonial.data.name} · {testimonial.data.origin}
+              <span class="quote__trip">{testimonial.data.tripLabel}</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 7 · FAQ --------------------------------------------------------------- -->
+  <FaqAccordion
+    faq={destination.faq}
+    heading={`${destination.shortLabel} — common questions`}
+    id="faq"
+    surface="offwhite"
+  />
+
+  <!-- 8 · Related articles --------------------------------------------------- -->
+  {
+    posts.length > 0 && (
+      <section class="band band-tight" aria-labelledby="reading-heading">
+        <div class="container-content">
+          <p class="eyebrow">Travel guide</p>
+          <h2 id="reading-heading">Reading before you go</h2>
+          <div class="cards fade-up-stagger">
+            {posts.map((post) => (
+              <ArticleCard
+                slug={post.id}
+                title={post.data.title}
+                category={post.data.category}
+                excerpt={post.data.excerpt}
+                image={post.data.heroImage}
+                imageAlt={post.data.heroImageAlt}
+                publishDate={post.data.publishDate}
+                updatedDate={post.data.updatedDate}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 9 · Convert ------------------------------------------------------------ -->
+  <div id="enquire">
+    <ConvertBand
+      heading={`Shall we plan ${destination.shortLabel}?`}
+      body={`Tell us roughly when you would like to travel and how long you have, and we will come back with a day-by-day plan for ${destination.shortLabel} and a price.`}
+      leadType="general"
+      waContext={destination.shortLabel}
+    />
+  </div>
+
+  <Footer slot="footer" />
+  <StickyMobileBar slot="after-footer" />
+</Base>
+
+<style>
+  /* ---- hero copy -------------------------------------------------------- */
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-on-dark-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-white);
+  }
+
+  .dest__title {
+    font-size: var(--text-hero);
+    line-height: var(--leading-display);
+    color: var(--color-white);
+  }
+
+  .dest__tagline {
+    margin-top: 1rem;
+    max-width: 46ch;
+    font-size: var(--text-xl);
+    color: var(--color-on-dark);
+  }
+
+  /* ---- 2 · intro + expander --------------------------------------------- */
+  .dest__intro {
+    font-size: var(--text-xl);
+  }
+
+  .more {
+    margin-top: 1.5rem;
+  }
+
+  .more__summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--color-crimson);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .more__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .more__summary:hover {
+    color: var(--color-burgundy);
+  }
+
+  .more__chevron {
+    width: 12px;
+    height: 8px;
+  }
+
+  .more__body > :global(p + p) {
+    margin-top: 1.1rem;
+  }
+
+  .more__body {
+    padding-top: 0.5rem;
+    color: var(--color-ink-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .more__chevron {
+      transition: transform var(--duration-base) var(--ease-brand);
+    }
+
+    .more[open] .more__chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  /* ---- shared section furniture ----------------------------------------- */
+  .sectionhead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-crimson);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .pill:hover {
+    border-color: var(--color-crimson);
+  }
+
+  .pill svg {
+    width: 16px;
+    height: 10px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+    gap: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+  }
+
+  /* ---- 4 · experience tiles ---------------------------------------------- */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tile__frame {
+    display: block;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    background-color: var(--color-offwhite);
+  }
+
+  .tile__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tile__name {
+    margin-top: 1rem;
+    font-size: var(--text-2xl);
+  }
+
+  .tile__text {
+    margin-top: 0.5rem;
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- 6 · testimonial ---------------------------------------------------- */
+  .quote {
+    max-width: 46rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .quote__mark {
+    color: var(--color-crimson);
+    margin-inline: auto;
+  }
+
+  .quote__text {
+    margin: 1.25rem 0 0;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-ink);
+  }
+
+  .quote__by {
+    margin-top: 1.25rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+
+  .quote__trip {
+    display: block;
+    margin-top: 0.25rem;
+    font-weight: 400;
+    font-style: italic;
+  }
+</style>

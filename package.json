@@ -29,7 +29,8 @@
     "temp:video": "node scripts/brand/fetch-temp-video.mjs",
     "check:hero-video": "node scripts/check-hero-video.mjs",
     "crop": "node scripts/crop.mjs",
-    "check:hero-contrast": "node scripts/check-hero-contrast.mjs"
+    "check:hero-contrast": "node scripts/check-hero-contrast.mjs",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",

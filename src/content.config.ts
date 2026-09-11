@@ -301,9 +301,40 @@ const destinations = defineCollection({
       tagline: z.string().min(1),
       heroImage: image(),
       heroImageAlt: z.string().min(1),
-      /** Short label for the homepage tile strip (7 curated tiles). */
+      /** Short label for the homepage tile strip (all nine since T1 v2). */
       shortLabel: z.string().min(1),
       region: z.enum(['india', 'beyond-india']),
+
+      /**
+       * T2 v2 §2 — TWO OR THREE SENTENCES, and the cap is the point. The
+       * journey cards are the conversion core of a destination page and must
+       * be visible within one scroll; the long-form prose lives in the
+       * markdown body below, behind an expander. If this field is growing,
+       * the sentence you want to add belongs in the body.
+       */
+      intro: z.string().min(1),
+
+      /**
+       * T2 v2 §4 — "What defines {Destination}", image-led tiles.
+       *
+       * OPTIONAL, and deliberately so: a destination whose photography has not
+       * been chosen yet renders no section at all rather than a row of grey
+       * placeholders. Omitting beats faking, the same rule the association
+       * logos and the corporate proof section follow. Two are supplied at M4
+       * to prove the treatment; the rest arrive with the client's archive.
+       */
+      experiences: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            text: z.string().min(1),
+            image: image(),
+            imageAlt: z.string().min(1),
+          }),
+        )
+        .min(3)
+        .max(6)
+        .optional(),
       practicalNotes: z
         .array(
           z.object({

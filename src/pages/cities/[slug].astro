@@ -131,6 +131,14 @@ const QUICK_FACTS = [
         {city.experiences.map((experience) => (
           <li class="tile">
             <span class="tile__frame">
+              {/*
+                `fetchpriority="low"` is doing real work here, not tidying.
+                Chrome's lazy-load threshold is generous enough that all four
+                tiles are requested while the hero is still arriving, and on a
+                simulated 4G connection that contention alone took this page's
+                LCP to 2.4s. Lazy says "maybe later"; low says "and behind the
+                thing being measured".
+              */}
               <Image
                 src={experience.image}
                 alt={experience.imageAlt}
@@ -138,12 +146,6 @@ const QUICK_FACTS = [
                 sizes="(min-width: 64rem) 21rem, (min-width: 40rem) 30vw, 90vw"
                 loading="lazy"
                 decoding="async"
-                {/* fetchpriority="low" is doing real work here, not tidying.
-                    Chrome's lazy-load threshold is generous enough that four
-                    tiles are requested while the hero is still arriving, and
-                    on a simulated 4G connection that contention alone took the
-                    page's LCP to 2.4s. Lazy says "maybe later"; low says "and
-                    behind the thing being measured". */}
                 fetchpriority="low"
                 quality={58}
                 class="tile__img"
