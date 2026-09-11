@@ -14,9 +14,18 @@
  *
  * Only the numeric portion animates; suffixes like "+" and strings like "24/7"
  * are left exactly as authored.
+ *
+ * Design revision round 2 adds one thin-line icon above each numeral. It is
+ * decorative and marked so: the numeral and its label already say everything
+ * the glyph says, and an icon that repeats adjacent text is noise to a screen
+ * reader rather than help. The icon travels on the stat object, not on the
+ * cell position — see verifiedTrustStats().
  */
+import Icon from './Icon.astro';
+import type { TrustStat } from '../lib/site-settings';
+
 interface Props {
-  stats: Array<{ value: string; label: string }>;
+  stats: TrustStat[];
   surface?: 'white' | 'offwhite' | 'plum';
 }
 
@@ -31,7 +40,18 @@ const bandClass =
     <dl class="stats">
       {stats.map((stat) => (
         <div class="stat">
-          <dt class="stat__value" data-countup={stat.value}>{stat.value}</dt>
+          {/* The icon lives INSIDE the <dt>: a <dl>'s <div> wrapper may only
+              contain <dt> and <dd>, and the count-up rewrites textContent, so
+              the numeral needs its own element to be rewritten in. */}
+          <dt class="stat__term">
+            {/* The <svg> lives inside Icon.astro and therefore carries ITS
+                scope, not this component's — a class handed to a child
+                component is not reached by a scoped rule here. So the colour
+                and spacing hang on a wrapper that IS in this component, and
+                the glyph inherits them through `fill: currentColor`. */}
+            <span class="stat__icon"><Icon name={stat.icon} size={28} /></span>
+            <span class="stat__value" data-countup={stat.value}>{stat.value}</span>
+          </dt>
           <dd class="stat__label">{stat.label}</dd>
         </div>
       ))}
@@ -147,7 +167,28 @@ const bandClass =
     border-color: color-mix(in srgb, var(--color-on-dark) 22%, transparent);
   }
 
+  .stat__term {
+    display: block;
+  }
+
+  /* Burgundy is the design direction's colour for fine rules and quiet
+     details, which is exactly what these are: they support the numbers and
+     must not compete with them. Crimson would read as an action. */
+  .stat__icon {
+    display: block;
+    margin-bottom: 0.55rem;
+    color: var(--color-burgundy);
+  }
+
+  /* On plum, burgundy disappears. The numeral is already the one yellow thing
+     in the cell and yellow is a micro-dose colour (invariant #5), so the icon
+     steps back to muted light rather than doubling the accent. */
+  .on-dark .stat__icon {
+    color: var(--color-on-dark-muted);
+  }
+
   .stat__value {
+    display: block;
     font-family: var(--font-display);
     /* A step up from --text-stat: these numerals are meant to be the second
        loudest thing on the homepage, after the hero H1. */
