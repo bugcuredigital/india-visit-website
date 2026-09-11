@@ -563,3 +563,117 @@ working target moves, or hero art direction changes.
    TEMP-PHOTO), verified trust numbers (#2), consented testimonials (#3),
    pricing decision (#1), GSA wording and schedule publishing (#15), and
    `docs/CLIENT_REVIEW_SHEET.md`.
+
+---
+
+## 2026-09-11 — M4 part 1, revision 3: T1 v2, style deltas, 4-journey pull-forward
+
+**Branch:** `m4-templates` (PR #3). Homepage register improved but **not yet
+approved**; this round applies the two style deltas, the T1 v2 restructure and
+the authorised M5 pull-forward.
+
+### Rulings recorded in the docs
+
+- **LCP target revised to ≤2.0s** (Lighthouse mobile) with a 2.5s hard ceiling,
+  patched into CLAUDE.md invariant #3, the definition of done, and PRD §12/§16.
+  The M8 WebPageTest 4G run remains the field verdict.
+- **References:** 90MB PNG originals stay gitignored in `docs/references/`;
+  optimised JPEGs (~350KB each, 2.5MB total) committed to
+  `docs/design/references/`, with a README in each explaining which is which.
+- **`/destinations/` index** added to the locked URL list and specified as
+  PAGE_TEMPLATES **T2a**.
+- **Image-slot convention** documented in both CLAUDE.md and PAGE_TEMPLATES.
+
+### Style deltas
+
+Display type stepped down ~17% (hero cap 5.25rem → 3.5rem, H2 2.75 → 2.25rem,
+inner H1 3.5 → 2.875rem, stat numerals 3.25 → 2.75rem). **Body sizes were not
+touched** — last round's legibility bump stays. Button radius and padding moved
+to tokens; padding down one step everywhere, large size 52px/19px → 48px/17px,
+and every control still clears 44px. Both radius options render side by side at
+`/dev/components/#buttons` for the pick; **pill is currently live and switching
+is one token.**
+
+### T1 v2 and the founder section
+
+The homepage was rebuilt to the new eleven-section order: destinations moved
+above journeys and now show **all nine** tiles, corporate and travel-guide
+condensed into one slim dual strip, and an association-logos slot that renders
+nothing until logos exist.
+
+The new **Meet your travel consultant** section is entirely CMS-fed through a new
+`siteSettings.founder` object, and **nothing in it is invented**. The name is
+null and stays null until the client supplies it — the section renders without a
+name line rather than with a guess. The portrait is null and renders the neutral
+grey 4:5 slot; a stock photograph of a stranger is not used, because presenting
+one as a real consultancy's founder would be a fabrication rather than a
+placeholder. The quote is an agency draft, logged in
+`docs/CLIENT_REVIEW_SHEET.md` §14 with its two checkable claims flagged for the
+client to confirm or strike.
+
+### M5 pull-forward — four journeys ported
+
+`golden-triangle-5n-6d` (Rajasthan), `bali-5n-6d` (international),
+`north-east-india-6n-7d` (new region) and `western-southern-india-12n-13d` (the
+canonical direct-port doc, covering south-west India). All ported from the real
+source documents in `docs/itineraries/`. Six journeys now exist — five Variant A
+and one Variant B — and **all six pass the automated half of Template Spec §6**.
+
+### The CLS regression, and two wrong diagnoses before the right one
+
+CLS went from 0 to **0.132** on the Palace on Wheels page, reproducible to three
+decimals. I assumed a font-metric mismatch on the display face and added
+metric-matched `size-adjust` fallbacks; no change. I then switched the display
+face to `font-display: optional`; the number did not move **by a single
+digit** — which was the clue that the diagnosis was wrong, not insufficient.
+
+Lighthouse had named the cause outright in the audit sub-items:
+`inter-600-latin.woff2`. Semibold carries the hero eyebrow, the badges, the
+route strip and the buttons; when it swapped in, the hero content reflowed, and
+because that content is bottom-aligned the whole block moved.
+
+Worth recording: **my own CDP harness reported zero shifts even under CPU and
+network throttling**, because it reused a Chrome profile and the font was
+cached. Cold-cache behaviour was the entire bug, and a local harness that warms
+its cache cannot see it.
+
+The fix is Inter 600 **preloaded and set to `font-display: optional`** — the same
+pairing now used for the display face. Preloaded it wins the ~100ms window in
+almost every real case; when it does not, the page stays still and the
+metric-matched fallback stands in. Result: **CLS 0 on all four pages**, and FCP
+on journey pages improved from 1.1s to 0.9s.
+
+### Gate — revision 3
+
+| Check | `/` | Kerala (A) | Golden Triangle (A) | Palace on Wheels (B) |
+|---|---|---|---|---|
+| Performance | 99 | 99 | 100 | 100 |
+| Accessibility | 100 | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / 2.2s | 0.9s / 2.0s | 0.9s / 1.7s | 0.9s / 1.7s |
+| TBT / CLS | 0ms / **0** | 0ms / **0** | 0ms / **0** | 0ms / **0** |
+
+`astro check` clean. Template Spec §6 passes on all six journey pages. Keyboard,
+no-JS, responsive-and-clipping, and the invariant audits all pass.
+
+**One target missed by 0.2s:** the homepage is **2.2s** against the new ≤2.0s
+working target, and 0.3s inside the 2.5s ceiling. T1 v2 put nine destination
+tiles and six journey cards on the page — 14 images and 405KB of real
+photography. Every code-side lever is applied, including moving the LCP preload
+ahead of the font preloads in document order. The remaining lever is
+above-the-fold image density, which is a design decision rather than a code one,
+and nine tiles is what T1 v2 asks for.
+
+### Exact next action
+
+1. **Client:** re-review the homepage register on the PR #3 preview, and **pick
+   a button radius** (A pill / B 14px) at `/dev/components/#buttons`.
+2. Rule on whether 2.2s on the homepage is acceptable, or whether the tile count
+   above the fold should come down.
+3. Sign off §14 of `docs/CLIENT_REVIEW_SHEET.md` — founder name, role, quote and
+   portrait.
+4. **Then:** the rest of M4 in runbook order — `/destinations/` index (T2a),
+   destination pages (T2 v2), journeys index, luxury-trains landing,
+   travel-guide index and article, corporate, about, reviews, plan-my-trip,
+   policy pages, 404, and the card→hero View Transition verified end to end.

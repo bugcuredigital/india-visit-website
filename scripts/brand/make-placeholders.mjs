@@ -27,7 +27,11 @@ const PLACEHOLDERS = [
   { name: 'journey-hero', width: 2400, height: 1350, label: 'Journey photograph' },
   { name: 'destination-hero', width: 1600, height: 2000, label: 'Destination photograph' },
   { name: 'article-hero', width: 1600, height: 1200, label: 'Article photograph' },
-  { name: 'portrait', width: 800, height: 800, label: 'Portrait' },
+  /* 4:5 — the founder portrait slot on the homepage (T1 v2 section 6). A
+     stock photograph is deliberately NOT used here: presenting a stranger as
+     a named consultancy's founder would be a fabricated representation of a
+     real person. This stays a grey block until the client supplies the shot. */
+  { name: 'portrait', width: 1000, height: 1250, label: 'Founder portrait' },
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

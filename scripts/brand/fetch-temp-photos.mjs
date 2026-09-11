@@ -86,6 +86,43 @@ const PHOTOS = [
     usedFor: 'journey hero — Palace on Wheels (Variant B seed) + homepage luxury-rail banner',
   },
 
+  {
+    name: 'journey-golden-triangle',
+    id: 'photo-1587135941948-670b381f08ce',
+    width: 2400,
+    hero: true,
+    credit: 'Rowan Heuvel',
+    subject: 'The Taj Mahal at Agra under a golden-hour sky',
+    usedFor: 'journey hero — Golden Triangle 5N/6D',
+  },
+  {
+    name: 'journey-bali',
+    id: 'photo-1558005530-a7958896ec60',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A figure walking through bright green rice terraces below a misty ridge at dawn',
+    usedFor: 'journey hero — Bali 5N/6D',
+  },
+  {
+    name: 'journey-north-east',
+    id: 'photo-1689089526066-c7e6e95ee265',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A lush green valley in the Khasi Hills with a distant waterfall',
+    usedFor: 'journey hero — North East India 6N/7D',
+  },
+  {
+    name: 'journey-western-southern',
+    id: 'photo-1559318246-114068fc532e',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A stone temple on a hilltop above a wide valley',
+    usedFor: 'journey hero — Western & Southern India 12N/13D',
+  },
+
   // ---- the nine locked destinations --------------------------------------
   {
     name: 'dest-rajasthan',

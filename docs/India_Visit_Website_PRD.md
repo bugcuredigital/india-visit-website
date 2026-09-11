@@ -386,7 +386,7 @@ What separates this from a budget-operator site (and from the current template l
 - Google Business Profile setup/optimisation + review generation workflow
 - XML sitemap, robots, canonical tags; image alt text throughout
 - Travel Guide blog **launches in Phase 1** with 8 articles for topical authority — best-time-to-visit and visa-guide articles map directly to the practical notes already written; `Article` schema + author E-E-A-T block on every post
-- Core Web Vitals budget: LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms. **2.5s is the CWV pass mark; our own working target is LCP ≤ 1.5s (§12, CLAUDE.md).**
+- Core Web Vitals budget: LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms. **2.5s is the CWV pass mark and the hard ceiling; our own working target is LCP ≤ 2.0s** (revised from 1.5s in M4 — that figure predated real photography, which costs ~0.7s of simulated LCP on its own). The M8 WebPageTest 4G Moto-class run is the field verdict.
 
 ---
 
@@ -405,7 +405,7 @@ What separates this from a budget-operator site (and from the current template l
 | Site Settings singleton | Phone, WhatsApp number + default message, email, address, social URLs, CTA link targets, GTM container ID, Meta Pixel ID — every component reads from these CMS fields; nothing hardcoded, nothing duplicated |
 | Tags | **GTM installed once, loaded via Partytown** (web worker, off main thread). GA4, Meta Pixel, conversion events, and all future tags managed entirely in the GTM UI — zero code edits, and no LCP penalty from the tag stack |
 | Forms | Cloudflare Pages Function → Resend free tier (email notify) + Google Sheet webhook; Turnstile (invisible, free) + honeypot. Alt: Web3Forms free |
-| LCP plan (target < 1.5s 4G) | Static HTML from CDN edge · inlined critical CSS · self-hosted subset fonts, `font-display: swap` · hero preloaded, `fetchpriority="high"`, AVIF/WebP responsive srcset via `astro:assets` (build-time, free) · near-zero default JS · third-party scripts off-thread |
+| LCP plan (working target ≤ 2.0s Lighthouse mobile, 2.5s ceiling) | Static HTML from CDN edge · inlined critical CSS · self-hosted subset fonts, `font-display: swap` · hero preloaded, `fetchpriority="high"`, AVIF/WebP responsive srcset via `astro:assets` (build-time, free) · near-zero default JS · third-party scripts off-thread |
 | Serving & caching model | **GitHub and Tina exist only in the publish path, never the visitor path.** Visitors hit Cloudflare edge → pre-built static files; zero runtime calls to GitHub/Tina/any origin (site stays up even if GitHub is down). Caching is structural: assets get content-hashed filenames (immutable, cache-forever, staleness impossible), HTML revalidates, and every deploy is an atomic edge-wide cutover — no manual purges, no stale-cache states, no cache plugins. **Trade-off accepted:** edits go live ~1–3 min after save (build time), not instantly — fine for a portfolio's edit cadence |
 | Cannot-break-the-site guarantee | (1) Client edits schema-validated form fields, never markup; (2) failed builds never deploy — live site keeps serving last good version; (3) every deploy is rollback-able in one click; (4) preview deploy per change before publish |
 | Unavoidable costs | Domain (~₹800–1,000/yr, Cloudflare Registrar at-cost) · Agrandir Grand web font licence (Open Question #9). Everything else: ₹0/month |

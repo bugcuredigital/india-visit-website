@@ -130,3 +130,32 @@ than publish a duplicate.
 
 `responseSla` is null, so form success states omit the promise. What
 timeframe may we commit to publicly?
+
+---
+
+## 14. Homepage — "Meet your travel consultant" (added M4 revision 2)
+
+PAGE_TEMPLATES T1 v2 adds a founder section to the homepage — the trust
+centrepiece of the page. Three things there need you, and **none of them have
+been invented in the meantime**:
+
+| Field | Status | What we need |
+|---|---|---|
+| `founder.name` | **BLANK** — deliberately | Your name as you want it published. The section renders without a name line rather than with a guess, because putting a made-up name on a real consultancy's founder is a fabrication, not a placeholder. |
+| `founder.role` | Provisional: *"Founder & Travel Consultant"* | Confirm or replace. |
+| `founder.quote` | **PROVISIONAL agency draft** — see below | Approve, edit, or replace entirely. It is written in the first person and should sound like you, not like us. |
+| `founder.portrait` | **BLANK** — renders the neutral grey slot | A warm environment portrait, 4:5, ideally at your desk or somewhere that reads as "where the planning happens". Not a studio headshot. |
+
+**The provisional quote, as currently published on the preview:**
+
+> Twenty years ago I started planning trips for friends of friends, and I have
+> never really stopped. I still write every itinerary myself, and I still pick
+> up the phone when you are standing in an airport at two in the morning
+> wondering where your driver is.
+
+Two claims in it are yours to confirm or strike: that you **still write every
+itinerary personally**, and that you **answer the phone during a trip
+yourself**. Both are strong trust signals and both are checkable by a customer,
+so we would rather cut them than overstate them.
+
+All four values live in `siteSettings` and are editable without touching code.

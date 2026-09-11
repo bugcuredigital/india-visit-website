@@ -123,19 +123,55 @@ const sections = [
       <h2 class="demo__h2">Buttons &amp; CTAs</h2>
       <p class="demo__note">
         One crimson primary per viewport. Secondary is outline ink; ghost is
-        text. All are ≥44px tall.
+        text. Padding is one step down from the original scale; every control
+        still clears the 44px tap-target floor.
       </p>
-      <div class="demo__row">
-        <Button href="/plan-my-trip/">Plan My Trip</Button>
-        <Button href="/journeys/" variant="secondary">Explore Journeys</Button>
-        <Button href="/journeys/" variant="ghost">View all →</Button>
-        <Button variant="primary" size="lg">Large primary</Button>
-        <Button variant="secondary" size="sm">Small secondary</Button>
-        <Button disabled>Disabled</Button>
+
+      <!-- ================= RADIUS A/B — awaiting the client's pick =========
+           Both columns render the SAME components. The only difference is
+           `--btn-radius`, overridden on the wrapper: the whole shape of every
+           CTA sitewide is one token, so rolling out the winner is a one-line
+           change and needs no component edits. -->
+      <div class="ab">
+        <div class="ab__col" style="--btn-radius: 9999px">
+          <p class="ab__label">Option A — pill (<code>9999px</code>)</p>
+          <div class="demo__row">
+            <Button href="/plan-my-trip/">Plan My Trip</Button>
+            <Button href="/journeys/" variant="secondary">Explore Journeys</Button>
+            <Button href="/journeys/" variant="ghost">View all →</Button>
+          </div>
+          <div class="demo__row">
+            <Button variant="primary" size="lg">Large primary</Button>
+            <Button variant="secondary" size="sm">Small secondary</Button>
+            <Button disabled>Disabled</Button>
+          </div>
+          <div class="demo__row demo__row--dark">
+            <Button variant="on-dark">On a plum band</Button>
+          </div>
+        </div>
+
+        <div class="ab__col" style="--btn-radius: 14px">
+          <p class="ab__label">Option B — soft rectangle (<code>14px</code>)</p>
+          <div class="demo__row">
+            <Button href="/plan-my-trip/">Plan My Trip</Button>
+            <Button href="/journeys/" variant="secondary">Explore Journeys</Button>
+            <Button href="/journeys/" variant="ghost">View all →</Button>
+          </div>
+          <div class="demo__row">
+            <Button variant="primary" size="lg">Large primary</Button>
+            <Button variant="secondary" size="sm">Small secondary</Button>
+            <Button disabled>Disabled</Button>
+          </div>
+          <div class="demo__row demo__row--dark">
+            <Button variant="on-dark">On a plum band</Button>
+          </div>
+        </div>
       </div>
-      <div class="demo__row demo__row--dark">
-        <Button variant="on-dark">On a plum band</Button>
-      </div>
+
+      <p class="demo__note">
+        Currently live sitewide: <strong>Option A (pill)</strong>. Switching is
+        one token — <code>--btn-radius</code> in <code>tokens.css</code>.
+      </p>
     </div>
   </section>
 
@@ -286,6 +322,36 @@ const sections = [
 </Base>
 
 <style>
+  /* ---- Radius A/B ------------------------------------------------------ */
+  .ab {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 60rem) {
+    .ab {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.5rem;
+    }
+  }
+
+  .ab__col {
+    padding: 1.5rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-white);
+  }
+
+  .ab__label {
+    margin: 0 0 1rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-crimson);
+  }
+
   .demo__title {
     margin-top: 0.75rem;
     font-size: var(--text-hero);

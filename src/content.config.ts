@@ -350,48 +350,74 @@ const testimonials = defineCollection({
  */
 const siteSettings = defineCollection({
   loader: file('./src/content/siteSettings/settings.json'),
-  schema: z.object({
-    siteName: z.string().min(1),
-    tagline: z.string().min(1),
+  schema: ({ image }) =>
+      z.object({
+      siteName: z.string().min(1),
+      tagline: z.string().min(1),
 
-    phone: z.string().min(1),
-    phoneHref: z.string().startsWith('tel:'),
-    whatsappNumber: z.string().min(1),
-    whatsappDefaultMessage: z.string().min(1),
-    email: z.string().email(),
-    address: z.string().min(1),
+      phone: z.string().min(1),
+      phoneHref: z.string().startsWith('tel:'),
+      whatsappNumber: z.string().min(1),
+      whatsappDefaultMessage: z.string().min(1),
+      email: z.string().email(),
+      address: z.string().min(1),
 
-    socials: z.object({
-      instagram: z.string().url().nullable(),
-      facebook: z.string().url().nullable(),
-      youtube: z.string().url().nullable(),
-      linkedin: z.string().url().nullable(),
-    }),
+      socials: z.object({
+        instagram: z.string().url().nullable(),
+        facebook: z.string().url().nullable(),
+        youtube: z.string().url().nullable(),
+        linkedin: z.string().url().nullable(),
+      }),
 
-    gtmContainerId: z.string().regex(/^GTM-[A-Z0-9]+$/).nullable(),
-    metaPixelId: z.string().regex(/^\d+$/).nullable(),
+      gtmContainerId: z.string().regex(/^GTM-[A-Z0-9]+$/).nullable(),
+      metaPixelId: z.string().regex(/^\d+$/).nullable(),
 
-    foundingYear: z.number().int().min(1900).max(2100).nullable(),
-    travellerCount: z.number().int().positive().nullable(),
-    destinationCount: z.number().int().positive().nullable(),
-    aggregateRating: z.number().min(1).max(5).nullable(),
-    yearsExperience: z.number().int().positive(),
-    supportPromise: z.string().min(1),
+      foundingYear: z.number().int().min(1900).max(2100).nullable(),
+      travellerCount: z.number().int().positive().nullable(),
+      destinationCount: z.number().int().positive().nullable(),
+      aggregateRating: z.number().min(1).max(5).nullable(),
+      yearsExperience: z.number().int().positive(),
+      supportPromise: z.string().min(1),
 
-    /** Global gate for every priceFrom on the site. Default off. */
-    showPrices: z.boolean(),
+      /** Global gate for every priceFrom on the site. Default off. */
+      showPrices: z.boolean(),
 
-    responseSla: z.string().nullable(),
+      responseSla: z.string().nullable(),
 
-    /**
-     * Greppable inventory of fields still holding placeholder values.
-     * JSON cannot carry comments, so this array is where the `DUMMY DATA`
-     * flags live — `grep -rn "DUMMY DATA" src/content/` finds them, and
-     * `npm run audit:hardcoded` fails the launch check while it is non-empty.
-     * Empty this array only when every listed field holds a real value.
-     */
-    _dummyDataFlags: z.array(z.string()).default([]),
+      /**
+       * The homepage's "Meet your travel consultant" section (PAGE_TEMPLATES
+       * T1 v2 §6) — the trust centrepiece of the page, and therefore the part
+       * that must never contain anything invented.
+       *
+       * `name` is NULLABLE and null until the client supplies it: presenting a
+       * made-up name for a real consultancy's founder would be a fabrication,
+       * not a placeholder. The section renders without the name line rather than
+       * with a guess. `portrait` is likewise null until a real photograph
+       * arrives, falling back to the neutral grey portrait slot — a stock
+       * photograph of a stranger is not an option here for the same reason.
+       *
+       * `quote` is agency-drafted and PROVISIONAL until approved; it is logged
+       * in docs/CLIENT_REVIEW_SHEET.md.
+       */
+      founder: z.object({
+        name: z.string().min(1).nullable(),
+        role: z.string().min(1),
+        quote: z.string().min(1),
+        /** A real asset reference, not a path string — so dropping the client's
+         *  photograph in is a content edit with no code change. */
+        portrait: image().nullable(),
+        portraitAlt: z.string().min(1),
+      }),
+
+      /**
+       * Greppable inventory of fields still holding placeholder values.
+       * JSON cannot carry comments, so this array is where the `DUMMY DATA`
+       * flags live — `grep -rn "DUMMY DATA" src/content/` finds them, and
+       * `npm run audit:hardcoded` fails the launch check while it is non-empty.
+       * Empty this array only when every listed field holds a real value.
+       */
+      _dummyDataFlags: z.array(z.string()).default([]),
   }),
-});
+  });
 
 export const collections = { journeys, destinations, posts, testimonials, siteSettings };

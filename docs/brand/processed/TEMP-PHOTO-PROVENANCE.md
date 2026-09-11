@@ -34,6 +34,10 @@ Encoded as mozjpeg quality 82.
 | `TEMP-PHOTO-home-hero-udaipur.jpg` | Udaipur City Palace on Lake Pichola at golden hour | Maitree Patel | [source](https://unsplash.com/photos/1695956353120-54ce5e91632b) | 2400×1600 | homepage hero |
 | `TEMP-PHOTO-journey-kerala-houseboat.jpg` | A boat on open backwater beside a green treeline | Unsplash contributor | [source](https://unsplash.com/photos/1602216056096-3b40cc0c9944) | 2400×1350 | journey hero — Kerala with Houseboat (Variant A seed) |
 | `TEMP-PHOTO-journey-luxury-train.jpg` | Wood-panelled vintage train carriage interior | Florian Marette | [source](https://unsplash.com/photos/1633084071043-7fb96fe530b1) | 2400×1600 | journey hero — Palace on Wheels (Variant B seed) + homepage luxury-rail banner |
+| `TEMP-PHOTO-journey-golden-triangle.jpg` | The Taj Mahal at Agra under a golden-hour sky | Rowan Heuvel | [source](https://unsplash.com/photos/1587135941948-670b381f08ce) | 2400×1600 | journey hero — Golden Triangle 5N/6D |
+| `TEMP-PHOTO-journey-bali.jpg` | A figure walking through bright green rice terraces below a misty ridge at dawn | Unsplash contributor | [source](https://unsplash.com/photos/1558005530-a7958896ec60) | 2400×1599 | journey hero — Bali 5N/6D |
+| `TEMP-PHOTO-journey-north-east.jpg` | A lush green valley in the Khasi Hills with a distant waterfall | Unsplash contributor | [source](https://unsplash.com/photos/1689089526066-c7e6e95ee265) | 2400×1600 | journey hero — North East India 6N/7D |
+| `TEMP-PHOTO-journey-western-southern.jpg` | A stone temple on a hilltop above a wide valley | Unsplash contributor | [source](https://unsplash.com/photos/1559318246-114068fc532e) | 2400×1600 | journey hero — Western & Southern India 12N/13D |
 | `TEMP-PHOTO-dest-rajasthan.jpg` | Jaisalmer rooftops and fort from a high vantage | Unsplash contributor | [source](https://unsplash.com/photos/1710347454810-e3d493dcc538) | 1400×787 | destination tile — rajasthan-golden-triangle |
 | `TEMP-PHOTO-dest-kerala.jpg` | Traditional houseboat on palm-lined Alappuzha backwaters | Unsplash contributor | [source](https://unsplash.com/photos/1593693411515-c20261bcad6e) | 1400×935 | destination tile — kerala |
 | `TEMP-PHOTO-dest-south-west.jpg` | Hampi temple ruins across open ground | Unsplash contributor | [source](https://unsplash.com/photos/1722934804353-0d9f6a55ab5e) | 1400×962 | destination tile — south-west-india |
@@ -47,4 +51,4 @@ Encoded as mozjpeg quality 82.
 | `TEMP-PHOTO-article-tea-gardens.jpg` | Rolling Munnar tea gardens against a hill | Unsplash contributor | [source](https://unsplash.com/photos/1719831738921-972e0ec76337) | 1400×788 | spare article hero (M5) |
 | `TEMP-PHOTO-article-fort.jpg` | Sandstone fort walls from below | Unsplash contributor | [source](https://unsplash.com/photos/1544616751-eea58efccec4) | 1400×1005 | spare article hero (M5) |
 
-15 of 15 fetched successfully.
+19 of 19 fetched successfully.

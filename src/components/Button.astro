@@ -60,9 +60,9 @@ const tagProps = href
     gap: 0.5rem;
     /* 44px minimum tap target (PRD §9.3) at every size. */
     min-height: 44px;
-    padding-inline: 1.5rem;
+    padding-inline: var(--btn-pad-md);
     border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--btn-radius);
     font-family: var(--font-body);
     font-weight: 600;
     font-size: var(--text-base);
@@ -124,14 +124,16 @@ const tagProps = href
   /* ---- Sizes ---------------------------------------------------------- */
   .btn--sm {
     min-height: 44px;
-    padding-inline: 1rem;
+    padding-inline: var(--btn-pad-sm);
     font-size: var(--text-sm);
   }
 
   .btn--lg {
-    min-height: 52px;
-    padding-inline: 2rem;
-    font-size: var(--text-xl);
+    /* Down one step from 52px/2rem/19px. Still comfortably above the 44px
+       tap-target floor. */
+    min-height: 48px;
+    padding-inline: var(--btn-pad-lg);
+    font-size: var(--text-lg);
   }
 
   .btn--block {

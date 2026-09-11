@@ -2,35 +2,35 @@
   "settings": {
     "siteName": "India Visit",
     "tagline": "Curated journeys across India and beyond",
-
     "phone": "+91 0000000000",
     "phoneHref": "tel:+910000000000",
     "whatsappNumber": "+91 0000000000",
     "whatsappDefaultMessage": "Hello India Visit, I'd like help planning a trip.",
     "email": "hello@example.com",
     "address": "Dummy Address, New Delhi",
-
     "socials": {
       "instagram": null,
       "facebook": null,
       "youtube": null,
       "linkedin": null
     },
-
     "gtmContainerId": null,
     "metaPixelId": null,
-
     "foundingYear": null,
     "travellerCount": null,
     "destinationCount": null,
     "aggregateRating": null,
     "yearsExperience": 20,
     "supportPromise": "24/7 On-Trip Support",
-
     "showPrices": false,
-
     "responseSla": null,
-
+    "founder": {
+      "name": null,
+      "role": "Founder & Travel Consultant",
+      "quote": "Twenty years ago I started planning trips for friends of friends, and I have never really stopped. I still write every itinerary myself, and I still pick up the phone when you are standing in an airport at two in the morning wondering where your driver is.",
+      "portrait": null,
+      "portraitAlt": "Portrait of the founder of India Visit"
+    },
     "_dummyDataFlags": [
       "phone — DUMMY DATA, real number due in M5, verified in M9",
       "phoneHref — DUMMY DATA, must match phone",
@@ -45,7 +45,10 @@
       "travellerCount — BLOCKED on PRD Open Question #2",
       "destinationCount — BLOCKED on PRD Open Question #2",
       "aggregateRating — BLOCKED on PRD Open Question #3",
-      "responseSla — BLOCKED on PRD Open Question #12"
+      "responseSla — BLOCKED on PRD Open Question #12",
+      "founder.name — BLOCKED, client to supply; never invent a person's name",
+      "founder.quote — PROVISIONAL agency draft, awaiting client approval (CLIENT_REVIEW_SHEET.md)",
+      "founder.portrait — BLOCKED on the client photo archive; renders the neutral grey portrait slot until then"
     ]
   }
 }

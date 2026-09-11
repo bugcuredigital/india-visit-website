@@ -6,33 +6,60 @@ Section-by-section template definitions for every page type. Companion to the *I
 
 ---
 
-## T1 — Homepage `/`
+## T1 v2 — Homepage `/`
 
-| # | Section | Component(s) | Content & behaviour |
-|---|---|---|---|
-| 1 | Hero | Hero | Full-viewport (min 85svh) image/video, plum gradient from bottom. H1 value prop + "Curating journeys since {foundingYear}" line — **rendered only when `siteSettings.foundingYear` is set; the year is never hardcoded** (PRD Open Q#2). CTAs: **Plan My Trip** (crimson) + Explore Journeys (ghost). Ken Burns on image; headline fade-up; LCP image never dimmed/delayed |
-| 2 | Trust bar | CounterStat ×2–4 | Renders only the stats that have verified values in `siteSettings` (nullable fields; null = omitted). **Launch set = "20+ Years" and "24/7 On-Trip Support"**; [N] Travellers and 25+ Destinations appear only once the client verifies them (PRD Open Q#2). Count-up on scroll-into-view. Association logos row beneath (greyscale, small) — omit entirely if none supplied |
-| 3 | Featured journeys | JourneyCard ×6 | Editorially picked: mix domestic + international + 1 train. Card: image, title, duration pill, route one-liner. Card→page View Transition morph |
-| 4 | How it works | 3-step band | Plum background. Tell us your dream → We craft your itinerary → Travel fully supported. Namaste icon on step 3 |
-| 5 | Destinations strip | Image tile grid | 7 curated tiles with short labels: Rajasthan, Kerala, Ladakh, North East, Bhutan, Bali, Vietnam → destination pages, plus a **"View all destinations"** link. The strip is intentionally *not* the full list — there are 9 destination pages (slugs locked in CLAUDE.md). 4/3/2-col responsive |
-| 6 | Why India Visit | 4 cards | Experience · Personal Curation · Affordable Luxury · With You Every Step. Lotus-marked, 1–2 lines each |
-| 7 | Luxury trains teaser | Wide banner card | Palace on Wheels image, "India's Legendary Luxury Trains — book with authorised agents" → /luxury-trains/ |
-| 8 | Testimonials | TestimonialCarousel | 5–7 reviews, name + city/country + trip taken; photo where consented. Auto-advance OFF; swipe/arrows only |
-| 9 | Corporate teaser | Slim band | "Planning a company offsite?" + button → /corporate/ |
-| 10 | Travel Guide teaser | 3 article cards | Latest/featured posts → /travel-guide/ |
-| 11 | Lead capture | ConvertBand (short form) | Name, phone/WhatsApp, destination select, travel month. Plum band, Namaste success state |
+**Supersedes the original T1 order (M4 revision 2).** The two moves that matter:
+destinations come **before** journeys, because travellers shop by place first;
+and a **Meet your travel consultant** section is added, because the page had no
+human in it and that is the trust centrepiece for a twenty-year consultancy.
 
-## T2 — Destination page `/destinations/{slug}/`
+| # | Section | Component(s) | Image slots | Content & behaviour |
+|---|---|---|---|---|
+| 1 | Hero | Hero | **1 hero (3:2 master)** | Full-bleed photo, plum gradient at the text zone only. H1 value prop + a "20+ years" trust line drawn from `siteSettings.yearsExperience` — **never a hardcoded year**; `foundingYear` stays unrendered until verified (Open Q#2). CTAs: **Plan My Trip** (crimson) + Explore Journeys (ghost). Ken Burns on the image; the LCP image is never dimmed or delayed |
+| 2 | Trust bar | CounterStat ×4 | — | Exactly four: **20+ Years · N Curated Journeys · 9 Regions · 24/7 On-Trip Support**. The two middle stats are **counted from our own catalogue, never claimed** — a computed number cannot be an unverified claim and cannot go stale. Client-verified figures (`travellerCount`, `destinationCount`) take the middle slots once they exist. Full-width display numerals divided by hairlines. Beneath: an **association-logos row slot**, rendered only when the client supplies logos |
+| 3 | **Where do you want to go** | Image tile grid | **9 tiles** | Destinations **moved above journeys** — travellers shop by place first. All **nine** locked destinations (slugs in CLAUDE.md) plus a "View all destinations" link to `/destinations/`. 4/3/2-col responsive |
+| 4 | Signature journeys | JourneyCard ×6 | **6 cards** | Editorially picked for spread: domestic + international + one train. Card→page View Transition morph |
+| 5 | How it works | 3-step band | — | Plum band. Tell us your dream → We craft your itinerary → Travel fully supported. Lotus mark on step 3. Dotted rail with circular nodes at ≥48rem |
+| 6 | **Meet your travel consultant** | Portrait + prose | **1 portrait (4:5)** | **The trust centrepiece the page was missing.** Warm environment shot of the founder, 2–3 lines in her own voice, one **ghost** CTA "Start a conversation" → `/plan-my-trip/`. White background, generous space. Copy is **provisional until the client approves it** — logged in `docs/CLIENT_REVIEW_SHEET.md`, and the portrait is a placeholder until the client supplies one |
+| 7 | Why India Visit | 4 lotus cards | — | Experience · Personal Curation · Affordable Luxury · With You Every Step. Now **follows** the human section it substantiates |
+| 8 | Luxury trains banner | Wide banner card | **1 wide** | "India's legendary luxury trains — booked through authorised agents" → `/luxury-trains/` |
+| 9 | Testimonials | TestimonialCarousel | photos where consented | 5–7 reviews, name + city/country + trip taken. Auto-advance OFF. Placeholder-flagged until Open Q#3 resolves |
+| 10 | **Slim dual strip** | Two-up light band | **1 guide card** | Corporate teaser **and** travel-guide teaser condensed into **one lighter band**. Both are secondary audiences — do not spend two full sections on them |
+| 11 | Lead capture | ConvertBand (short form) | — | Plum band → footer. Name, phone/WhatsApp, destination, travel month |
 
-| # | Section | Component(s) | Notes |
-|---|---|---|---|
-| 1 | Hero | Hero (short, 55svh) | Destination name H1 + one evocative line |
-| 2 | Editorial intro | Prose block | 2–3 paras, "why go / what it feels like". Drop-cap optional |
-| 3 | Practical strip | PracticalNotesGrid | Best time · Getting there · Ideal duration · Pace. From CMS fields |
-| 4 | Journeys here | JourneyCard grid | All journeys tagged to this destination (auto) + manual ordering override |
-| 5 | Destination FAQ | Accordion + FAQPage schema | 4–6 questions (SEO workhorse) |
-| 6 | Related articles | 2–3 article cards | Tagged posts |
-| 7 | Convert | ConvertBand | Prefilled destination in form |
+## T2 v2 — Destination page `/destinations/{slug}/`
+
+**Supersedes the original T2 order (M4 revision 2).** The product moves up: the
+journey cards are the conversion core of the page and must be visible within one
+scroll, not buried under editorial.
+
+| # | Section | Component(s) | Image slots | Notes |
+|---|---|---|---|---|
+| 1 | Hero | Hero (short) | **1 hero** | Destination name H1, one emotive line, breadcrumb |
+| 2 | Short intro | Prose block | — | **2–3 sentences only**, expandable if longer. Product must be visible within one scroll |
+| 3 | **Journeys in {Destination}** | JourneyCard grid | per card | **Moved up, directly after the intro.** Every journey tagged to this destination (auto by tag + manual ordering override). This is the conversion core |
+| 4 | **What defines {Destination}** | Experience tiles | **4–6 tiles** | Image-led — e.g. Kerala: backwaters, tea country, spice trails, coast. Content from the CMS, never hardcoded |
+| 5 | Practical strip | PracticalNotesGrid | — | Best time · Getting there · Ideal duration · Pace |
+| 6 | Testimonial | Single quote slot | optional photo | One destination-specific testimonial. Placeholder until Open Q#3 |
+| 7 | Destination FAQ | Accordion + FAQPage schema | — | 4–6 questions. SEO workhorse |
+| 8 | Related articles | 2–3 article cards | per card | Tagged posts |
+| 9 | Convert | ConvertBand | — | Destination prefilled in the form |
+
+## T2a — Destinations index `/destinations/`
+
+Added to the locked URL list in M4 revision 2. The homepage strip shows seven of
+the nine; this page carries all of them.
+
+| # | Section | Notes |
+|---|---|---|
+| 1 | Compact hero | Short band, H1 "Where we go", one line |
+| 2 | **India** group | Grouped heading, then cards |
+| 3 | **Beyond India** group | Bhutan · Bali · Vietnam |
+| 4 | Destination cards ×9 | Image, name, one-line hook, **live journey count** counted from the catalogue |
+| 5 | Convert | ConvertBand |
+
+**No filters and no map.** Nine items do not need either, and both are Phase 2
+complexity for a page whose job is to be a clear index.
 
 ## T3 — Journeys index `/journeys/`
 
@@ -125,11 +152,24 @@ Full-bleed image (empty road/desert), "Looks like you've wandered off the route.
 | Template | Route | Driven by |
 |---|---|---|
 | T1 | `/` | siteSettings + editorial picks (frontmatter refs) |
-| T2 | `/destinations/[slug]` | `destinations` collection |
+| T2a | `/destinations/` | `destinations` collection (all nine, grouped) |
+| T2 v2 | `/destinations/[slug]` | `destinations` collection |
 | T3 | `/journeys/` | `journeys` collection (all) |
 | Itinerary A/B | `/journeys/[slug]` | `journeys` — **see Template Spec** |
 | T4 | `/luxury-trains/` | `journeys` where variant=B + page frontmatter |
 | T5–T7, T10–T13 | static routes | page frontmatter + settings + `testimonials` |
 | T8/T9 | `/travel-guide/…` | `posts` collection |
+
+## Image-slot convention (all templates)
+
+Every image slot in every template obeys three rules:
+
+1. It renders either the **neutral warm-grey placeholder** (`#ECE9E6`, hairline
+   border, small centred label) or a **TEMP-PHOTO** Unsplash stand-in. **Never a
+   brand gradient, never a decorative pattern.**
+2. It is **CMS-fed**, so replacing placeholder imagery with the client's archive
+   in M5 is a content change with **zero code edits**.
+3. Its aspect ratio is fixed by the template, not by whatever is uploaded — so a
+   photograph swap can never reflow the page.
 
 **Claude Design order of attack:** T1 → Itinerary A → Itinerary B → T2 → T9 → rest (the first three set the design language; everything else derives).

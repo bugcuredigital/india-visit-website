@@ -19,6 +19,42 @@
    src/assets/ so Vite content-hashes them: immutable, cache-forever URLs.
    ========================================================================== */
 
+/* ----------------------------------------------------------------------------
+   METRIC-MATCHED FALLBACKS — these exist to stop `font-display: swap` from
+   moving the page.
+
+   Archivo Expanded is pinned at wdth 125 and is far wider than any system sans.
+   Until it loads, a heading laid out in Arial occupies much less width, so the
+   hero H1 wrapped onto fewer lines — and because hero content is bottom-aligned,
+   every line that appeared when the real face arrived shoved the whole block
+   upward. That showed up as CLS 0.132 on a journey page, against a target of 0.
+
+   `size-adjust` scales the fallback so it takes roughly the width the real face
+   will take; the ascent/descent overrides keep the line box the same height. The
+   numbers are approximations of Archivo Expanded's metrics, not exact — the goal
+   is to make the swap invisible, not to be a perfect substitute.
+
+   If the display face changes (Agrandir Grand, when licensed), RE-MEASURE these.
+   A fallback matched to the wrong face is worse than no fallback at all.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Display Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  size-adjust: 116%;
+  ascent-override: 88%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Body Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22%;
+  line-gap-override: 0%;
+}
+
 /* Display — Archivo Expanded 400 (TEMPORARY STAND-IN for Agrandir Grand) */
 @font-face {
   font-family: 'Archivo Expanded';
@@ -31,12 +67,25 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Display — Archivo Expanded 700 (TEMPORARY STAND-IN for Agrandir Grand) */
+/* Display — Archivo Expanded 700 (TEMPORARY STAND-IN for Agrandir Grand)
+
+   `optional`, not `swap`, and this is deliberate. This face carries every
+   heading and the hero H1, and it is far wider than any fallback, so a swap
+   rewraps headings and badge rows after first paint. On a hero whose content is
+   bottom-aligned, one extra wrapped line shoves the whole block upward — that
+   was a measured CLS of 0.132 on the Palace on Wheels page.
+
+   `optional` gives the browser a ~100ms window and then commits to whichever
+   face it has, for the whole page load. Because this file is PRELOADED in
+   Base.astro it wins that race in almost every real case; when it does not, the
+   visitor gets the metric-matched fallback and a completely stable page instead
+   of a correct font and a jumping one. Preload + optional is the combination
+   that gets both. */
 @font-face {
   font-family: 'Archivo Expanded';
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url('../assets/fonts/archivo-expanded-700-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
@@ -60,7 +109,15 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  /* `optional`, and preloaded in Base.astro — the same pairing as the display
+     face, for the same reason. Lighthouse named this file as the direct cause
+     of a 0.132 layout shift on the Palace on Wheels hero: semibold carries the
+     eyebrow, the badges, the route strip and the buttons, so when it swapped in
+     the hero content reflowed, and because that content is bottom-aligned the
+     whole block moved. Preloaded, it wins the 100ms window in almost every real
+     case; when it does not, the page stays still and the metric-matched
+     fallback stands in. A stable page is worth more than a guaranteed weight. */
+  font-display: optional;
   src: url('../assets/fonts/inter-600-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
