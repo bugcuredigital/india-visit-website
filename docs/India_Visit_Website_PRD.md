@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 ## India Visit — Portfolio & Lead Generation Website
 
-**Version:** 1.5 (Design revision round 2 — full-screen video hero, iconised trust bar, compact index cards, day-by-day images, and a new city page type. **Full amendment log: §17.** v1.4 Travel Guide blog into Phase 1 — §7.8; v1.3 motion spec; v1.2 final stack; v1.1 added 3 itineraries + Template Spec.)
+**Version:** 1.6 (Design revision round 3 — word control and image control as standing rules, the burgundy colour rebalance, one continuous hero gradient, one journey-card treatment, and the homepage un-condensed. **Full amendment log: §17.** v1.5 full-screen video hero, iconised trust bar, day images and city pages; v1.4 Travel Guide blog into Phase 1 — §7.8; v1.3 motion spec; v1.2 final stack; v1.1 added 3 itineraries + Template Spec.)
 **Prepared for:** India Visit (Client)
 **Prepared by:** [Your Agency]
 **Date:** September 2026
@@ -167,14 +167,15 @@ Sticky header on scroll with phone number and WhatsApp icon always visible on mo
 |---|---|
 | Hero | **Full-screen (100svh) with a background VIDEO slot (v1.5).** A muted, looping, warm India-appropriate clip behind the headline. **The poster image is the LCP element and the video is never in the critical path** — see §12 for the mandatory pattern. `prefers-reduced-motion` and `Save-Data` visitors get the poster alone. Headline: value proposition + "20 years" trust line. Primary CTA: "Plan My Trip". Secondary: "Explore Journeys". Both the video and the poster are CMS-fed. |
 | Trust bar | Immediately below hero: **exactly four** stats, each with **one thin-line icon above the numeral** (burgundy stroke) and hairline separators between cells (v1.5 — the bar read too plain without them). First and last are fixed (*20+ Years*, *24/7 On-Trip Support*); the two middle slots prefer the client's verified figures and otherwise fall back to counts derived from our own catalogue, so nothing is ever claimed that is not counted. Association logos row below, rendered only when logos are supplied (IATO/TAAI/Govt. recognition — confirm which apply). |
-| Featured journeys | 4–6 itinerary cards (image, name, duration, "from ₹__ per person" optional — see Open Questions). Mix domestic + international + one train. |
-| How it works | 3 steps: *Tell us your dream → We craft your itinerary → Travel with full support.* Mirrors consultative sales model; sets expectation that CTA = conversation, not checkout. |
-| Why India Visit | 3–4 cards: Experience, Personal Curation, Affordable Luxury, With You Every Step. |
-| Destinations strip | Visual grid: Rajasthan, Kerala, Ladakh, North East, Bhutan, Bali, Vietnam. |
-| Testimonials | Carousel of 5–7 real reviews with name, origin (city/country), trip taken, and photo where possible. Foreign + Indian mix. |
-| Corporate teaser | One band: "Planning a company offsite?" → Corporate page. |
-| Lead capture | Short inline form (Name, Phone/WhatsApp, Destination, Travel month) + newsletter opt-in. |
-| Footer | Full nav, contact details, social links, payment/association logos, policies. |
+| Featured journeys | Itinerary cards (image, duration pill, title, "View journey →"). **One card treatment sitewide since v1.6** — the homepage row and the `/journeys/` archive render the identical component, with no route line and no signature-feature line on either. Mix domestic + international + one train. Price renders only while `showPrices` is on. |
+| How it works | 3 steps: *Tell us your dream → We craft your itinerary → Travel with full support.* Mirrors consultative sales model; sets expectation that CTA = conversation, not checkout. **The one plum band on the page** (v1.6). |
+| Why India Visit | 4 cards: Experience, Personal Curation, Affordable Luxury, With You Every Step. **Enriched v1.6:** numbered `01–04` in the display face, 28px lotus, bolder headings one step larger, hairline separators between columns, supporting text one step larger. One calm off-white ground — richer, not busier. |
+| Destinations strip | Visual grid: all **nine** regions (v1.5) plus a "View all destinations" link to the index. Every tile's image and label come from the destination's own entry (v1.6 image control) — there are no hardcoded fallbacks. |
+| Testimonials | Carousel of real reviews with name, origin (city/country), trip taken, and photo where possible. Foreign + Indian mix. **Redesigned v1.6:** cropped lotus watermark in the card corner, initial-avatar circle (never a stock face), trip label as a pill, firmer burgundy hairline, brand-styled arrows and dots. A slot with no review yet shows **one quiet italic line** and nothing attributed to anybody (word control). |
+| Corporate band | **Its own band (v1.6),** burgundy, one sentence and one CTA. It previously shared a slim strip with the travel guide, which treated a line of business as a footnote. |
+| Travel guide | **A full section again (v1.6):** three article cards with category tags and "All articles →". |
+| Lead capture | Short inline form (Name, Phone/WhatsApp, Destination, Travel month) + newsletter opt-in. Burgundy ConvertBand since v1.6. |
+| Footer | Full nav, contact details, social links, payment/association logos, policies. **v1.6:** ink ground, the phone number **with country code** in display face, and a compact enquiry form (name, phone, message). |
 
 ### 7.2 Destination pages (e.g., Rajasthan, Kerala, Bhutan)
 
@@ -321,7 +322,7 @@ The single most important trust page for this brand.
 
 What separates this from a budget-operator site (and from the current template look of sites like luxuriousheritagetravel.com):
 
-- **Whitespace is the luxury signal.** Generous padding, max content width ~1200–1280px, airy sections. **White base** (v1.5 ruling — off-white demoted to a secondary surface), with deep plum reserved for rare, intentional contrast bands.
+- **Whitespace is the luxury signal.** Generous padding, max content width ~1200–1280px, airy sections. **White base** (v1.5 ruling — off-white demoted to a secondary surface), with rare, intentional dark contrast bands. **Those bands are burgundy `#741238` since v1.6**, the footer is ink, and plum is kept for at most one deliberate moment per page: plum read blue next to warm photography and was quietly cooling a warm brand.
 - **Photography carries the site.** Large, warm, golden-hour imagery; real places from actual itineraries. No cheesy stock, no watermarked images, consistent colour grading (warm, slightly desaturated). Budget line item for licensed/original photography.
 - **Editorial typography.** Big confident Agrandir headlines, restrained body sizes, no more than 2 weights per block.
 - **Micro-restraint.** Subtle hover lifts and fades only. No autoplay carousels spinning fast, no popups in first 30 seconds, no discount stickers, no countdown timers.
@@ -530,3 +531,29 @@ at the owner's direction.
 URL structure for existing pages, the "operator tariffs are never published"
 rule, the four-stat trust-bar shape, or the placeholder convention. City pages
 are **added** to the locked URL list, not substituted for anything.
+
+### v1.6 — Design revision round 3 (owner remarks, M4)
+
+Ten items. Two are **standing governance rules** rather than design changes, and
+they are the reason the round is sequenced the way it is: the audit has to come
+before the work, or the work adds to what the audit would have found. Sequenced
+1+2 → 9 → 3 → 4 → 5+6 → 7 → 8 → 10 at the owner's direction.
+
+| # | Amendment | Where it lands |
+|---|---|---|
+| 1 | **Word control (standing rule).** No invented user-facing copy goes live-looking. Every string is sourced, registered in the new `docs/COPY_REGISTER.md` as `DRAFT`, or an obviously-placeholder line that is **short and quiet**. Triggered by testimonial cards rendering a paragraph of internal meta-text at quote size under an invented guest name. Placeholder testimonials now carry no name, origin or quote at all — the schema refuses them — and render one italic muted line plus the lotus. They are never emitted as `Review` structured data. | CLAUDE.md invariant #9, `docs/COPY_REGISTER.md`, testimonials schema |
+| 2 | **Image control (standing rule).** Every image and video must be a CMS-schema field an editor can change from the dashboard. Audited and enforced by the new `npm run check:cms-images`, added to the gate. Decorative inline SVG, the logo and the neutral placeholders are exempt. Two conversions: the `/luxury-trains/` hero moves into the new `siteSettings.pageHeroes`, and the 404 graphic becomes inline SVG. Nine dead TEMP-PHOTO fallbacks are deleted from the destination strip. | CLAUDE.md invariant #10, `siteSettings.pageHeroes`, `scripts/check-cms-images.mjs` |
+| 3 | **Hero gradient: one continuous wash.** The banded scrim showed a visible horizontal seam. Replaced by a single gradient feathered over the full height with no perceptible boundary, **lighter** overall, and in **ink** rather than plum so the photograph is darkened rather than tinted. Anchored in lengths, not percentages, because the height of a copy column is a length. Verified on every hero page at both breakpoints. | CLAUDE.md design direction, `Hero.astro`, `check:hero-contrast` |
+| 4 | **One journey-card treatment sitewide.** Image, duration pill, title, "View journey →". Route lines and signature-feature lines removed from **all** cards. The Variant B permanent plum ground is removed — every card is white at rest and its footer turns burgundy on hover and on keyboard focus. The "Fixed Departures" badge stays: it is what actually distinguishes a train, and it survives being looked at by someone who cannot see colour. | PAGE_TEMPLATES T3, `JourneyCard.astro` |
+| 5 | **"Why India Visit" enriched.** Numbered `01–04` in the display face, lotus glyphs up to 28px, bolder headings one type-step larger, hairline separators between columns, supporting text up one step. One calm ground — richer, not busier. | §7.1, PAGE_TEMPLATES T1 |
+| 6 | **Testimonials redesigned.** Oversized cropped lotus watermark in the card corner, initial-avatar circle (never a stock face), trip label as a pill, firmer burgundy-hairline border on an off-white card, brand-styled arrows and dots. | PAGE_TEMPLATES T1, T7 |
+| 7 | **Homepage un-condensed, corporate re-registered.** The slim corporate + travel-guide dual strip is gone. Travel Guide returns as a full section (three article cards, category tags, "All articles →"); Corporate gets its own burgundy band with one sentence and a CTA. Separately, `/corporate/` is restyled into a professional register within the brand — ink hero, burgundy accents, ruled capability rows, tighter grid, no leisure warmth. | §7.1, PAGE_TEMPLATES T1, T5 |
+| 8 | **Header/footer consistency and a footer form.** One `Header` and one `Footer` on every page, no per-page variants (verified; `/privacy/`, `/terms/`, `/cancellation/`, `/booking-terms/` receive theirs through the `Policy` layout). The footer gains the phone number **with its country code** in display face alongside WhatsApp and email, plus a compact enquiry form (name, phone, message) that shares the honeypot, hidden context fields and consent checkbox with every other form on the site. | PAGE_TEMPLATES T14, `Footer.astro`, `EnquiryForm.astro` |
+| 9 | **Colour rebalance — red, not blue.** Burgundy `#741238` becomes the primary dark-section colour; crimson stays CTAs and accents; the footer takes ink `#1A1523` so the page does not end on two identical burgundy slabs; plum `#452B5E` and yellow `#E5C745` demote to "only when necessary", plum keeping at most one deliberate moment per page. Muted text and hairline tokens rebased from plum-derived to burgundy-derived. Every changed ground re-verified for AA. | CLAUDE.md design direction, `tokens.css`, `global.css` |
+| 10 | **Lotus watermarks on dark bands.** The extracted vector, oversized, ~6% opacity, cropped at the band edge, brand-kit cover style. Drifts on section hover — transform-only, 600ms, inside `prefers-reduced-motion: no-preference`. Decorative and `aria-hidden`. | CLAUDE.md design direction, `BandWatermark.astro` |
+| — | **Button radius locked: PILL.** `--btn-radius: 9999px`. The A/B is removed from the component demo page. It remains a token so the shape of every CTA sitewide stays one edit. | `tokens.css`, `/dev/components/` |
+
+**Not changed by this amendment:** the locked palette itself (no colour was
+added or removed — only their roles changed), the type system, the URL
+structure, the four-stat trust bar, the "operator tariffs are never published"
+rule, the LCP budgets, or the LCP-safe video pattern.

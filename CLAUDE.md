@@ -46,13 +46,29 @@ General shape of the rule: where a global skill and this project's locked specif
 
    The school to translate — **not clone** — is `staralliance.com` (grid discipline, type scale, restraint) plus `airindia.com` (warm premium, photography-led, deep red as accent). Our voice stays warm; theirs does not come with it.
 
-   **Surfaces.** Pure **white `#FFFFFF` is the primary background sitewide.** Off-white `#F7F5F6` is *demoted to secondary*: card fills, alternate sections, form fields — a whisper of contrast, never the base. Deep-plum dark bands are **rare and intentional**: the footer, How-It-Works, one homepage moment, and ConvertBand. Everything else lives on white.
+   **Surfaces.** Pure **white `#FFFFFF` is the primary background sitewide.** Off-white `#F7F5F6` is *demoted to secondary*: card fills, alternate sections, form fields — a whisper of contrast, never the base. Dark bands are **rare and intentional**. Everything else lives on white.
+
+   **Which dark — rebalanced in design round 3.** The owner's note was that deep plum "reads blue and kills the warmth", and it was correct: plum was carrying the footer, every ConvertBand, the train cards and How-It-Works, so the cool end of a warm brand was doing most of the visible work. The hierarchy is now:
+
+   | Role | Colour | Where |
+   |---|---|---|
+   | Primary dark ground | **burgundy `#741238`** | ConvertBand, the homepage corporate band, the travel-guide newsletter band, the corporate "how we work" band, policy page headers |
+   | The page's end | **ink `#1A1523`** | the footer, and the corporate hero. A burgundy footer directly under a burgundy ConvertBand merges into one slab half a screen tall |
+   | Punctuation | **crimson `#C3163A`** | unchanged: CTAs, active states, small accents |
+   | One deliberate moment | **plum `#452B5E`** | at most one band per page — How It Works on the homepage — plus fine details. Demoted, not deleted |
+   | Micro-doses | **yellow `#E5C745`** | unchanged, and still only on burgundy / plum / ink |
+
+   The neutrals were rebased with it: `--color-ink-muted`, `--color-hairline` and `--color-on-dark-muted` were plum-derived and are now burgundy-derived, because the muted text and the hairlines were the quiet half of the same problem. Every pair clears AA with room (`ink-muted` is 7.25:1 on white, `on-dark-muted` 7.2:1 on burgundy). **Any change of ground is re-verified**, not assumed.
 
    **Typography — type IS the design.** Display goes big and confident: hero H1 `clamp(2.5rem, 6vw, 4.5rem)`, section H2 `clamp(1.75rem, 3.5vw, 2.75rem)`, tight leading (1.05–1.15), ink `#1A1523` on white — never pure black. Inter body 16–18px, line-height 1.6–1.7, measure capped ~68ch. Section rhythm 96–128px vertical padding desktop, 56–72px mobile. **When in doubt add space, not decoration.**
 
-   **Colour application — red as punctuation.** Crimson is for CTAs, active states and small accents (tags, links, glyph highlights) and **never floods a section**. Burgundy handles hover/pressed states, fine rules and quiet details. Plum is the rare dark bands and footer, with white text. Yellow stays in micro-doses on plum/burgundy only. Net effect: mostly white-and-ink pages where crimson draws the eye to **exactly one action per viewport**.
+   **Colour application — red as punctuation.** Crimson is for CTAs, active states and small accents (tags, links, glyph highlights) and **never floods a section**. Burgundy is the dark ground *and* handles hover/pressed states, fine rules and quiet details. Yellow stays in micro-doses on dark only. Net effect: mostly white-and-ink pages where crimson draws the eye to **exactly one action per viewport**.
 
-   **Components.** Cards: white or off-white fill, 12–16px radius, hairline border (plum at ~8% opacity), soft shadow on hover only. Buttons: solid crimson primary with white text, ghost/outline ink secondary, subtle 2px hover lift per the motion spec. Nav: white with a hairline bottom border, ink links, crimson Plan-My-Trip button; may sit transparent over a hero photo and solidify to white on scroll. Photography: full-bleed heroes with a soft plum gradient **only at the text zone**; elsewhere images sit in clean rounded frames on white, gallery-style.
+   **Colour on a card is a HOVER state, not a rest state** (round 3). Every listing card is white at rest; the card footer transitions to the burgundy treatment on hover *and* on `:focus-within`, so a keyboard user gets the same affordance. Variant B (train) cards used to carry a permanent plum ground; a permanent burgundy ground would have been the same mistake in a warmer colour. What distinguishes a train is the **"Fixed Departures" badge**, which survives being looked at by someone who cannot see colour.
+
+   **Lotus watermarks on dark bands** (round 3). Every dark band carries the extracted lotus vector: oversized, ~6% opacity, deliberately cropped by the band edge, brand-kit cover style. On hover over the section it drifts — transform-only, 600ms, inside `prefers-reduced-motion: no-preference`. Decorative and `aria-hidden`. Use `<BandWatermark>` on a section carrying `band-watermarked`; the element is marked `data-allow-clip` because being clipped is the design.
+
+   **Components.** Cards: white fill, 12–16px radius, hairline border (burgundy at ~12% opacity), soft shadow on hover only. **One journey-card treatment sitewide** (round 3) — image, duration pill, title, "View journey →" — with no route line and no signature-feature line anywhere; the homepage and the archive render the identical card. Buttons: solid crimson primary with white text, ghost/outline ink secondary, subtle 2px hover lift per the motion spec. **Button radius is LOCKED to pill** (`--btn-radius: 9999px`, settled design round 3); it stays a token so the shape of every CTA is one edit, but the A/B is over and the losing option is gone from the demo page. Nav: white with a hairline bottom border, ink links, crimson Plan-My-Trip button; may sit transparent over a hero photo and solidify to white on scroll. Photography: full-bleed heroes under one continuous ink wash (see **Hero gradients** below); elsewhere images sit in clean rounded frames on white, gallery-style.
 
    **Reference captures live in `docs/references/`** (staralliance.com and airindia.com, desktop + mobile full-page). Study them before building each page and take **properties, not pixels**: the type scale and its confidence, one-idea-per-viewport density, colour-as-punctuation, photography treatment (full-bleed heroes, large calm image blocks on white), thin quiet nav, generous section breathing room. Page *structure* always comes from PAGE_TEMPLATES.
 
@@ -62,8 +78,12 @@ General shape of the rule: where a global skill and this project's locked specif
 
    **TEMP-VIDEO — temporary design-review footage.** The homepage hero video slot is filled, until the client supplies their own clip, by one stock loop from **Pexels** (its licence permits commercial use with no attribution required). The file and its poster are both named `TEMP-VIDEO-*` so `grep -rn "TEMP-VIDEO" src/ public/` finds every reference and `npm run audit:hardcoded` counts them. Regenerate with `npm run temp:video`; provenance in `docs/brand/processed/TEMP-VIDEO-PROVENANCE.md`. **Replaced by the client's own footage through the CMS — a content change with zero code edits.** The owner's style reference for this video is recorded in `docs/design/references/README.md` and is **human-viewing only**: never fetch, download or embed it, and a YouTube embed is never acceptable as a hero background (player chrome, third-party branding, a third-party script in the critical path).
 
-**Hero gradients** sit at the text zone only — bottom-up, over roughly the lower half — but they must be *firm enough to actually work as a reading ground*, because an editor may upload a bright, busy photograph. A transparent overlay header carries its own soft top-down scrim for the same reason. A gradient too timid to make white copy legible is a bug, not restraint.
-   **On the video hero the gradient is stronger and rebalanced** (PRD v1.5): firm at the text zone, plus a light wash above. A photograph is one frame you can check; a video is hundreds you cannot, and an editor may upload a bright clip — so white copy has to clear AA over **any** frame, not the average one.
+**Hero gradients — ONE continuous wash, and it is INK** (design round 3, superseding the text-zone rule and the separate video veil). Every hero — photograph or video, 100svh or 34svh — carries the same gradient: anchored to the bottom, firm for `--scrim-firm`, then feathered to nothing over `--scrim-feather`. Three properties are non-negotiable:
+   - **No perceptible boundary.** The previous scrim was an element that *began* five rem above the copy, which put a visible horizontal seam across the Golden Triangle hero — yellow sky, a hard line, dark below. Eleven stops feathered over the whole distance mean there is no position at which the rate of change jumps.
+   - **Ink, not plum.** Plum at 90% over a sunrise is a purple panel with a building in it. A near-black wash darkens without tinting, so the photograph stays the colour it was photographed. The overlay header's own scrim is ink for the same reason: two washes in two hues over one photograph is how you get a seam even when neither gradient has an edge.
+   - **Lengths, not percentages.** A percentage curve cannot know where the copy is: the same stops that gave the homepage 11:1 gave a breadcrumb on a 55svh destination hero 3.0:1. `--scrim-firm`/`--scrim-feather` are per hero height, because the height of a copy column is a length.
+
+   The gradient is deliberately **lighter** than what it replaced — the photo must read as a photo, not a tinted panel — which means legibility is verified rather than assumed. `npm run check:hero-contrast` measures the lightest ground pixel behind every run of text on **every** hero page, at mobile and desktop, and it is the arbiter. Any text that cannot be covered by a gradient the client would accept gets **its own opaque ground** instead: that is why the trip-type tag, the duration badges and the route strip are pills. An opaque ground makes contrast a property of the design rather than of whichever photograph an editor uploads.
 
    **Image-slot convention (every template).** Each image slot renders the neutral grey placeholder or a TEMP-PHOTO stand-in — never a brand gradient — is **CMS-fed** so the M5 photo swap is content-only with zero code edits, and has an aspect ratio fixed by the template so a photograph swap can never reflow the page.
 
@@ -77,6 +97,15 @@ General shape of the rule: where a global skill and this project's locked specif
    **Operator tariffs are never published — permanent rule, not a pending decision.** All three train source docs (Palace on Wheels, Golden Chariot, Deccan Odyssey) carry published USD tariffs; every figure is suppressed and cabin cards render "Enquire for pricing". A USD/price-pattern grep across the three train pages is a permanent regression check from the M5 gate onward. Departure schedules render generically ("Seasonal departures — enquire for current dates") until the schedule half of PRD Open Question #15 resolves.
 7. **Copy voice.** Warm, editorial, unhurried. No exclamation-mark selling, no "BOOK NOW", no countdown/discount UI. Benchmark: the Kerala Houseboat and Western & Southern India itinerary intros.
 8. **Schema safety.** All content collections Zod-validated. A malformed CMS entry must fail the build loudly — never render a broken page silently.
+9. **Word control — no invented copy goes live-looking.** (Design round 3, standing rule.) Every user-facing string is one of three things:
+   - **sourced** — from the client's documents, the PRD, PAGE_TEMPLATES, the Template Spec, or an explicit client instruction;
+   - **registered** — listed in `docs/COPY_REGISTER.md` with its page and section, marked `DRAFT`, awaiting the client's approval; or
+   - **obviously a placeholder** — neutral, visibly provisional, and **SHORT**. One quiet italic line, never a paragraph, and never styled as though it were the content it stands in for.
+
+   The rule exists because the testimonial cards rendered a full paragraph of internal explanation about why no reviews existed yet, at quote size, under an invented guest name. The client reads that as the agency putting words in their mouth, and they are right. Placeholder testimonials now carry **no name, no origin and no quote at all** — the schema refuses those fields when `placeholder` is true — and render `Guest review coming soon` with the lotus. A placeholder is never emitted as structured data: a fabricated `Review` in JSON-LD is republished by aggregators and cannot be taken back.
+
+   `docs/COPY_REGISTER.md` is kept current whenever new copy is written. It is the file the client approves or strikes in bulk.
+10. **Image control — every image is a CMS field.** (Design round 3, standing rule.) Every image and video a visitor sees must arrive through a content-collection field, so the M5 photo swap and every later change is content, not code. Collection pages read their own entry; a fixed page with no collection of its own reads `siteSettings.pageHeroes`. **Exempt:** inline decorative SVG (the lotus, the Phosphor icons, the 404 road), the logo, and the neutral grey placeholders that render when a nullable CMS field is empty. Enforced by `npm run check:cms-images`, which fails on any asset import outside that list — it is part of the gate, not a convenience.
 
 ## Content collections (`src/content/`)
 
@@ -90,8 +119,8 @@ General shape of the rule: where a global skill and this project's locked specif
 | `destinations` | name, heroImage, intro, practicalNotes[], faq[], relatedJourneys (auto by tag + manual override) |
 | `cities` | **New in PRD v1.5.** name, state, hook, heroImage, quickFacts, intro[], experiences[] (4–8, image-led), photoStrip[] (3–6), practicalNotes[], faq[], relatedJourneys (manual override on top of the automatic `routeCities` match), `provisional` flag. Two seeded at M4 (Jaipur, Kochi) from public knowledge; the rest is M5/Phase-2 content |
 | `posts` | title, category ('planning-visas' \| 'best-time' \| 'guides'), heroImage, publishDate, updatedDate, body (rich), embeddedJourneys[] (≥1 required), faq[] |
-| `testimonials` | name, origin, tripRef, quote, photo?, consentConfirmed (boolean, must be true to render) |
-| `siteSettings` (singleton) | see invariant #1 |
+| `testimonials` | name, origin, tripRef, quote, photo?, consentConfirmed (must be true to render), category, featured, **`placeholder`** (round 3 — an empty slot; the schema then REFUSES name, origin, quote and photo, and the card renders one quiet line. Never emitted as `Review` structured data) |
+| `siteSettings` (singleton) | see invariant #1; also **`pageHeroes`** (round 3) — the hero image + alt for the fixed pages that have no collection of their own, currently `/luxury-trains/` only |
 
 ## Directory conventions
 
@@ -136,6 +165,9 @@ Trailing slashes on. Never change a published URL without a 301 in `_redirects`.
   *(Three distinct Performance bars, deliberately: **≥ 95** on the M1 empty-page gate · **≥ 90** per-task definition of done · **≥ 85** launch floor in PRD §16.)*
 - Template Spec §6 consistency checklist passes for any itinerary page touched
 - New editable strings wired to CMS, not hardcoded (invariant #1 audit)
+- `npm run check:cms-images` passes — no image outside the CMS (invariant #10)
+- `npm run check:hero-contrast` passes on every hero page if any hero, gradient or hero copy changed
+- New user-facing copy is registered in `docs/COPY_REGISTER.md` (invariant #9)
 - Works 360px–1440px; keyboard navigable; visible focus states
 - Commit messages: `feat|fix|content|chore: short description`
 

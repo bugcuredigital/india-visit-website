@@ -321,3 +321,70 @@ Every luxury-train page links here, as invariant #6 requires.
 **What we need from you:** the approved text for the three, plus the
 cancellation slab table for journeys you arrange yourself (the train slabs are
 the operator's and are already handled).
+
+---
+
+## 20. The copy register ⚑ (added M4 design round 3)
+
+**This is the big one, and it is new.** Your instruction was that no invented
+copy should go live-looking. That is now a standing rule, and the mechanism is
+**`docs/COPY_REGISTER.md`** — every headline, tagline, section heading, eyebrow
+and promise currently on the site, listed by page and marked:
+
+- **APPROVED** — traceable to your documents, the PRD, the templates, or a
+  ruling you gave in a previous round;
+- **DRAFT** — written by us, plausible, in voice, **and not yet yours**;
+- **PLACEHOLDER** — deliberately neutral and visibly provisional.
+
+It is built to be approved or struck **in bulk**: read the DRAFT rows and reply
+one line per row you want changed.
+
+**Rows worth your attention first**, because they are claims, promises or
+numbers rather than atmosphere:
+
+| Row | What it says | Why it is flagged |
+|---|---|---|
+| B1 | "Journeys across India, planned by a person" | The single most important line on the site |
+| B15 | "…at the price of a package tour" | A **comparative pricing claim** |
+| B9 / B22 | "Not a call centre" (twice) | A **promise about how you answer the phone** |
+| A9 | "We reply personally — no call centre, no spam." | Same, on every form |
+| D1 | "Nine regions we have been arranging journeys through for twenty years" | Applies twenty years to **Bali and Vietnam** as well |
+| E3 | "Almost everything is included" (trains) | An **inclusions claim** that must match the operator's |
+| F1 | "GST invoicing" | A **factual claim about your business** |
+| F3 | "Twenty to two hundred people" | A **capacity claim** |
+| G1 / G2 | "…not one itinerary written by somebody who had not been there" and the three-paragraph company history | **Your history, inferred and written by us.** Read closely or strike |
+| I3 | "One note a fortnight… unsubscribe in one click" | A **frequency promise** the mailing list has to keep |
+| J2 | "We read it properly / come back with a draft / change it until it fits" | Three **process promises** |
+
+**Already fixed under this rule, no action needed:** the testimonial cards were
+rendering a full paragraph of internal explanation at quote size, under two
+invented guest names — "Anita R." and "James & Clare W.", neither of whom
+exists. Both entries are gone. An empty slot now shows one italic muted line,
+*"Guest review coming soon"*, with the lotus, and the schema physically refuses
+to store a name, an origin or a quote on a placeholder. They are also excluded
+from the page's structured data, so no aggregator can pick up a review that
+never happened.
+
+---
+
+## 21. Footer — reference layout still to come (added M4 design round 3)
+
+You mentioned a screenshot of the approved footer design going into
+`docs/design/references/`. It is not there yet, so the footer has been built to
+a sensible default per your description:
+
+- the **phone number with its country code** in the display face, as the
+  loudest thing in the footer, alongside WhatsApp, email and address;
+- a **compact enquiry form** — name, phone, message, consent, submit — sitting
+  in the fourth column;
+- ink ground rather than burgundy, so it does not merge with the burgundy
+  enquiry band immediately above it.
+
+**When the reference lands we will rebuild to it.** Nothing here is expensive
+to change: the form is a layout mode of the existing enquiry component, so the
+fields, the spam protection and the consent checkbox all move with it.
+
+One thing worth confirming while you are looking: the footer form and the page
+forms both require the **consent checkbox** linking to the privacy policy. That
+wording is itself awaiting your adviser (§19), so the footer form inherits the
+same open question.

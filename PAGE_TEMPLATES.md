@@ -2,7 +2,7 @@
 
 Section-by-section template definitions for every page type. Companion to the *Itinerary Page Template Specification* (which governs `/journeys/{slug}/` — not repeated here). Component names match the M3 library in EXECUTION_RUNBOOK.md. This file is the **structural** source of truth for implementation; the **visual** register comes from the locked design direction in CLAUDE.md invariant #5 and the reference captures in `docs/references/`. There is no mockup track.
 
-**Global rules for all templates:** Header (sticky, settings-driven) and Footer wrap everything · **one persistent-contact pattern, two form factors: on mobile a sticky bottom bar, on desktop a floating bottom-right WhatsApp button** — present on every page *except* policy pages and `/plan-my-trip/`. Default mobile bar order is [WhatsApp][Call][Enquire] · every template ends with a conversion opportunity before the footer · one H1 per page · **pure white `#FFFFFF` is the primary background sitewide; off-white `#F7F5F6` is a secondary surface for card fills, alternate sections and form fields; deep-plum bands are rare and intentional** (footer, How-It-Works, one homepage moment, ConvertBand) — see the locked design direction in CLAUDE.md · section rhythm 96–128px desktop / 56–72px mobile · crimson is punctuation, never a section flood: aim for exactly one crimson action per viewport · yellow accents only on plum/burgundy · lotus glyph for all highlight bullets.
+**Global rules for all templates:** Header (sticky, settings-driven) and Footer wrap everything · **one persistent-contact pattern, two form factors: on mobile a sticky bottom bar, on desktop a floating bottom-right WhatsApp button** — present on every page *except* policy pages and `/plan-my-trip/`. Default mobile bar order is [WhatsApp][Call][Enquire] · every template ends with a conversion opportunity before the footer · one H1 per page · **pure white `#FFFFFF` is the primary background sitewide; off-white `#F7F5F6` is a secondary surface for card fills, alternate sections and form fields; dark bands are rare and intentional and are BURGUNDY `#741238` (round 3) — the footer is ink `#1A1523`, and plum `#452B5E` is kept for at most one deliberate moment per page** — see the locked design direction in CLAUDE.md · **every dark band carries a cropped low-opacity lotus watermark** (round 3) · section rhythm 96–128px desktop / 56–72px mobile · crimson is punctuation, never a section flood: aim for exactly one crimson action per viewport · yellow accents only on burgundy/plum/ink · lotus glyph for all highlight bullets · **every image is a CMS field** (round 3, CLAUDE.md invariant #10) · **no invented copy goes live-looking** (round 3, invariant #9 — register drafts in `docs/COPY_REGISTER.md`).
 
 ---
 
@@ -17,19 +17,26 @@ human in it and that is the trust centrepiece for a twenty-year consultancy.
 sections 1 and 2 are re-specified below: the hero goes full-screen with a video
 slot, and the trust bar gains an icon per stat.
 
+**Amended again by design revision round 3 (PRD v1.6).** The condensed dual
+strip is gone: it put a whole line of business and the entire Travel Guide into
+half a band each, which is less than either earns. Section 10 becomes a
+corporate band of its own and section 11 a full Travel Guide section, pushing
+lead capture to 12. Sections 1, 7 and 9 are re-specified in place.
+
 | # | Section | Component(s) | Image slots | Content & behaviour |
 |---|---|---|---|---|
-| 1 | Hero | Hero | **1 poster (16:9) + 1 video** | **Full-screen, 100svh (v1.5).** Background **video** slot behind the copy — muted, looped, `playsinline`, faded in over the poster **after `window.load`**; `prefers-reduced-motion` and `Save-Data` get the poster alone and the video is never fetched. **The poster is the LCP element** and behaves exactly as a photographic hero does (preloaded, `fetchpriority="high"`, eager, never animated) — PRD §12 carries the mandatory pattern. Gradient is **rebalanced for video**: firm at the text zone, a light wash above, so white copy stays AA-readable over any frame. Both slots CMS-fed. H1 value prop + a "20+ years" trust line drawn from `siteSettings.yearsExperience` — **never a hardcoded year**; `foundingYear` stays unrendered until verified (Open Q#2). CTAs: **Plan My Trip** (crimson) + Explore Journeys (ghost). Ken Burns applies to the poster only, and stops once the video takes over |
+| 1 | Hero | Hero | **1 poster (16:9) + 1 video** | **Full-screen, 100svh (v1.5).** Background **video** slot behind the copy — muted, looped, `playsinline`, faded in over the poster **after `window.load`**; `prefers-reduced-motion` and `Save-Data` get the poster alone and the video is never fetched. **The poster is the LCP element** and behaves exactly as a photographic hero does (preloaded, `fetchpriority="high"`, eager, never animated) — PRD §12 carries the mandatory pattern. Gradient is **one continuous ink wash over the whole hero** (v1.6) — no text-zone band, no separate video veil, no perceptible boundary, and lighter than what it replaced so the photograph reads as a photograph. Verified per hero and per breakpoint with `npm run check:hero-contrast`. Both slots CMS-fed. H1 value prop + a "20+ years" trust line drawn from `siteSettings.yearsExperience` — **never a hardcoded year**; `foundingYear` stays unrendered until verified (Open Q#2). CTAs: **Plan My Trip** (crimson) + Explore Journeys (ghost). Ken Burns applies to the poster only, and stops once the video takes over |
 | 2 | Trust bar | CounterStat ×4 | — | Exactly four: **20+ Years · N Curated Journeys · 9 Regions · 24/7 On-Trip Support**. The two middle stats are **counted from our own catalogue, never claimed** — a computed number cannot be an unverified claim and cannot go stale. Client-verified figures (`travellerCount`, `destinationCount`) take the middle slots once they exist. Full-width display numerals divided by hairlines, with **one thin-line icon above each numeral** (v1.5): Phosphor `thin` weight, **burgundy** stroke, ~28px, decorative (`aria-hidden`) because the label already says what the number is. Icons support the numbers — no illustration, no colour flood, and the icon is chosen per **stat**, not per position, so it stays correct when a verified figure replaces a counted one. Beneath: an **association-logos row slot**, rendered only when the client supplies logos |
 | 3 | **Where do you want to go** | Image tile grid | **9 tiles** | Destinations **moved above journeys** — travellers shop by place first. All **nine** locked destinations (slugs in CLAUDE.md) plus a "View all destinations" link to `/destinations/`. 4/3/2-col responsive |
 | 4 | Signature journeys | JourneyCard ×6 | **6 cards** | Editorially picked for spread: domestic + international + one train. Card→page View Transition morph |
-| 5 | How it works | 3-step band | — | Plum band. Tell us your dream → We craft your itinerary → Travel fully supported. Lotus mark on step 3. Dotted rail with circular nodes at ≥48rem |
+| 5 | How it works | 3-step band | — | **The one plum band on the site** (v1.6) — everything else dark is burgundy or ink. Tell us your dream → We craft your itinerary → Travel fully supported. Lotus mark on step 3. Dotted rail with circular nodes at ≥48rem |
 | 6 | **Meet your travel consultant** | Portrait + prose | **1 portrait (4:5)** | **The trust centrepiece the page was missing.** Warm environment shot of the founder, 2–3 lines in her own voice, one **ghost** CTA "Start a conversation" → `/plan-my-trip/`. White background, generous space. Copy is **provisional until the client approves it** — logged in `docs/CLIENT_REVIEW_SHEET.md`, and the portrait is a placeholder until the client supplies one |
-| 7 | Why India Visit | 4 lotus cards | — | Experience · Personal Curation · Affordable Luxury · With You Every Step. Now **follows** the human section it substantiates |
+| 7 | Why India Visit | 4 lotus cards | — | Experience · Personal Curation · Affordable Luxury · With You Every Step. Now **follows** the human section it substantiates. **Enriched v1.6** — it read too plain: numbered `01–04` in the display face, lotus up to **28px**, headings up one type-step and bolder, **hairline separators between columns** (between only, never around the outside), supporting text up one step. One calm off-white ground: richer, not busier |
 | 8 | Luxury trains banner | Wide banner card | **1 wide** | "India's legendary luxury trains — booked through authorised agents" → `/luxury-trains/` |
-| 9 | Testimonials | TestimonialCarousel | photos where consented | 5–7 reviews, name + city/country + trip taken. Auto-advance OFF. Placeholder-flagged until Open Q#3 resolves |
-| 10 | **Slim dual strip** | Two-up light band | **1 guide card** | Corporate teaser **and** travel-guide teaser condensed into **one lighter band**. Both are secondary audiences — do not spend two full sections on them |
-| 11 | Lead capture | ConvertBand (short form) | — | Plum band → footer. Name, phone/WhatsApp, destination, travel month |
+| 9 | Testimonials | TestimonialCarousel | photos where consented | 5–7 reviews, name + city/country + trip taken. Auto-advance OFF. **Redesigned v1.6** — oversized lotus **watermark cropped at the card corner**, **initial-avatar circle** (never a stock face: a stranger's photograph presented as a guest is a fabrication), trip label as a **pill**, off-white card with a firmer burgundy hairline, arrows and dots styled to brand. Dots are JS-only and hidden without it; both controls disappear at ≥64rem where the track is a static 3-column grid. **An un-filled slot renders one italic muted line — "Guest review coming soon" — plus the lotus, and carries no name, origin or quote at all** (word control) |
+| 10 | **Corporate band** | Burgundy band | — | Its own band (v1.6), not half a strip. One sentence, one **on-dark** CTA → `/corporate/`. Carries a lotus watermark |
+| 11 | **Travel guide** | ArticleCard ×3 | **3 cards** | A full section again (v1.6): three article cards with category tags, and "All articles →" to `/travel-guide/`. Grid is sized for three and **holds its shape at one** — the catalogue is still being seeded |
+| 12 | Lead capture | ConvertBand (short form) | — | **Burgundy** band → ink footer (v1.6 — two burgundy bands stacked read as one slab). Name, phone/WhatsApp, destination, travel month |
 
 ## T2 v2 — Destination page `/destinations/{slug}/`
 
@@ -69,24 +76,38 @@ complexity for a page whose job is to be a clear index.
 
 1. **Compact hero** — H1 "All Journeys", one line, no image or slim band only (this page is a tool, not a story)
 2. **Type toggle** — All · Custom Journeys · Luxury Trains (client-side, tiny island). Full filter/search = Phase 2
-3. **Card grid** — all 20 JourneyCards in the **compact** size (below), trains visually distinguished (plum card treatment + "Fixed Departures" tag). No coming-soon state: all three trains are content-complete
+3. **Card grid** — all 20 JourneyCards in the one sitewide treatment (below). Trains are distinguished by the **"Fixed Departures" badge** only. No coming-soon state: all three trains are content-complete
 4. **ConvertBand** — "Can't find your perfect trip? We build from scratch."
 
-### Compact card (v1.5) — this index only
+### The journey card — ONE treatment sitewide (v1.6)
 
-The archive cards were too big: forty of them at full height turned a tool page
-into a scroll. The **image height is unchanged** — the photograph is what the
-visitor scans — and the *content* below it is clipped to two things:
+Round 2 gave this index a `compact` card and left the homepage a larger
+`featured` one. Round 3 removes the distinction entirely: **a journey card is a
+journey card**, and the homepage row and the archive grid render the identical
+component.
 
-| Keep | Drop |
+| Every card has | No card has |
 |---|---|
-| Duration **pill** — `11N · 12D` | Route line |
-| Title, **one type-step smaller**, max **2 lines** with ellipsis | Signature-feature blurb |
-| | "View journey →" link (the whole card is the link) |
+| Image, 4:3 | Route line (`Delhi · Agra · Jaipur`) |
+| Duration **pill** — `11N · 12D` | Signature-feature blurb |
+| Title, max **2 lines** with ellipsis | A permanent dark ground for trains |
+| **"View journey →"** | |
+| "Fixed Departures" badge, Variant B only | |
 
-Everything dropped is carried by the journey page itself, one click away. The
-**featured homepage cards keep the route line** — six cards presented as a
-recommendation can afford the extra line; forty cards in a grid cannot.
+Everything dropped is carried by the journey page itself, one click away, and
+the two-line clamp is what stops one long title making a card taller than its
+neighbours in a forty-card grid.
+
+**Colour is a hover state.** Cards are white at rest. On `:hover` **and on
+`:focus-within`** the card footer transitions to the burgundy treatment — the
+title goes light, the CTA goes yellow, the pill inverts. The Variant B card's
+permanent plum ground is gone: a permanent burgundy ground would have been the
+same mistake in a warmer colour. The badge is what carries the meaning, and
+unlike a background colour it survives being read by someone who cannot see it.
+
+Price renders only while `siteSettings.showPrices` is on. It renders nothing
+today; the path stays wired so the pricing decision is reversible without a
+component edit.
 
 ## T4 — Luxury Trains landing `/luxury-trains/`
 
@@ -99,9 +120,24 @@ recommendation can afford the extra line; forty cards in a grid cannot.
 
 ## T5 — Corporate `/corporate/`
 
-1. **Hero** — professional-toned image (not beach-party), H1 "Corporate Travel & Offsites", subline naming GST invoicing + single-vendor reliability
-2. **Capabilities** — 4 cards: Offsites · Incentive Trips (MICE) · Conferences · Group Logistics
-3. **How we work for companies** — 3-step (Brief us → Proposal in 48h → We run the whole trip). The 48h promise = key differentiator (confirm with client)
+**Register (v1.6).** The client's note was that this page should "feel like a
+different room of the same house". Same tokens, same type, same lotus — colder
+light. Four differences, all of them restraint rather than decoration:
+
+- the **hero sits on ink**, not white, so a buyer arriving from a vendor
+  shortlist knows within one screen that this is the business side;
+- **eyebrows are burgundy**, so crimson is reserved on this page for the two
+  things that are genuinely actions — the phone number and the submit button;
+- the **capability grid is ruled, not airy**: hairline-separated flat rows
+  rather than cards. Leisure pages breathe; a procurement page should let you
+  compare four things quickly;
+- **no photography above the fold**, no Ken Burns, no warm lede about unhurried
+  days. The destination tiles stay — a group buyer does need to see where this
+  can happen — but they are square, smaller and captioned flatly.
+
+1. **Hero** — **ink band**, no photograph. H1 "Corporate Travel & Offsites", subline naming GST invoicing + single-vendor reliability. The phone number is the loud element and is **yellow** on this ground (crimson is not legible on ink)
+2. **Capabilities** — 4 **ruled rows** (v1.6, not cards): Offsites · Incentive Trips (MICE) · Conferences · Group Logistics, each a title and one paragraph, hairline-separated
+3. **How we work for companies** — 3-step (Brief us → Proposal → We run the whole trip), on a **burgundy band** with a lotus watermark. T5's "Proposal in 48h" is written **without the number** until the client confirms it (`responseSla` is null, PRD Open Q#12): a response-time promise on a corporate page is a commitment somebody has to keep at 4pm on a Friday, and it is not ours to make on their behalf
 4. **Destinations for teams** — 4–6 tiles suited to groups
 5. **Proof** — client logos row or anonymised case snippets (pending Open Q#5); omit section entirely if nothing supplied — never fake it
 6. **Corporate form** — Company, Contact, Email, Phone, Group size, Dates, Budget band (optional), Requirements. Tagged `corporate` in lead payload
@@ -125,6 +161,14 @@ recommendation can afford the extra line; forty cards in a grid cannot.
 3. **Review wall** — masonry/2-col cards: quote, name, origin, trip link, photo if consented. `Review` schema
 4. **Guest gallery** — photo grid of real travellers (consent-flagged only)
 5. **ConvertBand** — "Become our next story"
+
+**Card treatment (v1.6)** — identical to the homepage carousel card: cropped
+lotus watermark in the corner, off-white fill, firmer burgundy hairline, trip
+label as a pill. **A slot with no review yet shows one italic muted line —
+"Guest review coming soon" — and carries no name, no origin and no quote**
+(word control; the schema refuses those fields on a placeholder). Placeholders
+are **never** emitted as `Review` structured data: a fabricated review in
+JSON-LD is republished by aggregators and cannot be withdrawn.
 
 ## T8 — Travel Guide index `/travel-guide/`
 
@@ -159,11 +203,46 @@ recommendation can afford the extra line; forty cards in a grid cannot.
 
 ## T12 — Policy pages `/privacy/ /terms/ /cancellation/ /booking-terms/`
 
-Single quiet template: slim header band (plum), H1, prose with anchored H2s, updated date. Booking-terms carries the train cancellation slabs as tables + operator disclosure box. No conversion furniture, no sticky bar.
+Single quiet template: slim header band (**burgundy** since v1.6, with a small lotus watermark), H1, prose with anchored H2s, updated date. Booking-terms carries the train cancellation slabs as tables + operator disclosure box. No conversion furniture, no sticky bar.
 
 ## T13 — 404
 
 Full-bleed image (empty road/desert), "Looks like you've wandered off the route." Buttons: Home · All Journeys · WhatsApp. Lotus watermark. Keep it charming — it's a brand moment.
+
+## T14 — Header and Footer (every page)
+
+**One `Header` component and one `Footer` component sitewide, no per-page
+variants** (v1.6). The four policy pages receive theirs through the `Policy`
+layout rather than declaring their own. The Header's `overlay` / `isHome` props
+are configuration for a page whose hero is full-bleed — they are not a second
+header.
+
+**Footer (v1.6).** Four columns at ≥68rem, two at ≥40rem, one below that:
+
+1. **Brand + contact** — logo, tagline, the years/support line, then the
+   **phone number with its country code** (`+91 …`) in the display face as the
+   loudest thing in the footer. Half this audience dials from outside India and
+   a number without `+91` is a number they cannot use. WhatsApp, email, address
+   and socials follow; an unsupplied social handle leaves no empty icon behind.
+2. **Explore** — Destinations plus the locked nav order.
+3. **Policies** — the four policy pages.
+4. **Send a quick enquiry** — a **compact enquiry form**: name, phone, message,
+   consent, submit. It is a `layout` mode of `EnquiryForm`, **not a second
+   form**, so it shares the honeypot, the hidden context fields (`leadType`,
+   `pageUrl`, UTM) and the required consent checkbox with every other form on
+   the site. A second form is a second place for the consent checkbox to go
+   missing.
+
+Ground is **ink**, not burgundy: every page ends with a burgundy ConvertBand,
+and a burgundy footer directly beneath it merges the two into one
+undifferentiated slab half a screen tall. Carries a cropped lotus watermark.
+
+Every contact string comes from `siteSettings` (invariant #1) and is still
+DUMMY DATA until M5.
+
+**A footer reference layout is expected from the owner** (`docs/design/references/`).
+The form above is the sensible-default build made in its absence; re-check it
+against the reference when it lands.
 
 ## T15 — City page `/cities/{slug}/`
 

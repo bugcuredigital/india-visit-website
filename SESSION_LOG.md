@@ -890,3 +890,105 @@ figure that went in the gate summary is the repeated one, not the first one.
 4. **Then M5:** the remaining 17 itineraries, 7 more articles, real photography
    replacing all 40 TEMP-PHOTO files and the TEMP-VIDEO clip, and the
    destination reference on journeys that turns the auto-tagging on.
+
+---
+
+## 2026-09-11 — M4, design revision round 3 (ten items)
+
+**Branch:** `m4-templates` (continues PR #3) · **PRD → v1.6**
+
+Ten owner items, executed in the sequence given: governance and audit first
+(1+2), then the colour rebalance (9) because it touches everything, then
+gradients (3), cards (4), the trust/testimonial redesigns (5+6), the homepage
+and corporate register (7), the footer (8), and the watermarks (10).
+
+### Governance (items 1 and 2) — two new standing rules
+
+**Word control** is now CLAUDE.md invariant #9. Every user-facing string is
+sourced, registered in the new **`docs/COPY_REGISTER.md`** as `DRAFT`, or an
+obviously-placeholder line that is short and quiet. The trigger was real: the
+two testimonial cards were rendering a full paragraph of internal explanation
+at quote size, under two invented guest names. Both entries are deleted. The
+schema now carries a `placeholder` flag and **refuses** `name`, `origin`,
+`quote` and `photo` when it is set, so the failure cannot recur by editing; the
+card renders one italic muted line and the lotus. Placeholders are excluded
+from the `Review` structured data, because a fabricated review republished by
+an aggregator cannot be withdrawn.
+
+`docs/COPY_REGISTER.md` inventories the chrome copy of all 33 pages by page,
+each row `APPROVED` / `DRAFT` / `PLACEHOLDER`, with twelve rows flagged as
+claims, promises or numbers rather than atmosphere.
+
+**Image control** is invariant #10, enforced by the new
+**`npm run check:cms-images`**. Three findings, all converted: the
+`/luxury-trains/` hero was imported straight from `src/assets/` and now reads
+from a new `siteSettings.pageHeroes`; the 404 graphic became inline SVG; and
+nine dead TEMP-PHOTO fallbacks in the destination strip were deleted — all nine
+destination entries exist, so the homepage now resolves every tile from content
+and **throws** on a missing entry rather than silently showing a photograph
+nobody chose.
+
+### Two defects the round exposed, neither of them new
+
+**The hero gradient regression I introduced, and how it was caught.** The first
+version of the continuous gradient used percentage stops. On the homepage it
+measured 11:1. `check:hero-contrast` defaulted to the homepage only, so that
+would have been the whole story — so the default was widened to all eight hero
+pages first, and it returned **33 AA failures**: a percentage curve cannot know
+where the copy is, and a breadcrumb halfway up a 55svh destination hero landed
+at 3.0:1. Re-anchoring the gradient in `rem` from the bottom, with
+`--scrim-firm`/`--scrim-feather` per hero height, fixed 32 of them; the last
+was the trip-type tag, which now carries its own burgundy pill like the badges
+beneath it. Final: **90 text runs, all pass**. A baseline run against the
+previous commit confirmed the old scrim passed all 94 — so this was a
+regression I made, not one I inherited.
+
+**The lotus glyph has been the wrong colour since M3.** Ten call sites did
+`<Lotus class="why__mark" />` with `.why__mark { color: crimson }` in the
+calling page. The `<span>` is authored inside `Lotus.astro`, so it carries
+*that* component's `data-astro-cid`; the caller's rule compiled to
+`.why__mark[data-astro-cid-<caller>]` and matched nothing. Every lotus that was
+meant to be crimson or yellow rendered plain ink, through three design reviews,
+because a missing colour reads as a design choice. The same trap was found once
+before on the trust-bar icons in round 2 and fixed *locally* with a wrapper
+span — which left the pattern intact everywhere else. It is now a **`tone`
+prop** resolved inside `Lotus.astro`, with the reasoning written into the file.
+
+### Gate evidence
+
+33 pages · `astro check` 0/0/0 · **1,956 internal references, 0 broken, 0
+pending** · Lighthouse mobile **Performance 100** on `/`, `/journeys/`, Golden
+Triangle, `/corporate/`, `/reviews/`, `/about/`, `/luxury-trains/`,
+`/cities/jaipur/`; **99** on the article. LCP 1.5–1.7s everywhere except the
+article at 2.3s (unchanged, inside the ceiling). CLS 0 and TBT 0ms throughout.
+Contrast, CMS-image, hero-video, responsive, keyboard, no-JS, template-spec,
+link and hardcoded audits all pass. Figures:
+`reports/m4-rev3-gate-summary.json`; captures in `reports/rev3/`.
+
+The homepage's first Lighthouse run in a sequential loop returned P75 / TBT
+1,400ms; two clean repeats both returned P100 / TBT 0ms. Same queued-run
+contention as round 2 — the repeated figure is the one recorded, and the
+summary says so.
+
+**Button radius: LOCKED to pill.** The A/B is removed from `/dev/components/`.
+
+### Flagged, deliberately not changed
+
+The homepage destination strip puts nine tiles in a four-column grid, which
+leaves Vietnam alone on its own row. `PAGE_TEMPLATES` T1 §3 specifies
+"4/3/2-col responsive", so this was not changed unilaterally; a one-line move to
+three columns at desktop makes it a clean 3×3.
+
+### Exact next action
+
+1. **Client:** judge round 4 from the captures on PR #3 — homepage,
+   `/journeys/`, Golden Triangle and `/corporate/`, desktop and mobile.
+2. **`docs/COPY_REGISTER.md`** — the bulk copy approval. Review-sheet §20 lists
+   the twelve rows worth reading first.
+3. **Footer reference layout** (§21) — when the screenshot lands, rebuild to it.
+4. **Destination strip** — three columns at desktop, or leave at four?
+5. ⚑ **CLIENT_REVIEW_SHEET §19** — legal copy for the three policy pages plus
+   the agency's own cancellation slabs. Still the only launch blocker.
+6. **Then M5:** the remaining 17 itineraries, 7 more articles, real photography
+   replacing all 40 TEMP-PHOTO files and the TEMP-VIDEO clip, and the
+   destination reference on journeys that turns the auto-tagging on.
