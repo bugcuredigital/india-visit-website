@@ -26,7 +26,12 @@ interface Day {
   narrative: string;
   overnight: string;
   transport?: { mode: 'flight' | 'overnight-train' | 'train' | 'drive' | 'boat' | 'walk'; detail: string };
-  image?: ImageMetadata;
+  /** 0–4 photographs (PRD v1.5). One fills the day body; two or more become a
+   *  two-column grid. A day with none renders no image area at all — an empty
+   *  day is not an unphotographed slot, so it gets no placeholder. */
+  dayImages?: ImageMetadata[];
+  /** City pages this day's title names, where such a page exists (PRD v1.5). */
+  cities?: Array<{ slug: string; name: string; href: string }>;
   provisional?: boolean;
 }
 
@@ -76,15 +81,59 @@ const hasProvisional = days.some((day) => day.provisional);
                 </p>
               )}
               <p class="day__narrative">{day.narrative}</p>
-              {day.image && (
-                <Image
-                  src={day.image}
-                  alt=""
-                  widths={[480, 800]}
-                  sizes="(min-width: 48rem) 40rem, 100vw"
-                  loading="lazy"
-                  class="day__image"
-                />
+              {day.dayImages && day.dayImages.length > 0 && (
+                <ul
+                  class:list={['dayshots', { 'dayshots--pair': day.dayImages.length > 1 }]}
+                >
+                  {day.dayImages.slice(0, 4).map((shot) => (
+                    <li class="dayshots__item">
+                      {/*
+                        alt="" on purpose: the narrative immediately above
+                        describes this day, so alt text would read back to a
+                        screen-reader user what they have just been told.
+
+                        loading="lazy" AND decoding="async": days 1-3 are open
+                        by default, so without both, a day-1 photograph could
+                        contend with the hero for the LCP on a short page.
+                      */}
+                      <Image
+                        src={shot}
+                        alt=""
+                        widths={[320, 480, 800]}
+                        sizes={
+                          day.dayImages && day.dayImages.length > 1
+                            ? '(min-width: 48rem) 20rem, 45vw'
+                            : '(min-width: 48rem) 40rem, 92vw'
+                        }
+                        loading="lazy"
+                        decoding="async"
+                        fetchpriority="low"
+                        quality={58}
+                        class="dayshots__img"
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {day.cities && day.cities.length > 0 && (
+                /*
+                  The city link belongs HERE and not in the <summary> above it,
+                  even though the summary is where the city is named. An anchor
+                  nested inside a disclosure control both navigates and toggles
+                  the panel on the same click, and it is reached by Tab as a
+                  second stop inside a control that is already one — a keyboard
+                  and assistive-technology trap for the sake of a shortcut. The
+                  link does the same job one line down, where it also reads as
+                  a next step rather than as decoration on the heading.
+                */
+                <p class="day__cities">
+                  {day.cities.map((city) => (
+                    <a class="day__city" href={city.href}>
+                      <span>Explore {city.name}</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  ))}
+                </p>
               )}
               <p class="day__overnight">{day.overnight}</p>
             </div>
@@ -212,9 +261,75 @@ const hasProvisional = days.some((day) => day.provisional);
     margin-bottom: 0.9rem;
   }
 
-  .day__image {
-    margin-top: 1.25rem;
+  /* Rounded frames on white, gallery-style (design direction). The aspect
+     ratio is fixed by the template rather than by the upload, so swapping the
+     client's archive in cannot reflow a 13-day itinerary. */
+  .dayshots {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Two side by side; three or four wrap into the same two columns. Kept at
+     two even on a phone — a pair reads as a pair, and stacking them would push
+     the overnight line four screens down inside one day. */
+  .dayshots--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dayshots__item {
+    margin: 0;
+  }
+
+  .dayshots__img {
+    width: 100%;
+    height: 100%;
+    /* A lone photograph runs the full prose measure, so 4:3 would make it
+       about 520px tall — more page than a single day's illustration has
+       earned. 3:2 is the same picture, calmer. Pairs and grids keep 4:3,
+       where each frame is half the width and the height is already modest. */
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
     border-radius: var(--radius-md);
+  }
+
+  .dayshots--pair .dayshots__img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .day__cities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+  }
+
+  .day__city {
+    display: inline-flex;
+    align-items: center;
+    /* Flex items get their leading whitespace trimmed, so the space before the
+       arrow has to be a gap rather than a character. */
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    /* Ink, not crimson. An eight-day itinerary can put half a dozen of these
+       on one screen, and crimson is reserved for the single action that
+       matters in a viewport — here that is "Customise This Journey". A city
+       chip is a way out of the page, not the way forward. */
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .day__city:hover {
+    border-color: var(--color-crimson);
+    color: var(--color-crimson);
   }
 
   .day__overnight {

@@ -53,6 +53,7 @@ import { Image } from 'astro:assets';
 
 import { getSiteSettings, whatsappLink } from '../../lib/site-settings';
 import { heroPreload } from '../../lib/hero-image';
+import { getCityIndex, cityLinkFor, citiesMentionedIn } from '../../lib/cities';
 import { touristTripSchema, breadcrumbSchema } from '../../lib/schema';
 
 type Journey = CollectionEntry<'journeys'>;
@@ -149,6 +150,23 @@ const tripSchema = touristTripSchema({
    widths as <Hero>, so this resolves to the identical file — one download. */
 const heroLink = await heroPreload(journey.heroImage);
 
+/* ------------------------------------------------------------ city links --
+   Route-strip entries and day titles link to /cities/{slug}/ where a city page
+   exists, and stay plain text where one does not (PRD v1.5). Nothing here is
+   authored per journey: the whole cross-link layer is derived, so growing the
+   city set from two to fifteen touches no journey content at all. */
+const cityIndex = await getCityIndex();
+
+const routeChips = journey.routeCities.map((cityName) => ({
+  name: cityName,
+  link: cityLinkFor(cityIndex, cityName),
+}));
+
+const itineraryDays = journey.itineraryDays.map((day) => ({
+  ...day,
+  cities: citiesMentionedIn(cityIndex, day.title),
+}));
+
 const crumbs = breadcrumbSchema([
   { name: 'Home', url: siteUrl },
   parent,
@@ -204,7 +222,19 @@ const crumbs = breadcrumbSchema([
     <!-- data-allow-clip: the city chain scrolls sideways by design (S1). -->
     <div class="routestrip" role="group" aria-label="Route" data-allow-clip>
       <ol class="routestrip__list">
-        {journey.routeCities.map((city) => <li class="routestrip__city">{city}</li>)}
+        {
+          routeChips.map((chip) => (
+            <li class="routestrip__city">
+              {chip.link ? (
+                <a class="routestrip__link" href={chip.link.href}>
+                  {chip.name}
+                </a>
+              ) : (
+                chip.name
+              )}
+            </li>
+          ))
+        }
       </ol>
     </div>
 
@@ -286,7 +316,7 @@ const crumbs = breadcrumbSchema([
   <GlanceTable rows={journey.glanceRows} />
 
   <!-- S6 + S7 ----------------------------------------------------------- -->
-  <DayAccordion days={journey.itineraryDays} showProvisionalNotice={true} />
+  <DayAccordion days={itineraryDays} showProvisionalNotice={true} />
 
   {
     journey.mapGraphic && (
@@ -485,6 +515,21 @@ const crumbs = breadcrumbSchema([
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-on-dark);
+  }
+
+  /* Underlined rather than crimson: crimson is punctuation for the one action
+     that matters in a viewport, and in this hero that is "Customise This
+     Journey". A route chip is a way out of the page, not the way forward. */
+  .routestrip__link {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    text-underline-offset: 0.2em;
+  }
+
+  .routestrip__link:hover {
+    color: var(--color-white);
+    text-decoration-color: currentColor;
   }
 
   .routestrip__city + .routestrip__city::before {

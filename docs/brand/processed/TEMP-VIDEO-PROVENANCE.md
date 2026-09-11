@@ -25,23 +25,34 @@ background on a website is exactly what the licence is for.
 | Videographer | Sahil Singh Raahee |
 | Source page | https://www.pexels.com/video/taj-mahal-silhouette-at-sunrise-38264084/ |
 | Downloaded from | https://videos.pexels.com/video-files/38264084/16247023_2560_1440_60fps.mp4 |
-| Size | 3.4 MB, 2560×1440, ~10s |
+| Size | 3.3 MB, 960×540, 7s (downscaled from 3.4 MB at 2560×1440, 10s) |
 | Used for | homepage hero background (T1 §1) |
 | Poster origin | frame 0 of the clip, extracted with macOS QuickLook |
 | Poster master | 2400×1350, mozjpeg q82 |
 
-## Why it ships exactly as downloaded
+## Why it is downscaled to 960×540
 
-There is no ffmpeg on the build machine. macOS `avconvert` can transcode, but
-re-encoding this clip to 720p through Apple's preset produced **9.0MB from a
-3.4MB source** — the preset targets a quality bar, not a size. Pexels' own
-encode is better than anything reachable here and is well inside the ~15MB cap,
-so it ships untouched.
+The first version of this script shipped the source untouched, because every
+re-encode available here came out **larger**: Apple's 720p preset turned 3.4MB
+into 9.0MB, and `--multiPass` made it 13.4MB. On bytes alone that was the
+right call.
 
-The consequence is worth stating plainly, because it applies to the client's
-real video too: **we cannot trim, re-encode or resize an uploaded clip.**
-Whatever is uploaded is what visitors download. That is why
-`CLIENT_REVIEW_SHEET` §15 asks for a web-ready file rather than a master.
+Bytes were the wrong thing to measure. Decoding 2560×1440 at 60fps where there
+is no hardware decoder costs **1,803ms of main-thread work**, which took the
+homepage's Lighthouse Performance score from 99 to **74** on a TBT of 1,500ms —
+while LCP, the metric the entire LCP-safe pattern exists to protect, never
+moved. The video stayed out of the critical path and blocked the main thread
+anyway.
+
+At 960×540 that cost disappears: **Performance 100, TBT 0ms.** Trimming to
+7 seconds brings the file to 3.3MB — smaller than the 1440p source, for a
+hundredth of the CPU. A clip sitting behind a plum veil has no use for 3.7
+megapixels.
+
+**What this means for the client's own video:** we can downscale and trim on
+macOS, and nothing more — no bitrate control, no format conversion, no WebM.
+`CLIENT_REVIEW_SHEET` §15 therefore asks for a web-ready file, and asks for
+**1080p as the ceiling rather than 1440p**.
 
 ## Why the poster is not graded
 

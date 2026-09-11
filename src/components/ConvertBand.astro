@@ -19,6 +19,8 @@ interface Props {
   leadType?: 'general' | 'journey' | 'corporate' | 'callback';
   journeySlug?: string;
   journeyTitle?: string;
+  /** Tags the lead with the city on T15 pages. */
+  cityName?: string;
   /** Context appended to the WhatsApp prefill. */
   waContext?: string;
 }
@@ -29,6 +31,7 @@ const {
   leadType = 'general',
   journeySlug,
   journeyTitle,
+  cityName,
   waContext,
 } = Astro.props;
 
@@ -69,6 +72,7 @@ const settings = await getSiteSettings();
         leadType={leadType}
         journeySlug={journeySlug}
         journeyTitle={journeyTitle}
+        cityName={cityName}
         onDark
       />
     </div>

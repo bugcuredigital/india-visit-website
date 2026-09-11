@@ -52,6 +52,23 @@ const WARM_GRADE = { multipliers: [1.06, 1.0, 0.93], saturation: 0.93 };
 const HERO_ASPECT = 1.5;
 
 /**
+ * Non-hero crops, and they exist for the same reason heroes have one.
+ *
+ * The city-page tiles first shipped uncropped, straight from the source
+ * aspect — and several of those sources are portrait. A 1400x2490 photograph
+ * rendered into a 4:3 frame means the browser downloads 1.3 megapixels in
+ * order to throw two thirds of them away: the Amer Fort tile came to 147KB for
+ * a frame 336 CSS pixels wide, and three of those competing with the hero on a
+ * simulated 4G connection pushed the page's LCP to 2.4s.
+ *
+ * Cropping to the frame's own ratio at source fixes the bytes AND the
+ * composition, which was previously whatever `object-fit: cover` happened to
+ * centre on.
+ */
+const TILE_ASPECT = 4 / 3;
+const DAY_ASPECT = 1.5;
+
+/**
  * `width` is the source width to request and the max output width. Heroes need
  * the full 2400 because they are full-bleed; tiles and cards are rendered at a
  * few hundred CSS pixels, so a 1200px master is already generous at 2x.
@@ -222,6 +239,202 @@ const PHOTOS = [
     subject: 'Sandstone fort walls from below',
     usedFor: 'spare article hero (M5)',
   },
+
+  // ---- itinerary day images (PRD v1.5, dayImages[]) ----------------------
+  // Rendered small, inside an expanded day, behind a lazy load. 1200 is
+  // generous at 2x for a frame that is never wider than half the prose
+  // measure.
+  {
+    name: 'day-gt-delhi-humayun',
+    id: 'photo-1597040663342-45b6af3d91a5',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: "Humayun's Tomb in Delhi, white dome above palms",
+    usedFor: 'Golden Triangle — day 1 (Delhi)',
+  },
+  {
+    name: 'day-gt-agra-taj-trees',
+    id: 'photo-1585135497273-1a86b09fe70e',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Taj Mahal framed by a dark tree in the foreground',
+    usedFor: 'Golden Triangle — day 5 (Agra)',
+  },
+  {
+    name: 'day-gt-agra-taj-reflection',
+    id: 'photo-1576487248805-cf45f6bcc67f',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Taj Mahal reflected in the watercourse',
+    usedFor: 'Golden Triangle — day 5 (Agra)',
+  },
+  {
+    name: 'day-gt-jaipur-amber',
+    id: 'photo-1590517862150-8203e97e463f',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Amer Fort on the hillside above Jaipur',
+    usedFor: 'Golden Triangle — day 3 (Jaipur)',
+  },
+  {
+    name: 'day-gt-jaipur-hawa-mahal',
+    id: 'photo-1524229321985-1e1989075d9b',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Hawa Mahal facade in Jaipur',
+    usedFor: 'Golden Triangle — day 3 (Jaipur)',
+  },
+
+  // ---- city pages (PRD v1.5, PAGE_TEMPLATES T15) -------------------------
+  {
+    name: 'city-jaipur-hero',
+    id: 'photo-1650530777057-3a7dbc24bf6c',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'The Hawa Mahal facade, pink sandstone windows',
+    usedFor: 'city hero — Jaipur',
+  },
+  {
+    name: 'city-jaipur-amber-fort',
+    id: 'photo-1599661046289-e31897846e41',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Visitors on the zigzag ramps of Amer Fort',
+    usedFor: 'city experience tile — Jaipur, Amer Fort',
+  },
+  {
+    name: 'city-jaipur-city-palace',
+    id: 'photo-1682321136734-8cc95d0912be',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A columned palace doorway',
+    usedFor: 'city experience tile — Jaipur, City Palace',
+  },
+  {
+    name: 'city-jaipur-hawa-mahal',
+    id: 'photo-1524230507669-5ff97982bb5e',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Hawa Mahal in daylight',
+    usedFor: 'city experience tile — Jaipur, Hawa Mahal',
+  },
+  {
+    name: 'city-jaipur-bazaar',
+    id: 'photo-1783067727360-33aacf486424',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Bowls of coloured powders at an outdoor market',
+    usedFor: 'city experience tile — Jaipur, the bazaars',
+  },
+  {
+    name: 'city-jaipur-strip-1',
+    id: 'photo-1602339752474-f77aa7bcaecd',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Jaipur sandstone architecture',
+    usedFor: 'city photo strip — Jaipur',
+  },
+  {
+    name: 'city-jaipur-strip-2',
+    id: 'photo-1589000865526-e0db02c3d7ad',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A walkway beside water below the fort',
+    usedFor: 'city photo strip — Jaipur',
+  },
+  {
+    name: 'city-jaipur-strip-3',
+    id: 'photo-1524309784716-6a4be8299c7f',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Fort structure under a clear sky',
+    usedFor: 'city photo strip — Jaipur',
+  },
+  {
+    name: 'city-kochi-hero',
+    id: 'photo-1645680149311-5a00ae5a2b2a',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'Chinese fishing nets standing over the water at Fort Kochi',
+    usedFor: 'city hero — Kochi',
+  },
+  {
+    name: 'city-kochi-kathakali',
+    id: 'photo-1741387793505-b4383d221324',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A Kathakali dancer in full costume and makeup',
+    usedFor: 'city experience tile — Kochi, Kathakali',
+  },
+  {
+    name: 'city-kochi-backwaters',
+    id: 'photo-1625721838087-c46e51c89558',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Coconut palms along a backwater channel',
+    usedFor: 'city experience tile — Kochi, the backwaters',
+  },
+  {
+    name: 'city-kochi-harbour',
+    id: 'photo-1590050752117-238cb0fb12b1',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A wooden boat on the water at sunset',
+    usedFor: 'city experience tile — Kochi, the harbour',
+  },
+  {
+    name: 'city-kochi-spice',
+    id: 'photo-1723155182094-af2f63472d0b',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A sack of dried red chillies at a spice market',
+    usedFor: 'city experience tile — Kochi, the spice trade',
+  },
+  {
+    name: 'city-kochi-strip-1',
+    id: 'photo-1605955794720-651b9ae7f5e7',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Boats on the water below a headland at sunset',
+    usedFor: 'city photo strip — Kochi',
+  },
+  {
+    name: 'city-kochi-strip-2',
+    id: 'photo-1582537683185-922141f18eaa',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A wooded island surrounded by water',
+    usedFor: 'city photo strip — Kochi',
+  },
+  {
+    name: 'city-kochi-strip-3',
+    id: 'photo-1599328431991-365a583f09f5',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Palms against the sea under a clear sky',
+    usedFor: 'city photo strip — Kochi',
+  },
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });
@@ -241,10 +454,11 @@ for (const photo of PHOTOS) {
   }
   const source = Buffer.from(await response.arrayBuffer());
 
-  const resize = photo.hero
+  const aspect = photo.hero ? HERO_ASPECT : photo.aspect;
+  const resize = aspect
     ? {
         width: photo.width,
-        height: Math.round(photo.width / HERO_ASPECT),
+        height: Math.round(photo.width / aspect),
         fit: 'cover',
         position: 'centre',
         withoutEnlargement: true,

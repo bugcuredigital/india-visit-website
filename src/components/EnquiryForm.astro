@@ -19,6 +19,9 @@ interface Props {
   /** Prefills the journey context on itinerary pages. */
   journeySlug?: string;
   journeyTitle?: string;
+  /** Prefills the city context on city pages (T15 §i). The form has no city
+   *  input — this is lead routing, not a question to the visitor. */
+  cityName?: string;
   compact?: boolean;
   onDark?: boolean;
 }
@@ -27,6 +30,7 @@ const {
   leadType = 'general',
   journeySlug,
   journeyTitle,
+  cityName,
   compact = false,
   onDark = false,
 } = Astro.props;
@@ -52,6 +56,7 @@ const MONTHS = [
   <input type="hidden" name="pageUrl" value={Astro.url.pathname} />
   {journeySlug && <input type="hidden" name="journeySlug" value={journeySlug} />}
   {journeyTitle && <input type="hidden" name="journeyTitle" value={journeyTitle} />}
+  {cityName && <input type="hidden" name="cityName" value={cityName} />}
   <input type="hidden" name="utm" value="" data-utm />
 
   <!-- Honeypot: real people never fill this in. Not display:none, which some

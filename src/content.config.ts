@@ -127,7 +127,19 @@ const journeyBase = (image: () => z.ZodTypeAny) => ({
         narrative: z.string().min(1),
         /** "Overnight in Munnar" — always the last line of a day. */
         overnight: z.string().min(1),
-        image: image().optional(),
+        /**
+         * 0–4 photographs for this day (PRD v1.5). Supersedes the single
+         * optional `image` field — a 0–4 list subsumes a 0–1 one, and having
+         * both would leave an editor guessing which to fill.
+         *
+         * A plain list rather than a list of {src, alt} pairs, matching
+         * `gallery` above, and they render with `alt=""`. That is the correct
+         * WCAG call rather than a shortcut: these sit directly beside a
+         * narrative that already describes the day, so alt text would repeat
+         * to a screen-reader user what they have just read. It also keeps the
+         * Tina field a plain image list, which is what the CMS is good at.
+         */
+        dayImages: z.array(image()).max(4).default([]),
         /** Set when the copy still needs the client's sign-off (M5). */
         provisional: z.boolean().default(false),
       }),
@@ -310,6 +322,114 @@ const destinations = defineCollection({
     }),
 });
 
+/* ---------------------------------------------------------------- cities -- */
+
+/**
+ * City pages — PAGE_TEMPLATES T15, added in PRD v1.5.
+ *
+ * These sit BENEATH destinations rather than beside them. A destination sells
+ * a region; a city answers "what is there to see in Jaipur" and then routes
+ * the reader to the journeys that go there. That is why the journeys section
+ * is the conversion core of the template and why it is computed rather than
+ * curated: a new journey through Jaipur should appear on the Jaipur page
+ * without anyone remembering to add it.
+ *
+ * The set is deliberately open-ended. Two exist at M4 to prove the template;
+ * the rest is M5/Phase-2 content work, prioritised by the client from the
+ * candidate list in docs/CLIENT_REVIEW_SHEET.md §16.
+ */
+const cities = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/cities' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string().min(1),
+      /** "Rajasthan" — rendered beside the H1 and in the quick-facts strip. */
+      state: z.string().min(1),
+      /** One line under the H1. Positioning, not a description. */
+      hook: z.string().min(1),
+
+      heroImage: image(),
+      heroImageAlt: z.string().min(1),
+
+      /** T15 §b — the scannable strip directly under the hero. */
+      quickFacts: z.object({
+        region: z.string().min(1),
+        bestMonths: z.string().min(1),
+        nearestAirport: z.string().min(1),
+        nearestRail: z.string().min(1),
+        knownFor: z.string().min(1),
+      }),
+
+      /** T15 §c — 2–3 short paragraphs in the editorial voice. */
+      intro: z.array(z.string().min(1)).min(2).max(3),
+
+      /** T15 §d — image-led experience tiles, name plus one line. */
+      experiences: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            text: z.string().min(1),
+            image: image(),
+            imageAlt: z.string().min(1),
+          }),
+        )
+        .min(4)
+        .max(8),
+
+      /** T15 §f — the gallery band. */
+      photoStrip: z
+        .array(
+          z.object({
+            image: image(),
+            alt: z.string().min(1),
+          }),
+        )
+        .min(3)
+        .max(6),
+
+      /** T15 §g — getting there / getting around / best time. */
+      practicalNotes: z
+        .array(
+          z.object({
+            icon: z.string().min(1),
+            label: z.string().min(1),
+            text: z.string().min(1),
+          }),
+        )
+        .min(1),
+
+      /** T15 §h — the SEO workhorse. */
+      faq: faqSchema.max(8),
+
+      /**
+       * Journeys are matched AUTOMATICALLY from each journey's `routeCities`;
+       * this is the ordering override and the escape hatch for a trip that
+       * belongs here but does not name the city in its route.
+       */
+      relatedJourneys: z.array(reference('journeys')).default([]),
+
+      /**
+       * Other spellings this city goes by in journey routes and day titles —
+       * "Cochin" for Kochi, "Amer" for Amber, "Benares" for Varanasi. Without
+       * this the automatic match silently misses trips that plainly visit the
+       * place, which is the worst kind of failure: the page looks finished and
+       * is quietly missing its conversion core.
+       */
+      routeAliases: z.array(z.string().min(1)).default([]),
+
+      /**
+       * TRUE until the client has read the page. The two seeded cities are
+       * written by the agency from public knowledge — accurate to the best of
+       * our reading, but not yet the client's own words about places they sell.
+       * Logged in docs/CLIENT_REVIEW_SHEET.md §16.
+       */
+      provisional: z.boolean().default(true),
+
+      order: z.number().int().default(99),
+      seo: seoSchema,
+    }),
+});
+
 /* ----------------------------------------------------------------- posts -- */
 
 const posts = defineCollection({
@@ -464,4 +584,4 @@ const siteSettings = defineCollection({
   }),
   });
 
-export const collections = { journeys, destinations, posts, testimonials, siteSettings };
+export const collections = { journeys, destinations, cities, posts, testimonials, siteSettings };

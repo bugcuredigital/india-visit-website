@@ -26,9 +26,11 @@ npm-debug.log*
 !.vscode/extensions.json
 .idea/
 
-# Lighthouse raw reports — large; the committed evidence is reports/*-summary.json
-reports/*.report.json
-reports/*.report.html
+# Lighthouse raw reports — large; the committed evidence is the *-summary.json
+# files beside them. Globbed at any depth: per-round reports live in
+# subdirectories (reports/rev2/...) and the top-level pattern missed them.
+reports/**/*.report.json
+reports/**/*.report.html
 
 # Regenerable brand master (npm run brand:logo reproduces it exactly)
 docs/brand/processed/logo-badge-master.png

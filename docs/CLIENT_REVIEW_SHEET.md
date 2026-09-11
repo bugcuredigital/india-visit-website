@@ -170,7 +170,7 @@ and it exists only so the treatment can be judged.
 
 | Item | Status | What we need |
 |---|---|---|
-| Hero video | **TEMP-VIDEO** — Taj Mahal at sunrise, Pexels, 10s loop | Your own footage. Upload through the CMS when it exists; no code change. |
+| Hero video | **TEMP-VIDEO** — Taj Mahal at sunrise, Pexels, 7s loop at 960×540 | Your own footage. Upload through the CMS when it exists; no code change. |
 | Hero poster | **TEMP-VIDEO** — first frame of the same clip | Comes with the video. The poster is what loads first and what a phone on a slow connection sees, so it needs to be a good still in its own right. |
 
 **What makes a good hero clip, so the shoot brief is right first time:**
@@ -182,9 +182,19 @@ and it exists only so the treatment can be judged.
   Fast cuts and time-lapses fight the headline sitting on top of them.
 - **Dark or calm across the bottom third**, where the headline and buttons sit.
 - **No recognisable faces**, unless you hold a signed model release.
-- **Web-ready, ≤ 15MB, 1080p or 1440p, H.264 mp4.** We cannot re-encode or trim
-  video on the build machine, so whatever you upload is what ships. If you have
-  only a large master, send it to us and we will have it prepared properly.
+- **Web-ready, ≤ 15MB, 1080p maximum, H.264 mp4.** 1080p is a ceiling, not a
+  target — and this is the one place where a bigger file is genuinely worse, for
+  a reason worth knowing. Our first temporary clip was a gorgeous 1440p at only
+  3.4MB, so it looked like a free win. It was not: **decoding it cost 1.8
+  seconds of phone processor time**, which dropped the homepage's performance
+  score from 99 to 74 — while the loading metric we had carefully protected
+  never moved at all. Downscaled to 960×540 and trimmed to seven seconds, the
+  same clip is 3.3MB, looks identical behind the gradient, and costs nothing.
+  A hero video sits behind a colour wash at a fraction of its resolution; the
+  pixels you pay for are pixels nobody sees.
+- **If you only have a large master, send it to us.** We can downscale and trim
+  on our side, and nothing beyond that — no bitrate control, no format
+  conversion. Anything more and it needs a proper edit before it reaches us.
 - **No audio track needed** — a background hero video is always muted, and
   browsers refuse to autoplay anything that is not.
 

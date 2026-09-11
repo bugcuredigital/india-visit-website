@@ -677,3 +677,110 @@ and nine tiles is what T1 v2 asks for.
    destination pages (T2 v2), journeys index, luxury-trains landing,
    travel-guide index and article, corporate, about, reviews, plan-my-trip,
    policy pages, 404, and the card→hero View Transition verified end to end.
+
+---
+
+## 2026-09-11 — M4, design revision round 2 (PRD v1.5)
+
+Six owner amendments, recorded as a PRD v1.5 scope amendment (§17) before any
+of them was built, then delivered in the sequence the owner set: 2+3 → 1 → 4 → 5.
+
+**1 · Homepage hero → full-screen with background video.** 100svh, CMS-fed
+poster and clip. The poster is still the LCP element; the `<video>` ships with
+no sources and `preload="none"`, attaches them on an idle callback after
+`window.load`, and fades in on opacity. `prefers-reduced-motion` and
+`Save-Data` never fetch a byte. `npm run check:hero-video` asserts all fifteen
+of those conditions against a real network log, because "we respect Save-Data"
+is trivially satisfiable by downloading the clip and hiding it.
+
+**2 · Trust bar icons.** One Phosphor `thin` glyph above each numeral, burgundy,
+hairlines kept. Path data copied into `src/lib/phosphor-icons.ts` by
+`npm run brand:icons` — no `@phosphor-icons/*` dependency, which is a React
+component library this site has no use for.
+
+**3 · Compact journey cards + `/journeys/`.** Duration pill and a two-line
+title; image height unchanged. The index is built to T3 with a vanilla type
+toggle that hides itself without JavaScript.
+
+**4 · `dayImages[]`.** 0–4 per day, superseding the single per-day `image`.
+One runs 3:2 across the prose measure, two or more become a 4:3 two-column grid.
+
+**5 · City pages (T15).** New `cities` collection, `/cities/{slug}/`, Jaipur and
+Kochi seeded from public knowledge and flagged provisional. The journeys section
+and the whole cross-link layer are **computed** from each journey's
+`routeCities` plus `routeAliases`, so the set can grow from two to fifteen
+without editing one line of journey content.
+
+**6 · Reference video.** URL recorded in `docs/design/references/README.md` as
+human-viewing-only, with the reasons it is never fetched or embedded.
+
+### Four bugs caught, one of them already live
+
+1. **The journey hero scrim was sized as 58% of the HERO, not of the COPY.** On
+   a phone the itinerary hero stacks an eyebrow, a two-line H1, three chips and
+   two buttons — taller than 58% — so the Golden Triangle headline sat on bright
+   sandstone at **1.32:1**. Shipped through the previous review round, because
+   on desktop the same copy is short enough to stay inside the band. The scrim
+   now shares a grid row with the copy: **8.79:1**. This is why
+   `npm run check:hero-contrast` exists — it hides the type, photographs the
+   ground behind it, and takes the lightest pixel in every text box. Its own
+   first run then showed it was excluding overlay nav links, the element that
+   failed in round 1, so it was blind to its own reason for existing.
+2. **The video boot script shipped its own backticks** — written as
+   `<script is:inline>` inside a JSX conditional, the braces and template
+   literal reached the browser verbatim as a block containing a string. Valid
+   JavaScript that does nothing. Now emitted through `set:html`.
+3. **The first veil calibration flattened the photograph** into a plum panel —
+   the exact failure the client killed in the previous round. Retuned against
+   where the copy actually sits rather than against a hypothetical white frame.
+4. **The 1440p clip cost 1,803ms of main-thread decode**, taking the homepage
+   from Performance 99 to **74** on a TBT of 1,500ms — while LCP, the metric the
+   whole pattern was built to protect, never moved. Bytes were the wrong thing
+   to measure: every re-encode available came out *larger*, so the first version
+   shipped the source. Downscaled to 960×540 and trimmed to 7s it is **3.3MB —
+   smaller than the 1440p source — at Performance 100, TBT 0ms.**
+
+### Gate evidence (Lighthouse mobile, simulated)
+
+| Check | `/` | `/journeys/` | Golden Triangle | `/cities/jaipur/` | `/cities/kochi/` |
+|---|---|---|---|---|---|
+| Performance | 100 | 100 | 100 | 99 | 100 |
+| Accessibility | 100 | 100 | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / **1.7s** | 0.9s / 1.7s | 0.9s / 1.7s | 0.9s / **2.1s** | 0.9s / 1.7s |
+| TBT / CLS | 0ms / **0** | 0ms / 0 | 0ms / 0 | 0ms / 0 | 0ms / 0 |
+
+Full figures in `reports/m4-rev2-gate-summary.json`. `astro check` clean.
+Template Spec §6 passes on all six journey pages. Hero-video (15 checks),
+hero-contrast (50 text runs across four pages), responsive-and-clipping,
+keyboard, no-JS and the invariant audits all pass.
+
+**The homepage LCP went 2.2s → 1.7s**, comfortably inside its own 2.2s
+exception, because the hero poster is now a dark silhouette rather than a
+detailed palace.
+
+**One target missed by 0.1s:** `/cities/jaipur/` is **2.1s** against the ≤2.0s
+working target, and 0.4s inside the 2.5s ceiling. The cause is understood: its
+TEMP-PHOTO hero is a Hawa Mahal facade of 953 windows, which is the pathological
+case for AVIF — 59KB against 25–35KB for every other hero on the site. Kochi,
+same template and a heavier page overall, is 1.7s. The client's own photography
+replaces it in M5.
+
+### Exact next action
+
+1. **Client:** review the round-2 shots on the PR #3 preview — homepage,
+   `/journeys/`, the Golden Triangle page with day images, and `/cities/jaipur/`.
+2. **Button radius is still unanswered** — the decision came through as the
+   literal placeholder `[PILL / 14px]`. Pill stays live and both options stay on
+   `/dev/components/#buttons` until a choice lands; locking the token and
+   removing the loser is a one-line change.
+3. Rule on `/cities/jaipur/` at 2.1s — accept, or swap the temporary hero
+   photograph for something less finely detailed.
+4. Sign off §14, §15 and §16 of `docs/CLIENT_REVIEW_SHEET.md` — the founder
+   fields, the hero-video shoot brief, and the city-page copy plus the candidate
+   city list to rank.
+5. **Then:** the rest of M4 in runbook order — `/destinations/` index (T2a),
+   destination pages (T2 v2), luxury-trains landing, travel-guide index and
+   article, corporate, about, reviews, plan-my-trip, policy pages, 404, and the
+   card→hero View Transition verified end to end.

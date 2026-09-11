@@ -64,6 +64,9 @@ itineraryDays:
       quieter. In the afternoon, Qutub Minar — India's tallest minaret, begun in
       1192 — and Humayun's Tomb, the garden mausoleum that taught the Taj Mahal
       what it wanted to be.
+    # TEMP-PHOTO stand-ins — replaced by the client's archive in M5.
+    dayImages:
+      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-delhi-humayun.jpg
     overnight: Overnight in Delhi
   - dayNo: 2
     title: Into Rajasthan — Delhi to Jaipur
@@ -87,6 +90,11 @@ itineraryDays:
       the city proper, the seven-storey City Palace mixes Mughal, Rajput and
       European hands, and Jantar Mantar's stone instruments still measure the
       sky. Hawa Mahal's honeycomb facade is best seen from the street.
+    # TEMP-PHOTO stand-ins — replaced by the client's archive in M5.
+    dayImages:
+      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-jaipur-amber.jpg
+      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-jaipur-hawa-mahal.jpg
+      - ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
     overnight: Overnight in Jaipur
   - dayNo: 4
     title: Fatehpur Sikri — A Capital Abandoned
@@ -111,6 +119,10 @@ itineraryDays:
       octagonal tower where Shah Jahan spent his last years with a clear view
       downriver to what he had made. The afternoon is free for the marble
       inlay workshops the city still lives by.
+    # TEMP-PHOTO stand-ins — replaced by the client's archive in M5.
+    dayImages:
+      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-agra-taj-trees.jpg
+      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-agra-taj-reflection.jpg
     overnight: Overnight in Agra
   - dayNo: 6
     title: Agra — Departure
