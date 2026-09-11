@@ -66,6 +66,10 @@ General shape of the rule: where a global skill and this project's locked specif
 
    **Colour on a card is a HOVER state, not a rest state** (round 3). Every listing card is white at rest; the card footer transitions to the burgundy treatment on hover *and* on `:focus-within`, so a keyboard user gets the same affordance. Variant B (train) cards used to carry a permanent plum ground; a permanent burgundy ground would have been the same mistake in a warmer colour. What distinguishes a train is the **"Fixed Departures" badge**, which survives being looked at by someone who cannot see colour.
 
+   **Two rules approved at the round-3 review, recorded as design rules:**
+   - **Gradients over photographs are ink; solid bands are burgundy.** A coloured wash over a picture tints it (the trains banner recoloured with everything else became a red panel); a near-black wash only darkens. So every overlay on a photograph or video — hero, banner, card image — is ink, and every solid dark ground is burgundy.
+   - **The footer is ink, never burgundy.** Every page ends on a burgundy ConvertBand; a burgundy footer under it merges the two into one slab half a screen tall. Ink reads as the end of the page.
+
    **Lotus watermarks on dark bands** (round 3). Every dark band carries the extracted lotus vector: oversized, ~6% opacity, deliberately cropped by the band edge, brand-kit cover style. On hover over the section it drifts — transform-only, 600ms, inside `prefers-reduced-motion: no-preference`. Decorative and `aria-hidden`. Use `<BandWatermark>` on a section carrying `band-watermarked`; the element is marked `data-allow-clip` because being clipped is the design.
 
    **Components.** Cards: white fill, 12–16px radius, hairline border (burgundy at ~12% opacity), soft shadow on hover only. **One journey-card treatment sitewide** (round 3) — image, duration pill, title, "View journey →" — with no route line and no signature-feature line anywhere; the homepage and the archive render the identical card. Buttons: solid crimson primary with white text, ghost/outline ink secondary, subtle 2px hover lift per the motion spec. **Button radius is LOCKED to pill** (`--btn-radius: 9999px`, settled design round 3); it stays a token so the shape of every CTA is one edit, but the A/B is over and the losing option is gone from the demo page. Nav: white with a hairline bottom border, ink links, crimson Plan-My-Trip button; may sit transparent over a hero photo and solidify to white on scroll. Photography: full-bleed heroes under one continuous ink wash (see **Hero gradients** below); elsewhere images sit in clean rounded frames on white, gallery-style.
@@ -144,6 +148,8 @@ tina/              # config.ts — schema must mirror src/content zod schemas ex
 
 **Destinations index `/destinations/` is a real page** (added M4 revision 2, PAGE_TEMPLATES T2a): compact hero → an "India" group and a "Beyond India" group → all nine cards with a live journey count → ConvertBand. No filters, no map.
 
+**Homepage destination strip: three columns at desktop** (client ruling, round-3 review) — nine tiles in a 3×3, never 4+4+1.
+
 **Destination slugs (locked):** `/destinations/` + `rajasthan-golden-triangle` ("Rajasthan & the Golden Triangle") · `kerala` ("Kerala & the Backwaters") · `south-west-india` ("South & West India Heritage") · `ladakh` ("Himalayas — Leh & Ladakh") · `north-east-india` ("North East India") · `wildlife` ("Wildlife Journeys") · `bhutan` · `bali` · `vietnam` — nine pages. **The homepage strip shows all nine** (T1 v2, M4 revision 2 — it was seven until then) plus a "View all destinations" link to the index. Short labels: Rajasthan, Kerala, South & West, Ladakh, North East, Wildlife, Bhutan, Bali, Vietnam.
 
 **There is no `/contact/` route** — it 301s to `/plan-my-trip/` (added to `_redirects` in M8).
@@ -166,7 +172,7 @@ Trailing slashes on. Never change a published URL without a 301 in `_redirects`.
 - Template Spec §6 consistency checklist passes for any itinerary page touched
 - New editable strings wired to CMS, not hardcoded (invariant #1 audit)
 - `npm run check:cms-images` passes — no image outside the CMS (invariant #10)
-- `npm run check:hero-contrast` passes on every hero page if any hero, gradient or hero copy changed
+- `npm run check:hero-contrast` passes if any hero, gradient or hero copy changed. Its coverage contract is **every page with text over imagery**, discovered from `dist/` — a new template that uses `<Hero>` joins the audit automatically
 - New user-facing copy is registered in `docs/COPY_REGISTER.md` (invariant #9)
 - Works 360px–1440px; keyboard navigable; visible focus states
 - Commit messages: `feat|fix|content|chore: short description`

@@ -731,9 +731,14 @@ const WHY_US = [
     }
   }
 
+  /* THREE columns at desktop, not four (client ruling, round 3 review). Nine
+     locked destinations in a four-column grid put Vietnam alone on a third
+     row; three columns is a clean 3x3. PAGE_TEMPLATES T1 §3 is amended to
+     3/3/2 to match. */
   @media (min-width: 64rem) {
     .tiles {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
     }
   }
 

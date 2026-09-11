@@ -32,26 +32,58 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import sharp from 'sharp';
 
 /**
- * DEFAULT SET — every page that renders a <Hero>, not just the homepage.
- * Design round 3 replaced the per-hero scrim with ONE gradient shared by all of
- * them, so a change here is a change everywhere, and an audit that defaults to
- * the homepage would have told us the good news only. One journey of each
- * variant, both city pages, two destinations, and the trains landing page —
- * which is every hero HEIGHT and every copy SHAPE the component can produce.
+ * COVERAGE CONTRACT — every page with text over imagery, discovered, not listed.
+ * ---------------------------------------------------------------------------
+ * Round 3 widened this check from the homepage to eight hand-picked hero pages
+ * and it found 33 failures the homepage alone would have hidden. The client's
+ * ruling made that widening the permanent definition, with one refinement: a
+ * hand-picked list has to be maintained, and a new template type would not be
+ * on it until somebody remembered. So the default set is discovered from the
+ * build instead: every page in `dist/` whose HTML contains a `.hero` section
+ * (the one component that puts copy over a photograph or video) is audited,
+ * at both breakpoints. A new template that uses <Hero> joins the audit the
+ * moment it is built, with no edit here.
+ *
+ * Pass URLs explicitly to audit a subset; with no arguments the contract is
+ * the whole site.
  */
-const DEFAULT_PATHS = [
-  '/',
-  '/journeys/golden-triangle-5n-6d/',
-  '/journeys/palace-on-wheels-7n-8d/',
-  '/cities/jaipur/',
-  '/cities/kochi/',
-  '/destinations/rajasthan-golden-triangle/',
-  '/destinations/kerala/',
-  '/luxury-trains/',
-];
+import { readdir, readFile } from 'node:fs/promises';
+import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
+
+const discoverHeroPages = async () => {
+  const walk = async (dir) => {
+    const out = [];
+    for (const entry of await readdir(dir, { withFileTypes: true })) {
+      const path = join(dir, entry.name);
+      if (entry.isDirectory()) out.push(...(await walk(path)));
+      else if (entry.name === 'index.html') out.push(path);
+    }
+    return out;
+  };
+  const pages = [];
+  for (const file of await walk(DIST)) {
+    const html = await readFile(file, 'utf8');
+    if (!/class="hero hero--/.test(html)) continue;
+    const route = '/' + relative(DIST, file).replace(/index\.html$/, '').replaceAll('\\', '/');
+    if (route.startsWith('/dev/')) continue;
+    pages.push(route);
+  }
+  return pages.sort();
+};
 
 const urls = process.argv.slice(2);
-if (!urls.length) urls.push(...DEFAULT_PATHS.map((path) => `http://localhost:4321${path}`));
+if (!urls.length) {
+  const discovered = await discoverHeroPages();
+  if (!discovered.length) {
+    console.error('No built pages with a <Hero> found in dist/ — run `npm run build` first.');
+    process.exit(1);
+  }
+  console.log(`\nCoverage contract: ${discovered.length} page(s) with text over imagery, discovered from dist/\n`);
+  urls.push(...discovered.map((path) => `http://localhost:4321${path}`));
+}
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9447;

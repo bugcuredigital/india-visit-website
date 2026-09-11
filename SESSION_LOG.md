@@ -992,3 +992,34 @@ three columns at desktop makes it a clean 3×3.
 6. **Then M5:** the remaining 17 itineraries, 7 more articles, real photography
    replacing all 40 TEMP-PHOTO files and the TEMP-VIDEO clip, and the
    destination reference on journeys that turns the auto-tagging on.
+
+---
+
+## 2026-09-11 — Round 3 review rulings (M4 tail)
+
+**Client verdicts:** testimonial deletion and the schema refusal — approved. The
+two judgement calls — gradients over photographs are ink while solid bands are
+burgundy, and the footer is ink to avoid the double-burgundy slab — approved and
+recorded as design rules in CLAUDE.md. Destination strip: **three columns at
+desktop** (3×3). `check:hero-contrast`: the all-hero-pages widening is the
+permanent definition, now expressed as a coverage contract — every page with
+text over imagery, **discovered from `dist/`** rather than listed, so a new
+template type joins the audit without an edit.
+
+### Standing review heuristic (client instruction — applies to every session)
+
+**When a bug is found at one call site, grep the pattern at every call site
+before closing it.** The lotus colour bug survived three design reviews because
+the same trap had been found once before — on the trust-bar icons in round 2 —
+and fixed *locally* with a wrapper span, which left the pattern intact at ten
+other call sites. A missing colour reads as a design choice, so nobody looked
+again. A bug at one call site is a bug in a pattern until proven otherwise:
+sweep the codebase for the same shape, and where possible fix it at the
+definition (the lotus fix moved colour to a `tone` prop resolved inside the
+component) so the pattern cannot recur. Record the sweep.
+
+**Still open on the client's side:** the DESIGN VERDICT line in the round-3
+review arrived as a literal placeholder (`[APPROVED — M4 design-complete / OR
+deltas: <your specifics>]`), so M4 design is not formally marked approved and
+PR #3 remains unmerged. The instruction to proceed to M5 was explicit and is
+being followed; M5 branches from `m4-templates` until PR #3 merges.
