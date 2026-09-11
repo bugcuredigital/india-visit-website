@@ -292,12 +292,26 @@ const PHOTOS = [
 
   // ---- city pages (PRD v1.5, PAGE_TEMPLATES T15) -------------------------
   {
+    /**
+     * Swapped after the first Jaipur build came in at LCP 2.1s against a 2.0s
+     * target. The original was a Hawa Mahal facade — 953 windows of fine
+     * repeating detail, which is the pathological case for AVIF: 59KB where
+     * every other hero on the site lands at 25–35KB. Kochi, on the same
+     * template and a heavier page overall, was 1.7s.
+     *
+     * This one is Amer Fort above Maota Lake: the same subject matter at
+     * golden hour, but most of the frame is sky, water and hillside — large
+     * smooth areas that a modern codec compresses almost for free. A hero
+     * photograph's encoded size is a property of its CONTENT, not only of its
+     * dimensions or quality setting, and the fix for a heavy hero is usually a
+     * different photograph rather than a lower quality number.
+     */
     name: 'city-jaipur-hero',
-    id: 'photo-1650530777057-3a7dbc24bf6c',
+    id: 'photo-1709883252686-fe847b56c90b',
     width: 2400,
     hero: true,
     credit: 'Unsplash contributor',
-    subject: 'The Hawa Mahal facade, pink sandstone windows',
+    subject: 'Amer Fort on the hillside above Maota Lake',
     usedFor: 'city hero — Jaipur',
   },
   {
@@ -440,9 +454,19 @@ const PHOTOS = [
 mkdirSync(OUT_DIR, { recursive: true });
 mkdirSync('docs/brand/processed', { recursive: true });
 
+/**
+ * `node scripts/brand/fetch-temp-photos.mjs city-jaipur` re-fetches only the
+ * entries whose name contains that string. Iterating on one photograph should
+ * not mean re-downloading forty — but note the provenance file is only
+ * rewritten on a FULL run, because a partial run does not know about the rest.
+ */
+const filter = process.argv[2];
+const selected = filter ? PHOTOS.filter((p) => p.name.includes(filter)) : PHOTOS;
+if (filter) console.log(`  filter "${filter}" -> ${selected.length} of ${PHOTOS.length} photos\n`);
+
 const results = [];
 
-for (const photo of PHOTOS) {
+for (const photo of selected) {
   const url = `https://images.unsplash.com/${photo.id}?w=${photo.width}&q=85&fm=jpg&fit=max`;
   const outPath = join(OUT_DIR, `TEMP-PHOTO-${photo.name}.jpg`);
 
@@ -482,6 +506,11 @@ for (const photo of PHOTOS) {
 }
 
 const ok = results.filter((r) => r.ok);
+
+if (filter) {
+  console.log(`\n  ${ok.length}/${results.length} fetched. Provenance NOT rewritten — run without a filter for that.`);
+  process.exit(ok.length === results.length ? 0 : 1);
+}
 const rows = ok
   .map((r) => `| \`TEMP-PHOTO-${r.name}.jpg\` | ${r.subject} | ${r.credit} | [source](https://unsplash.com/photos/${r.id.replace(/^photo-/, '')}) | ${r.w}×${r.h} | ${r.usedFor} |`)
   .join('\n');

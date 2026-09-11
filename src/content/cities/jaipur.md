@@ -8,7 +8,7 @@ state: Rajasthan
 hook: The pink city that was planned on paper before a stone of it was laid.
 
 heroImage: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-hero.jpg
-heroImageAlt: The honeycomb facade of the Hawa Mahal in Jaipur, pink sandstone against a clear sky
+heroImageAlt: Amer Fort standing on the hillside above Maota Lake outside Jaipur at golden hour
 
 quickFacts:
   region: Rajasthan, North India
