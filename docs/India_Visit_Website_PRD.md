@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 ## India Visit — Portfolio & Lead Generation Website
 
-**Version:** 1.4 (Travel Guide blog moved into Phase 1 with 8 launch articles — §7.8. v1.3 motion spec; v1.2 final stack; v1.1 added 3 itineraries + Template Spec.)
+**Version:** 1.5 (Design revision round 2 — full-screen video hero, iconised trust bar, compact index cards, day-by-day images, and a new city page type. **Full amendment log: §17.** v1.4 Travel Guide blog into Phase 1 — §7.8; v1.3 motion spec; v1.2 final stack; v1.1 added 3 itineraries + Template Spec.)
 **Prepared for:** India Visit (Client)
 **Prepared by:** [Your Agency]
 **Date:** September 2026
@@ -124,6 +124,10 @@ Home
 │       ├── Bhutan
 │       ├── Bali
 │       └── Vietnam
+├── Cities  (/cities/{slug}/ — new page type, v1.5)
+│   ├── Jaipur        (seeded M4)
+│   ├── Kochi         (seeded M4)
+│   └── …             (full set of ~10–15 is M5/Phase 2 content work)
 ├── Journeys (all 20 itineraries, filterable by destination/duration/type)
 │   └── Itinerary detail pages (×20 at launch — Template Variant A: 17, Variant B: 3)
 ├── Luxury Trains (landing page + GSA credentials)
@@ -147,6 +151,7 @@ Home
 - **South & West India Heritage** is a new category created by the Western & Southern India itinerary — it also future-proofs for Gujarat/Goa/Hampi additions.
 - **Wildlife** remains a cross-cutting theme: Tadoba lives here natively; Jhalana/Jawai journeys are cross-listed from Rajasthan (tag-based, not duplicated pages).
 - **Destination slugs are locked** (SEO): `/destinations/rajasthan-golden-triangle/` "Rajasthan & the Golden Triangle" · `/destinations/kerala/` "Kerala & the Backwaters" · `/destinations/south-west-india/` "South & West India Heritage" · `/destinations/ladakh/` "Himalayas — Leh & Ladakh" · `/destinations/north-east-india/` "North East India" · `/destinations/wildlife/` "Wildlife Journeys" · `/destinations/bhutan/` · `/destinations/bali/` · `/destinations/vietnam/`. Nine pages. The homepage strip shows 7 curated tiles with short labels plus a "View all destinations" link — the strip is intentionally not the full list.
+- **City pages are a new page type (v1.5)** at `/cities/{slug}/`. They are an SEO and internal-linking layer beneath destinations, not a replacement for them: a destination sells a region, a city answers "what is there to see in Jaipur" and then routes the reader to the journeys that visit it. Route-strip chips and day entries on itinerary pages link to a city page **when one exists**, and render as plain text when it does not — so the set can grow without touching any journey content.
 - **Booking Terms (trains)** added to utility pages — the Palace on Wheels cancellation slabs, refund and amendment rules need a canonical URL that Variant B pages link to.
 
 **Navigation (header):** Destinations ▾ · Journeys · Luxury Trains · Corporate · Travel Guide · About · Reviews · **[Plan My Trip →]** (button, crimson). At 1024–1200px only, About + Reviews collapse into a "More ▾" group. There is no `/contact/` route — it 301s to `/plan-my-trip/`.
@@ -160,8 +165,8 @@ Sticky header on scroll with phone number and WhatsApp icon always visible on mo
 
 | Section | Requirement |
 |---|---|
-| Hero | Full-bleed cinematic photo/video (Indian palace, backwaters, or Ladakh — warm golden light). Headline: value proposition + "20 years" trust line. Primary CTA: "Plan My Trip". Secondary: "Explore Journeys". Matches brand-kit mockup direction ("Discover Incredible India"). |
-| Trust bar | Immediately below hero: 4 stat/badges — *20+ Years · 10,000+ Travellers (verify number) · 25+ Destinations · 24/7 On-Trip Support*. Add association logos (IATO/TAAI/Govt. recognition — confirm which apply). |
+| Hero | **Full-screen (100svh) with a background VIDEO slot (v1.5).** A muted, looping, warm India-appropriate clip behind the headline. **The poster image is the LCP element and the video is never in the critical path** — see §12 for the mandatory pattern. `prefers-reduced-motion` and `Save-Data` visitors get the poster alone. Headline: value proposition + "20 years" trust line. Primary CTA: "Plan My Trip". Secondary: "Explore Journeys". Both the video and the poster are CMS-fed. |
+| Trust bar | Immediately below hero: **exactly four** stats, each with **one thin-line icon above the numeral** (burgundy stroke) and hairline separators between cells (v1.5 — the bar read too plain without them). First and last are fixed (*20+ Years*, *24/7 On-Trip Support*); the two middle slots prefer the client's verified figures and otherwise fall back to counts derived from our own catalogue, so nothing is ever claimed that is not counted. Association logos row below, rendered only when logos are supplied (IATO/TAAI/Govt. recognition — confirm which apply). |
 | Featured journeys | 4–6 itinerary cards (image, name, duration, "from ₹__ per person" optional — see Open Questions). Mix domestic + international + one train. |
 | How it works | 3 steps: *Tell us your dream → We craft your itinerary → Travel with full support.* Mirrors consultative sales model; sets expectation that CTA = conversation, not checkout. |
 | Why India Visit | 3–4 cards: Experience, Personal Curation, Affordable Luxury, With You Every Step. |
@@ -405,12 +410,29 @@ What separates this from a budget-operator site (and from the current template l
 | Site Settings singleton | Phone, WhatsApp number + default message, email, address, social URLs, CTA link targets, GTM container ID, Meta Pixel ID — every component reads from these CMS fields; nothing hardcoded, nothing duplicated |
 | Tags | **GTM installed once, loaded via Partytown** (web worker, off main thread). GA4, Meta Pixel, conversion events, and all future tags managed entirely in the GTM UI — zero code edits, and no LCP penalty from the tag stack |
 | Forms | Cloudflare Pages Function → Resend free tier (email notify) + Google Sheet webhook; Turnstile (invisible, free) + honeypot. Alt: Web3Forms free |
-| LCP plan (working target ≤ 2.0s Lighthouse mobile, 2.5s ceiling) | Static HTML from CDN edge · inlined critical CSS · self-hosted subset fonts, `font-display: swap` · hero preloaded, `fetchpriority="high"`, AVIF/WebP responsive srcset via `astro:assets` (build-time, free) · near-zero default JS · third-party scripts off-thread |
+| LCP plan (working target ≤ 2.0s Lighthouse mobile, 2.5s ceiling; **homepage exception ≤ 2.2s** — see below) | Static HTML from CDN edge · inlined critical CSS · self-hosted subset fonts, `font-display: swap` · hero preloaded, `fetchpriority="high"`, AVIF/WebP responsive srcset via `astro:assets` (build-time, free) · near-zero default JS · third-party scripts off-thread |
 | Serving & caching model | **GitHub and Tina exist only in the publish path, never the visitor path.** Visitors hit Cloudflare edge → pre-built static files; zero runtime calls to GitHub/Tina/any origin (site stays up even if GitHub is down). Caching is structural: assets get content-hashed filenames (immutable, cache-forever, staleness impossible), HTML revalidates, and every deploy is an atomic edge-wide cutover — no manual purges, no stale-cache states, no cache plugins. **Trade-off accepted:** edits go live ~1–3 min after save (build time), not instantly — fine for a portfolio's edit cadence |
 | Cannot-break-the-site guarantee | (1) Client edits schema-validated form fields, never markup; (2) failed builds never deploy — live site keeps serving last good version; (3) every deploy is rollback-able in one click; (4) preview deploy per change before publish |
 | Unavoidable costs | Domain (~₹800–1,000/yr, Cloudflare Registrar at-cost) · Agrandir Grand web font licence (Open Question #9). Everything else: ₹0/month |
 | Capacity sanity check | 500 builds/mo ≈ 16 published edit-batches/day (ample); Resend 100 emails/day ≫ lead volume; bandwidth unlimited (traffic spikes cost nothing) |
 | Integrations (Phase 2) | Google Reviews feed, Instagram feed, CRM, email marketing (Brevo free tier) — all API-side, no lock-in |
+
+**Homepage video hero — the mandatory LCP-safe pattern (v1.5).** The homepage carries a background
+video, and a video hero is the single most common way a premium site loses its Core Web Vitals. The
+pattern is not optional:
+
+1. The **poster image renders exactly as a photographic hero does today** — `astro:assets` AVIF/WebP,
+   preloaded, `fetchpriority="high"`, eager, never entrance-animated. The poster **is** the LCP element,
+   and the measured LCP must not move because a video exists.
+2. The `<video>` element ships with **no sources and `preload="none"`**. Sources are attached only
+   **after `window.load`**, on an idle callback. Nothing about the video may appear in the critical path:
+   not a byte, not a connection, not a decode.
+3. It plays `muted`, `loop`, `playsinline`, and **fades in over the poster** on opacity alone.
+4. **`prefers-reduced-motion: reduce` and `Save-Data: on` get the poster and nothing else** — the video
+   is never fetched for them at all.
+5. The **homepage LCP budget is ≤ 2.2s** (against the sitewide ≤ 2.0s working target), and 2.5s remains
+   the hard Core Web Vitals ceiling for every page including this one. If adding the video moves the
+   homepage past 2.2s, the video comes out — the exception buys the full-screen hero, not the video.
 
 **Why WordPress was dropped (v1.1) and Strapi rejected (v1.2):** both require paid always-on infrastructure (hosting/VPS + database), carry patching burden, edit the live site directly (a bad edit can take it down instantly), and can't match static-CDN LCP. The Astro + git-based-CMS architecture makes the client's "I shouldn't be able to break it" requirement a structural property, not a training issue.
 
@@ -422,7 +444,7 @@ What separates this from a budget-operator site (and from the current template l
 Home · 9 destination pages · 20 itinerary pages (17 Variant A + 3 Variant B; all three trains content-complete — no "coming soon" cards needed) · Luxury Trains landing · Corporate · About · Reviews · **Travel Guide blog (index + article template + 8 launch articles)** · Plan My Trip · Full lead-gen system (forms, WhatsApp, call, gated PDFs) · SEO foundation · Analytics · Policies incl. train Booking Terms
 
 ### Phase 2 — Growth (post-launch 1–3 months)
-Ongoing Travel Guide articles (~2/month, client-published via Tina) · Journey filter/search on the Journeys index · Video testimonials · Instagram feed · Email nurture sequences · CRM integration · Additional itineraries (Himachal, Andamans, Sri Lanka, Nepal — natural inventory extensions)
+**The remaining city pages (~10–15, v1.5 — two are seeded at M4 to prove the template)** · Ongoing Travel Guide articles (~2/month, client-published via Tina) · Journey filter/search on the Journeys index · Video testimonials · Instagram feed · Email nurture sequences · CRM integration · Additional itineraries (Himachal, Andamans, Sri Lanka, Nepal — natural inventory extensions)
 
 ### Phase 3 — Optimisation (ongoing)
 A/B testing on hero + forms · Review-generation automation · Seasonal landing pages (summer Ladakh, winter Rajasthan, festival specials) · Multilingual consideration (German/French/Spanish inbound — only if data supports)
@@ -484,3 +506,27 @@ Online payments/booking engine · Live inventory or pricing APIs · User account
 - [ ] GA4 events firing for all conversion actions
 - [ ] Responsive QA on iOS/Android Chrome & Safari, 360px–1440px
 - [ ] Policies published; consent checkbox live on all forms
+
+---
+
+## 17. Scope amendment log
+
+### v1.5 — Design revision round 2 (owner remarks, M4)
+
+Six items, recorded here as the scope record; the structural detail lives in
+`PAGE_TEMPLATES.md` and the code rules in `CLAUDE.md`. Sequenced 2+3 → 1 → 4 → 5
+at the owner's direction.
+
+| # | Amendment | Where it lands |
+|---|---|---|
+| 1 | **Homepage hero becomes full-screen (100svh) with a background video slot.** `heroVideo` (mp4/webm, repo media in `/public/uploads/`, ~15MB guidance cap) + `heroPoster` (image, **required**) added to the settings singleton. The LCP-safe pattern in §12 is mandatory. Gradient overlay strengthened and rebalanced for video — darker at the text zone, lighter above — because an editor may upload a bright clip and white copy has to stay AA-readable over **any** frame. Journey and destination heroes stay photographic. | §7.1, §12, PAGE_TEMPLATES T1, CLAUDE.md invariant #3 |
+| 2 | **Trust bar enriched** with one thin-line icon per stat above the numeral, burgundy stroke, hairline separators kept. Icons support the numbers — no illustration, no colour flood. Icon vocabulary is the `ui-ux-pro-max` skill's curated Phosphor set, used under the skill-precedence rule that admits its **UX guidance** while its design-system generation stays overridden. | §7.1, PAGE_TEMPLATES T1, CLAUDE.md |
+| 3 | **Journey index cards compacted.** Image height unchanged; card content clipped to a duration pill (`11N · 12D`) and the title only, one type-step smaller, two lines with ellipsis. Route line, blurb and "View journey" link are removed from index cards — the journey page itself carries them. Featured homepage cards keep the route line. | PAGE_TEMPLATES T3 |
+| 4 | **Day-by-day images.** `dayImages[]` (0–4 per day) added to the journeys schema; up to 2 render side by side in an expanded day, more become a 2-column grid, all in rounded frames. Lazy-loaded, never in the LCP path. Supersedes the single optional `image` field on a day. | Template Spec §4, PAGE_TEMPLATES |
+| 5 | **New page type: city pages** at `/cities/{slug}/` (PAGE_TEMPLATES **T15**), with a new `cities` collection. Nine standard sections, every image slot CMS-fed. Journeys that visit a city are auto-matched from `routeCities` with a manual override — that section is the conversion core. **Scope control:** template plus two seeds (Jaipur, Kochi) at M4, content drawn from public knowledge and flagged provisional; the full set is M5/Phase 2 and the candidate list sits in `CLIENT_REVIEW_SHEET.md` for prioritisation. | §6, §13, PAGE_TEMPLATES T15 |
+| 6 | **Reference video.** The owner's hero-video style reference is recorded in `docs/design/references/README.md` as a human-viewing-only link. It is never fetched, downloaded or embedded: YouTube is not reachable from the build environment, and a YouTube embed is not acceptable as a hero background (player chrome, third-party branding, and a third-party script in the critical path). The CMS upload slot is the mechanism for the real video; a flagged `TEMP-VIDEO` stock clip covers the interim. | docs/design/references/README.md |
+
+**Not changed by this amendment:** the locked brand palette and type system, the
+URL structure for existing pages, the "operator tariffs are never published"
+rule, the four-stat trust-bar shape, or the placeholder convention. City pages
+are **added** to the locked URL list, not substituted for anything.

@@ -13,10 +13,14 @@ destinations come **before** journeys, because travellers shop by place first;
 and a **Meet your travel consultant** section is added, because the page had no
 human in it and that is the trust centrepiece for a twenty-year consultancy.
 
+**Amended by design revision round 2 (PRD v1.5)** — section *order* is unchanged;
+sections 1 and 2 are re-specified below: the hero goes full-screen with a video
+slot, and the trust bar gains an icon per stat.
+
 | # | Section | Component(s) | Image slots | Content & behaviour |
 |---|---|---|---|---|
-| 1 | Hero | Hero | **1 hero (3:2 master)** | Full-bleed photo, plum gradient at the text zone only. H1 value prop + a "20+ years" trust line drawn from `siteSettings.yearsExperience` — **never a hardcoded year**; `foundingYear` stays unrendered until verified (Open Q#2). CTAs: **Plan My Trip** (crimson) + Explore Journeys (ghost). Ken Burns on the image; the LCP image is never dimmed or delayed |
-| 2 | Trust bar | CounterStat ×4 | — | Exactly four: **20+ Years · N Curated Journeys · 9 Regions · 24/7 On-Trip Support**. The two middle stats are **counted from our own catalogue, never claimed** — a computed number cannot be an unverified claim and cannot go stale. Client-verified figures (`travellerCount`, `destinationCount`) take the middle slots once they exist. Full-width display numerals divided by hairlines. Beneath: an **association-logos row slot**, rendered only when the client supplies logos |
+| 1 | Hero | Hero | **1 poster (16:9) + 1 video** | **Full-screen, 100svh (v1.5).** Background **video** slot behind the copy — muted, looped, `playsinline`, faded in over the poster **after `window.load`**; `prefers-reduced-motion` and `Save-Data` get the poster alone and the video is never fetched. **The poster is the LCP element** and behaves exactly as a photographic hero does (preloaded, `fetchpriority="high"`, eager, never animated) — PRD §12 carries the mandatory pattern. Gradient is **rebalanced for video**: firm at the text zone, a light wash above, so white copy stays AA-readable over any frame. Both slots CMS-fed. H1 value prop + a "20+ years" trust line drawn from `siteSettings.yearsExperience` — **never a hardcoded year**; `foundingYear` stays unrendered until verified (Open Q#2). CTAs: **Plan My Trip** (crimson) + Explore Journeys (ghost). Ken Burns applies to the poster only, and stops once the video takes over |
+| 2 | Trust bar | CounterStat ×4 | — | Exactly four: **20+ Years · N Curated Journeys · 9 Regions · 24/7 On-Trip Support**. The two middle stats are **counted from our own catalogue, never claimed** — a computed number cannot be an unverified claim and cannot go stale. Client-verified figures (`travellerCount`, `destinationCount`) take the middle slots once they exist. Full-width display numerals divided by hairlines, with **one thin-line icon above each numeral** (v1.5): Phosphor `thin` weight, **burgundy** stroke, ~28px, decorative (`aria-hidden`) because the label already says what the number is. Icons support the numbers — no illustration, no colour flood, and the icon is chosen per **stat**, not per position, so it stays correct when a verified figure replaces a counted one. Beneath: an **association-logos row slot**, rendered only when the client supplies logos |
 | 3 | **Where do you want to go** | Image tile grid | **9 tiles** | Destinations **moved above journeys** — travellers shop by place first. All **nine** locked destinations (slugs in CLAUDE.md) plus a "View all destinations" link to `/destinations/`. 4/3/2-col responsive |
 | 4 | Signature journeys | JourneyCard ×6 | **6 cards** | Editorially picked for spread: domestic + international + one train. Card→page View Transition morph |
 | 5 | How it works | 3-step band | — | Plum band. Tell us your dream → We craft your itinerary → Travel fully supported. Lotus mark on step 3. Dotted rail with circular nodes at ≥48rem |
@@ -65,8 +69,24 @@ complexity for a page whose job is to be a clear index.
 
 1. **Compact hero** — H1 "All Journeys", one line, no image or slim band only (this page is a tool, not a story)
 2. **Type toggle** — All · Custom Journeys · Luxury Trains (client-side, tiny island). Full filter/search = Phase 2
-3. **Card grid** — all 20 JourneyCards, trains visually distinguished (plum card treatment + "Fixed Departures" tag). No coming-soon state: all three trains are content-complete
+3. **Card grid** — all 20 JourneyCards in the **compact** size (below), trains visually distinguished (plum card treatment + "Fixed Departures" tag). No coming-soon state: all three trains are content-complete
 4. **ConvertBand** — "Can't find your perfect trip? We build from scratch."
+
+### Compact card (v1.5) — this index only
+
+The archive cards were too big: forty of them at full height turned a tool page
+into a scroll. The **image height is unchanged** — the photograph is what the
+visitor scans — and the *content* below it is clipped to two things:
+
+| Keep | Drop |
+|---|---|
+| Duration **pill** — `11N · 12D` | Route line |
+| Title, **one type-step smaller**, max **2 lines** with ellipsis | Signature-feature blurb |
+| | "View journey →" link (the whole card is the link) |
+
+Everything dropped is carried by the journey page itself, one click away. The
+**featured homepage cards keep the route line** — six cards presented as a
+recommendation can afford the extra line; forty cards in a grid cannot.
 
 ## T4 — Luxury Trains landing `/luxury-trains/`
 
@@ -145,6 +165,37 @@ Single quiet template: slim header band (plum), H1, prose with anchored H2s, upd
 
 Full-bleed image (empty road/desert), "Looks like you've wandered off the route." Buttons: Home · All Journeys · WhatsApp. Lotus watermark. Keep it charming — it's a brand moment.
 
+## T15 — City page `/cities/{slug}/`
+
+**New page type (PRD v1.5).** Numbered T15 by the owner's amendment; there is no
+T14. City pages sit *beneath* destinations rather than beside them: a destination
+sells a region, a city answers "what is there to see in Jaipur" and routes the
+reader to the journeys that go there. Driven by a new `cities` collection.
+
+| # | Section | Image slots | Notes |
+|---|---|---|---|
+| a | Hero | **1 hero** | Photo, city name H1, **state + one-line hook**, breadcrumb |
+| b | Quick facts strip | — | State/region · best months · nearest airport/rail · known for |
+| c | Intro | — | 2–3 short paragraphs, editorial voice |
+| d | **What to see & do** | **4–8 tiles** | Image-led experience tiles, name + one line |
+| e | **Journeys that visit {City}** | per card | **The conversion core.** Auto-matched from each journey's `routeCities`, with a manual override list for ordering and for journeys whose route names the city differently |
+| f | Photo strip | **3–6** | Gallery band |
+| g | Practical notes | — | Getting there / getting around / best time |
+| h | FAQ accordion | — | `FAQPage` schema |
+| i | Convert | — | ConvertBand with the city prefilled |
+
+**Cross-linking.** Itinerary route-strip chips link to `/cities/{slug}/` when that
+city page exists and stay **plain text** when it does not, so the city set can grow
+without editing a single journey. The same applies to the city named in a day
+entry — rendered as a quiet chip **inside the day body**, deliberately *not* inside
+the `<summary>`: an anchor nested in a disclosure control both navigates and toggles
+the panel, which is a keyboard and assistive-technology trap.
+
+**Scope control.** The template plus **two seeds — Jaipur and Kochi** — at M4, their
+content drawn from public knowledge and flagged provisional. The full set (~10–15)
+is M5/Phase-2 content work; candidates are listed in `docs/CLIENT_REVIEW_SHEET.md`
+for prioritisation.
+
 ---
 
 ## Template → collection mapping (for Claude Code)
@@ -159,6 +210,7 @@ Full-bleed image (empty road/desert), "Looks like you've wandered off the route.
 | T4 | `/luxury-trains/` | `journeys` where variant=B + page frontmatter |
 | T5–T7, T10–T13 | static routes | page frontmatter + settings + `testimonials` |
 | T8/T9 | `/travel-guide/…` | `posts` collection |
+| T15 | `/cities/[slug]` | `cities` collection (new, v1.5) |
 
 ## Image-slot convention (all templates)
 
@@ -171,5 +223,16 @@ Every image slot in every template obeys three rules:
    in M5 is a content change with **zero code edits**.
 3. Its aspect ratio is fixed by the template, not by whatever is uploaded — so a
    photograph swap can never reflow the page.
+
+**Day-by-day images (v1.5).** Itinerary days carry `dayImages[]`, 0–4 each. One
+renders full width of the day body; two render side by side; three or four become a
+two-column grid. Rounded frames, `loading="lazy"`, and a reserved aspect ratio, so
+they can never enter the LCP path or shift layout. A day with no images renders no
+image area at all — an empty day is not an unphotographed slot.
+
+**The one moving image (v1.5).** The homepage hero video is the only video on the
+site. Its poster obeys every rule above; the video file itself lives in
+`/public/uploads/` as repo media, is CMS-fed, and is governed by the LCP-safe
+pattern in PRD §12.
 
 **Claude Design order of attack:** T1 → Itinerary A → Itinerary B → T2 → T9 → rest (the first three set the design language; everything else derives).

@@ -25,6 +25,27 @@ Their **layouts, nav structures, booking widgets and content patterns are not to
 be copied**. Page structure always comes from `PAGE_TEMPLATES.md`; only the
 visual register comes from here.
 
+## The owner's hero-video reference — human viewing only
+
+The homepage hero now carries a background video (PRD v1.5). The owner's style
+reference for it is:
+
+**https://youtu.be/35npVaFGHMY**
+
+**Do not fetch, download, scrape or embed this.** Three separate reasons, and all
+three hold independently:
+
+1. YouTube is not fetchable from the build environment, so any attempt is wasted
+   effort that ends in a failure message.
+2. A YouTube embed is **never** acceptable as a hero background — it drags in
+   player chrome and third-party branding, and puts a third-party script in front
+   of the page's own content, which invariant #3 forbids outright.
+3. It is a *reference*, not an asset. Nothing in it is licensed to this project.
+
+It is recorded here so a human can open it and so nobody has to ask twice what the
+owner meant. The real video arrives through the CMS upload slot in `siteSettings`;
+a flagged `TEMP-VIDEO` stock clip stands in until then.
+
 ## Regenerating
 
 Drop fresh full-resolution PNGs into `docs/references/`, then re-encode them
