@@ -167,7 +167,7 @@ One content type, conditional fields on `variant`. Editors never touch layout �
 ## 6. Consistency rules (design QA checklist per page)
 
 - [ ] Lotus glyph used for highlight bullets — never ✦, never generic checkmarks
-- [ ] Yellow only on plum/burgundy backgrounds; CTAs always crimson; body always Inter on off-white
+- [ ] Yellow only on plum/burgundy backgrounds; CTAs always crimson; body always Inter on **white** (off-white is the secondary surface only — card fills, alternate sections, form fields)
 - [ ] Day titles follow "Place — Evocative Phrase" pattern; overnight line present on every day
 - [ ] Route strip, duration badge, and Quick Facts present and identically positioned on all 20 pages
 - [ ] Every page ends at the Customise/Availability band before Related — no page ends on policy text

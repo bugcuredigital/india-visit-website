@@ -208,6 +208,22 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
     background-color: transparent;
     border-bottom-color: transparent;
     color: var(--color-white);
+    /* Legibility scrim. Without it the white links sit on whatever the top of
+       the photograph happens to be — a pale sunrise sky in the homepage hero,
+       where they vanished. Soft enough to read as depth, not as a bar.
+
+       INK rather than plum since round 3, matching the hero gradient it sits
+       on top of: two washes in two different hues over one photograph is how
+       you get a seam even when neither gradient has an edge of its own. It
+       also carries more of the work now, because the hero's own wash is close
+       to nothing at the very top. */
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-ink) 58%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 42%, transparent) 35%,
+      color-mix(in srgb, var(--color-ink) 20%, transparent) 68%,
+      transparent 100%
+    );
   }
 
   .header--overlay :is(.header__link, .header__icon, .header__summary) {
@@ -216,6 +232,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
 
   .header--overlay.is-solid {
     background-color: var(--color-white);
+    background-image: none;
     border-bottom-color: var(--color-hairline);
     color: var(--color-ink);
   }

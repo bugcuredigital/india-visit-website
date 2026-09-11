@@ -286,3 +286,709 @@ against the window).
    placeholder), verified trust numbers (#2), consented testimonials (#3),
    pricing decision (#1), GSA disclosure wording and schedule-publishing
    answer (#15), and the items in `docs/CLIENT_REVIEW_SHEET.md`.
+
+---
+
+## 2026-09-09 — M4 (part 1 of 2): itinerary template + homepage
+
+**Branch:** `m4-templates` → PR into `main`. M3 gate approved and PR #2 merged.
+
+### Completed
+
+**Doc patches first, per the client's design-process decision.** The separate
+mockup track is cancelled: removed as an M0 checklist item and gate condition
+in `EXECUTION_RUNBOOK.md`, removed from `PAGE_TEMPLATES.md`'s preamble, and
+replaced in `CLAUDE.md` invariant #5 with a note that the M4 preview URL *is*
+the design review and that any "approved mockups" language is stale. The M4
+gate now records the client's review loop — desktop + mobile captures in the PR
+alongside the preview URL, styling feedback applied as token/CSS edits rather
+than rebuilds, homepage sign-off before the register rolls onward. Also patched
+Template Spec §6, whose checklist still said "body always Inter on off-white",
+to match the white-primary ruling.
+
+**Design references studied** (`docs/references/`, seven full-page captures).
+Properties taken, not pixels: display type stays huge even at 390px — Star
+Alliance's mobile H1 is around 44px and our `clamp(2.5rem, 6vw, 4.5rem)`
+already lands in that register, so no token changed; crimson all-caps section
+labels over one calm sub-line; a quiet outline "view all" pill on the heading's
+baseline; image cards as rounded frames with the label inside a bottom-up
+gradient; and a dotted rail with circular nodes for process steps, which is
+what How It Works uses. Their layouts, nav structures and booking widgets were
+not imported. The 90MB of PNGs are documented in `docs/references/README.md`
+and deliberately left untracked — **a ruling is wanted** on whether to commit
+web-optimised JPEG derivatives instead.
+
+**`src/pages/journeys/[slug].astro`** — one template, both variants, in
+Template Spec §3's order, with Variant B's five extra modules gated on the
+discriminated union. Two spec tensions were resolved in comments rather than
+silently: §3's Variant B chain omits the ●-required S13 Practical Notes (it
+renders on B too, after the booking process), and §6's "ends at the convert
+band before Related" reads against §3 putting B's policies after that band —
+§3 wins, and §6's actual failure condition, a page *ending* on policy text,
+still cannot happen. The S3 intro expander is CSS-only via `:has()`, gated
+behind `@supports selector(:has(*))` so a browser without `:has()` shows the
+whole intro rather than a clipped one with a dead control, and the clamp
+applies below 64rem only.
+
+**`src/pages/index.astro`** — all eleven T1 sections, replacing the M1 scaffold
+page. Exactly two plum bands besides the footer (How It Works, lead capture),
+which is the whole allowance the design direction gives. The founding-year line
+is absent because `foundingYear` is null and the year is never guessed; the
+supporting line uses `yearsExperience`, which is verified. The association logo
+row is omitted entirely, as T1 instructs when none are supplied.
+
+New: `ArticleCard.astro`, `lib/hero-image.ts`, `lib/destinations-strip.ts`.
+View Transitions are global from `Base.astro`, and `RevealScript` now re-arms
+on `astro:page-load` with each element stamped once.
+
+### Three real defects, found by gating rather than by reading
+
+1. **Hero grid blowout, hidden by `overflow: clip`.** `.hero` used the implicit
+   `auto` grid track, whose automatic minimum is the item's min-content — the
+   `white-space: nowrap` route strip grew the content box to 775px inside a
+   390px hero, and the clip silently swallowed it. The H1, the badges and both
+   CTAs were cut off on every phone, while `check:responsive` reported a clean
+   pass because the *document* never scrolled sideways. Fixed with
+   `grid-template-columns: minmax(0, 1fr)`.
+2. **Yellow on a light surface** — DayAccordion's provisional notice carried a
+   yellow left rule on off-white, which invariant #5 forbids outright. Now
+   burgundy, the documented role for a fine rule on a light surface. This one
+   shipped through the M3 gate.
+3. **Contrast failure, 1.08:1, on the hero route strip.** Because the strip is
+   its own scroll region, a checker resolves its background to the page white
+   behind the hero rather than to the scrim — and it was right in substance:
+   legibility of 12px uppercase text would otherwise depend on whichever
+   photograph an editor uploads. The strip now carries its own plum ground,
+   which also puts its yellow separators on plum, where yellow is legal.
+
+**Invariant #3's hero preload existed only on paper.** There is now a head
+preload whose candidate set matches the `<picture>` AVIF source byte-for-byte
+(verified against the built HTML on all three pages), and heroes emit
+AVIF + WebP — 15KB against 29KB at 960w.
+
+### Two checks were reporting green over real bugs
+
+- **`check-responsive.mjs`** now also detects content *clipped* inside an
+  overflow box. Document `scrollWidth` cannot see that class of bug: there is
+  no scrollbar, the content is simply gone. This is what caught the hero
+  blowout. Deliberate scrollers opt out with `data-allow-clip`, and SVG
+  internals are excluded because a `<path>` extending past its viewBox is
+  intrinsic to SVG.
+- **`screenshot.mjs`** was producing convincing but wrong images, twice over.
+  `captureBeyondViewport` rasterised the hero content box at its pre-layout
+  width, giving captures indistinguishable from a genuine responsive bug — a
+  DOM probe at the same instant reported the correct 390px widths. It now
+  stitches viewport-only captures, each cropped to the exact gap between
+  *settled* scroll offsets, with smooth scrolling disabled for the capture:
+  `global.css` sets `scroll-behavior: smooth`, so `scrollTo` animates and
+  earlier attempts read the offset at one moment and captured pixels at
+  another, duplicating a strip of the page — it made a trust stat and a form
+  label appear twice, which reads as a component bug.
+- **`check-template-spec.mjs`** is new and automates the structural half of
+  Template Spec §6, which the M5 gate needs across all 20 journey pages. Its
+  first two runs failed on correct pages — it was matching class names inside
+  the inlined `<style>` block ahead of the markup — so it now reads the body
+  with styles stripped.
+
+### Gate status — M4 part 1: evidence delivered, awaiting review
+
+| Check | / | Variant A | Variant B |
+|---|---|---|---|
+| Lighthouse performance | 100 | 100 | 100 |
+| Accessibility | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / 1.7s | 1.1s / 1.7s | 1.1s / 1.7s |
+| TBT / CLS | 0ms / 0 | 0ms / 0 | 0ms / 0 |
+| Keyboard pass | 57 stops | 67 stops | 67 stops |
+| Content visible without JS | 0/18 hidden | 0/12 | 0/22 |
+| No overflow **or clipping** 360–1440px | PASS | PASS | PASS |
+| Template Spec §6 (automated half) | — | PASS | PASS |
+
+`astro check` clean across 40 files; `audit:hardcoded` and `gate:m2` still
+pass. Evidence in `reports/m4-gate-summary.json`, captures in `reports/m4/`.
+
+**Target not met, stated plainly: LCP is 1.7s against the 1.5s working
+target.** Every code-side lever is in place and verified — matched preload,
+AVIF, `fetchpriority="high"`, eager, no render-blocking JS, TBT 0ms — and the
+*observed* LCP subparts total about 56ms. The 1.7s is Lighthouse's throttling
+model, dominated by FCP at 1.1s for a 27KB gzipped document. The runbook
+specifies WebPageTest 4G Moto-class for this gate, which needs the deployed
+preview URL and real photography to mean anything.
+
+**Every image in the evidence is a flagged placeholder**, both testimonials are
+flagged placeholder text, and the seeded catalogue means the featured row shows
+2 of 6 cards, the destination strip resolves 1 of 7 tiles from content, the
+travel-guide teaser 1 of 3, and related journeys 1 card. The layout and
+typography are real; the imagery is not.
+
+### Open question needing a ruling
+
+`/destinations/` — the index route the homepage strip's "View all destinations"
+link points at **is not in CLAUDE.md's locked URL list** and has no template in
+PAGE_TEMPLATES, yet T1 specifies the link. Either the index page joins the URL
+structure (and M4 step 3) or the link comes off the homepage. Not improvised
+either way.
+
+### Exact next action
+
+1. **Client:** review the `m4-templates` PR — the six desktop/mobile captures
+   plus the preview URL. **The homepage needs explicit sign-off before the
+   register rolls across the remaining templates**, per the M4 review loop.
+2. Rule on `/destinations/`, and on whether the reference captures should be
+   committed as optimised JPEGs.
+3. **Then:** M4 part 2 — destination template, journeys index, luxury-trains
+   landing, travel-guide index + article, corporate, about, reviews,
+   plan-my-trip, policy pages, custom 404, and the journey-card → hero View
+   Transition verified end to end once `/journeys/` exists.
+4. Still outstanding from the client: photo archive, verified trust numbers
+   (#2), consented testimonials (#3), pricing decision (#1), GSA disclosure
+   wording and schedule publishing (#15), and `docs/CLIENT_REVIEW_SHEET.md`.
+
+---
+
+## 2026-09-09 — M4 part 1, revision 2: real photography and the placeholder overhaul
+
+**Branch:** `m4-templates` (PR #3, not yet merged). Homepage register **not
+approved** at first review; the client's diagnosis was that brand-gradient
+placeholders were making a photography-led design impossible to judge. That
+diagnosis was correct.
+
+### The six items
+
+1. **Temporary real photography.** 15 Unsplash images (licence permits
+   commercial use, no attribution required; Unsplash+ `premium_photo-*` files
+   deliberately excluded as a paid licence we do not hold), all named
+   `TEMP-PHOTO-*` so `grep -rn "TEMP-PHOTO" src/` finds every reference and the
+   audit counts them. Wired to the homepage hero, both seed journey heroes, the
+   luxury-rail banner, all nine locked destination tiles and the travel-guide
+   card. `npm run temp:photos` regenerates; provenance and per-file attribution
+   in `docs/brand/processed/TEMP-PHOTO-PROVENANCE.md`.
+   **The grade needed a second pass.** The first curve *lifted* saturation,
+   which amplified how differently the photographs were lit — turquoise ones
+   read tropical, sandstone ones read desert, and the strip looked like a stock
+   grid. Pulling colour slightly **down** while pushing the warm bias **up** is
+   what made an unrelated set read as one collection.
+   Heroes are also now cropped to a predictable 3:2 master. Three of the
+   sources were portrait, and a portrait photograph cover-cropped into a wide
+   hero loses its subject — the Kerala one became palms and a sun flare with no
+   boat in it, so that source was swapped for a landscape frame. It also halved
+   the bytes: we had been sending 1280px of image height to fill a 470px band.
+2. **Placeholder overhaul.** Neutral warm grey `#ECE9E6`, hairline border,
+   small centred label, and nothing else. `npm run brand:placeholders`.
+3. **Stripes removed sitewide.** They were baked into the placeholder graphics
+   rather than set in CSS, so replacing those removed them everywhere at once.
+   The hero gradient is confined to the text zone (bottom 58%).
+4. **Trust bar: four stats** — 20+ Years · N Curated Journeys · 9 Regions ·
+   24/7 On-Trip Support — restyled as full-width display numerals divided by
+   hairlines. The two middle stats are **derived from our own catalogue**, not
+   claimed, which is what makes them legitimate while PRD Open Question #2 is
+   still open: a number we compute cannot be an unverified claim and cannot go
+   stale. It reads "2 Curated Journeys" today and reaches 20 in M5 with nobody
+   editing anything.
+5. **Hero H1** desktop cap raised 4.5rem → 5.25rem (72px → 84px). The mobile
+   floor is unchanged, because 40px at 390px already matched the reference.
+6. **The reported blank sections were not a bug.** Both sections render fully —
+   all seven highlights and all four practical notes are present and visible,
+   verified by cropping the delivered JPEG at 1:1. The cause was **scale**: a
+   1440×7616 full-page capture viewed fit-to-screen is about 10% zoom, at which
+   15px body copy is sub-pixel and simply disappears. Practical notes were the
+   worst case at 15px in muted grey. Fixed anyway, because both sections were
+   genuinely too quiet: practical-notes body → `--text-base` in full ink,
+   labels → `--text-lg`, highlight text → `--text-lg`. Review captures now also
+   ship as 1:1 crops so copy is legible without zooming.
+
+### Two contrast failures the real photography exposed
+
+Both were invisible while every image was a flat gradient:
+
+- **The overlay header's white nav links** sat directly on a pale sunrise sky
+  and were unreadable. The transparent header now carries its own soft
+  top-down scrim, which disappears the moment it solidifies.
+- **The hero gradient was too timid.** Confined to the text zone as ruled, but
+  the first attempt left the H1 and the lede on bright sandstone and genuinely
+  hard to read. A label gradient has to actually work as a reading ground; it
+  is now ramped firmly, because an editor may upload any photograph.
+
+### LCP: real photography cost 0.7s, and 0.4s of it came back
+
+| Stage | Homepage LCP |
+|---|---|
+| Flat placeholder graphic | 1.7s |
+| Real photography, unoptimised | 2.4s |
+| After the two fixes below | **2.0s** |
+
+1. Hero AVIF quality 42 rather than Astro's default — the 960w candidate drops
+   from 76KB to 56KB with no visible difference at 1:1 (checked).
+2. A **768 rung** added to the hero srcset: a 412px phone at DPR 1.75 needs
+   721px and was being served the 960px candidate, a third more pixels than it
+   could display, on the LCP resource.
+
+FCP is 1.1s on all three pages, so the hero has a 0.9s budget in this
+instrument. **A decision is needed:** the 1.5s working target in invariant #3
+was set when heroes were flat graphics, and the code-side levers are now
+exhausted short of visibly degrading imagery on a photography-led premium site.
+2.0s is comfortably inside the 2.5s Core Web Vitals pass mark. Either the
+working target moves, or hero art direction changes.
+
+### Gate — revision 2
+
+| Check | / | Variant A | Variant B |
+|---|---|---|---|
+| Performance | 99 | 99 | 100 |
+| Accessibility | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / 2.0s | 1.1s / 2.0s | 1.1s / 1.7s |
+| TBT / CLS | 0ms / 0 | 0ms / 0 | 0ms / 0 |
+| Keyboard | PASS | PASS | PASS |
+| Visible without JS | 0/18 hidden | 0/12 | 0/22 |
+| No overflow or clipping | PASS | PASS | PASS |
+| Template Spec §6 | — | PASS | PASS |
+
+`astro check` clean; `audit:hardcoded` and `gate:m2` pass. Evidence in
+`reports/m4-gate-summary.json`.
+
+### Exact next action
+
+1. **Client:** re-review the homepage register on the PR #3 preview. **No
+   rollout to the remaining templates until that sign-off.**
+2. Rule on: the LCP working target vs real photography; the `/destinations/`
+   index route; and whether `docs/references/` should be committed as
+   optimised JPEGs.
+3. Note that filling all six featured-journey slots needs four more itineraries
+   ported from `docs/itineraries/` — genuine M5 content work, not done here
+   because M5 has not been authorised.
+4. Still outstanding from the client: the real photo archive (all 15 images are
+   TEMP-PHOTO), verified trust numbers (#2), consented testimonials (#3),
+   pricing decision (#1), GSA wording and schedule publishing (#15), and
+   `docs/CLIENT_REVIEW_SHEET.md`.
+
+---
+
+## 2026-09-11 — M4 part 1, revision 3: T1 v2, style deltas, 4-journey pull-forward
+
+**Branch:** `m4-templates` (PR #3). Homepage register improved but **not yet
+approved**; this round applies the two style deltas, the T1 v2 restructure and
+the authorised M5 pull-forward.
+
+### Rulings recorded in the docs
+
+- **LCP target revised to ≤2.0s** (Lighthouse mobile) with a 2.5s hard ceiling,
+  patched into CLAUDE.md invariant #3, the definition of done, and PRD §12/§16.
+  The M8 WebPageTest 4G run remains the field verdict.
+- **References:** 90MB PNG originals stay gitignored in `docs/references/`;
+  optimised JPEGs (~350KB each, 2.5MB total) committed to
+  `docs/design/references/`, with a README in each explaining which is which.
+- **`/destinations/` index** added to the locked URL list and specified as
+  PAGE_TEMPLATES **T2a**.
+- **Image-slot convention** documented in both CLAUDE.md and PAGE_TEMPLATES.
+
+### Style deltas
+
+Display type stepped down ~17% (hero cap 5.25rem → 3.5rem, H2 2.75 → 2.25rem,
+inner H1 3.5 → 2.875rem, stat numerals 3.25 → 2.75rem). **Body sizes were not
+touched** — last round's legibility bump stays. Button radius and padding moved
+to tokens; padding down one step everywhere, large size 52px/19px → 48px/17px,
+and every control still clears 44px. Both radius options render side by side at
+`/dev/components/#buttons` for the pick; **pill is currently live and switching
+is one token.**
+
+### T1 v2 and the founder section
+
+The homepage was rebuilt to the new eleven-section order: destinations moved
+above journeys and now show **all nine** tiles, corporate and travel-guide
+condensed into one slim dual strip, and an association-logos slot that renders
+nothing until logos exist.
+
+The new **Meet your travel consultant** section is entirely CMS-fed through a new
+`siteSettings.founder` object, and **nothing in it is invented**. The name is
+null and stays null until the client supplies it — the section renders without a
+name line rather than with a guess. The portrait is null and renders the neutral
+grey 4:5 slot; a stock photograph of a stranger is not used, because presenting
+one as a real consultancy's founder would be a fabrication rather than a
+placeholder. The quote is an agency draft, logged in
+`docs/CLIENT_REVIEW_SHEET.md` §14 with its two checkable claims flagged for the
+client to confirm or strike.
+
+### M5 pull-forward — four journeys ported
+
+`golden-triangle-5n-6d` (Rajasthan), `bali-5n-6d` (international),
+`north-east-india-6n-7d` (new region) and `western-southern-india-12n-13d` (the
+canonical direct-port doc, covering south-west India). All ported from the real
+source documents in `docs/itineraries/`. Six journeys now exist — five Variant A
+and one Variant B — and **all six pass the automated half of Template Spec §6**.
+
+### The CLS regression, and two wrong diagnoses before the right one
+
+CLS went from 0 to **0.132** on the Palace on Wheels page, reproducible to three
+decimals. I assumed a font-metric mismatch on the display face and added
+metric-matched `size-adjust` fallbacks; no change. I then switched the display
+face to `font-display: optional`; the number did not move **by a single
+digit** — which was the clue that the diagnosis was wrong, not insufficient.
+
+Lighthouse had named the cause outright in the audit sub-items:
+`inter-600-latin.woff2`. Semibold carries the hero eyebrow, the badges, the
+route strip and the buttons; when it swapped in, the hero content reflowed, and
+because that content is bottom-aligned the whole block moved.
+
+Worth recording: **my own CDP harness reported zero shifts even under CPU and
+network throttling**, because it reused a Chrome profile and the font was
+cached. Cold-cache behaviour was the entire bug, and a local harness that warms
+its cache cannot see it.
+
+The fix is Inter 600 **preloaded and set to `font-display: optional`** — the same
+pairing now used for the display face. Preloaded it wins the ~100ms window in
+almost every real case; when it does not, the page stays still and the
+metric-matched fallback stands in. Result: **CLS 0 on all four pages**, and FCP
+on journey pages improved from 1.1s to 0.9s.
+
+### Gate — revision 3
+
+| Check | `/` | Kerala (A) | Golden Triangle (A) | Palace on Wheels (B) |
+|---|---|---|---|---|
+| Performance | 99 | 99 | 100 | 100 |
+| Accessibility | 100 | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / 2.2s | 0.9s / 2.0s | 0.9s / 1.7s | 0.9s / 1.7s |
+| TBT / CLS | 0ms / **0** | 0ms / **0** | 0ms / **0** | 0ms / **0** |
+
+`astro check` clean. Template Spec §6 passes on all six journey pages. Keyboard,
+no-JS, responsive-and-clipping, and the invariant audits all pass.
+
+**One target missed by 0.2s:** the homepage is **2.2s** against the new ≤2.0s
+working target, and 0.3s inside the 2.5s ceiling. T1 v2 put nine destination
+tiles and six journey cards on the page — 14 images and 405KB of real
+photography. Every code-side lever is applied, including moving the LCP preload
+ahead of the font preloads in document order. The remaining lever is
+above-the-fold image density, which is a design decision rather than a code one,
+and nine tiles is what T1 v2 asks for.
+
+### Exact next action
+
+1. **Client:** re-review the homepage register on the PR #3 preview, and **pick
+   a button radius** (A pill / B 14px) at `/dev/components/#buttons`.
+2. Rule on whether 2.2s on the homepage is acceptable, or whether the tile count
+   above the fold should come down.
+3. Sign off §14 of `docs/CLIENT_REVIEW_SHEET.md` — founder name, role, quote and
+   portrait.
+4. **Then:** the rest of M4 in runbook order — `/destinations/` index (T2a),
+   destination pages (T2 v2), journeys index, luxury-trains landing,
+   travel-guide index and article, corporate, about, reviews, plan-my-trip,
+   policy pages, 404, and the card→hero View Transition verified end to end.
+
+---
+
+## 2026-09-11 — M4, design revision round 2 (PRD v1.5)
+
+Six owner amendments, recorded as a PRD v1.5 scope amendment (§17) before any
+of them was built, then delivered in the sequence the owner set: 2+3 → 1 → 4 → 5.
+
+**1 · Homepage hero → full-screen with background video.** 100svh, CMS-fed
+poster and clip. The poster is still the LCP element; the `<video>` ships with
+no sources and `preload="none"`, attaches them on an idle callback after
+`window.load`, and fades in on opacity. `prefers-reduced-motion` and
+`Save-Data` never fetch a byte. `npm run check:hero-video` asserts all fifteen
+of those conditions against a real network log, because "we respect Save-Data"
+is trivially satisfiable by downloading the clip and hiding it.
+
+**2 · Trust bar icons.** One Phosphor `thin` glyph above each numeral, burgundy,
+hairlines kept. Path data copied into `src/lib/phosphor-icons.ts` by
+`npm run brand:icons` — no `@phosphor-icons/*` dependency, which is a React
+component library this site has no use for.
+
+**3 · Compact journey cards + `/journeys/`.** Duration pill and a two-line
+title; image height unchanged. The index is built to T3 with a vanilla type
+toggle that hides itself without JavaScript.
+
+**4 · `dayImages[]`.** 0–4 per day, superseding the single per-day `image`.
+One runs 3:2 across the prose measure, two or more become a 4:3 two-column grid.
+
+**5 · City pages (T15).** New `cities` collection, `/cities/{slug}/`, Jaipur and
+Kochi seeded from public knowledge and flagged provisional. The journeys section
+and the whole cross-link layer are **computed** from each journey's
+`routeCities` plus `routeAliases`, so the set can grow from two to fifteen
+without editing one line of journey content.
+
+**6 · Reference video.** URL recorded in `docs/design/references/README.md` as
+human-viewing-only, with the reasons it is never fetched or embedded.
+
+### Four bugs caught, one of them already live
+
+1. **The journey hero scrim was sized as 58% of the HERO, not of the COPY.** On
+   a phone the itinerary hero stacks an eyebrow, a two-line H1, three chips and
+   two buttons — taller than 58% — so the Golden Triangle headline sat on bright
+   sandstone at **1.32:1**. Shipped through the previous review round, because
+   on desktop the same copy is short enough to stay inside the band. The scrim
+   now shares a grid row with the copy: **8.79:1**. This is why
+   `npm run check:hero-contrast` exists — it hides the type, photographs the
+   ground behind it, and takes the lightest pixel in every text box. Its own
+   first run then showed it was excluding overlay nav links, the element that
+   failed in round 1, so it was blind to its own reason for existing.
+2. **The video boot script shipped its own backticks** — written as
+   `<script is:inline>` inside a JSX conditional, the braces and template
+   literal reached the browser verbatim as a block containing a string. Valid
+   JavaScript that does nothing. Now emitted through `set:html`.
+3. **The first veil calibration flattened the photograph** into a plum panel —
+   the exact failure the client killed in the previous round. Retuned against
+   where the copy actually sits rather than against a hypothetical white frame.
+4. **The 1440p clip cost 1,803ms of main-thread decode**, taking the homepage
+   from Performance 99 to **74** on a TBT of 1,500ms — while LCP, the metric the
+   whole pattern was built to protect, never moved. Bytes were the wrong thing
+   to measure: every re-encode available came out *larger*, so the first version
+   shipped the source. Downscaled to 960×540 and trimmed to 7s it is **3.3MB —
+   smaller than the 1440p source — at Performance 100, TBT 0ms.**
+
+### Gate evidence (Lighthouse mobile, simulated)
+
+| Check | `/` | `/journeys/` | Golden Triangle | `/cities/jaipur/` | `/cities/kochi/` |
+|---|---|---|---|---|---|
+| Performance | 100 | 100 | 100 | 99 | 100 |
+| Accessibility | 100 | 100 | 100 | 100 | 100 |
+| Best practices | 100 | 100 | 100 | 100 | 100 |
+| SEO | 100 | 100 | 100 | 100 | 100 |
+| FCP / LCP | 1.1s / **1.7s** | 0.9s / 1.7s | 0.9s / 1.7s | 0.9s / **2.1s** | 0.9s / 1.7s |
+| TBT / CLS | 0ms / **0** | 0ms / 0 | 0ms / 0 | 0ms / 0 | 0ms / 0 |
+
+Full figures in `reports/m4-rev2-gate-summary.json`. `astro check` clean.
+Template Spec §6 passes on all six journey pages. Hero-video (15 checks),
+hero-contrast (50 text runs across four pages), responsive-and-clipping,
+keyboard, no-JS and the invariant audits all pass.
+
+**The homepage LCP went 2.2s → 1.7s**, comfortably inside its own 2.2s
+exception, because the hero poster is now a dark silhouette rather than a
+detailed palace.
+
+**One target missed by 0.1s:** `/cities/jaipur/` is **2.1s** against the ≤2.0s
+working target, and 0.4s inside the 2.5s ceiling. The cause is understood: its
+TEMP-PHOTO hero is a Hawa Mahal facade of 953 windows, which is the pathological
+case for AVIF — 59KB against 25–35KB for every other hero on the site. Kochi,
+same template and a heavier page overall, is 1.7s. The client's own photography
+replaces it in M5.
+
+### Exact next action
+
+1. **Client:** review the round-2 shots on the PR #3 preview — homepage,
+   `/journeys/`, the Golden Triangle page with day images, and `/cities/jaipur/`.
+2. **Button radius is still unanswered** — the decision came through as the
+   literal placeholder `[PILL / 14px]`. Pill stays live and both options stay on
+   `/dev/components/#buttons` until a choice lands; locking the token and
+   removing the loser is a one-line change.
+3. Rule on `/cities/jaipur/` at 2.1s — accept, or swap the temporary hero
+   photograph for something less finely detailed.
+4. Sign off §14, §15 and §16 of `docs/CLIENT_REVIEW_SHEET.md` — the founder
+   fields, the hero-video shoot brief, and the city-page copy plus the candidate
+   city list to rank.
+5. **Then:** the rest of M4 in runbook order — `/destinations/` index (T2a),
+   destination pages (T2 v2), luxury-trains landing, travel-guide index and
+   article, corporate, about, reviews, plan-my-trip, policy pages, 404, and the
+   card→hero View Transition verified end to end.
+
+---
+
+## 2026-09-11 (later) — M4 remaining templates + two rulings
+
+### Rulings applied
+
+**Jaipur hero — swapped, not excepted.** The old stand-in was a Hawa Mahal
+facade: 953 windows of fine repeating detail, the pathological case for AVIF,
+at 59KB where every other hero lands at 25–35KB. Replaced with Amer Fort above
+Maota Lake at golden hour — mostly sky, water and hillside, which compresses
+almost for free. **19KB, and the page went 2.1s → 1.7s**, matching Kochi. Worth
+keeping as a rule: a hero's encoded size is a property of its *content*, and
+the fix for a heavy hero is usually a different photograph rather than a lower
+quality number.
+
+**Scroll cue — kept, and verified.** Its opacity transition and its keyframe
+animation both already sat inside `@media (prefers-reduced-motion:
+no-preference)`, and the animation is transform-only per the motion spec.
+Desktop-only as built. No change was needed.
+
+**Button radius — still unanswered.** The decision has now arrived twice as a
+literal placeholder (`[PILL / 14px]`, then `[PICK ONE: PILL or 14px]`). Pill
+stays live and both options stay on `/dev/components/#buttons`. Locking the
+token and deleting the loser is a one-line change whenever a choice lands; it
+has not been guessed at.
+
+### Every remaining M4 template, built
+
+`/destinations/` (T2a) · 9 × `/destinations/{slug}/` (T2 v2) · `/luxury-trains/`
+(T4) · `/corporate/` (T5) · `/about/` (T6) · `/reviews/` (T7) ·
+`/travel-guide/` (T8) · `/travel-guide/{slug}/` (T9) · `/plan-my-trip/` (T10) ·
+four policy pages (T12) · `/404/` (T13).
+
+**33 pages build. 1,927 internal references. Zero broken links.**
+
+### The judgement calls, so they can be overruled
+
+- **M5 pull-forward, flagged.** Eight destination pages were drafted now. Their
+  prose is M5 work, but the homepage has linked all nine since T1 v2, so eight
+  of the nine were 404s and the M4 gate is a click-through. No new photography
+  was needed. Logged as **CLIENT_REVIEW_SHEET §17**, and three of those pages
+  now carry *policies* rather than descriptions — no elephant rides at Amer, no
+  promised tiger sightings, no Ladakh trip without acclimatisation days.
+- **Seven sections deliberately do not render** (§18): the About timeline (a
+  timeline is nothing but dates and `foundingYear` is null), certifications, the
+  corporate "48-hour proposal" promise, client logos, the reviews aggregate line
+  *and* its `AggregateRating` schema, the guest gallery, and any numeric
+  response-time promise. Each turns on one client fact.
+- **The policy pages publish structure, not law** (§19). `/privacy/`,
+  `/terms/` and `/cancellation/` carry a visible notice and are `noindex` until
+  real copy lands — agency drafting is not legal advice, and a placeholder
+  privacy policy in a search index is the version people quote back at you.
+  `/booking-terms/` is the exception and is already real: it is built from the
+  operator disclosures and policies in the journey entries, pulled live rather
+  than retyped.
+- **Plan My Trip's stepper is progressive enhancement.** All four fieldsets are
+  in the HTML and the form submits as one long form without JavaScript —
+  verified in the built output. A multi-step form that needs script to be
+  submittable is a lead-capture page that loses leads silently.
+- **Destination journeys are manual only.** CLAUDE.md calls it "auto by tag +
+  manual override"; journeys carry no destination reference, so the only
+  automatic basis available would be fuzzy-matching a region name against a
+  title. That files trips wrongly and does it silently. The tag arrives in M5.
+
+### New check — `npm run check:links`
+
+M4's gate is a click-through and nobody clicks every link on 33 pages; with
+`trailingSlash: 'always'` a missing slash is a 404 too. It walks the built
+output and separates genuinely broken links from routes that are specified but
+unwritten. Its pending list was exactly the rest of M4, which made it a to-do
+list that could not go stale. It is now empty.
+
+### Gate evidence (Lighthouse mobile, simulated)
+
+| | `/` | `/journeys/` | GT | `/cities/jaipur/` | `/luxury-trains/` | `/about/` | `/plan-my-trip/` | article |
+|---|---|---|---|---|---|---|---|---|
+| Performance | 100 | 100 | 100 | 100 | 100 | 100 | 100 | 99 |
+| LCP | 1.7s | 1.7s | 1.7s | **1.7s** | 1.7s | 1.7s | 1.5s | **2.3s** |
+| CLS / TBT | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms |
+
+Accessibility, best-practices and SEO are 100 on every page measured. Full
+figures in `reports/m4-templates-gate-summary.json`.
+
+**One target missed by 0.3s:** the article template at **2.3s**, inside the
+2.5s ceiling. Same cause as the Jaipur hero — a detailed TEMP-PHOTO master.
+Preloading it as AVIF took it from 2.6s to 2.3s; the rest is the photograph,
+and M5 replaces it.
+
+**A measurement note worth keeping.** An early `/journeys/` run reported 2.9s
+and P95. Two clean repeat runs both returned 1.7s and P100 — the outlier was
+contention from three Lighthouse runs queued against one preview server. The
+figure that went in the gate summary is the repeated one, not the first one.
+
+### Exact next action
+
+1. **Client:** review the remaining templates on the PR #3 preview. Desktop and
+   mobile captures attached for the design-significant ones.
+2. **Button radius** — still needs an actual pick (A pill / B 14px).
+3. **CLIENT_REVIEW_SHEET §14–§19** — founder fields, hero-video brief, the two
+   city pages, the eight destination pages (three of which publish policies),
+   the seven deliberately-missing sections, and ⚑ **the legal copy for three
+   policy pages**.
+4. **Then M5:** the remaining 17 itineraries, 7 more articles, real photography
+   replacing all 40 TEMP-PHOTO files and the TEMP-VIDEO clip, and the
+   destination reference on journeys that turns the auto-tagging on.
+
+---
+
+## 2026-09-11 — M4, design revision round 3 (ten items)
+
+**Branch:** `m4-templates` (continues PR #3) · **PRD → v1.6**
+
+Ten owner items, executed in the sequence given: governance and audit first
+(1+2), then the colour rebalance (9) because it touches everything, then
+gradients (3), cards (4), the trust/testimonial redesigns (5+6), the homepage
+and corporate register (7), the footer (8), and the watermarks (10).
+
+### Governance (items 1 and 2) — two new standing rules
+
+**Word control** is now CLAUDE.md invariant #9. Every user-facing string is
+sourced, registered in the new **`docs/COPY_REGISTER.md`** as `DRAFT`, or an
+obviously-placeholder line that is short and quiet. The trigger was real: the
+two testimonial cards were rendering a full paragraph of internal explanation
+at quote size, under two invented guest names. Both entries are deleted. The
+schema now carries a `placeholder` flag and **refuses** `name`, `origin`,
+`quote` and `photo` when it is set, so the failure cannot recur by editing; the
+card renders one italic muted line and the lotus. Placeholders are excluded
+from the `Review` structured data, because a fabricated review republished by
+an aggregator cannot be withdrawn.
+
+`docs/COPY_REGISTER.md` inventories the chrome copy of all 33 pages by page,
+each row `APPROVED` / `DRAFT` / `PLACEHOLDER`, with twelve rows flagged as
+claims, promises or numbers rather than atmosphere.
+
+**Image control** is invariant #10, enforced by the new
+**`npm run check:cms-images`**. Three findings, all converted: the
+`/luxury-trains/` hero was imported straight from `src/assets/` and now reads
+from a new `siteSettings.pageHeroes`; the 404 graphic became inline SVG; and
+nine dead TEMP-PHOTO fallbacks in the destination strip were deleted — all nine
+destination entries exist, so the homepage now resolves every tile from content
+and **throws** on a missing entry rather than silently showing a photograph
+nobody chose.
+
+### Two defects the round exposed, neither of them new
+
+**The hero gradient regression I introduced, and how it was caught.** The first
+version of the continuous gradient used percentage stops. On the homepage it
+measured 11:1. `check:hero-contrast` defaulted to the homepage only, so that
+would have been the whole story — so the default was widened to all eight hero
+pages first, and it returned **33 AA failures**: a percentage curve cannot know
+where the copy is, and a breadcrumb halfway up a 55svh destination hero landed
+at 3.0:1. Re-anchoring the gradient in `rem` from the bottom, with
+`--scrim-firm`/`--scrim-feather` per hero height, fixed 32 of them; the last
+was the trip-type tag, which now carries its own burgundy pill like the badges
+beneath it. Final: **90 text runs, all pass**. A baseline run against the
+previous commit confirmed the old scrim passed all 94 — so this was a
+regression I made, not one I inherited.
+
+**The lotus glyph has been the wrong colour since M3.** Ten call sites did
+`<Lotus class="why__mark" />` with `.why__mark { color: crimson }` in the
+calling page. The `<span>` is authored inside `Lotus.astro`, so it carries
+*that* component's `data-astro-cid`; the caller's rule compiled to
+`.why__mark[data-astro-cid-<caller>]` and matched nothing. Every lotus that was
+meant to be crimson or yellow rendered plain ink, through three design reviews,
+because a missing colour reads as a design choice. The same trap was found once
+before on the trust-bar icons in round 2 and fixed *locally* with a wrapper
+span — which left the pattern intact everywhere else. It is now a **`tone`
+prop** resolved inside `Lotus.astro`, with the reasoning written into the file.
+
+### Gate evidence
+
+33 pages · `astro check` 0/0/0 · **1,956 internal references, 0 broken, 0
+pending** · Lighthouse mobile **Performance 100** on `/`, `/journeys/`, Golden
+Triangle, `/corporate/`, `/reviews/`, `/about/`, `/luxury-trains/`,
+`/cities/jaipur/`; **99** on the article. LCP 1.5–1.7s everywhere except the
+article at 2.3s (unchanged, inside the ceiling). CLS 0 and TBT 0ms throughout.
+Contrast, CMS-image, hero-video, responsive, keyboard, no-JS, template-spec,
+link and hardcoded audits all pass. Figures:
+`reports/m4-rev3-gate-summary.json`; captures in `reports/rev3/`.
+
+The homepage's first Lighthouse run in a sequential loop returned P75 / TBT
+1,400ms; two clean repeats both returned P100 / TBT 0ms. Same queued-run
+contention as round 2 — the repeated figure is the one recorded, and the
+summary says so.
+
+**Button radius: LOCKED to pill.** The A/B is removed from `/dev/components/`.
+
+### Flagged, deliberately not changed
+
+The homepage destination strip puts nine tiles in a four-column grid, which
+leaves Vietnam alone on its own row. `PAGE_TEMPLATES` T1 §3 specifies
+"4/3/2-col responsive", so this was not changed unilaterally; a one-line move to
+three columns at desktop makes it a clean 3×3.
+
+### Exact next action
+
+1. **Client:** judge round 4 from the captures on PR #3 — homepage,
+   `/journeys/`, Golden Triangle and `/corporate/`, desktop and mobile.
+2. **`docs/COPY_REGISTER.md`** — the bulk copy approval. Review-sheet §20 lists
+   the twelve rows worth reading first.
+3. **Footer reference layout** (§21) — when the screenshot lands, rebuild to it.
+4. **Destination strip** — three columns at desktop, or leave at four?
+5. ⚑ **CLIENT_REVIEW_SHEET §19** — legal copy for the three policy pages plus
+   the agency's own cancellation slabs. Still the only launch blocker.
+6. **Then M5:** the remaining 17 itineraries, 7 more articles, real photography
+   replacing all 40 TEMP-PHOTO files and the TEMP-VIDEO clip, and the
+   destination reference on journeys that turns the auto-tagging on.

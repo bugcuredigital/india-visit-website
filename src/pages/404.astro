@@ -1,0 +1,106 @@
+---
+/**
+ * 404 — PAGE_TEMPLATES T13.
+ * ---------------------------------------------------------------------------
+ * "Keep it charming — it's a brand moment." The graphic is the empty-road SVG
+ * from the brand set rather than a photograph: a 404 should be light, and it
+ * should not cost a visitor who is already lost a hero-sized download.
+ *
+ * noindex, because a 404 that ranks is a 404 people arrive at on purpose.
+ */
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
+import Lotus from '../components/Lotus.astro';
+import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+
+/* Inlined as raw markup, not imported as an image: it is decorative brand
+   furniture like the lotus, so it is exempt from the CMS-image rule and costs
+   no request on a page somebody reached by accident (round 3, image control). */
+import roadSvg from '../assets/graphics/404-road.svg?raw';
+
+const settings = await getSiteSettings();
+---
+
+<Base
+  title="Page not found | India Visit"
+  description="That page has moved or never existed. Here is the way back."
+  noindex
+>
+  <Header slot="header" />
+
+  <section class="band lost">
+    <div class="container-content lost__inner">
+      <span class="lost__graphic" aria-hidden="true" set:html={roadSvg} />
+      <Lotus size={26} tone="crimson" class="lost__mark" />
+      <h1 class="lost__title">Looks like you've wandered off the route</h1>
+      <p class="lost__detail prose-measure">
+        That page has moved or never existed. No harm done — the good stuff is
+        all one click away.
+      </p>
+      <p class="lost__actions">
+        <Button href="/" variant="primary">Back to the homepage</Button>
+        <Button href="/journeys/" variant="ghost">All journeys</Button>
+        <Button href={whatsappLink(settings, 'From a 404 page')} variant="ghost" external>
+          WhatsApp us
+        </Button>
+      </p>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</Base>
+
+<style>
+  .lost {
+    text-align: center;
+  }
+
+  .lost__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lost__graphic {
+    display: block;
+    width: min(420px, 80%);
+    margin-inline: auto;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    opacity: 0.9;
+  }
+
+  .lost__graphic :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Colour comes from Lotus's `tone` prop — a scoped colour rule here would
+     never reach the glyph. See the note in Lotus.astro. */
+  .lost__mark {
+    margin-top: 2rem;
+  }
+
+  .lost__title {
+    margin-top: 1rem;
+    font-size: var(--text-h1);
+    line-height: var(--leading-display);
+  }
+
+  .lost__detail {
+    margin-top: 1rem;
+    font-size: var(--text-xl);
+    color: var(--color-ink-muted);
+  }
+
+  .lost__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+</style>

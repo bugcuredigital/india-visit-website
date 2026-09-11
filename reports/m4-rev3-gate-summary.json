@@ -1,0 +1,42 @@
+{
+  "round": "M4 — design revision round 3",
+  "date": "2026-09-11",
+  "branch": "m4-templates",
+  "prd": "v1.6 (§17 amendment log)",
+  "build": { "pages": 33, "astroCheck": "0 errors, 0 warnings, 0 hints" },
+  "links": { "references": 1956, "broken": 0, "pending": 0 },
+  "lighthouse_mobile_simulated": {
+    "note": "Each figure is from a run with no other Lighthouse process competing. A first run inside a sequential loop returned P75 / TBT 1400ms on the homepage; two clean repeats both returned P100 / TBT 0ms, which is the figure recorded — same queued-run contention seen in round 2.",
+    "/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.7 s", "cls": 0, "tbt": "0 ms" },
+    "/journeys/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.7 s", "cls": 0, "tbt": "0 ms" },
+    "/journeys/golden-triangle-5n-6d/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.6 s", "cls": 0, "tbt": "0 ms" },
+    "/corporate/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.7 s", "cls": 0, "tbt": "0 ms" },
+    "/reviews/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.5 s", "cls": 0, "tbt": "0 ms" },
+    "/about/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.6 s", "cls": 0, "tbt": "0 ms" },
+    "/luxury-trains/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.7 s", "cls": 0, "tbt": "0 ms" },
+    "/cities/jaipur/": { "performance": 100, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "1.7 s", "cls": 0, "tbt": "0 ms" },
+    "/travel-guide/kerala-houseboat-guide/": { "performance": 99, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcp": "2.3 s", "cls": 0, "tbt": "0 ms", "note": "Unchanged from the previous round. Inside the 2.5s hard ceiling, 0.3s over the 2.0s working target; the cause is the master photograph's content complexity and it is replaced in M5." }
+  },
+  "audits": {
+    "check:hero-contrast": "90 text runs across 8 hero pages x 2 breakpoints — all pass WCAG AA",
+    "check:cms-images": "PASS — 5 exempt (documented), 0 images outside the CMS",
+    "check:hero-video": "15/15 — poster is LCP, no sources before window.load, reduced-motion and Save-Data never request the clip",
+    "check:responsive": "PASS 360-1440px on /, /journeys/, /journeys/golden-triangle-5n-6d/, /corporate/, /reviews/, /about/, /travel-guide/, /cities/jaipur/, /luxury-trains/",
+    "check:keyboard": "PASS — 69 tab stops on /, 70 on /dev/components/, skip link first, all named, all with visible focus",
+    "check:nojs": "PASS — 24/24 animated elements visible with scripting disabled",
+    "check:template-spec": "PASS — 6 journey pages satisfy the automated half of Template Spec §6",
+    "check:links": "PASS — 1956 internal references, 0 broken, 0 pending",
+    "audit:hardcoded": "PASS — 0 hardcoded contact details; placeholder debt as expected before M5"
+  },
+  "regressions_found_and_fixed_this_round": [
+    "Percentage-based hero gradient: 33 AA failures across destination, city, train and journey heroes. The widened check:hero-contrast default (8 hero pages, not just the homepage) found them; re-anchoring the gradient in lengths fixed 32 and grounding the trip-type tag fixed the last.",
+    "Lotus glyph colour had never applied anywhere: ten call sites passed a colour class INTO the component, so the scoped rule compiled against the caller's cid and matched nothing. Every lotus that should have been crimson or yellow had rendered plain ink since M3. Fixed by moving colour to a `tone` prop resolved inside Lotus.astro.",
+    "Footer enquiry form overflowed the viewport by 12px at 768px and 2px at 412px: a viewport media query describing a column's width, plus an <input>'s min-content width being its `size` attribute rather than zero."
+  ],
+  "open": [
+    "CLIENT_REVIEW_SHEET.md §19 — legal copy for /privacy/, /terms/, /cancellation/ plus the agency's own cancellation slabs. The only item that can block launch.",
+    "CLIENT_REVIEW_SHEET.md §20 — the new docs/COPY_REGISTER.md, for bulk approval of drafted copy.",
+    "CLIENT_REVIEW_SHEET.md §21 — the footer reference layout has not arrived; the footer is built to a sensible default.",
+    "Homepage destination strip: nine tiles in a four-column grid leaves one orphan on its own row. PAGE_TEMPLATES T1 §3 specifies 4/3/2 columns, so this was NOT changed unilaterally — a one-line move to three columns at desktop makes it 3x3."
+  ]
+}

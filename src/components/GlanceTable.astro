@@ -21,7 +21,8 @@ const { rows, heading = 'Itinerary at a Glance' } = Astro.props;
 <section class="band band-offwhite" id="at-a-glance">
   <div class="container-content">
     <h2 class="glance__heading">{heading}</h2>
-    <div class="glance__scroll">
+    <!-- data-allow-clip: a wide table scrolls inside its own box by design. -->
+    <div class="glance__scroll" data-allow-clip>
       <table class="glance">
         <caption class="visually-hidden">
           Day-by-day summary. Each row links to that day's full description.

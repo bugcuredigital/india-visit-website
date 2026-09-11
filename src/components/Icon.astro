@@ -1,0 +1,46 @@
+---
+/**
+ * Inline Phosphor glyph.
+ * ---------------------------------------------------------------------------
+ * Path data is copied into src/lib/phosphor-icons.ts rather than installed —
+ * see scripts/brand/fetch-phosphor-icons.mjs for why. Each icon costs one
+ * inline <svg> and nothing at runtime.
+ *
+ * ACCESSIBILITY: these are decorative by default and the default is the right
+ * one. Every place an icon appears on this site, a visible text label appears
+ * with it — the trust bar's numeral and label say what the icon means far
+ * better than the icon does. An icon-only control with no accessible name is
+ * the anti-pattern here; if you ever need one, pass a `label` and it becomes an
+ * <svg role="img"> with a <title>, rather than being left silent.
+ *
+ * Phosphor's outline weights are FILLED outlines, not strokes: colour them
+ * with `color` (fill is currentColor) and never add a stroke.
+ */
+import { PHOSPHOR_ICONS, type PhosphorIconName } from '../lib/phosphor-icons';
+
+interface Props {
+  name: PhosphorIconName;
+  /** Rendered size in px, square. */
+  size?: number;
+  class?: string;
+  /** Supply ONLY when the icon carries meaning no adjacent text carries. */
+  label?: string;
+}
+
+const { name, size = 28, class: className, label } = Astro.props;
+const icon = PHOSPHOR_ICONS[name];
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox={icon.viewBox}
+  fill="currentColor"
+  role={label ? 'img' : undefined}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  {label && <title>{label}</title>}
+  {icon.paths.map((d) => <path d={d} />)}
+</svg>

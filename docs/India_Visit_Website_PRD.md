@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 ## India Visit — Portfolio & Lead Generation Website
 
-**Version:** 1.4 (Travel Guide blog moved into Phase 1 with 8 launch articles — §7.8. v1.3 motion spec; v1.2 final stack; v1.1 added 3 itineraries + Template Spec.)
+**Version:** 1.6 (Design revision round 3 — word control and image control as standing rules, the burgundy colour rebalance, one continuous hero gradient, one journey-card treatment, and the homepage un-condensed. **Full amendment log: §17.** v1.5 full-screen video hero, iconised trust bar, day images and city pages; v1.4 Travel Guide blog into Phase 1 — §7.8; v1.3 motion spec; v1.2 final stack; v1.1 added 3 itineraries + Template Spec.)
 **Prepared for:** India Visit (Client)
 **Prepared by:** [Your Agency]
 **Date:** September 2026
@@ -124,6 +124,10 @@ Home
 │       ├── Bhutan
 │       ├── Bali
 │       └── Vietnam
+├── Cities  (/cities/{slug}/ — new page type, v1.5)
+│   ├── Jaipur        (seeded M4)
+│   ├── Kochi         (seeded M4)
+│   └── …             (full set of ~10–15 is M5/Phase 2 content work)
 ├── Journeys (all 20 itineraries, filterable by destination/duration/type)
 │   └── Itinerary detail pages (×20 at launch — Template Variant A: 17, Variant B: 3)
 ├── Luxury Trains (landing page + GSA credentials)
@@ -147,6 +151,7 @@ Home
 - **South & West India Heritage** is a new category created by the Western & Southern India itinerary — it also future-proofs for Gujarat/Goa/Hampi additions.
 - **Wildlife** remains a cross-cutting theme: Tadoba lives here natively; Jhalana/Jawai journeys are cross-listed from Rajasthan (tag-based, not duplicated pages).
 - **Destination slugs are locked** (SEO): `/destinations/rajasthan-golden-triangle/` "Rajasthan & the Golden Triangle" · `/destinations/kerala/` "Kerala & the Backwaters" · `/destinations/south-west-india/` "South & West India Heritage" · `/destinations/ladakh/` "Himalayas — Leh & Ladakh" · `/destinations/north-east-india/` "North East India" · `/destinations/wildlife/` "Wildlife Journeys" · `/destinations/bhutan/` · `/destinations/bali/` · `/destinations/vietnam/`. Nine pages. The homepage strip shows 7 curated tiles with short labels plus a "View all destinations" link — the strip is intentionally not the full list.
+- **City pages are a new page type (v1.5)** at `/cities/{slug}/`. They are an SEO and internal-linking layer beneath destinations, not a replacement for them: a destination sells a region, a city answers "what is there to see in Jaipur" and then routes the reader to the journeys that visit it. Route-strip chips and day entries on itinerary pages link to a city page **when one exists**, and render as plain text when it does not — so the set can grow without touching any journey content.
 - **Booking Terms (trains)** added to utility pages — the Palace on Wheels cancellation slabs, refund and amendment rules need a canonical URL that Variant B pages link to.
 
 **Navigation (header):** Destinations ▾ · Journeys · Luxury Trains · Corporate · Travel Guide · About · Reviews · **[Plan My Trip →]** (button, crimson). At 1024–1200px only, About + Reviews collapse into a "More ▾" group. There is no `/contact/` route — it 301s to `/plan-my-trip/`.
@@ -160,16 +165,17 @@ Sticky header on scroll with phone number and WhatsApp icon always visible on mo
 
 | Section | Requirement |
 |---|---|
-| Hero | Full-bleed cinematic photo/video (Indian palace, backwaters, or Ladakh — warm golden light). Headline: value proposition + "20 years" trust line. Primary CTA: "Plan My Trip". Secondary: "Explore Journeys". Matches brand-kit mockup direction ("Discover Incredible India"). |
-| Trust bar | Immediately below hero: 4 stat/badges — *20+ Years · 10,000+ Travellers (verify number) · 25+ Destinations · 24/7 On-Trip Support*. Add association logos (IATO/TAAI/Govt. recognition — confirm which apply). |
-| Featured journeys | 4–6 itinerary cards (image, name, duration, "from ₹__ per person" optional — see Open Questions). Mix domestic + international + one train. |
-| How it works | 3 steps: *Tell us your dream → We craft your itinerary → Travel with full support.* Mirrors consultative sales model; sets expectation that CTA = conversation, not checkout. |
-| Why India Visit | 3–4 cards: Experience, Personal Curation, Affordable Luxury, With You Every Step. |
-| Destinations strip | Visual grid: Rajasthan, Kerala, Ladakh, North East, Bhutan, Bali, Vietnam. |
-| Testimonials | Carousel of 5–7 real reviews with name, origin (city/country), trip taken, and photo where possible. Foreign + Indian mix. |
-| Corporate teaser | One band: "Planning a company offsite?" → Corporate page. |
-| Lead capture | Short inline form (Name, Phone/WhatsApp, Destination, Travel month) + newsletter opt-in. |
-| Footer | Full nav, contact details, social links, payment/association logos, policies. |
+| Hero | **Full-screen (100svh) with a background VIDEO slot (v1.5).** A muted, looping, warm India-appropriate clip behind the headline. **The poster image is the LCP element and the video is never in the critical path** — see §12 for the mandatory pattern. `prefers-reduced-motion` and `Save-Data` visitors get the poster alone. Headline: value proposition + "20 years" trust line. Primary CTA: "Plan My Trip". Secondary: "Explore Journeys". Both the video and the poster are CMS-fed. |
+| Trust bar | Immediately below hero: **exactly four** stats, each with **one thin-line icon above the numeral** (burgundy stroke) and hairline separators between cells (v1.5 — the bar read too plain without them). First and last are fixed (*20+ Years*, *24/7 On-Trip Support*); the two middle slots prefer the client's verified figures and otherwise fall back to counts derived from our own catalogue, so nothing is ever claimed that is not counted. Association logos row below, rendered only when logos are supplied (IATO/TAAI/Govt. recognition — confirm which apply). |
+| Featured journeys | Itinerary cards (image, duration pill, title, "View journey →"). **One card treatment sitewide since v1.6** — the homepage row and the `/journeys/` archive render the identical component, with no route line and no signature-feature line on either. Mix domestic + international + one train. Price renders only while `showPrices` is on. |
+| How it works | 3 steps: *Tell us your dream → We craft your itinerary → Travel with full support.* Mirrors consultative sales model; sets expectation that CTA = conversation, not checkout. **The one plum band on the page** (v1.6). |
+| Why India Visit | 4 cards: Experience, Personal Curation, Affordable Luxury, With You Every Step. **Enriched v1.6:** numbered `01–04` in the display face, 28px lotus, bolder headings one step larger, hairline separators between columns, supporting text one step larger. One calm off-white ground — richer, not busier. |
+| Destinations strip | Visual grid: all **nine** regions (v1.5) plus a "View all destinations" link to the index. Every tile's image and label come from the destination's own entry (v1.6 image control) — there are no hardcoded fallbacks. |
+| Testimonials | Carousel of real reviews with name, origin (city/country), trip taken, and photo where possible. Foreign + Indian mix. **Redesigned v1.6:** cropped lotus watermark in the card corner, initial-avatar circle (never a stock face), trip label as a pill, firmer burgundy hairline, brand-styled arrows and dots. A slot with no review yet shows **one quiet italic line** and nothing attributed to anybody (word control). |
+| Corporate band | **Its own band (v1.6),** burgundy, one sentence and one CTA. It previously shared a slim strip with the travel guide, which treated a line of business as a footnote. |
+| Travel guide | **A full section again (v1.6):** three article cards with category tags and "All articles →". |
+| Lead capture | Short inline form (Name, Phone/WhatsApp, Destination, Travel month) + newsletter opt-in. Burgundy ConvertBand since v1.6. |
+| Footer | Full nav, contact details, social links, payment/association logos, policies. **v1.6:** ink ground, the phone number **with country code** in display face, and a compact enquiry form (name, phone, message). |
 
 ### 7.2 Destination pages (e.g., Rajasthan, Kerala, Bhutan)
 
@@ -316,7 +322,7 @@ The single most important trust page for this brand.
 
 What separates this from a budget-operator site (and from the current template look of sites like luxuriousheritagetravel.com):
 
-- **Whitespace is the luxury signal.** Generous padding, max content width ~1200–1280px, airy sections. **White base** (v1.5 ruling — off-white demoted to a secondary surface), with deep plum reserved for rare, intentional contrast bands.
+- **Whitespace is the luxury signal.** Generous padding, max content width ~1200–1280px, airy sections. **White base** (v1.5 ruling — off-white demoted to a secondary surface), with rare, intentional dark contrast bands. **Those bands are burgundy `#741238` since v1.6**, the footer is ink, and plum is kept for at most one deliberate moment per page: plum read blue next to warm photography and was quietly cooling a warm brand.
 - **Photography carries the site.** Large, warm, golden-hour imagery; real places from actual itineraries. No cheesy stock, no watermarked images, consistent colour grading (warm, slightly desaturated). Budget line item for licensed/original photography.
 - **Editorial typography.** Big confident Agrandir headlines, restrained body sizes, no more than 2 weights per block.
 - **Micro-restraint.** Subtle hover lifts and fades only. No autoplay carousels spinning fast, no popups in first 30 seconds, no discount stickers, no countdown timers.
@@ -386,7 +392,7 @@ What separates this from a budget-operator site (and from the current template l
 - Google Business Profile setup/optimisation + review generation workflow
 - XML sitemap, robots, canonical tags; image alt text throughout
 - Travel Guide blog **launches in Phase 1** with 8 articles for topical authority — best-time-to-visit and visa-guide articles map directly to the practical notes already written; `Article` schema + author E-E-A-T block on every post
-- Core Web Vitals budget: LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms. **2.5s is the CWV pass mark; our own working target is LCP ≤ 1.5s (§12, CLAUDE.md).**
+- Core Web Vitals budget: LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms. **2.5s is the CWV pass mark and the hard ceiling; our own working target is LCP ≤ 2.0s** (revised from 1.5s in M4 — that figure predated real photography, which costs ~0.7s of simulated LCP on its own). The M8 WebPageTest 4G Moto-class run is the field verdict.
 
 ---
 
@@ -405,12 +411,29 @@ What separates this from a budget-operator site (and from the current template l
 | Site Settings singleton | Phone, WhatsApp number + default message, email, address, social URLs, CTA link targets, GTM container ID, Meta Pixel ID — every component reads from these CMS fields; nothing hardcoded, nothing duplicated |
 | Tags | **GTM installed once, loaded via Partytown** (web worker, off main thread). GA4, Meta Pixel, conversion events, and all future tags managed entirely in the GTM UI — zero code edits, and no LCP penalty from the tag stack |
 | Forms | Cloudflare Pages Function → Resend free tier (email notify) + Google Sheet webhook; Turnstile (invisible, free) + honeypot. Alt: Web3Forms free |
-| LCP plan (target < 1.5s 4G) | Static HTML from CDN edge · inlined critical CSS · self-hosted subset fonts, `font-display: swap` · hero preloaded, `fetchpriority="high"`, AVIF/WebP responsive srcset via `astro:assets` (build-time, free) · near-zero default JS · third-party scripts off-thread |
+| LCP plan (working target ≤ 2.0s Lighthouse mobile, 2.5s ceiling; **homepage exception ≤ 2.2s** — see below) | Static HTML from CDN edge · inlined critical CSS · self-hosted subset fonts, `font-display: swap` · hero preloaded, `fetchpriority="high"`, AVIF/WebP responsive srcset via `astro:assets` (build-time, free) · near-zero default JS · third-party scripts off-thread |
 | Serving & caching model | **GitHub and Tina exist only in the publish path, never the visitor path.** Visitors hit Cloudflare edge → pre-built static files; zero runtime calls to GitHub/Tina/any origin (site stays up even if GitHub is down). Caching is structural: assets get content-hashed filenames (immutable, cache-forever, staleness impossible), HTML revalidates, and every deploy is an atomic edge-wide cutover — no manual purges, no stale-cache states, no cache plugins. **Trade-off accepted:** edits go live ~1–3 min after save (build time), not instantly — fine for a portfolio's edit cadence |
 | Cannot-break-the-site guarantee | (1) Client edits schema-validated form fields, never markup; (2) failed builds never deploy — live site keeps serving last good version; (3) every deploy is rollback-able in one click; (4) preview deploy per change before publish |
 | Unavoidable costs | Domain (~₹800–1,000/yr, Cloudflare Registrar at-cost) · Agrandir Grand web font licence (Open Question #9). Everything else: ₹0/month |
 | Capacity sanity check | 500 builds/mo ≈ 16 published edit-batches/day (ample); Resend 100 emails/day ≫ lead volume; bandwidth unlimited (traffic spikes cost nothing) |
 | Integrations (Phase 2) | Google Reviews feed, Instagram feed, CRM, email marketing (Brevo free tier) — all API-side, no lock-in |
+
+**Homepage video hero — the mandatory LCP-safe pattern (v1.5).** The homepage carries a background
+video, and a video hero is the single most common way a premium site loses its Core Web Vitals. The
+pattern is not optional:
+
+1. The **poster image renders exactly as a photographic hero does today** — `astro:assets` AVIF/WebP,
+   preloaded, `fetchpriority="high"`, eager, never entrance-animated. The poster **is** the LCP element,
+   and the measured LCP must not move because a video exists.
+2. The `<video>` element ships with **no sources and `preload="none"`**. Sources are attached only
+   **after `window.load`**, on an idle callback. Nothing about the video may appear in the critical path:
+   not a byte, not a connection, not a decode.
+3. It plays `muted`, `loop`, `playsinline`, and **fades in over the poster** on opacity alone.
+4. **`prefers-reduced-motion: reduce` and `Save-Data: on` get the poster and nothing else** — the video
+   is never fetched for them at all.
+5. The **homepage LCP budget is ≤ 2.2s** (against the sitewide ≤ 2.0s working target), and 2.5s remains
+   the hard Core Web Vitals ceiling for every page including this one. If adding the video moves the
+   homepage past 2.2s, the video comes out — the exception buys the full-screen hero, not the video.
 
 **Why WordPress was dropped (v1.1) and Strapi rejected (v1.2):** both require paid always-on infrastructure (hosting/VPS + database), carry patching burden, edit the live site directly (a bad edit can take it down instantly), and can't match static-CDN LCP. The Astro + git-based-CMS architecture makes the client's "I shouldn't be able to break it" requirement a structural property, not a training issue.
 
@@ -422,7 +445,7 @@ What separates this from a budget-operator site (and from the current template l
 Home · 9 destination pages · 20 itinerary pages (17 Variant A + 3 Variant B; all three trains content-complete — no "coming soon" cards needed) · Luxury Trains landing · Corporate · About · Reviews · **Travel Guide blog (index + article template + 8 launch articles)** · Plan My Trip · Full lead-gen system (forms, WhatsApp, call, gated PDFs) · SEO foundation · Analytics · Policies incl. train Booking Terms
 
 ### Phase 2 — Growth (post-launch 1–3 months)
-Ongoing Travel Guide articles (~2/month, client-published via Tina) · Journey filter/search on the Journeys index · Video testimonials · Instagram feed · Email nurture sequences · CRM integration · Additional itineraries (Himachal, Andamans, Sri Lanka, Nepal — natural inventory extensions)
+**The remaining city pages (~10–15, v1.5 — two are seeded at M4 to prove the template)** · Ongoing Travel Guide articles (~2/month, client-published via Tina) · Journey filter/search on the Journeys index · Video testimonials · Instagram feed · Email nurture sequences · CRM integration · Additional itineraries (Himachal, Andamans, Sri Lanka, Nepal — natural inventory extensions)
 
 ### Phase 3 — Optimisation (ongoing)
 A/B testing on hero + forms · Review-generation automation · Seasonal landing pages (summer Ladakh, winter Rajasthan, festival specials) · Multilingual consideration (German/French/Spanish inbound — only if data supports)
@@ -484,3 +507,53 @@ Online payments/booking engine · Live inventory or pricing APIs · User account
 - [ ] GA4 events firing for all conversion actions
 - [ ] Responsive QA on iOS/Android Chrome & Safari, 360px–1440px
 - [ ] Policies published; consent checkbox live on all forms
+
+---
+
+## 17. Scope amendment log
+
+### v1.5 — Design revision round 2 (owner remarks, M4)
+
+Six items, recorded here as the scope record; the structural detail lives in
+`PAGE_TEMPLATES.md` and the code rules in `CLAUDE.md`. Sequenced 2+3 → 1 → 4 → 5
+at the owner's direction.
+
+| # | Amendment | Where it lands |
+|---|---|---|
+| 1 | **Homepage hero becomes full-screen (100svh) with a background video slot.** `heroVideo` (mp4/webm, repo media in `/public/uploads/`, ~15MB guidance cap) + `heroPoster` (image, **required**) added to the settings singleton. The LCP-safe pattern in §12 is mandatory. Gradient overlay strengthened and rebalanced for video — darker at the text zone, lighter above — because an editor may upload a bright clip and white copy has to stay AA-readable over **any** frame. Journey and destination heroes stay photographic. | §7.1, §12, PAGE_TEMPLATES T1, CLAUDE.md invariant #3 |
+| 2 | **Trust bar enriched** with one thin-line icon per stat above the numeral, burgundy stroke, hairline separators kept. Icons support the numbers — no illustration, no colour flood. Icon vocabulary is the `ui-ux-pro-max` skill's curated Phosphor set, used under the skill-precedence rule that admits its **UX guidance** while its design-system generation stays overridden. | §7.1, PAGE_TEMPLATES T1, CLAUDE.md |
+| 3 | **Journey index cards compacted.** Image height unchanged; card content clipped to a duration pill (`11N · 12D`) and the title only, one type-step smaller, two lines with ellipsis. Route line, blurb and "View journey" link are removed from index cards — the journey page itself carries them. Featured homepage cards keep the route line. | PAGE_TEMPLATES T3 |
+| 4 | **Day-by-day images.** `dayImages[]` (0–4 per day) added to the journeys schema; up to 2 render side by side in an expanded day, more become a 2-column grid, all in rounded frames. Lazy-loaded, never in the LCP path. Supersedes the single optional `image` field on a day. | Template Spec §4, PAGE_TEMPLATES |
+| 5 | **New page type: city pages** at `/cities/{slug}/` (PAGE_TEMPLATES **T15**), with a new `cities` collection. Nine standard sections, every image slot CMS-fed. Journeys that visit a city are auto-matched from `routeCities` with a manual override — that section is the conversion core. **Scope control:** template plus two seeds (Jaipur, Kochi) at M4, content drawn from public knowledge and flagged provisional; the full set is M5/Phase 2 and the candidate list sits in `CLIENT_REVIEW_SHEET.md` for prioritisation. | §6, §13, PAGE_TEMPLATES T15 |
+| 6 | **Reference video.** The owner's hero-video style reference is recorded in `docs/design/references/README.md` as a human-viewing-only link. It is never fetched, downloaded or embedded: YouTube is not reachable from the build environment, and a YouTube embed is not acceptable as a hero background (player chrome, third-party branding, and a third-party script in the critical path). The CMS upload slot is the mechanism for the real video; a flagged `TEMP-VIDEO` stock clip covers the interim. | docs/design/references/README.md |
+
+**Not changed by this amendment:** the locked brand palette and type system, the
+URL structure for existing pages, the "operator tariffs are never published"
+rule, the four-stat trust-bar shape, or the placeholder convention. City pages
+are **added** to the locked URL list, not substituted for anything.
+
+### v1.6 — Design revision round 3 (owner remarks, M4)
+
+Ten items. Two are **standing governance rules** rather than design changes, and
+they are the reason the round is sequenced the way it is: the audit has to come
+before the work, or the work adds to what the audit would have found. Sequenced
+1+2 → 9 → 3 → 4 → 5+6 → 7 → 8 → 10 at the owner's direction.
+
+| # | Amendment | Where it lands |
+|---|---|---|
+| 1 | **Word control (standing rule).** No invented user-facing copy goes live-looking. Every string is sourced, registered in the new `docs/COPY_REGISTER.md` as `DRAFT`, or an obviously-placeholder line that is **short and quiet**. Triggered by testimonial cards rendering a paragraph of internal meta-text at quote size under an invented guest name. Placeholder testimonials now carry no name, origin or quote at all — the schema refuses them — and render one italic muted line plus the lotus. They are never emitted as `Review` structured data. | CLAUDE.md invariant #9, `docs/COPY_REGISTER.md`, testimonials schema |
+| 2 | **Image control (standing rule).** Every image and video must be a CMS-schema field an editor can change from the dashboard. Audited and enforced by the new `npm run check:cms-images`, added to the gate. Decorative inline SVG, the logo and the neutral placeholders are exempt. Two conversions: the `/luxury-trains/` hero moves into the new `siteSettings.pageHeroes`, and the 404 graphic becomes inline SVG. Nine dead TEMP-PHOTO fallbacks are deleted from the destination strip. | CLAUDE.md invariant #10, `siteSettings.pageHeroes`, `scripts/check-cms-images.mjs` |
+| 3 | **Hero gradient: one continuous wash.** The banded scrim showed a visible horizontal seam. Replaced by a single gradient feathered over the full height with no perceptible boundary, **lighter** overall, and in **ink** rather than plum so the photograph is darkened rather than tinted. Anchored in lengths, not percentages, because the height of a copy column is a length. Verified on every hero page at both breakpoints. | CLAUDE.md design direction, `Hero.astro`, `check:hero-contrast` |
+| 4 | **One journey-card treatment sitewide.** Image, duration pill, title, "View journey →". Route lines and signature-feature lines removed from **all** cards. The Variant B permanent plum ground is removed — every card is white at rest and its footer turns burgundy on hover and on keyboard focus. The "Fixed Departures" badge stays: it is what actually distinguishes a train, and it survives being looked at by someone who cannot see colour. | PAGE_TEMPLATES T3, `JourneyCard.astro` |
+| 5 | **"Why India Visit" enriched.** Numbered `01–04` in the display face, lotus glyphs up to 28px, bolder headings one type-step larger, hairline separators between columns, supporting text up one step. One calm ground — richer, not busier. | §7.1, PAGE_TEMPLATES T1 |
+| 6 | **Testimonials redesigned.** Oversized cropped lotus watermark in the card corner, initial-avatar circle (never a stock face), trip label as a pill, firmer burgundy-hairline border on an off-white card, brand-styled arrows and dots. | PAGE_TEMPLATES T1, T7 |
+| 7 | **Homepage un-condensed, corporate re-registered.** The slim corporate + travel-guide dual strip is gone. Travel Guide returns as a full section (three article cards, category tags, "All articles →"); Corporate gets its own burgundy band with one sentence and a CTA. Separately, `/corporate/` is restyled into a professional register within the brand — ink hero, burgundy accents, ruled capability rows, tighter grid, no leisure warmth. | §7.1, PAGE_TEMPLATES T1, T5 |
+| 8 | **Header/footer consistency and a footer form.** One `Header` and one `Footer` on every page, no per-page variants (verified; `/privacy/`, `/terms/`, `/cancellation/`, `/booking-terms/` receive theirs through the `Policy` layout). The footer gains the phone number **with its country code** in display face alongside WhatsApp and email, plus a compact enquiry form (name, phone, message) that shares the honeypot, hidden context fields and consent checkbox with every other form on the site. | PAGE_TEMPLATES T14, `Footer.astro`, `EnquiryForm.astro` |
+| 9 | **Colour rebalance — red, not blue.** Burgundy `#741238` becomes the primary dark-section colour; crimson stays CTAs and accents; the footer takes ink `#1A1523` so the page does not end on two identical burgundy slabs; plum `#452B5E` and yellow `#E5C745` demote to "only when necessary", plum keeping at most one deliberate moment per page. Muted text and hairline tokens rebased from plum-derived to burgundy-derived. Every changed ground re-verified for AA. | CLAUDE.md design direction, `tokens.css`, `global.css` |
+| 10 | **Lotus watermarks on dark bands.** The extracted vector, oversized, ~6% opacity, cropped at the band edge, brand-kit cover style. Drifts on section hover — transform-only, 600ms, inside `prefers-reduced-motion: no-preference`. Decorative and `aria-hidden`. | CLAUDE.md design direction, `BandWatermark.astro` |
+| — | **Button radius locked: PILL.** `--btn-radius: 9999px`. The A/B is removed from the component demo page. It remains a token so the shape of every CTA sitewide stays one edit. | `tokens.css`, `/dev/components/` |
+
+**Not changed by this amendment:** the locked palette itself (no colour was
+added or removed — only their roles changed), the type system, the URL
+structure, the four-stat trust bar, the "operator tariffs are never published"
+rule, the LCP budgets, or the LCP-safe video pattern.

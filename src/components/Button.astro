@@ -60,9 +60,9 @@ const tagProps = href
     gap: 0.5rem;
     /* 44px minimum tap target (PRD §9.3) at every size. */
     min-height: 44px;
-    padding-inline: 1.5rem;
+    padding-inline: var(--btn-pad-md);
     border: 1px solid transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--btn-radius);
     font-family: var(--font-body);
     font-weight: 600;
     font-size: var(--text-base);
@@ -110,7 +110,7 @@ const tagProps = href
     color: var(--color-burgundy);
   }
 
-  /* On plum/burgundy: white outline, since crimson lacks contrast there. */
+  /* On a dark band: white outline, since crimson lacks contrast there. */
   .btn--on-dark {
     border-color: var(--color-on-dark);
     color: var(--color-on-dark);
@@ -118,20 +118,22 @@ const tagProps = href
 
   .btn--on-dark:hover:not(:disabled) {
     background-color: var(--color-on-dark);
-    color: var(--color-plum);
+    color: var(--color-burgundy);
   }
 
   /* ---- Sizes ---------------------------------------------------------- */
   .btn--sm {
     min-height: 44px;
-    padding-inline: 1rem;
+    padding-inline: var(--btn-pad-sm);
     font-size: var(--text-sm);
   }
 
   .btn--lg {
-    min-height: 52px;
-    padding-inline: 2rem;
-    font-size: var(--text-xl);
+    /* Down one step from 52px/2rem/19px. Still comfortably above the 44px
+       tap-target floor. */
+    min-height: 48px;
+    padding-inline: var(--btn-pad-lg);
+    font-size: var(--text-lg);
   }
 
   .btn--block {

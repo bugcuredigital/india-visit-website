@@ -1,0 +1,272 @@
+---
+/**
+ * Journeys index — PAGE_TEMPLATES T3.
+ * ---------------------------------------------------------------------------
+ * This page is a TOOL, not a story, and the template says so in as many words:
+ * compact hero, no cinematic image, get to the grid. A visitor arriving here
+ * already knows they want a trip; the page's only job is to let them find it
+ * quickly.
+ *
+ * Cards render at the `compact` size (design revision round 2): image height
+ * unchanged, body clipped to a duration pill and the title. At twenty entries
+ * — forty once the catalogue is doubled — a full-height card turns the archive
+ * into a scroll, and every line removed here exists one click away on the
+ * journey page itself.
+ *
+ * The type toggle is a ~25-line vanilla island, not a filter framework. Full
+ * filter/search is explicitly Phase 2 (T3), and three buttons over a static
+ * grid need no more than this.
+ */
+import { getCollection } from 'astro:content';
+
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import JourneyCard from '../../components/JourneyCard.astro';
+import ConvertBand from '../../components/ConvertBand.astro';
+import StickyMobileBar from '../../components/StickyMobileBar.astro';
+import JsonLd from '../../components/JsonLd.astro';
+
+import { breadcrumbSchema } from '../../lib/schema';
+
+const journeys = (await getCollection('journeys', ({ data }) => !data.draft)).sort((a, b) => {
+  /* Custom journeys first, trains last — the trains are the upsell, and the
+     toggle exists for anyone who came specifically for them. Within a group,
+     longest trips first: they read as the flagship product. */
+  const byVariant = Number(a.data.variant === 'B') - Number(b.data.variant === 'B');
+  if (byVariant !== 0) return byVariant;
+  return b.data.nights - a.data.nights;
+});
+
+const customCount = journeys.filter((entry) => entry.data.variant === 'A').length;
+const trainCount = journeys.length - customCount;
+
+const FILTERS = [
+  { key: 'all', label: 'All', count: journeys.length },
+  { key: 'A', label: 'Custom Journeys', count: customCount },
+  { key: 'B', label: 'Luxury Trains', count: trainCount },
+] as const;
+
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: 'Journeys', url: new URL('/journeys/', Astro.site).href },
+]);
+---
+
+<Base
+  title="All Journeys — India Visit"
+  description="Every journey we run, from short Golden Triangle escapes to twelve-night routes across southern India, plus the three legendary luxury trains."
+>
+  <Fragment slot="head">
+    <JsonLd schema={crumbs} />
+  </Fragment>
+  <Header slot="header" />
+
+  <!-- 1 · Compact hero — a band, not a photograph ----------------------- -->
+  <section class="band band-tight intro">
+    <div class="container-content">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Journeys</span>
+      </nav>
+      <h1 class="intro__title">All Journeys</h1>
+      <p class="intro__lede prose-measure">
+        Every route we run, written up day by day. Each one is a starting point
+        — tell us what to change and we will rebuild it around you.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 · Type toggle + 3 · Card grid ----------------------------------- -->
+  <section class="band band-tight" aria-labelledby="grid-heading">
+    <div class="container-content">
+      <h2 id="grid-heading" class="visually-hidden">Journeys</h2>
+
+      <!--
+        Hidden without JavaScript (scoped to html.js in the stylesheet): a
+        filter that cannot filter is worse than no filter. Buttons rather than
+        links because nothing here changes the URL — a filtered view is not a
+        page, and giving it one would split the archive's SEO across three URLs
+        for no benefit.
+      -->
+      <div class="filter" role="group" aria-label="Filter journeys by type">
+        {
+          FILTERS.map((filter, index) => (
+            <button
+              type="button"
+              class="filter__btn tap-target"
+              data-filter={filter.key}
+              aria-pressed={index === 0 ? 'true' : 'false'}
+            >
+              {filter.label}
+              <span class="filter__count">{filter.count}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <p class="filter__status visually-hidden" role="status" aria-live="polite"></p>
+
+      <ul class="grid" data-journey-grid>
+        {
+          journeys.map((entry) => (
+            <li class="grid__item" data-variant={entry.data.variant}>
+              <JourneyCard
+                slug={entry.id}
+                title={entry.data.title}
+                image={entry.data.heroImage}
+                imageAlt={entry.data.heroImageAlt}
+                nights={entry.data.nights}
+                days={entry.data.days}
+                variant={entry.data.variant}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · Convert -------------------------------------------------------- -->
+  <ConvertBand
+    heading="Can't find your perfect trip?"
+    body="We build from scratch far more often than we run these as written. Tell us the shape of it — where, when, how long, who with — and we will draft the rest."
+    leadType="general"
+    waContext="Journeys index"
+  />
+
+  <Footer slot="footer" />
+  <StickyMobileBar slot="after-footer" />
+</Base>
+
+<script is:inline>
+  (() => {
+    const grid = document.querySelector('[data-journey-grid]');
+    const buttons = document.querySelectorAll('[data-filter]');
+    const status = document.querySelector('.filter__status');
+    if (!grid || !buttons.length) return;
+
+    const items = Array.from(grid.children);
+
+    const apply = (key) => {
+      let shown = 0;
+      for (const item of items) {
+        const match = key === 'all' || item.dataset.variant === key;
+        // `hidden` rather than a display rule, so the item leaves the
+        // accessibility tree as well as the layout.
+        item.hidden = !match;
+        if (match) shown += 1;
+      }
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(button.dataset.filter === key));
+      }
+      if (status) {
+        status.textContent = `Showing ${shown} ${shown === 1 ? 'journey' : 'journeys'}.`;
+      }
+    };
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => apply(button.dataset.filter));
+    }
+  })();
+</script>
+
+<style>
+  /* ---- compact hero ---------------------------------------------------- */
+  .intro {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-crimson);
+  }
+
+  .intro__title {
+    font-size: var(--text-h1);
+  }
+
+  .intro__lede {
+    margin-top: 1rem;
+    font-size: var(--text-xl);
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- type toggle ----------------------------------------------------- */
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  /* A filter that cannot filter is worse than no filter. */
+  :global(html:not(.js)) .filter {
+    display: none;
+  }
+
+  .filter__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .filter__btn:hover {
+    border-color: var(--color-crimson);
+    color: var(--color-crimson);
+  }
+
+  /* The active state is ink, not crimson: crimson is punctuation for the one
+     action that matters in a viewport, and on this page that is the card the
+     visitor is about to open — not the filter they already pressed. */
+  .filter__btn[aria-pressed='true'] {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .filter__count {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    opacity: 0.65;
+  }
+
+  /* ---- grid ------------------------------------------------------------ */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    gap: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .grid__item {
+    display: flex;
+  }
+
+  .grid__item > :global(*) {
+    width: 100%;
+  }
+</style>

@@ -9,6 +9,9 @@ import JourneyCard from './JourneyCard.astro';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
+  /** Optional quiet outline link on the heading's baseline. */
+  viewAllHref?: string;
+  viewAllLabel?: string;
   journeys: Array<{
     slug: string;
     title: string;
@@ -16,20 +19,33 @@ interface Props {
     imageAlt: string;
     nights: number;
     days: number;
-    routeCities: string[];
     variant: 'A' | 'B';
-    signatureFeature?: string;
   }>;
   heading?: string;
 }
 
-const { journeys, heading = 'Trips like this' } = Astro.props;
+const {
+  journeys,
+  heading = 'Trips like this',
+  viewAllHref,
+  viewAllLabel = 'View all journeys',
+} = Astro.props;
 ---
 
 {journeys.length > 0 && (
   <section class="band band-offwhite">
     <div class="container-content">
-      <h2>{heading}</h2>
+      <div class="related__head">
+        <h2 class="related__heading">{heading}</h2>
+        {viewAllHref && (
+          <a class="related__all tap-target" href={viewAllHref}>
+            {viewAllLabel}
+            <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+              <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        )}
+      </div>
       <div class="related fade-up-stagger">
         {journeys.map((journey) => <JourneyCard {...journey} />)}
       </div>
@@ -38,6 +54,46 @@ const { journeys, heading = 'Trips like this' } = Astro.props;
 )}
 
 <style>
+  /* Section header: heading left, quiet outline link right on the same
+     baseline. Wraps to its own line before it ever squeezes the heading. */
+  .related__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .related__heading {
+    margin: 0;
+  }
+
+  .related__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    color: var(--color-crimson);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .related__all svg {
+    width: 16px;
+    height: 10px;
+    flex: none;
+  }
+
+  .related__all:hover {
+    color: var(--color-burgundy);
+    border-color: var(--color-burgundy);
+  }
+
   .related {
     display: grid;
     gap: 1.5rem;

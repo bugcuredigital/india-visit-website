@@ -1,6 +1,6 @@
 ---
 /**
- * Hero — full-bleed photograph, plum gradient ONLY at the text zone.
+ * Hero — full-bleed photograph under one continuous ink gradient.
  * ---------------------------------------------------------------------------
  * LCP PROTECTION (invariant #3) is the whole point of this component:
  *   · the image is `fetchpriority="high"`, eager, and NOT lazy
@@ -10,20 +10,46 @@
  *   · the gradient is a CSS overlay, so it costs no extra request
  *
  * If you find yourself adding opacity or a transform to the <img>, stop.
+ *
+ * ---------------------------------------------------------------------------
+ * VIDEO (PRD v1.5). The homepage hero carries a background clip, and a video
+ * hero is the single most common way a premium site loses its Core Web Vitals.
+ * So the image above is still the LCP element and still behaves exactly as it
+ * does on every other page — the video is strictly additive:
+ *
+ *   · the <video> ships with NO sources and preload="none". Not a byte, not a
+ *     connection, not a decode happens before `window.load`
+ *   · sources are attached on an idle callback after load, then it fades in
+ *     over the poster on opacity alone
+ *   · prefers-reduced-motion and Save-Data never fetch it at all
+ *   · autoplay refusal is a non-event: the poster is already there
+ *
+ * If the video ever moves homepage LCP past 2.2s, the video comes out. The
+ * exception in CLAUDE.md buys the full-screen hero, not the video.
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
+import { HERO_WIDTHS, HERO_SIZES, HERO_FORMATS, HERO_QUALITY } from '../lib/hero-image';
 import type { ImageMetadata } from 'astro';
 
 interface Props {
   image: ImageMetadata;
   alt: string;
-  /** `full` for the homepage (85svh), `short` for destinations (55svh),
-   *  `compact` for index/tool pages that are not a story. */
-  height?: 'full' | 'short' | 'compact';
+  /** `cover` for the homepage (100svh), `full` for other story heroes (85svh),
+   *  `short` for destinations (55svh), `compact` for index/tool pages. */
+  height?: 'cover' | 'full' | 'short' | 'compact';
   /** Slow scale on the image. Exempt from the 200–600ms rule (PRD §9.4). */
   kenBurns?: boolean;
   /** Widest rendered width; heroes are full-bleed so this is large. */
   widths?: number[];
+  /** View-transition name. Pair with the matching JourneyCard image so the
+   *  card morphs into this hero on navigation (M4). Omit and nothing morphs. */
+  transitionName?: string;
+  /** CMS-fed background clip. Either format may be null; both null means
+   *  poster-only, which is a perfectly good hero. */
+  video?: { webm: string | null; mp4: string | null } | null;
+  /** Anchor for the scroll affordance a full-screen hero needs. Omit on any
+   *  hero short enough that the next section is already visible. */
+  scrollCue?: string;
 }
 
 const {
@@ -31,41 +57,178 @@ const {
   alt,
   height = 'full',
   kenBurns = false,
-  widths = [640, 960, 1280, 1920, 2400],
+  widths = HERO_WIDTHS,
+  transitionName,
+  video = null,
+  scrollCue,
 } = Astro.props;
+
+const hasVideo = Boolean(video?.webm || video?.mp4);
+
+/**
+ * The hero-video boot script, as a string rather than as markup.
+ * ---------------------------------------------------------------------------
+ * Emitted through `set:html` deliberately. Written as `<script is:inline>`
+ * inside a `{hasVideo && (...)}` expression, Astro treats the element's
+ * contents as raw text and the JSX braces around the template literal ship
+ * VERBATIM — the browser then parses `{`...`}` as a block containing a string
+ * expression, which is valid JavaScript that does nothing at all. The video
+ * never starts, nothing errors, and the page looks almost right. Caught in the
+ * built HTML; recorded here so it is not reintroduced.
+ */
+const HERO_VIDEO_JS = `
+(() => {
+  const start = (el) => {
+    if (el.dataset.heroVideoStarted) return;
+    el.dataset.heroVideoStarted = '1';
+
+    // Motion is opt-out and data is opt-in: both get the poster alone, and for
+    // them the clip is never requested at all.
+    if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+    const connection = navigator.connection;
+    if (connection && connection.saveData) return;
+
+    const idle = window.requestIdleCallback || ((cb) => window.setTimeout(cb, 200));
+    idle(() => {
+      const candidates = [
+        ['video/webm', el.dataset.webm],
+        ['video/mp4', el.dataset.mp4],
+      ];
+      let attached = 0;
+      for (const [type, src] of candidates) {
+        if (!src) continue;
+        const source = document.createElement('source');
+        source.type = type;
+        source.src = src;
+        el.appendChild(source);
+        attached += 1;
+      }
+      if (!attached) return;
+
+      el.addEventListener('playing', () => el.classList.add('is-ready'), { once: true });
+      el.preload = 'auto';
+      el.load();
+      // Autoplay refusal is a non-event — the poster is already painted.
+      const played = el.play();
+      if (played && played.catch) played.catch(() => {});
+    });
+  };
+
+  const boot = () => {
+    document.querySelectorAll('[data-hero-video]').forEach((el) => {
+      if (document.readyState === 'complete') start(el);
+      else window.addEventListener('load', () => start(el), { once: true });
+    });
+  };
+
+  boot();
+  // View Transitions swap the document without re-running this script.
+  document.addEventListener('astro:page-load', boot);
+})();
+`;
 ---
 
 <section class:list={['hero', `hero--${height}`]}>
-  <div class:list={['hero__media', { 'hero__media--kenburns': kenBurns }]}>
-    <Image
+  <!-- data-allow-clip: Ken Burns scales the image past the hero on purpose. -->
+  <div data-allow-clip class:list={['hero__media', { 'hero__media--kenburns': kenBurns }]}>
+    <!-- AVIF first, WebP fallback (invariant #3). The head preload targets the
+         AVIF set, so a browser that supports it has the file in flight before
+         the parser reaches this element. -->
+    <Picture
       src={image}
       alt={alt}
       widths={widths}
-      sizes="100vw"
+      sizes={HERO_SIZES}
+      formats={[...HERO_FORMATS]}
+      fallbackFormat="webp"
+      quality={HERO_QUALITY}
       loading="eager"
       decoding="sync"
       fetchpriority="high"
       class="hero__img"
+      pictureAttributes={{ class: 'hero__picture' }}
+      transition:name={transitionName}
     />
   </div>
 
-  <!-- Gradient sits only where the text is, so the photograph stays a
-       photograph everywhere else (design direction). -->
+  {
+    hasVideo && (
+      /* No `poster` attribute: the <Picture> above IS the poster, already
+         preloaded and already decoded. A poster attribute here would fetch a
+         second copy of the same photograph. Sources are attached by the script
+         below, never in the markup. */
+      <video
+        class="hero__video"
+        muted
+        loop
+        playsinline
+        preload="none"
+        aria-hidden="true"
+        tabindex="-1"
+        data-hero-video
+        data-webm={video?.webm ?? undefined}
+        data-mp4={video?.mp4 ?? undefined}
+      />
+    )
+  }
+
+  <!-- ONE gradient, full height, over every hero — photograph or video
+       (design round 3). See the note on .hero__scrim below for why there is no
+       longer a second treatment and no longer an element edge to see. -->
   <div class="hero__scrim" aria-hidden="true"></div>
 
   <div class="container-content hero__content">
     <slot />
   </div>
+
+  {
+    scrollCue && (
+      /* A real link, not a decorative chevron: a full-screen hero hides the
+         fact that there is a page underneath it, and the fix should work for
+         a keyboard too. */
+      <a class="hero__cue" href={scrollCue}>
+        <span class="visually-hidden">Scroll to content</span>
+        <svg viewBox="0 0 24 14" aria-hidden="true" focusable="false">
+          <path
+            d="M2 2l10 10L22 2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
+    )
+  }
 </section>
+
+{hasVideo && <script is:inline set:html={HERO_VIDEO_JS} />}
 
 <style>
   .hero {
     position: relative;
     display: grid;
-    align-items: end;
+    /* minmax(0, 1fr), NOT the implicit `auto` track. An auto track takes its
+       automatic minimum from the item's min-content, so one `white-space:
+       nowrap` descendant (the itinerary route strip) grew the track to 775px
+       inside a 390px hero. `overflow: clip` below then hid the damage instead
+       of reporting it, and a document-scrollWidth check cannot see it — the
+       headline and both CTAs were simply cut off on a phone. */
+    grid-template-columns: minmax(0, 1fr);
+    /* Two rows: an elastic spacer, then the copy sized to its own content.
+       The scrim shares row 2, which is the whole point — see below. */
+    grid-template-rows: 1fr auto;
     isolation: isolate;
     overflow: clip;
-    background-color: var(--color-plum);
+    background-color: var(--color-ink);
+  }
+
+  /* Full-screen homepage hero (PRD v1.5). `svh` rather than `vh` so a mobile
+     browser's collapsing address bar cannot make the hero taller than the
+     screen and push the CTAs out of reach. */
+  .hero--cover {
+    min-height: 100svh;
   }
 
   .hero--full {
@@ -86,31 +249,220 @@ const {
     z-index: -2;
   }
 
+  /* <Picture> wraps the img, so the wrapper has to carry the fill too. */
+  .hero__picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   .hero__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .hero__scrim {
+  /* Sits between the poster and the scrim by DOM order — both are at the same
+     negative layer, and the later element paints on top. Deliberately NOT
+     inside .hero__media, whose Ken Burns transform would drag the video with
+     it. */
+  .hero__video {
     position: absolute;
-    inset-inline: 0;
-    bottom: 0;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Starts invisible and stays invisible unless the script says otherwise:
+       a video element that never loads must never blank the poster. */
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hero__video.is-ready {
+    opacity: 1;
+  }
+
+  /* Opacity only, inside the 200–600ms band (PRD §9.4). Without a motion
+     preference the clip simply appears — it is already a moving picture, so a
+     fade is not what makes it motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__video {
+      transition: opacity var(--duration-slower) var(--ease-brand);
+    }
+  }
+
+  /* THE READING GROUND — one continuous gradient over the whole hero.
+     ---------------------------------------------------------------------
+     ROUND 2 anchored this to the copy: the scrim shared grid row 2 with
+     `.hero__content`, so it was exactly as tall as the headline plus a 5rem
+     ramp. That fixed a real bug (a mobile H1 sitting on bright sandstone at
+     1.32:1) and introduced a visible one: the element simply BEGAN 5rem above
+     the copy, and a 2.5rem ramp from nothing to 55% is a band with an edge.
+     On the Golden Triangle hero you could see exactly where it started —
+     yellow sky, a hard line, dark below. The client saw it immediately.
+
+     A gradient with a visible boundary is a gradient that stops somewhere. So
+     this one does not stop: it spans the full hero, from 76% at the very
+     bottom to ~2% at the very top, through fourteen stops that approximate an
+     ease curve. Feathered over 100% of the height, there is no position at
+     which the rate of change jumps, and therefore no edge to find.
+
+     TWO CONSEQUENCES, both deliberate:
+       · it is INK, not plum. Plum at 90% over a sunrise is a purple panel with
+         a building in it — the "reads blue" note in round 3. A near-black wash
+         darkens without tinting, so the photograph stays the colour it was
+         photographed.
+       · it is LIGHTER overall. The copy zone lands at 58–76%, which still
+         measures 6.3:1 for the lede and 4.7:1 for the H1 over the brightest
+         ground in the set, while the top third sits under 14% and reads as
+         sky. Verified per hero, per breakpoint, against the lightest pixel
+         actually behind each text box — `npm run check:hero-contrast`.
+
+     There is no separate video veil any more. The video hero and the photo
+     heroes get the same gradient, which is the point: an editor uploading a
+     bright clip is the same risk as an editor uploading a bright photograph,
+     and one treatment that holds for both is easier to keep honest than two
+     that drift apart.
+
+     WHY THE STOPS ARE IN LENGTHS AND NOT PERCENTAGES. The first attempt ran a
+     percentage curve over the full height, and the widened contrast audit —
+     which now covers every hero, not just the homepage — returned 33 failures
+     across the destination, city, train and journey pages. A percentage curve
+     cannot know where the copy is: on a 100svh homepage the copy sits in the
+     bottom third, and on a 55svh destination hero the breadcrumb is halfway
+     up. The same percentages that gave the homepage 11:1 gave a breadcrumb on
+     /destinations/kerala/ 3.0:1. Lengths fix that, because the height of a
+     copy column is a length.
+
+     So the gradient is anchored to the BOTTOM: firm for `--scrim-firm`, then
+     feathered to nothing over `--scrim-feather`. Both are custom properties
+     because the copy column is not the same height on every hero — the
+     journey hero stacks a tag, a two-line H1, two badges, a route strip and
+     two buttons, which is half again what the homepage puts in the same
+     place. Tuning ONE curve to the tallest case would have darkened every
+     other hero to cover copy that is not there. What does NOT change is the
+     shape: same colour, same eleven stops, same smooth falloff, so there is
+     still exactly one gradient treatment on this site and still no position
+     at which the rate of change jumps.
+
+     On a hero shorter than firm + feather the gradient simply runs off the
+     top. That is correct rather than a compromise: a short hero is almost
+     entirely copy, and there is no photograph zone up there to protect. */
+  .hero {
+    --scrim-firm: 16rem;
+    --scrim-feather: 38rem;
+  }
+
+  /* The journey hero — tallest copy column on the site. Firm further up, and
+     then a faster falloff so the extra reach is not paid for at the top. */
+  .hero--full {
+    --scrim-firm: 24rem;
+    --scrim-feather: 26rem;
+  }
+
+  .hero__scrim {
+    grid-row: 1 / -1;
+    grid-column: 1;
     z-index: -1;
-    /* Only the lower text zone is tinted — roughly the bottom 62%. */
-    height: 62%;
     background-image: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-plum) 92%, transparent) 0%,
-      color-mix(in srgb, var(--color-plum) 62%, transparent) 42%,
-      transparent 100%
+      color-mix(in srgb, var(--color-ink) 78%, transparent) 0,
+      color-mix(in srgb, var(--color-ink) 76%, transparent) calc(var(--scrim-firm) * 0.25),
+      color-mix(in srgb, var(--color-ink) 72%, transparent) calc(var(--scrim-firm) * 0.5),
+      color-mix(in srgb, var(--color-ink) 66%, transparent) calc(var(--scrim-firm) * 0.75),
+      color-mix(in srgb, var(--color-ink) 58%, transparent) var(--scrim-firm),
+      color-mix(in srgb, var(--color-ink) 48%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.13),
+      color-mix(in srgb, var(--color-ink) 37%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.29),
+      color-mix(in srgb, var(--color-ink) 26%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.45),
+      color-mix(in srgb, var(--color-ink) 16%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.63),
+      color-mix(in srgb, var(--color-ink) 8%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.82),
+      transparent calc(var(--scrim-firm) + var(--scrim-feather))
     );
   }
 
+  /* ---- scroll cue ------------------------------------------------------
+     Desktop only. On a phone the sticky contact bar already occupies the
+     bottom of the screen and says, by being there, that the page continues —
+     and a cue placed above it would sit on top of the hero's own CTAs. */
+  .hero__cue {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .hero__cue {
+      display: grid;
+    }
+  }
+
+  .hero__cue {
+    position: absolute;
+    bottom: 1.1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: var(--color-on-dark);
+    opacity: 0.55;
+  }
+
+  .hero__cue:hover,
+  .hero__cue:focus-visible {
+    color: var(--color-on-dark);
+    opacity: 1;
+  }
+
+  .hero__cue svg {
+    width: 20px;
+    height: 12px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__cue {
+      transition: opacity var(--duration-base) var(--ease-brand);
+    }
+
+    .hero__cue svg {
+      animation: hero-cue 2.4s var(--ease-brand) infinite;
+    }
+  }
+
+  @keyframes hero-cue {
+    0%,
+    70%,
+    100% {
+      transform: translateY(0);
+    }
+    35% {
+      transform: translateY(4px);
+    }
+  }
+
   .hero__content {
+    grid-row: 2;
+    grid-column: 1;
+    /* Belt and braces on the same blowout: a grid item's default min-width is
+       auto, which is min-content. */
+    min-width: 0;
     position: relative;
     padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem);
     color: var(--color-white);
+  }
+
+  /* A 100svh hero ends exactly where the sticky contact bar begins, so without
+     this the second CTA sits underneath it — which is how the first capture of
+     the full-screen hero came back with "Explore Journeys" sliced in half. The
+     bar is ~52px plus the device's safe-area inset, and it is gone at 48rem. */
+  @media (max-width: 47.999rem) {
+    .hero--cover .hero__content {
+      padding-bottom: calc(2.5rem + 3.5rem + env(safe-area-inset-bottom));
+    }
   }
 
   /* Ken Burns runs on the WRAPPER, never on the LCP image's visibility.
