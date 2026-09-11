@@ -12,6 +12,7 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import BandWatermark from '../../components/BandWatermark.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import StickyMobileBar from '../../components/StickyMobileBar.astro';
 import Button from '../../components/Button.astro';
@@ -152,7 +153,8 @@ const crumbs = breadcrumbSchema([
   }
 
   <!-- 5 · Newsletter band -------------------------------------------------- -->
-  <section class="band band-tight band-plum on-dark" aria-labelledby="news-heading">
+  <section class="band band-tight band-burgundy band-watermarked on-dark" aria-labelledby="news-heading">
+    <BandWatermark side="right" />
     <div class="container-content news">
       <div>
         <p class="eyebrow">Twice a month</p>

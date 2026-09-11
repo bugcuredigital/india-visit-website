@@ -30,7 +30,8 @@
     "check:hero-video": "node scripts/check-hero-video.mjs",
     "crop": "node scripts/crop.mjs",
     "check:hero-contrast": "node scripts/check-hero-contrast.mjs",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "check:cms-images": "node scripts/check-cms-images.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",

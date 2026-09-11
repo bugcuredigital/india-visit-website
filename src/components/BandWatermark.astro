@@ -1,0 +1,31 @@
+---
+/**
+ * BandWatermark — the oversized, cropped lotus on a dark band (design round 3).
+ * ---------------------------------------------------------------------------
+ * Purely decorative, so it is aria-hidden and never announced. The styling
+ * lives in global.css rather than here because the hover state belongs to the
+ * SECTION, not to this element, and a scoped `:global(...)` selector reaching
+ * up to a parent is harder to read than a documented pair of utility classes.
+ *
+ * The parent section must carry `band-watermarked`. Without it the glyph has
+ * nothing to position against and nothing to crop it.
+ */
+import Lotus from './Lotus.astro';
+
+interface Props {
+  /** Which edge it hangs off. Alternate down a page so it never repeats. */
+  side?: 'right' | 'left';
+  /** Rendered width in px. Oversized on purpose — 340 is roughly "cropped". */
+  size?: number;
+}
+
+const { side = 'right', size = 340 } = Astro.props;
+---
+
+<span
+  class:list={['band-watermark', `band-watermark--${side}`]}
+  data-allow-clip
+  aria-hidden="true"
+>
+  <Lotus size={size} />
+</span>

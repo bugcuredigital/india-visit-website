@@ -491,25 +491,77 @@ const testimonials = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/testimonials' }),
   schema: ({ image }) =>
     z.object({
-      name: z.string().min(1),
+      /**
+       * PLACEHOLDER SLOTS (design round 3, word control).
+       * ---------------------------------------------------------------------
+       * A placeholder entry reserves the slot in the carousel so the layout is
+       * reviewable, and carries NO words attributed to anybody. It used to
+       * carry a paragraph of internal explanation in the `quote` field, which
+       * rendered at full size in the card as though a guest had said it — and
+       * an invented guest name above it. Both are now structurally impossible:
+       * when `placeholder` is true, `name`, `origin` and `quote` must be
+       * ABSENT, and the card renders one quiet line instead.
+       */
+      placeholder: z.boolean().default(false),
+      name: z.string().min(1).optional(),
       /** City or country — foreign and Indian mix matters for the personas. */
-      origin: z.string().min(1),
+      origin: z.string().min(1).optional(),
       tripRef: reference('journeys').optional(),
+      /** Real on placeholders too: the journey exists, only the guest does not. */
       tripLabel: z.string().min(1),
-      quote: z.string().min(1),
+      quote: z.string().min(1).optional(),
       photo: image().optional(),
       /**
-       * MUST be true to render. Never publish a testimonial without recorded
-       * consent — the component filters on this and the schema refuses false,
-       * so an un-consented entry fails the build rather than leaking.
+       * MUST be true on a real testimonial. Never publish one without recorded
+       * consent — the pages filter on this and the schema refuses a real entry
+       * whose consent is not recorded, so it fails the build rather than
+       * leaking. A placeholder has nobody to consent, so it must be false.
        */
-      consentConfirmed: z.boolean().refine((v) => v === true, {
-        message:
-          'consentConfirmed must be true. A testimonial without recorded consent must never be published — get written consent or delete the entry.',
-      }),
+      consentConfirmed: z.boolean().default(false),
       category: z.enum(['india', 'international', 'trains', 'corporate']),
       featured: z.boolean().default(false),
-    }),
+      /** JSON carries no comments; placeholder slots say so here instead. */
+      _dummyDataFlags: z.array(z.string()).default([]),
+    })
+      .superRefine((data, ctx) => {
+        if (data.placeholder) {
+          for (const field of ['name', 'origin', 'quote', 'photo'] as const) {
+            if (data[field] !== undefined) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: [field],
+                message: `A placeholder testimonial must carry no ${field}. Invented guest words and invented guest names are the thing this flag exists to prevent — remove the field, or drop \`placeholder\` and supply a real, consented review.`,
+              });
+            }
+          }
+          if (data.consentConfirmed) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['consentConfirmed'],
+              message: 'A placeholder testimonial has nobody to give consent. Set consentConfirmed to false.',
+            });
+          }
+          return;
+        }
+
+        for (const field of ['name', 'origin', 'quote'] as const) {
+          if (!data[field]) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: [field],
+              message: `A real testimonial needs a ${field}. Mark the entry \`placeholder: true\` if the review has not arrived yet.`,
+            });
+          }
+        }
+        if (!data.consentConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['consentConfirmed'],
+            message:
+              'consentConfirmed must be true. A testimonial without recorded consent must never be published — get written consent or delete the entry.',
+          });
+        }
+      }),
 });
 
 /* --------------------------------------------------------- siteSettings -- */
@@ -572,6 +624,28 @@ const siteSettings = defineCollection({
         /** WebM first where present: smaller at equal quality. */
         videoWebm: uploadPath('webm').nullable(),
         videoMp4: uploadPath('mp4').nullable(),
+      }),
+
+      /**
+       * FIXED-PAGE HEROES (design round 3, image control).
+       * -----------------------------------------------------------------
+       * Every image on the site must be a field an editor can change from
+       * the dashboard. Collection pages get theirs from their own entry;
+       * the handful of fixed pages that carry a photographic hero have
+       * nowhere to put one, so they put it here. /luxury-trains/ was
+       * importing its hero straight out of `src/assets/` — invisible to the
+       * CMS and unswappable without a code change, which is exactly what
+       * `npm run check:cms-images` now fails the build for.
+       *
+       * Only pages that actually have a photographic hero belong in here.
+       * The rest open on type, and a decorative slot nobody asked for is
+       * how a page ends up with a stock photograph on it.
+       */
+      pageHeroes: z.object({
+        luxuryTrains: z.object({
+          image: image(),
+          alt: z.string().min(1),
+        }),
       }),
 
       /** Global gate for every priceFrom on the site. Default off. */

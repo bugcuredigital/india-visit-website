@@ -28,15 +28,17 @@ import JsonLd from '../components/JsonLd.astro';
 import Lotus from '../components/Lotus.astro';
 
 import { heroPreload } from '../lib/hero-image';
+import { getSiteSettings } from '../lib/site-settings';
 import { breadcrumbSchema, faqSchema } from '../lib/schema';
 
-/* TEMP-PHOTO — replaced by the client's archive in M5. */
-import heroImage from '../assets/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg';
+const settings = await getSiteSettings();
 
 const trains = (await getCollection('journeys', ({ data }) => !data.draft && data.variant === 'B'))
   .sort((a, b) => b.data.nights - a.data.nights);
 
-const heroLink = await heroPreload(heroImage);
+/* Hero is CMS-fed (siteSettings.pageHeroes) since round 3, so the preload has
+   to resolve the same file the <Hero> will render — same helper, same widths. */
+const heroLink = await heroPreload(settings.pageHeroes.luxuryTrains.image);
 
 const WHY = [
   {
@@ -111,7 +113,7 @@ const crumbs = breadcrumbSchema([
   <Header slot="header" />
 
   <!-- 1 · Hero — GSA credential directly under the H1 (T4 §1) ------------ -->
-  <Hero image={heroImage} alt="The panelled interior of a vintage Indian luxury train carriage" height="short">
+  <Hero image={settings.pageHeroes.luxuryTrains.image} alt={settings.pageHeroes.luxuryTrains.alt} height="short">
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span aria-hidden="true">/</span>
@@ -163,10 +165,7 @@ const crumbs = breadcrumbSchema([
               imageAlt={train.data.heroImageAlt}
               nights={train.data.nights}
               days={train.data.days}
-              routeCities={train.data.routeCities}
               variant={train.data.variant}
-              signatureFeature={train.data.signatureFeature}
-              size="featured"
             />
           ))
         }

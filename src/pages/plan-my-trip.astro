@@ -133,7 +133,7 @@ const crumbs = breadcrumbSchema([
         </ol>
 
         <p class="side__sla">
-          <Lotus size={16} class="side__mark" />
+          <Lotus size={16} tone="crimson" class="side__mark" />
           <span>
             {
               settings.responseSla
@@ -199,10 +199,10 @@ const crumbs = breadcrumbSchema([
                       type="checkbox"
                       id={`dest-${destination.slug}`}
                       name="destinations"
-                      value={destination.fallbackLabel}
+                      value={destination.label}
                     />
                     <label class="chip" for={`dest-${destination.slug}`}>
-                      {destination.fallbackLabel}
+                      {destination.label}
                     </label>
                   </li>
                 ))
@@ -521,7 +521,6 @@ const crumbs = breadcrumbSchema([
 
   .side__mark {
     flex: none;
-    color: var(--color-crimson);
   }
 
   .side__direct {

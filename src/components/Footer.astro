@@ -1,10 +1,19 @@
 ---
 /**
- * Footer — one of the few sanctioned deep-plum bands (design direction).
+ * Footer — INK since design round 3, not plum.
+ * ---------------------------------------------------------------------------
+ * The colour rebalance made burgundy the site's dark ground, and every page
+ * ends with a burgundy ConvertBand. A burgundy footer directly beneath it
+ * would merge the two into one undifferentiated slab half a screen tall, so
+ * the footer takes the near-black plum-ink instead: still warm, still inside
+ * the closed palette, and it reads as the end of the page rather than as more
+ * of the band above it.
  * Every contact detail and social URL comes from siteSettings (invariant #1);
  * socials that are null simply do not render, so an unsupplied handle leaves
  * no empty icon behind.
  */
+import BandWatermark from './BandWatermark.astro';
+import EnquiryForm from './EnquiryForm.astro';
 import Logo from './Logo.astro';
 import Lotus from './Lotus.astro';
 import { NAV_ITEMS, POLICY_ITEMS } from '../lib/nav';
@@ -25,7 +34,8 @@ const socials = socialEntries.filter(
 );
 ---
 
-<footer class="footer on-dark">
+<footer class="footer band-watermarked on-dark">
+  <BandWatermark side="left" size={420} />
   <div class="container-content footer__inner">
     <div class="footer__brand">
       <Logo height={44} variant="on-dark" />
@@ -34,26 +44,17 @@ const socials = socialEntries.filter(
         <Lotus size={16} />
         <span>{settings.yearsExperience}+ years · {settings.supportPromise}</span>
       </p>
-    </div>
 
-    <nav class="footer__col" aria-label="Explore">
-      <h2 class="footer__heading">Explore</h2>
-      <ul class="footer__list">
-        <li><a href="/destinations/" class="footer__link">Destinations</a></li>
-        {NAV_ITEMS.map((item) => (
-          <li><a href={item.href} class="footer__link">{item.label}</a></li>
-        ))}
-      </ul>
-    </nav>
+      <!-- The phone number, in full and with its country code, is the loudest
+           thing in the footer. Half this site's audience is dialling from
+           outside India, and a number without +91 is a number they cannot use.
+           It is `settings.phone` like everywhere else (invariant #1) and is
+           still DUMMY DATA until M5. -->
+      <p class="footer__phone">
+        <a href={settings.phoneHref} data-analytics="call_click">{settings.phone}</a>
+      </p>
 
-    <div class="footer__col">
-      <h2 class="footer__heading">Talk to us</h2>
-      <ul class="footer__list">
-        <li>
-          <a href={settings.phoneHref} class="footer__link" data-analytics="call_click">
-            {settings.phone}
-          </a>
-        </li>
+      <ul class="footer__list footer__list--contact">
         <li>
           <a
             href={whatsappLink(settings)}
@@ -82,6 +83,16 @@ const socials = socialEntries.filter(
       )}
     </div>
 
+    <nav class="footer__col" aria-label="Explore">
+      <h2 class="footer__heading">Explore</h2>
+      <ul class="footer__list">
+        <li><a href="/destinations/" class="footer__link">Destinations</a></li>
+        {NAV_ITEMS.map((item) => (
+          <li><a href={item.href} class="footer__link">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
     <nav class="footer__col" aria-label="Policies">
       <h2 class="footer__heading">Policies</h2>
       <ul class="footer__list">
@@ -90,6 +101,16 @@ const socials = socialEntries.filter(
         ))}
       </ul>
     </nav>
+
+    <!-- Compact enquiry form (design round 3, item 8). Three fields and the
+         consent checkbox, sharing the honeypot and the hidden context fields
+         with every other form on the site — see EnquiryForm's `layout` prop.
+         `leadType` is "general" and `pageUrl` records where it was sent from,
+         so a footer lead is still attributable to the page it came off. -->
+    <div class="footer__col footer__enquiry">
+      <h2 class="footer__heading" id="footer-enquiry-heading">Send a quick enquiry</h2>
+      <EnquiryForm layout="footer" leadType="general" onDark />
+    </div>
   </div>
 
   <div class="container-content footer__base">
@@ -99,7 +120,7 @@ const socials = socialEntries.filter(
 
 <style>
   .footer {
-    background-color: var(--color-plum);
+    background-color: var(--color-ink);
     color: var(--color-on-dark);
     padding-block: var(--space-section-tight) 0;
   }
@@ -115,9 +136,11 @@ const socials = socialEntries.filter(
     }
   }
 
-  @media (min-width: 64rem) {
+  /* Brand + contact, two narrow nav columns, and the form given the most room
+     of the four — it is the only thing here anybody will type into. */
+  @media (min-width: 68rem) {
     .footer__inner {
-      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      grid-template-columns: 1.25fr 0.8fr 0.8fr 1.5fr;
       gap: 3rem;
     }
   }
@@ -135,7 +158,24 @@ const socials = socialEntries.filter(
     gap: 0.5rem;
     margin-top: 1rem;
     font-size: var(--text-sm);
-    /* Yellow is legal here: the surface is plum (invariant #5). */
+    /* Yellow is legal here: the surface is dark (invariant #5). */
+    color: var(--color-yellow);
+  }
+
+  .footer__phone {
+    margin-top: 1.5rem;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .footer__phone a {
+    color: var(--color-on-dark);
+    text-decoration: none;
+  }
+
+  .footer__phone a:hover {
     color: var(--color-yellow);
   }
 
@@ -154,6 +194,10 @@ const socials = socialEntries.filter(
     list-style: none;
     display: grid;
     gap: 0.6rem;
+  }
+
+  .footer__list--contact {
+    margin-top: 0.85rem;
   }
 
   .footer__link {
@@ -180,6 +224,10 @@ const socials = socialEntries.filter(
     margin: 1.25rem 0 0;
     padding: 0;
     list-style: none;
+  }
+
+  .footer__enquiry :global(.form) {
+    margin-top: 1rem;
   }
 
   .footer__base {

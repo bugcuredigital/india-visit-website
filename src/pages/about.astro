@@ -41,7 +41,12 @@ const stats = verifiedTrustStats(settings, {
   regionCount: REGION_COUNT,
 });
 
+/* REAL reviews only for the spotlight. A placeholder slot is honest in a grid
+   of cards, where it reads as one empty seat; blown up to display size as the
+   single quotation on the About page it would read as the page having nothing
+   to say. The section renders when there is something to put in it. */
 const testimonial = (await getCollection('testimonials', ({ data }) => data.consentConfirmed))
+  .filter((entry) => !entry.data.placeholder)
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured))[0];
 
 const PHILOSOPHY = [
@@ -161,7 +166,7 @@ const crumbs = breadcrumbSchema([
         {
           PHILOSOPHY.map((item) => (
             <li class="philosophy__item">
-              <Lotus size={18} class="philosophy__mark" />
+              <Lotus size={18} tone="crimson" class="philosophy__mark" />
               <h3 class="philosophy__title">{item.title}</h3>
               <p class="philosophy__detail">{item.detail}</p>
             </li>
@@ -181,7 +186,7 @@ const crumbs = breadcrumbSchema([
         <div class="container-content">
           <h2 id="quote-heading" class="visually-hidden">What travellers say</h2>
           <figure class="quote fade-up">
-            <Lotus size={22} class="quote__mark" />
+            <Lotus size={22} tone="crimson" class="quote__mark" />
             <blockquote class="quote__text">
               <p>{testimonial.data.quote}</p>
             </blockquote>
@@ -317,10 +322,6 @@ const crumbs = breadcrumbSchema([
     list-style: none;
   }
 
-  .philosophy__mark {
-    color: var(--color-crimson);
-  }
-
   .philosophy__title {
     margin-top: 0.75rem;
     font-size: var(--text-2xl);
@@ -339,7 +340,6 @@ const crumbs = breadcrumbSchema([
   }
 
   .quote__mark {
-    color: var(--color-crimson);
     margin-inline: auto;
   }
 

@@ -16,6 +16,25 @@
  *
  * The mobile bar reorders to [Call][Form][WhatsApp] — corporate enquiries come
  * by phone far more than consumer ones do (T5 §7).
+ *
+ * ---------------------------------------------------------------------------
+ * REGISTER (design round 3). This page is meant to feel like a different room
+ * of the same house: same tokens, same type, same lotus — a colder light. The
+ * differences are deliberate and all of them are restraint rather than
+ * decoration:
+ *
+ *   · the hero sits on INK instead of white. A buyer arriving from a vendor
+ *     shortlist should know within one screen that this is the business side
+ *     of the consultancy
+ *   · eyebrows are BURGUNDY, not crimson. Crimson is reserved on this page for
+ *     the two things that are actually actions — the phone number and the
+ *     submit button — so there is nothing decorative in the accent colour
+ *   · the capability grid is ruled rather than airy: hairline separators, flat
+ *     rows, tighter rhythm. The leisure pages breathe; a procurement page
+ *     should let you compare four things quickly
+ *   · no photography above the fold, no Ken Burns, no warm lede about unhurried
+ *     days. The destination tiles stay because a group buyer does need to see
+ *     where this can happen, but they are smaller and captioned flatly.
  */
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -23,6 +42,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BandWatermark from '../components/BandWatermark.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import StickyMobileBar from '../components/StickyMobileBar.astro';
 import JsonLd from '../components/JsonLd.astro';
@@ -98,8 +118,9 @@ const crumbs = breadcrumbSchema([
 
   <Header slot="header" />
 
-  <!-- 1 · Hero -------------------------------------------------------------- -->
-  <section class="band band-tight intro">
+  <!-- 1 · Hero — ink, not white. The register change starts here. --------- -->
+  <section class="band band-tight band-ink band-watermarked on-dark intro">
+    <BandWatermark side="right" />
     <div class="container-content">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a>
@@ -141,7 +162,8 @@ const crumbs = breadcrumbSchema([
   </section>
 
   <!-- 3 · How we work — plum band ------------------------------------------- -->
-  <section class="band band-tight band-plum on-dark" aria-labelledby="how-heading">
+  <section class="band band-tight band-burgundy band-watermarked on-dark" aria-labelledby="how-heading">
+    <BandWatermark side="left" />
     <div class="container-content">
       <p class="eyebrow">How we work with companies</p>
       <h2 id="how-heading" class="how__heading">Three steps, one point of contact</h2>
@@ -152,7 +174,7 @@ const crumbs = breadcrumbSchema([
               <span class="how__no">{String(index + 1).padStart(2, '0')}</span>
               <h3 class="how__title">
                 {step.title}
-                {step.lotus && <Lotus size={16} class="how__mark" />}
+                {step.lotus && <Lotus size={16} tone="yellow" class="how__mark" />}
               </h3>
               <p class="how__detail">{step.detail}</p>
             </li>
@@ -227,8 +249,10 @@ const crumbs = breadcrumbSchema([
 </Base>
 
 <style>
-  .intro {
-    border-bottom: 1px solid var(--color-hairline);
+  /* Crimson is an ACTION colour on this page and nothing else, so every
+     label-ish thing that is crimson elsewhere is burgundy here. */
+  .eyebrow {
+    color: var(--color-burgundy);
   }
 
   .crumbs {
@@ -236,25 +260,26 @@ const crumbs = breadcrumbSchema([
     gap: 0.5rem;
     margin-bottom: 1.25rem;
     font-size: var(--text-sm);
-    color: var(--color-ink-muted);
+    color: var(--color-on-dark-muted);
   }
 
   .crumbs a {
-    color: var(--color-ink-muted);
+    color: var(--color-on-dark-muted);
   }
 
   .crumbs a:hover {
-    color: var(--color-crimson);
+    color: var(--color-yellow);
   }
 
   .intro__title {
     font-size: var(--text-h1);
+    max-width: 20ch;
   }
 
   .intro__lede {
     margin-top: 1rem;
     font-size: var(--text-xl);
-    color: var(--color-ink-muted);
+    color: var(--color-on-dark-muted);
   }
 
   .intro__actions {
@@ -265,18 +290,24 @@ const crumbs = breadcrumbSchema([
     margin-top: 1.5rem;
   }
 
-  /* Corporate leads with Call, so the number is the loud thing on this page. */
+  /* Corporate leads with Call, so the number is the loud thing on this page.
+     On ink, crimson is not legible enough to be the loud thing — yellow is
+     legal on a dark ground (invariant #5) and is the accent that reads. */
   .intro__call {
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     font-weight: 700;
-    color: var(--color-crimson);
+    color: var(--color-yellow);
     text-decoration: none;
   }
 
   .intro__or {
     font-size: var(--text-sm);
-    color: var(--color-ink-muted);
+    color: var(--color-on-dark-muted);
+  }
+
+  .intro__jump {
+    color: var(--color-on-dark);
   }
 
   .intro__jump {
@@ -287,22 +318,42 @@ const crumbs = breadcrumbSchema([
   .caps,
   .tiles {
     display: grid;
-    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
     margin: 2.25rem 0 0;
     padding: 0;
     list-style: none;
   }
 
+  /* Ruled, not airy. Four capabilities a buyer is comparing should sit in a
+     column with lines between them, the way a specification does. */
   .caps {
-    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--color-burgundy-hairline);
+  }
+
+  .caps__item {
+    display: grid;
+    gap: 0.4rem 2.5rem;
+    padding-block: 1.35rem;
+    border-bottom: 1px solid var(--color-burgundy-hairline);
+  }
+
+  @media (min-width: 52rem) {
+    .caps__item {
+      grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+      align-items: baseline;
+    }
   }
 
   .caps__title {
-    font-size: var(--text-2xl);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: 0.01em;
   }
 
   .caps__detail {
-    margin-top: 0.6rem;
+    margin: 0;
+    max-width: 62ch;
+    font-size: var(--text-base);
     color: var(--color-ink-muted);
   }
 
@@ -337,10 +388,6 @@ const crumbs = breadcrumbSchema([
     font-size: var(--text-2xl);
   }
 
-  .how__mark {
-    color: var(--color-yellow);
-  }
-
   .how__detail {
     margin-top: 0.6rem;
     color: var(--color-on-dark-muted);
@@ -348,7 +395,8 @@ const crumbs = breadcrumbSchema([
 
   /* ---- team destinations --------------------------------------------------- */
   .tiles {
-    grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+    gap: clamp(1rem, 0.5rem + 1.4vw, 1.5rem);
   }
 
   .tile__link {
@@ -359,7 +407,7 @@ const crumbs = breadcrumbSchema([
 
   .tile__frame {
     display: block;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 1 / 1;
     border-radius: var(--radius-lg);
     overflow: clip;
     background-color: var(--color-offwhite);
@@ -373,9 +421,10 @@ const crumbs = breadcrumbSchema([
 
   .tile__label {
     display: block;
-    margin-top: 0.75rem;
-    font-family: var(--font-display);
-    font-weight: 700;
+    margin-top: 0.6rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   @media (prefers-reduced-motion: no-preference) {

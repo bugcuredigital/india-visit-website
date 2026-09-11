@@ -186,9 +186,7 @@ const faq = faqSchema(destination.faq);
                 imageAlt={journey!.data.heroImageAlt}
                 nights={journey!.data.nights}
                 days={journey!.data.days}
-                routeCities={journey!.data.routeCities}
                 variant={journey!.data.variant}
-                signatureFeature={journey!.data.signatureFeature}
               />
             ))}
           </div>
@@ -245,7 +243,7 @@ const faq = faqSchema(destination.faq);
         <div class="container-content">
           <h2 id="quote-heading" class="visually-hidden">What travellers say</h2>
           <figure class="quote fade-up">
-            <Lotus size={22} class="quote__mark" />
+            <Lotus size={22} tone="crimson" class="quote__mark" />
             <blockquote class="quote__text">
               <p>{testimonial.data.quote}</p>
             </blockquote>
@@ -472,7 +470,6 @@ const faq = faqSchema(destination.faq);
   }
 
   .quote__mark {
-    color: var(--color-crimson);
     margin-inline: auto;
   }
 

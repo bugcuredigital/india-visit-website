@@ -26,13 +26,13 @@ import type { TrustStat } from '../lib/site-settings';
 
 interface Props {
   stats: TrustStat[];
-  surface?: 'white' | 'offwhite' | 'plum';
+  surface?: 'white' | 'offwhite' | 'burgundy';
 }
 
 const { stats, surface = 'offwhite' } = Astro.props;
 
 const bandClass =
-  surface === 'plum' ? 'band-plum on-dark' : surface === 'offwhite' ? 'band-offwhite' : '';
+  surface === 'burgundy' ? 'band-burgundy on-dark' : surface === 'offwhite' ? 'band-offwhite' : '';
 ---
 
 <section class:list={['band band-tight', bandClass]}>

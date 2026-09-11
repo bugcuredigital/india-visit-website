@@ -1,6 +1,9 @@
 ---
 /**
- * S14 — Customise / Convert band. One of the sanctioned plum bands.
+ * S14 — Customise / Convert band. The sanctioned dark band at the foot of
+ * every template — BURGUNDY since design round 3, not plum: it appears on
+ * every page, so whichever colour it wore was effectively the site's dark
+ * colour, and plum read cool against warm photography.
  * Every template ends with a conversion opportunity before the footer, and no
  * page ever ends on policy text (Template Spec §6).
  *
@@ -8,6 +11,7 @@
  * because a fixed departure cannot be customised. The Namaste motif belongs to
  * the success state, which M6 builds.
  */
+import BandWatermark from './BandWatermark.astro';
 import EnquiryForm from './EnquiryForm.astro';
 import Button from './Button.astro';
 import Lotus from './Lotus.astro';
@@ -38,7 +42,8 @@ const {
 const settings = await getSiteSettings();
 ---
 
-<section class="band band-plum on-dark convert">
+<section class="band band-burgundy band-watermarked on-dark convert">
+  <BandWatermark side="right" />
   <div class="container-content convert__inner">
     <div class="convert__copy">
       <p class="eyebrow">

@@ -15,6 +15,7 @@
  * page — and so nobody can mistake agency drafting for legal advice.
  */
 import Base from './Base.astro';
+import BandWatermark from '../components/BandWatermark.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
@@ -45,7 +46,8 @@ const crumbs = breadcrumbSchema([
 
   <Header slot="header" />
 
-  <section class="band band-tight band-plum on-dark">
+  <section class="band band-tight band-burgundy band-watermarked on-dark">
+    <BandWatermark side="right" size={260} />
     <div class="container-content">
       <nav class="crumbs" aria-label="Breadcrumb">
         <a href="/">Home</a>

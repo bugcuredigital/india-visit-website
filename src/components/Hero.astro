@@ -1,6 +1,6 @@
 ---
 /**
- * Hero — full-bleed photograph, plum gradient ONLY at the text zone.
+ * Hero — full-bleed photograph under one continuous ink gradient.
  * ---------------------------------------------------------------------------
  * LCP PROTECTION (invariant #3) is the whole point of this component:
  *   · the image is `fetchpriority="high"`, eager, and NOT lazy
@@ -172,12 +172,10 @@ const HERO_VIDEO_JS = `
     )
   }
 
-  <!-- Gradient sits only where the text is, so the photograph stays a
-       photograph everywhere else (design direction). Over VIDEO it runs the
-       full height instead — firm at the text zone, a light wash above. A
-       photograph is one frame you can check for contrast; a clip is hundreds
-       you cannot, and the client may upload a bright one. -->
-  <div class:list={['hero__scrim', { 'hero__scrim--veil': hasVideo }]} aria-hidden="true"></div>
+  <!-- ONE gradient, full height, over every hero — photograph or video
+       (design round 3). See the note on .hero__scrim below for why there is no
+       longer a second treatment and no longer an element edge to see. -->
+  <div class="hero__scrim" aria-hidden="true"></div>
 
   <div class="container-content hero__content">
     <slot />
@@ -223,7 +221,7 @@ const HERO_VIDEO_JS = `
     grid-template-rows: 1fr auto;
     isolation: isolate;
     overflow: clip;
-    background-color: var(--color-plum);
+    background-color: var(--color-ink);
   }
 
   /* Full-screen homepage hero (PRD v1.5). `svh` rather than `vh` so a mobile
@@ -294,64 +292,97 @@ const HERO_VIDEO_JS = `
     }
   }
 
-  /* THE READING GROUND, and it is sized by the COPY rather than by a
-     percentage of the hero.
+  /* THE READING GROUND — one continuous gradient over the whole hero.
+     ---------------------------------------------------------------------
+     ROUND 2 anchored this to the copy: the scrim shared grid row 2 with
+     `.hero__content`, so it was exactly as tall as the headline plus a 5rem
+     ramp. That fixed a real bug (a mobile H1 sitting on bright sandstone at
+     1.32:1) and introduced a visible one: the element simply BEGAN 5rem above
+     the copy, and a 2.5rem ramp from nothing to 55% is a band with an edge.
+     On the Golden Triangle hero you could see exactly where it started —
+     yellow sky, a hard line, dark below. The client saw it immediately.
 
-     It was `height: 58%` of the hero, and that is a measurement of the wrong
-     thing. On a phone the itinerary hero stacks an eyebrow, a two-line H1,
-     three chips and two buttons — a column far taller than 58% — so the
-     headline rose clean out of the gradient and sat on the bright sandstone of
-     the Taj at **1.32:1**. It shipped through a review round looking fine on a
-     desktop, where the same copy is short enough to stay inside the band.
-     Measured by scripts/check-hero-contrast.mjs, which exists because of it.
+     A gradient with a visible boundary is a gradient that stops somewhere. So
+     this one does not stop: it spans the full hero, from 76% at the very
+     bottom to ~2% at the very top, through fourteen stops that approximate an
+     ease curve. Feathered over 100% of the height, there is no position at
+     which the rate of change jumps, and therefore no edge to find.
 
-     Sharing grid row 2 with .hero__content makes the scrim exactly as tall as
-     the copy, whatever the copy turns out to be, plus a fixed ramp above it.
-     The ramp is in `rem` rather than `%` for the same reason: it is a fade, and
-     a fade should be a constant distance, not a fraction of a viewport. */
-  .hero__scrim {
-    grid-row: 2;
-    grid-column: 1;
-    z-index: -1;
-    margin-block-start: -5rem;
-    background-image: linear-gradient(
-      to bottom,
-      transparent 0,
-      color-mix(in srgb, var(--color-plum) 55%, transparent) 2.5rem,
-      color-mix(in srgb, var(--color-plum) 88%, transparent) 5rem,
-      color-mix(in srgb, var(--color-plum) 96%, transparent) 100%
-    );
+     TWO CONSEQUENCES, both deliberate:
+       · it is INK, not plum. Plum at 90% over a sunrise is a purple panel with
+         a building in it — the "reads blue" note in round 3. A near-black wash
+         darkens without tinting, so the photograph stays the colour it was
+         photographed.
+       · it is LIGHTER overall. The copy zone lands at 58–76%, which still
+         measures 6.3:1 for the lede and 4.7:1 for the H1 over the brightest
+         ground in the set, while the top third sits under 14% and reads as
+         sky. Verified per hero, per breakpoint, against the lightest pixel
+         actually behind each text box — `npm run check:hero-contrast`.
+
+     There is no separate video veil any more. The video hero and the photo
+     heroes get the same gradient, which is the point: an editor uploading a
+     bright clip is the same risk as an editor uploading a bright photograph,
+     and one treatment that holds for both is easier to keep honest than two
+     that drift apart.
+
+     WHY THE STOPS ARE IN LENGTHS AND NOT PERCENTAGES. The first attempt ran a
+     percentage curve over the full height, and the widened contrast audit —
+     which now covers every hero, not just the homepage — returned 33 failures
+     across the destination, city, train and journey pages. A percentage curve
+     cannot know where the copy is: on a 100svh homepage the copy sits in the
+     bottom third, and on a 55svh destination hero the breadcrumb is halfway
+     up. The same percentages that gave the homepage 11:1 gave a breadcrumb on
+     /destinations/kerala/ 3.0:1. Lengths fix that, because the height of a
+     copy column is a length.
+
+     So the gradient is anchored to the BOTTOM: firm for `--scrim-firm`, then
+     feathered to nothing over `--scrim-feather`. Both are custom properties
+     because the copy column is not the same height on every hero — the
+     journey hero stacks a tag, a two-line H1, two badges, a route strip and
+     two buttons, which is half again what the homepage puts in the same
+     place. Tuning ONE curve to the tallest case would have darkened every
+     other hero to cover copy that is not there. What does NOT change is the
+     shape: same colour, same eleven stops, same smooth falloff, so there is
+     still exactly one gradient treatment on this site and still no position
+     at which the rate of change jumps.
+
+     On a hero shorter than firm + feather the gradient simply runs off the
+     top. That is correct rather than a compromise: a short hero is almost
+     entirely copy, and there is no photograph zone up there to protect. */
+  .hero {
+    --scrim-firm: 16rem;
+    --scrim-feather: 38rem;
   }
 
-  /* VIDEO VEIL — full height, not just the text zone: firm where the copy is,
-     a light wash above.
+  /* The journey hero — tallest copy column on the site. Firm further up, and
+     then a faster falloff so the extra reach is not paid for at the top. */
+  .hero--full {
+    --scrim-firm: 24rem;
+    --scrim-feather: 26rem;
+  }
 
-     The first calibration of this ran 96% at the bottom to 28% at the top,
-     chosen against the worst case of a completely white frame — and it turned
-     a sunrise into a flat plum panel with a faint building in it. Which is the
-     exact failure the client killed in the previous round: a brand gradient
-     standing where a photograph should be. A veil that defeats the photography
-     is not safe, it is just a different bug.
-
-     So the stops below are tuned to the copy's actual positions instead. The
-     lede sits around 30% up, where the veil is ~77% plum (≈6.0:1 against white
-     — AA for body text). The H1's top line reaches ~43% on a phone, where it is
-     ~62% (≈4.4:1 — AA for large text, which an H1 at this size is). Above that
-     it falls away fast, and the top 10% is a whisper that keeps the overlay nav
-     off a bright sky without tinting the picture. */
-  .hero__scrim--veil {
-    /* Spans the whole hero rather than just the copy: over video the wash has
-       a second job, which is keeping the overlay nav legible against a frame
-       nobody has previewed. */
+  .hero__scrim {
     grid-row: 1 / -1;
-    margin-block-start: 0;
+    grid-column: 1;
+    z-index: -1;
     background-image: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-plum) 92%, transparent) 0%,
-      color-mix(in srgb, var(--color-plum) 80%, transparent) 26%,
-      color-mix(in srgb, var(--color-plum) 55%, transparent) 50%,
-      color-mix(in srgb, var(--color-plum) 22%, transparent) 76%,
-      color-mix(in srgb, var(--color-plum) 10%, transparent) 100%
+      color-mix(in srgb, var(--color-ink) 78%, transparent) 0,
+      color-mix(in srgb, var(--color-ink) 76%, transparent) calc(var(--scrim-firm) * 0.25),
+      color-mix(in srgb, var(--color-ink) 72%, transparent) calc(var(--scrim-firm) * 0.5),
+      color-mix(in srgb, var(--color-ink) 66%, transparent) calc(var(--scrim-firm) * 0.75),
+      color-mix(in srgb, var(--color-ink) 58%, transparent) var(--scrim-firm),
+      color-mix(in srgb, var(--color-ink) 48%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.13),
+      color-mix(in srgb, var(--color-ink) 37%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.29),
+      color-mix(in srgb, var(--color-ink) 26%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.45),
+      color-mix(in srgb, var(--color-ink) 16%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.63),
+      color-mix(in srgb, var(--color-ink) 8%, transparent)
+        calc(var(--scrim-firm) + var(--scrim-feather) * 0.82),
+      transparent calc(var(--scrim-firm) + var(--scrim-feather))
     );
   }
 

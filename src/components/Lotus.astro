@@ -7,25 +7,53 @@
  * section). It is the highlight-bullet mark SITEWIDE — never ✦, never a
  * generic checkmark (invariant #5).
  *
- * Single-colour with fill="currentColor", so it inherits crimson on light
- * surfaces and yellow on plum without needing variants. The SVG carries only a
- * viewBox, so it scales to whatever width it is given.
+ * Single-colour with fill="currentColor", so it inherits its colour from
+ * whatever it sits in. The SVG carries only a viewBox, so it scales to
+ * whatever width it is given.
+ *
+ * ---------------------------------------------------------------------------
+ * WHY THERE IS A `tone` PROP, and why you must not colour this from outside.
+ *
+ * The obvious thing — `<Lotus class="why__mark" />` with `.why__mark { color:
+ * crimson }` in the calling page — DOES NOT WORK, and it fails silently. The
+ * <span> below is authored HERE, so it carries THIS component's
+ * `data-astro-cid`; the calling page's scoped rule compiles to
+ * `.why__mark[data-astro-cid-<caller>]` and matches nothing. The class lands
+ * on the element, the rule sits in the stylesheet, and the two never meet.
+ *
+ * Ten call sites did exactly that. Every lotus on the site that was supposed
+ * to be crimson or yellow had been rendering plain ink since M3, through three
+ * design reviews, because a missing colour looks like a design choice rather
+ * than a bug. The same mistake had already been found once on the trust-bar
+ * icons in round 2 and fixed locally with a wrapper span; fixing it locally
+ * left the pattern intact everywhere else.
+ *
+ * So the colour is a PROP, resolved in this file where the scoping works.
+ * `class` still exists for layout — margins, flex behaviour — which is not
+ * inherited and therefore not affected by the same trap.
  */
 import lotusRaw from '../assets/brand/lotus.svg?raw';
 
 interface Props {
   /** Rendered width in px. Aspect is ~1.394:1. */
   size?: number;
+  /**
+   * Brand colour. MUST be set here rather than from the calling page's CSS —
+   * see the note above. `inherit` (the default) takes the surrounding text
+   * colour, which is right inside a coloured line of type.
+   */
+  tone?: 'inherit' | 'crimson' | 'burgundy' | 'yellow' | 'on-dark';
+  /** Layout only — margins, flex. Colour will not reach the glyph. */
   class?: string;
   /** Decorative by default; give it a label only when it carries meaning. */
   label?: string;
 }
 
-const { size = 18, class: className = '', label } = Astro.props;
+const { size = 18, tone = 'inherit', class: className = '', label } = Astro.props;
 ---
 
 <span
-  class:list={['lotus', className]}
+  class:list={['lotus', `lotus--${tone}`, className]}
   style={`--lotus-size: ${size}px`}
   role={label ? 'img' : undefined}
   aria-label={label}
@@ -38,6 +66,22 @@ const { size = 18, class: className = '', label } = Astro.props;
     display: inline-flex;
     flex: none;
     line-height: 0;
+  }
+
+  .lotus--crimson {
+    color: var(--color-crimson);
+  }
+
+  .lotus--burgundy {
+    color: var(--color-burgundy);
+  }
+
+  .lotus--yellow {
+    color: var(--color-yellow);
+  }
+
+  .lotus--on-dark {
+    color: var(--color-on-dark);
   }
 
   .lotus :global(svg) {

@@ -38,6 +38,7 @@ import type { ImageMetadata } from 'astro';
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BandWatermark from '../components/BandWatermark.astro';
 import Hero from '../components/Hero.astro';
 import CounterStat from '../components/CounterStat.astro';
 import JourneyCard from '../components/JourneyCard.astro';
@@ -97,15 +98,26 @@ const featuredJourneys = [...journeys]
    place first, so this section also moves above the journeys. Locked order
    lives in lib/destinations-strip.ts; label and image come from the destination
    entry wherever one exists. */
+/* Every tile resolves from its destination entry — image included (round 3,
+   image control). A missing entry stops the build rather than falling back to
+   a photograph nobody chose: the nine slugs are locked, so an absent entry is
+   a content bug, and a homepage quietly rendering the wrong picture for a
+   region is worse than a homepage that refuses to build. */
 const destinationTiles = await Promise.all(
   DESTINATIONS.map(async (tile) => {
     const entry = await getEntry('destinations', tile.slug);
+    if (!entry) {
+      throw new Error(
+        `Destination "${tile.slug}" is locked into the homepage strip but has no entry in ` +
+          'src/content/destinations/. Add the entry, or change the locked list in ' +
+          'src/lib/destinations-strip.ts (which needs a 301 — CLAUDE.md URL structure).',
+      );
+    }
     return {
       slug: tile.slug,
-      label: entry?.data.shortLabel ?? tile.fallbackLabel,
-      image: entry?.data.heroImage ?? tile.fallbackImage,
-      alt: entry?.data.heroImageAlt ?? tile.fallbackAlt,
-      hasEntry: Boolean(entry),
+      label: entry.data.shortLabel,
+      image: entry.data.heroImage,
+      alt: entry.data.heroImageAlt,
     };
   }),
 );
@@ -120,14 +132,19 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .slice(0, 3);
 
 /* ----------------------------------------------------------- testimonials -- */
-const testimonials = (await getCollection('testimonials', ({ data }) => data.consentConfirmed))
-  .map((entry) => ({
-    name: entry.data.name,
-    origin: entry.data.origin,
-    tripLabel: entry.data.tripLabel,
-    quote: entry.data.quote,
-    photo: entry.data.photo,
-  }));
+/* Placeholder slots render too — they reserve the card and say one quiet line
+   (word control, round 3). A real entry without recorded consent cannot exist:
+   the schema refuses it. */
+const testimonials = (
+  await getCollection('testimonials', ({ data }) => data.placeholder || data.consentConfirmed)
+).map((entry) => ({
+  name: entry.data.name,
+  origin: entry.data.origin,
+  tripLabel: entry.data.tripLabel,
+  quote: entry.data.quote,
+  photo: entry.data.photo,
+  placeholder: entry.data.placeholder,
+}));
 
 /* ------------------------------------------------------- luxury train card --
    The teaser points at the landing page, and its image is the flagship train's
@@ -135,10 +152,6 @@ const testimonials = (await getCollection('testimonials', ({ data }) => data.con
 /* Association logos — empty until the client supplies any. Typed as a real
    list so wiring them in M5 is data, not markup. */
 const associationLogos: Array<{ image: ImageMetadata; alt: string }> = [];
-
-/* Named rather than indexed inline: a `.length > 0` guard does not narrow
-   `posts[0]` for the type checker. */
-const featuredPost = posts[0];
 
 const trainJourney = journeys.find((entry) => entry.data.variant === 'B');
 
@@ -314,9 +327,7 @@ const WHY_US = [
               imageAlt={entry.data.heroImageAlt}
               nights={entry.data.nights}
               days={entry.data.days}
-              routeCities={entry.data.routeCities}
               variant={entry.data.variant}
-              signatureFeature={entry.data.signatureFeature}
               priceFrom={entry.data.variant === 'A' ? entry.data.priceFrom : undefined}
             />
           ))
@@ -330,7 +341,8 @@ const WHY_US = [
        references' process treatment: it turns three steps into a journey
        rather than three boxes. It is a background, so it simply is not there
        at narrow widths where the steps stack. -->
-  <section class="band band-plum on-dark" aria-labelledby="how-heading">
+  <section class="band band-plum band-watermarked on-dark" aria-labelledby="how-heading">
+    <BandWatermark side="right" />
     <div class="container-content">
       <p class="eyebrow">How it works</p>
       <h2 id="how-heading" class="how__heading">Three steps, one person looking after them</h2>
@@ -399,9 +411,14 @@ const WHY_US = [
 
       <ul class="why fade-up-stagger">
         {
-          WHY_US.map((item) => (
+          WHY_US.map((item, index) => (
             <li class="why__item">
-              <Lotus size={18} class="why__mark" />
+              <p class="why__head">
+                {/* Numbered in the display face, reference-site style: it turns
+                    four equal statements into a sequence you can read down. */}
+                <span class="why__no" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <Lotus size={28} tone="crimson" class="why__mark" />
+              </p>
               <h3 class="why__title">{item.title}</h3>
               <p class="why__detail">{item.detail}</p>
             </li>
@@ -446,49 +463,71 @@ const WHY_US = [
   <!-- 9 · Testimonials --------------------------------------------------- -->
   {testimonials.length > 0 && <TestimonialCarousel testimonials={testimonials} />}
 
-  <!-- 10 · Slim dual strip — corporate + travel guide in ONE band ---------
-       Both are secondary audiences (T1 v2). Two full sections gave them more
-       of the page than they earn; one lighter band is the right weight. -->
-  <section class="band band-tight band-offwhite" aria-labelledby="more-heading">
-    <div class="container-content">
-      <h2 id="more-heading" class="visually-hidden">More from India Visit</h2>
-      <div class="dual">
-        <div class="dual__item">
-          <p class="eyebrow">Corporate travel</p>
-          <h3 class="dual__heading">Planning a company offsite?</h3>
-          <p class="dual__detail">
-            Incentive travel, offsites and dealer conferences — handled end to
-            end, with one point of contact and a single invoice.
-          </p>
-          <Button href="/corporate/" variant="ghost">Corporate travel →</Button>
-        </div>
-
-        {
-          featuredPost && (
-            <div class="dual__item">
-              <p class="eyebrow">Travel guide</p>
-              <h3 class="dual__heading">Reading before you go</h3>
-              <div class="dual__post">
-                <ArticleCard
-                  slug={featuredPost.id}
-                  title={featuredPost.data.title}
-                  category={featuredPost.data.category}
-                  excerpt={featuredPost.data.excerpt}
-                  image={featuredPost.data.heroImage}
-                  imageAlt={featuredPost.data.heroImageAlt}
-                  publishDate={featuredPost.data.publishDate}
-                  updatedDate={featuredPost.data.updatedDate}
-                />
-              </div>
-              <Button href="/travel-guide/" variant="ghost">All articles →</Button>
-            </div>
-          )
-        }
+  <!-- 10 · Corporate — its own band ---------------------------------------
+       Round 3 un-condenses this. It shared a slim off-white strip with the
+       travel guide, on the argument that both are secondary audiences — which
+       treated a whole line of business as a footnote. One sentence and one CTA
+       on its own burgundy ground is less page than a full section and more
+       presence than half a strip. -->
+  <section class="band band-tight band-burgundy band-watermarked on-dark" aria-labelledby="corp-heading">
+    <BandWatermark side="left" />
+    <div class="container-content corp__inner">
+      <div>
+        <p class="eyebrow">Corporate travel</p>
+        <h2 id="corp-heading" class="corp__heading">Offsites, incentives and conferences</h2>
+        <p class="corp__detail">
+          One vendor, GST invoicing, and one person who answers the phone for
+          the whole trip — for twenty delegates or two hundred.
+        </p>
       </div>
+      <p class="corp__action">
+        <Button href="/corporate/" variant="on-dark">Corporate travel →</Button>
+      </p>
     </div>
   </section>
 
-  <!-- 11 · Lead capture — plum band 2 of 2 ------------------------------- -->
+  <!-- 11 · Travel guide — a full section again -----------------------------
+       Three cards, category tags and the index link, as T1 originally had it.
+       The grid is sized for three and holds its shape at one: the catalogue is
+       still being seeded, and a section that collapses when it is half-filled
+       would look broken for the whole of M5. -->
+  {
+    posts.length > 0 && (
+      <section class="band band-offwhite" aria-labelledby="guide-heading">
+        <div class="container-content">
+          <div class="sectionhead">
+            <div>
+              <p class="eyebrow">Travel guide</p>
+              <h2 id="guide-heading">Reading before you go</h2>
+            </div>
+            <a class="pill tap-target" href="/travel-guide/">
+              All articles
+              <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+                <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="guide fade-up-stagger">
+            {posts.map((post) => (
+              <ArticleCard
+                slug={post.id}
+                title={post.data.title}
+                category={post.data.category}
+                excerpt={post.data.excerpt}
+                image={post.data.heroImage}
+                imageAlt={post.data.heroImageAlt}
+                publishDate={post.data.publishDate}
+                updatedDate={post.data.updatedDate}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 12 · Lead capture — the closing ConvertBand, burgundy since round 3 -->
   <div id="enquire">
     <ConvertBand
       heading="Tell us where you'd like to go"
@@ -740,11 +779,18 @@ const WHY_US = [
     }
   }
 
-  /* ---- 6 · why us ----------------------------------------------------- */
+  /* ---- 6 · why us -----------------------------------------------------
+     Redesigned in round 3: the first version was four lotus glyphs at 18px
+     over four short paragraphs, all at the same weight, and the client's note
+     was simply "too plain" — which was fair. Nothing here is added decoration.
+     The number gives the four reasons an order, the hairline between columns
+     gives them edges, and the glyph and the supporting text each go up one
+     step so the row has some weight against the white it sits on. One calm
+     off-white ground, as before: richer, not busier. */
   .why {
     display: grid;
-    gap: 2rem 2.5rem;
-    margin: 2.5rem 0 0;
+    gap: 2.5rem;
+    margin: 3rem 0 0;
     padding: 0;
     list-style: none;
     grid-template-columns: 1fr;
@@ -753,28 +799,66 @@ const WHY_US = [
   @media (min-width: 40rem) {
     .why {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3rem;
     }
   }
 
   @media (min-width: 64rem) {
     .why {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 3.5rem;
     }
   }
 
-  .why__mark {
-    color: var(--color-crimson);
+  /* Hairline separators BETWEEN columns only — a border on every item draws a
+     rule down the outside edge of the row, which is a box, not a separator.
+     The negative inline margin puts the rule in the middle of the gap. */
+  @media (min-width: 40rem) {
+    .why__item {
+      padding-left: 1.75rem;
+      margin-left: -1.75rem;
+    }
+
+    .why__item:not(:nth-child(2n + 1)) {
+      border-left: 1px solid var(--color-burgundy-hairline);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .why__item:not(:first-child) {
+      border-left: 1px solid var(--color-burgundy-hairline);
+    }
+  }
+
+  .why__head {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin: 0;
+  }
+
+  .why__no {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-burgundy);
+    opacity: 0.55;
   }
 
   .why__title {
-    margin: 0.7rem 0 0;
-    font-size: var(--text-lg);
+    margin: 1rem 0 0;
+    font-size: var(--text-2xl);
+    font-weight: 700;
     line-height: var(--leading-heading);
+    text-wrap: balance;
   }
 
   .why__detail {
-    margin: 0.4rem 0 0;
-    font-size: var(--text-sm);
+    margin: 0.65rem 0 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
     color: var(--color-ink-muted);
   }
 
@@ -787,7 +871,7 @@ const WHY_US = [
     overflow: clip;
     border-radius: var(--radius-lg);
     min-height: 26rem;
-    background-color: var(--color-plum);
+    background-color: var(--color-ink);
   }
 
   .trains__image {
@@ -803,15 +887,21 @@ const WHY_US = [
     position: relative;
     padding: 2rem;
     color: var(--color-on-dark);
-    /* Two gradients, multiplied by the mask: plum rises from the bottom where
+    /* Two gradients, multiplied by the mask: ink rises from the bottom where
        the text is, and the whole veil fades out towards the right so the
        photograph stays a photograph. A `max-width` on this box instead drew a
-       hard vertical edge straight across the image. */
+       hard vertical edge straight across the image.
+
+       INK, not burgundy — the same rule as the hero (round 3). The dividing
+       line is what the overlay sits on: a gradient over a PHOTOGRAPH is ink,
+       because a coloured wash tints the picture; a solid BAND is burgundy. The
+       first pass made this banner burgundy with the rest and turned a carriage
+       interior into a red panel. */
     background: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-plum) 92%, transparent),
-      color-mix(in srgb, var(--color-plum) 72%, transparent) 55%,
-      color-mix(in srgb, var(--color-plum) 30%, transparent)
+      color-mix(in srgb, var(--color-ink) 90%, transparent),
+      color-mix(in srgb, var(--color-ink) 68%, transparent) 55%,
+      color-mix(in srgb, var(--color-ink) 24%, transparent)
     );
     -webkit-mask-image: linear-gradient(to right, #000 0 55%, transparent 100%);
     mask-image: linear-gradient(to right, #000 0 55%, transparent 100%);
@@ -914,36 +1004,42 @@ const WHY_US = [
     margin: 1.5rem 0 0;
   }
 
-  /* ---- 10 · slim dual strip -------------------------------------------- */
-  .dual {
+  /* ---- 10 · corporate band --------------------------------------------- */
+  .corp__inner {
     display: grid;
-    gap: 2.5rem;
+    gap: 1.75rem;
+    align-items: center;
   }
 
-  @media (min-width: 48rem) {
-    .dual {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 64rem) {
+    .corp__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 3rem;
-      align-items: start;
     }
   }
 
-  .dual__heading {
-    margin: 0.35rem 0 0;
-    font-size: var(--text-2xl);
-    line-height: var(--leading-heading);
+  .corp__heading {
+    margin-top: 0.75rem;
+    font-size: var(--text-h2);
   }
 
-  .dual__detail {
-    margin: 0.6rem 0 1.1rem;
-    max-width: 46ch;
-    font-size: var(--text-sm);
-    color: var(--color-ink-muted);
+  .corp__detail {
+    margin-top: 1rem;
+    max-width: 52ch;
+    color: var(--color-on-dark-muted);
   }
 
-  .dual__post {
-    margin: 1rem 0 1.1rem;
-    max-width: 20rem;
+  .corp__action {
+    margin: 0;
+  }
+
+  /* ---- 11 · travel guide ------------------------------------------------ */
+  .guide {
+    display: grid;
+    gap: clamp(1.75rem, 0.75rem + 3vw, 3rem);
+    margin-top: 3rem;
+    /* Sized for three and stable at one — see the section comment. */
+    grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
   }
 
   /* ---- association logos slot ------------------------------------------

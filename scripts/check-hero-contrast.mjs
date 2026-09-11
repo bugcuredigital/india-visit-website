@@ -31,8 +31,27 @@ import { spawn } from 'node:child_process';
 import { setTimeout as sleep } from 'node:timers/promises';
 import sharp from 'sharp';
 
+/**
+ * DEFAULT SET — every page that renders a <Hero>, not just the homepage.
+ * Design round 3 replaced the per-hero scrim with ONE gradient shared by all of
+ * them, so a change here is a change everywhere, and an audit that defaults to
+ * the homepage would have told us the good news only. One journey of each
+ * variant, both city pages, two destinations, and the trains landing page —
+ * which is every hero HEIGHT and every copy SHAPE the component can produce.
+ */
+const DEFAULT_PATHS = [
+  '/',
+  '/journeys/golden-triangle-5n-6d/',
+  '/journeys/palace-on-wheels-7n-8d/',
+  '/cities/jaipur/',
+  '/cities/kochi/',
+  '/destinations/rajasthan-golden-triangle/',
+  '/destinations/kerala/',
+  '/luxury-trains/',
+];
+
 const urls = process.argv.slice(2);
-if (!urls.length) urls.push('http://localhost:4321/');
+if (!urls.length) urls.push(...DEFAULT_PATHS.map((path) => `http://localhost:4321${path}`));
 
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9447;

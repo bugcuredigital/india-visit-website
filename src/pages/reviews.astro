@@ -2,10 +2,15 @@
 /**
  * Reviews — PAGE_TEMPLATES T7.
  * ---------------------------------------------------------------------------
- * Every testimonial here has `consentConfirmed: true`, enforced twice: the
- * schema refuses `false` outright, and this page filters on it as well. Two
- * gates for the same rule is deliberate — an un-consented quote published on
- * a travel site names a real customer and their trip.
+ * Every REAL testimonial here has `consentConfirmed: true`, enforced twice:
+ * the schema refuses a real entry whose consent is not recorded, and this page
+ * filters on it as well. Two gates for the same rule is deliberate — an
+ * un-consented quote published on a travel site names a real customer and
+ * their trip.
+ *
+ * Placeholder SLOTS (round 3) carry no name, no origin and no quote — the
+ * schema refuses those fields when `placeholder` is true — and render one
+ * quiet line. They never reach the structured data.
  *
  * The AGGREGATE LINE (T7 §1) renders only if `aggregateRating` is verified.
  * It is null (PRD Open Question #3), so the page carries no star average, and
@@ -30,9 +35,14 @@ import { breadcrumbSchema, reviewSchema } from '../lib/schema';
 
 const settings = await getSiteSettings();
 
-const reviews = (await getCollection('testimonials', ({ data }) => data.consentConfirmed)).sort(
-  (a, b) => Number(b.data.featured) - Number(a.data.featured),
-);
+/* Placeholder SLOTS render alongside real reviews and say one quiet line.
+   They are counted separately everywhere it matters: the chip counts, the
+   filter status and — most importantly — the structured data below. */
+const reviews = (
+  await getCollection('testimonials', ({ data }) => data.placeholder || data.consentConfirmed)
+).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+
+const realReviews = reviews.filter((review) => !review.data.placeholder);
 
 const CATEGORY_LABELS: Record<string, string> = {
   india: 'India',
@@ -51,10 +61,13 @@ const crumbs = breadcrumbSchema([
   { name: 'Reviews', url: new URL('/reviews/', Astro.site).href },
 ]);
 
-const reviewSchemas = reviews.map((review) =>
+/* REAL REVIEWS ONLY. A placeholder emitted as `Review` structured data would
+   publish a fabricated review to every aggregator that reads this page — worse
+   than an on-screen one, because we could not take it back. */
+const reviewSchemas = realReviews.map((review) =>
   reviewSchema({
-    author: review.data.name,
-    reviewBody: review.data.quote,
+    author: review.data.name!,
+    reviewBody: review.data.quote!,
     itemName: review.data.tripLabel,
   }),
 );
@@ -85,13 +98,13 @@ const reviewSchemas = reviews.map((review) =>
            and no AggregateRating in the structured data until then. */
         settings.aggregateRating ? (
           <p class="intro__rating">
-            Rated {settings.aggregateRating.toFixed(1)} across {reviews.length} reviews
+            Rated {settings.aggregateRating.toFixed(1)} across {realReviews.length} reviews
           </p>
         ) : (
           <p class="intro__lede prose-measure">
             Published in the traveller's own words, and only with their written
-            permission. We would rather show you four real ones than forty we
-            cannot stand behind.
+            permission. We would rather show you a handful we can stand behind
+            than a wall of them we cannot.
           </p>
         )
       }
@@ -124,14 +137,24 @@ const reviewSchemas = reviews.map((review) =>
         {
           reviews.map((review) => (
             <li class="wall__item" data-category={review.data.category}>
-              <figure class="review">
-                <Lotus size={18} class="review__mark" />
-                <blockquote class="review__quote">
-                  <p>{review.data.quote}</p>
-                </blockquote>
+              <figure class:list={['review', { 'review--empty': review.data.placeholder }]}>
+                <!-- data-allow-clip: hanging off the card corner is the design. -->
+                <span class="review__watermark" data-allow-clip aria-hidden="true"><Lotus size={132} /></span>
+
+                {review.data.placeholder ? (
+                  <p class="review__pending">
+                    <Lotus size={18} tone="burgundy" class="review__pendingmark" />
+                    <span>Guest review coming soon</span>
+                  </p>
+                ) : (
+                  <blockquote class="review__quote">
+                    <p>{review.data.quote}</p>
+                  </blockquote>
+                )}
+
                 <figcaption class="review__by">
-                  {review.data.name}
-                  <span class="review__origin">{review.data.origin}</span>
+                  {review.data.name && <span class="review__name">{review.data.name}</span>}
+                  {review.data.origin && <span class="review__origin">{review.data.origin}</span>}
                   <span class="review__trip">{review.data.tripLabel}</span>
                 </figcaption>
               </figure>
@@ -273,45 +296,77 @@ const reviewSchemas = reviews.map((review) =>
   }
 
   .review {
+    position: relative;
     height: 100%;
     margin: 0;
-    padding: 1.75rem;
-    border: 1px solid var(--color-card-border);
+    padding: 2rem 1.75rem 1.75rem;
+    border: 1px solid var(--color-burgundy-hairline);
     border-radius: var(--radius-lg);
     background-color: var(--color-offwhite);
+    overflow: clip;
+    isolation: isolate;
   }
 
-  .review__mark {
-    color: var(--color-crimson);
+  .review__watermark {
+    position: absolute;
+    top: -2.25rem;
+    right: -2.25rem;
+    z-index: -1;
+    color: var(--color-burgundy);
+    opacity: 0.07;
+    pointer-events: none;
+    line-height: 0;
   }
 
   .review__quote {
-    margin: 1rem 0 0;
+    margin: 0;
     font-size: var(--text-lg);
     color: var(--color-ink);
   }
 
-  .review__by {
-    margin-top: 1.25rem;
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--color-ink);
-  }
-
-  .review__origin,
-  .review__trip {
-    display: block;
-    font-weight: 400;
+  /* Short, quiet, unmistakably not a review (word control, round 3). */
+  .review__pending {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    font-style: italic;
     color: var(--color-ink-muted);
   }
 
+  .review__pendingmark {
+    opacity: 0.75;
+  }
+
+  .review__by {
+    margin-top: 1.5rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--color-burgundy-hairline);
+    font-size: var(--text-sm);
+    color: var(--color-ink);
+  }
+
+  .review__name {
+    display: block;
+    font-weight: 600;
+  }
+
   .review__origin {
+    display: block;
     margin-top: 0.2rem;
+    color: var(--color-ink-muted);
   }
 
   .review__trip {
-    margin-top: 0.2rem;
-    font-style: italic;
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-burgundy-hairline);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-burgundy);
   }
 
   .wall__note {

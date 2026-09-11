@@ -28,6 +28,12 @@
       "videoWebm": null,
       "videoMp4": "/uploads/TEMP-VIDEO-home-hero.mp4"
     },
+    "pageHeroes": {
+      "luxuryTrains": {
+        "image": "../../assets/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg",
+        "alt": "The panelled interior of a vintage Indian luxury train carriage"
+      }
+    },
     "showPrices": false,
     "responseSla": null,
     "founder": {
@@ -53,6 +59,7 @@
       "aggregateRating — BLOCKED on PRD Open Question #3",
       "responseSla — BLOCKED on PRD Open Question #12",
       "homeHero.poster / homeHero.videoMp4 — TEMP-VIDEO stand-in from Pexels, replaced by the client's own footage (CLIENT_REVIEW_SHEET.md §15)",
+      "pageHeroes.luxuryTrains.image — TEMP-PHOTO stand-in, replaced by the client's own archive in M5",
       "founder.name — BLOCKED, client to supply; never invent a person's name",
       "founder.quote — PROVISIONAL agency draft, awaiting client approval (CLIENT_REVIEW_SHEET.md)",
       "founder.portrait — BLOCKED on the client photo archive; renders the neutral grey portrait slot until then"

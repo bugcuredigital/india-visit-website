@@ -22,7 +22,18 @@ interface Props {
   /** Prefills the city context on city pages (T15 §i). The form has no city
    *  input — this is lead routing, not a question to the visitor. */
   cityName?: string;
-  compact?: boolean;
+  /**
+   * Which fields to ask for.
+   *   full    — the page form: name, phone, email, month, message
+   *   compact — a narrow column: name, phone, month
+   *   footer  — the footer strip (round 3, item 8): name, phone, message
+   *
+   * Every layout shares the same honeypot, the same hidden context fields and
+   * the same required consent checkbox. That machinery is the reason the
+   * footer form is a mode of this component rather than a second form: a
+   * second form is a second place for the consent checkbox to go missing.
+   */
+  layout?: 'full' | 'compact' | 'footer';
   onDark?: boolean;
 }
 
@@ -31,9 +42,12 @@ const {
   journeySlug,
   journeyTitle,
   cityName,
-  compact = false,
+  layout = 'full',
   onDark = false,
 } = Astro.props;
+
+const isCompact = layout === 'compact';
+const isFooter = layout === 'footer';
 
 const uid = Math.random().toString(36).slice(2, 8);
 const id = (name: string) => `${name}-${uid}`;
@@ -45,7 +59,7 @@ const MONTHS = [
 ---
 
 <form
-  class:list={['form', { 'form--compact': compact, 'form--on-dark': onDark }]}
+  class:list={['form', `form--${layout}`, { 'form--on-dark': onDark }]}
   method="post"
   action="/api/lead"
   data-lead-form
@@ -78,26 +92,30 @@ const MONTHS = [
       <input class="form__input" type="tel" id={id('phone')} name="phone" autocomplete="tel" inputmode="tel" required />
     </p>
 
-    {!compact && (
+    {layout === 'full' && (
       <p class="form__field">
         <label class="form__label" for={id('email')}>Email</label>
         <input class="form__input" type="email" id={id('email')} name="email" autocomplete="email" />
       </p>
     )}
 
-    <p class="form__field">
-      <label class="form__label" for={id('month')}>Travel month</label>
-      <select class="form__input" id={id('month')} name="travelMonth">
-        {MONTHS.map((month) => <option value={month}>{month}</option>)}
-      </select>
-    </p>
+    {!isFooter && (
+      <p class="form__field">
+        <label class="form__label" for={id('month')}>Travel month</label>
+        <select class="form__input" id={id('month')} name="travelMonth">
+          {MONTHS.map((month) => <option value={month}>{month}</option>)}
+        </select>
+      </p>
+    )}
 
-    {!compact && (
+    {!isCompact && (
       <p class="form__field form__field--wide">
         <label class="form__label" for={id('message')}>
-          Anything you'd like us to know? <span class="form__optional">(optional)</span>
+          {isFooter ? 'Where would you like to go?' : (
+            <>Anything you'd like us to know? <span class="form__optional">(optional)</span></>
+          )}
         </label>
-        <textarea class="form__input" id={id('message')} name="message" rows="3"></textarea>
+        <textarea class="form__input" id={id('message')} name="message" rows={isFooter ? 2 : 3}></textarea>
       </p>
     )}
   </div>
@@ -113,11 +131,11 @@ const MONTHS = [
   <!-- Turnstile mounts here in M6; invisible, so no visible CAPTCHA friction. -->
   <div data-turnstile></div>
 
-  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size="lg" block>
-    Start planning
+  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block>
+    {isFooter ? 'Send enquiry' : 'Start planning'}
   </Button>
 
-  <p class="form__note">We reply personally — no call centre, no spam.</p>
+  {!isFooter && <p class="form__note">We reply personally — no call centre, no spam.</p>}
 </form>
 
 <style>
@@ -147,6 +165,10 @@ const MONTHS = [
   .form__field {
     display: grid;
     gap: 0.35rem;
+    /* A grid item's automatic minimum is min-content; an <input>'s min-content
+       is its size attribute, not zero. Without this a narrow column is widened
+       by the input rather than the input being narrowed by the column. */
+    min-width: 0;
   }
 
   .form__label {
@@ -161,6 +183,12 @@ const MONTHS = [
   }
 
   .form__input {
+    /* An <input>'s min-content width is its `size` attribute — about 202px —
+       not zero, so in a narrow grid column it widens the column instead of
+       being narrowed by it. `width: 100%` plus `min-width: 0` is what actually
+       makes a text field responsive; `1fr` alone never does. */
+    width: 100%;
+    min-width: 0;
     /* Off-white is the field fill — the secondary-surface role. */
     min-height: 48px;
     padding: 0.7rem 0.9rem;
@@ -228,5 +256,33 @@ const MONTHS = [
 
   .form--on-dark .form__consent a {
     color: var(--color-yellow);
+  }
+
+  /* ---- footer layout ----------------------------------------------------
+     Three fields in one row on a wide footer, stacked below it. Tighter
+     everywhere: this is a second chance, not the main form, and it has to sit
+     inside a footer column without turning the footer into a page. */
+  /* Sized by the COLUMN, not by the viewport. The footer is two columns wide
+     between 40rem and 68rem, so a `@media (min-width: 40rem)` two-column split
+     here put two inputs into a half-width column and pushed them 12px past the
+     right edge of the page at 768px — caught by check:responsive, which is the
+     third time a viewport media query has been used to describe the width of
+     something that is not the viewport. auto-fit cannot make that mistake. */
+  .form--footer .form__grid {
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
+  }
+
+  .form--footer .form__label {
+    font-size: var(--text-xs);
+  }
+
+  .form--footer .form__input {
+    padding-block: 0.55rem;
+    font-size: var(--text-sm);
+  }
+
+  .form--footer .form__consent {
+    font-size: var(--text-xs);
   }
 </style>

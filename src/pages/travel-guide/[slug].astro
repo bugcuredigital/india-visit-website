@@ -199,9 +199,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
                       imageAlt={journey!.data.heroImageAlt}
                       nights={journey!.data.nights}
                       days={journey!.data.days}
-                      routeCities={journey!.data.routeCities}
                       variant={journey!.data.variant}
-                      signatureFeature={journey!.data.signatureFeature}
                     />
                   ))}
                 </div>
@@ -211,7 +209,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
 
           <!-- 4 · Author block — E-E-A-T ---------------------------------- -->
           <aside class="author">
-            <Lotus size={22} class="author__mark" />
+            <Lotus size={22} tone="crimson" class="author__mark" />
             <div>
               <p class="author__name">{settings.siteName}</p>
               <p class="author__bio">
@@ -416,7 +414,6 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
 
   .author__mark {
     flex: none;
-    color: var(--color-crimson);
   }
 
   .author__name {
