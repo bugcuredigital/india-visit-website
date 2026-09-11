@@ -96,6 +96,20 @@ await evaluate(`document.querySelectorAll('.fade-up, .fade-up-stagger')
   .forEach(el => el.classList.add('is-visible'));
   document.querySelectorAll('[data-sticky-bar]').forEach(el => el.classList.add('is-in'));`);
 
+/* Settle the trust-bar count-up to its final value. The counters start when
+   their section scrolls into view, which is precisely when this script is
+   capturing that tile — so a capture would otherwise freeze them mid-flight
+   and report "14+ Years" for a twenty-year consultancy. The final value is
+   already in the markup; this only stops the animation from overwriting it. */
+await evaluate(`document.querySelectorAll('[data-countup]').forEach(el => {
+    el.textContent = el.dataset.countup;
+    // Removing the attribute is what makes this stick: the page's observer
+    // has already captured these nodes and will still fire on scroll, but
+    // without the attribute its run() finds nothing to parse and leaves the
+    // text alone.
+    el.removeAttribute('data-countup');
+  });`);
+
 /* Kill smooth scrolling for the duration of the capture. global.css sets
    `scroll-behavior: smooth` on <html> — a real UX decision, and the reason two
    earlier attempts produced images with a duplicated strip of page: scrollTo()

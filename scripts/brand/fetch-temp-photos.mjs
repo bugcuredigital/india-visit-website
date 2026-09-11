@@ -65,7 +65,7 @@ const PHOTOS = [
     hero: true,
     credit: 'Maitree Patel',
     subject: 'Udaipur City Palace on Lake Pichola at golden hour',
-    usedFor: 'homepage hero',
+    usedFor: 'SPARE since PRD v1.5 — the homepage hero became a video, and its poster is the TEMP-VIDEO frame. Kept as a graded warm hero master for M5.',
   },
   {
     name: 'journey-kerala-houseboat',

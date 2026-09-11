@@ -37,6 +37,27 @@ const faqSchema = z
   )
   .min(1);
 
+/**
+ * A file the client uploaded through the CMS. Tina's repo-based media land in
+ * `/public/uploads/`, and Astro's `image()` helper cannot be used for them —
+ * `image()` resolves files Vite can process, and the public directory is
+ * copied verbatim. So anything that is not an image (video, at present) is a
+ * validated path string rather than an asset reference.
+ *
+ * The regex is the guard rail: a typo, an absolute URL to somebody else's CDN,
+ * or a file left outside the media folder fails the build with a message that
+ * says what to do, rather than shipping a hero that silently never plays.
+ */
+const uploadPath = (extension: string) =>
+  z
+    .string()
+    .regex(
+      new RegExp(`^/uploads/[A-Za-z0-9._-]+\\.${extension}$`),
+      `Must be a file uploaded through the CMS media manager — a path like ` +
+        `"/uploads/hero.${extension}". Files live in /public/uploads/, and the path ` +
+        `starts with /uploads/ (not /public/uploads/ and not a full URL).`,
+    );
+
 const seoSchema = z.object({
   metaTitle: z.string().min(1).max(70),
   metaDescription: z.string().min(1).max(180),
@@ -378,6 +399,29 @@ const siteSettings = defineCollection({
       aggregateRating: z.number().min(1).max(5).nullable(),
       yearsExperience: z.number().int().positive(),
       supportPromise: z.string().min(1),
+
+      /**
+       * Homepage hero (PAGE_TEMPLATES T1 §1, PRD v1.5) — full-screen, with a
+       * background video behind the copy.
+       *
+       * The POSTER is required and the video is not, and that asymmetry is the
+       * whole LCP-safety story in one schema rule: the poster is the largest
+       * contentful paint on the homepage and always renders, while the video
+       * is a flourish that arrives after `window.load` and is never fetched at
+       * all for `prefers-reduced-motion` or `Save-Data` visitors. A hero with
+       * no video is a working hero; a hero with no poster is a blank screen.
+       *
+       * Both formats are nullable and both may be null — that is the
+       * poster-only state, which is exactly what the page should render before
+       * the client uploads anything.
+       */
+      homeHero: z.object({
+        poster: image(),
+        posterAlt: z.string().min(1),
+        /** WebM first where present: smaller at equal quality. */
+        videoWebm: uploadPath('webm').nullable(),
+        videoMp4: uploadPath('mp4').nullable(),
+      }),
 
       /** Global gate for every priceFrom on the site. Default off. */
       showPrices: z.boolean(),

@@ -22,6 +22,12 @@
     "aggregateRating": null,
     "yearsExperience": 20,
     "supportPromise": "24/7 On-Trip Support",
+    "homeHero": {
+      "poster": "../../assets/temp-video/TEMP-VIDEO-home-hero-poster.jpg",
+      "posterAlt": "The Taj Mahal in silhouette against an amber sunrise sky",
+      "videoWebm": null,
+      "videoMp4": "/uploads/TEMP-VIDEO-home-hero.mp4"
+    },
     "showPrices": false,
     "responseSla": null,
     "founder": {
@@ -46,6 +52,7 @@
       "destinationCount — BLOCKED on PRD Open Question #2",
       "aggregateRating — BLOCKED on PRD Open Question #3",
       "responseSla — BLOCKED on PRD Open Question #12",
+      "homeHero.poster / homeHero.videoMp4 — TEMP-VIDEO stand-in from Pexels, replaced by the client's own footage (CLIENT_REVIEW_SHEET.md §15)",
       "founder.name — BLOCKED, client to supply; never invent a person's name",
       "founder.quote — PROVISIONAL agency draft, awaiting client approval (CLIENT_REVIEW_SHEET.md)",
       "founder.portrait — BLOCKED on the client photo archive; renders the neutral grey portrait slot until then"

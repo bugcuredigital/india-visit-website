@@ -52,15 +52,22 @@ import { getSiteSettings, verifiedTrustStats } from '../lib/site-settings';
 import { heroPreload } from '../lib/hero-image';
 import { DESTINATIONS, REGION_COUNT } from '../lib/destinations-strip';
 
-/* TEMP-PHOTO — temporary Unsplash image for design review only; the client's
-   archive replaces it in M5. See docs/brand/processed/TEMP-PHOTO-PROVENANCE.md */
-import homeHero from '../assets/temp-photos/TEMP-PHOTO-home-hero-udaipur.jpg';
 /* Neutral grey 4:5 slot. A stock photograph of a stranger is deliberately NOT
    used for the founder — see the `founder` schema note in content.config.ts. */
 import portraitPlaceholder from '../assets/placeholders/portrait.jpg';
 
 const settings = await getSiteSettings();
+
+/* The hero poster is CMS-fed (PRD v1.5, image-slot convention): swapping the
+   client's own footage and still in is a content edit with zero code changes.
+   It is currently a TEMP-VIDEO stand-in — see
+   docs/brand/processed/TEMP-VIDEO-PROVENANCE.md. */
+const homeHero = settings.homeHero.poster;
 const heroLink = await heroPreload(homeHero);
+const heroVideo = {
+  webm: settings.homeHero.videoWebm,
+  mp4: settings.homeHero.videoMp4,
+};
 
 /* ------------------------------------------------------- featured journeys --
    Editorial picks come from `featured: true`; the rest of the row fills from
@@ -196,9 +203,11 @@ const WHY_US = [
   <!-- 1 · Hero ---------------------------------------------------------- -->
   <Hero
     image={homeHero}
-    alt="The City Palace at Udaipur catching the last of the light across Lake Pichola"
-    height="full"
+    alt={settings.homeHero.posterAlt}
+    height="cover"
     kenBurns={true}
+    video={heroVideo}
+    scrollCue="#trust"
   >
     <h1 class="hero__title">Journeys across India, planned by a person</h1>
     <p class="hero__lede">
@@ -217,7 +226,8 @@ const WHY_US = [
        Four stats, two of them counted from our own catalogue rather than
        claimed — see verifiedTrustStats. No association logo row: T1 says omit
        it entirely when none are supplied, and none are. -->
-  <CounterStat stats={stats} surface="offwhite">
+  <div id="trust">
+    <CounterStat stats={stats} surface="offwhite">
     {
       /* Association-logos row (T1 v2 §2). T1 says omit entirely when none are
          supplied, and none are — so this renders nothing at all rather than an
@@ -231,9 +241,10 @@ const WHY_US = [
             ))}
           </div>
         </div>
-      )
-    }
-  </CounterStat>
+        )
+      }
+    </CounterStat>
+  </div>
 
   <!-- 3 · Where do you want to go — MOVED ABOVE JOURNEYS (T1 v2) -------
        Travellers shop by place before they shop by trip, so destinations now

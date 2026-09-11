@@ -24,7 +24,12 @@
     "check:keyboard": "node scripts/check-keyboard.mjs",
     "check:template-spec": "node scripts/check-template-spec.mjs",
     "temp:photos": "node scripts/brand/fetch-temp-photos.mjs",
-    "brand:placeholders": "node scripts/brand/make-placeholders.mjs"
+    "brand:placeholders": "node scripts/brand/make-placeholders.mjs",
+    "brand:icons": "node scripts/brand/fetch-phosphor-icons.mjs",
+    "temp:video": "node scripts/brand/fetch-temp-video.mjs",
+    "check:hero-video": "node scripts/check-hero-video.mjs",
+    "crop": "node scripts/crop.mjs",
+    "check:hero-contrast": "node scripts/check-hero-contrast.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
