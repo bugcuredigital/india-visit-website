@@ -251,3 +251,73 @@ actually come from, not where the biggest monuments are:
    three-to-six image strip — roughly eight photographs per city. That is the
    single biggest ask in the whole M5 content migration, so it is worth deciding
    the city list *before* the archive gets sorted.
+
+---
+
+## 17. The eight destination pages (added M4, remaining templates)
+
+Writing the nine destination pages is scheduled as M5 content work. Only
+**Kerala** existed, and the homepage has been linking all nine since T1 v2 —
+so eight of the nine links were dead. Rather than ship a click-through gate
+with eight 404s in it, we drafted the other eight now.
+
+**All eight are agency-drafted from public knowledge and none of it is yours
+yet.** No new photography was needed — every hero already existed.
+
+| Page | What specifically needs your eye |
+|---|---|
+| Rajasthan & the Golden Triangle | The claim that six days "covers the three cities without rushing them" — your call, not ours. |
+| South & West India Heritage | We describe it as your most demanding route and say so plainly on the page. Confirm you are happy to be that blunt. |
+| Himalayas — Leh & Ladakh | **We state that you will not sell a Ladakh trip without two acclimatisation days.** That is a policy, and it is now published. Confirm or strike. |
+| North East India | The permit list (Inner Line / Protected Area) — confirm which you arrange. |
+| Wildlife Journeys | **We say you never promise a tiger sighting, and that three nights per reserve is your minimum recommendation.** Both are commitments. |
+| Bhutan | The Sustainable Development Fee is described as payable and non-negotiable. Confirm the current position. |
+| Bali | We recommend two bases rather than touring, and say the south is busy. |
+| Vietnam | We say there is no single best month for the whole country. |
+
+Three of those pages now carry **policies rather than descriptions** — no
+elephant rides at Amer, no promised tiger sightings, no Ladakh trip without
+acclimatisation days. We believe all three are right and all three are good
+for trust, but they are yours to confirm before launch.
+
+---
+
+## 18. Pages where a section is deliberately missing
+
+These are not unfinished. In each case the honest options were to omit the
+section or to invent something, and we omitted it. Each one turns on when you
+supply a fact.
+
+| Page | What is missing | What turns it on |
+|---|---|---|
+| About | **The timeline.** T6 specifies "2006 → today", and a timeline is nothing but dates. `foundingYear` is null. | Your founding year (Open Question #2). |
+| About | Certifications and memberships logo row. | Which bodies apply (Open Question #4). |
+| Corporate | **The "proposal in 48 hours" promise.** The template names it as your key differentiator; we have written the step *without* the number, because a response-time promise is something somebody has to keep on a Friday afternoon. | Your actual commitment (Open Question #12). |
+| Corporate | Client logos / case snippets. | Whatever you are permitted to show (Open Question #5). |
+| Reviews | The aggregate rating line, and the `AggregateRating` structured data. | A verifiable average (Open Question #3). A machine-readable rating is worse than an on-screen one, because aggregators republish it. |
+| Reviews | The guest photo gallery. | Photo consent, which is a separate permission from quote consent. |
+| Plan My Trip | A numeric response-time promise. | Open Question #12, as above. |
+
+---
+
+## 19. The four policy pages ⚑ LEGAL
+
+**These need your lawyer, not us.** `/privacy/`, `/terms/` and
+`/cancellation/` currently publish the *structure* each policy must
+cover — every section named, so your adviser is filling in a brief rather than
+starting from a blank page. They carry a visible notice saying so and are
+**excluded from search engines** until the real text lands.
+
+We have not drafted the binding text, and we will not: a privacy policy
+carries obligations under India's DPDP Act 2023 and, for your inbound
+travellers, under the GDPR. Agency drafting is not legal advice.
+
+**`/booking-terms/` is the exception and is already real.** It is built from
+the operator disclosures and cancellation policies already in the Palace on
+Wheels content, pulled live from the journey entry rather than retyped — so an
+operator whose terms change is edited in one place and both pages follow.
+Every luxury-train page links here, as invariant #6 requires.
+
+**What we need from you:** the approved text for the three, plus the
+cancellation slab table for journeys you arrange yourself (the train slabs are
+the operator's and are already handled).

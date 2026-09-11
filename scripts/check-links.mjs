@@ -33,16 +33,9 @@ const DIST = process.argv[2] ?? 'dist';
  * enforcing it. An empty list is the goal.
  */
 const PENDING = new Set([
-  '/luxury-trains/',
-  '/corporate/',
-  '/about/',
-  '/reviews/',
-  '/travel-guide/',
-  '/plan-my-trip/',
-  '/privacy/',
-  '/terms/',
-  '/cancellation/',
-  '/booking-terms/',
+  /* Empty, and that is the point — every route the site links to now exists.
+     M4 finished this list. Add an entry only alongside a specification that
+     promises the page, and delete it the moment the page lands. */
 ]);
 
 /**
@@ -51,7 +44,7 @@ const PENDING = new Set([
  * A trailing-slash prefix, matched only against DEEPER paths, so listing
  * `/travel-guide/` here never excuses a typo in `/about/`.
  */
-const PENDING_PREFIXES = ['/travel-guide/'];
+const PENDING_PREFIXES = [];
 
 const isPending = (target) =>
   PENDING.has(target) ||

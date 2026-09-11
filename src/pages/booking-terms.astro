@@ -1,0 +1,113 @@
+---
+/**
+ * Booking terms (trains) — PAGE_TEMPLATES T12, the one policy page with real
+ * content in it already.
+ * ---------------------------------------------------------------------------
+ * Every Variant B page links here (CLAUDE.md invariant #6), so this cannot be
+ * a placeholder in the way the other three are. The operator disclosures and
+ * the cancellation policies are pulled from the `journeys` collection rather
+ * than retyped, which means this page cannot drift from the train pages that
+ * point at it — and an operator whose terms change is edited in one place.
+ *
+ * NO TARIFFS, here or anywhere. The source documents carry published USD
+ * slabs expressed as percentages of fare; the percentages are the part that
+ * matters to a traveller and the only part reproduced.
+ */
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Policy from '../layouts/Policy.astro';
+
+/* A predicate rather than a plain filter: `getCollection`'s own filter does
+   not narrow the discriminated union, so without this the Variant B fields —
+   operatorName, operatorDisclosure, policies — are not visible to the type
+   checker at all. */
+type TrainEntry = CollectionEntry<'journeys'> & {
+  data: Extract<CollectionEntry<'journeys'>['data'], { variant: 'B' }>;
+};
+
+const trains = (await getCollection('journeys', ({ data }) => !data.draft))
+  .filter((entry): entry is TrainEntry => entry.data.variant === 'B')
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<Policy
+  title="Booking Terms — Luxury Trains | India Visit"
+  heading="Booking terms — luxury trains"
+  description="How luxury-train bookings work through India Visit as an authorised agent: the operator's role, the confirmation process, and cancellation terms."
+  path="/booking-terms/"
+>
+  <h2 id="our-role">Our role</h2>
+  <p>
+    India Visit is an <strong>authorised booking agent</strong>. We arrange your
+    booking, hold your cabin, handle the paperwork and look after you around the
+    journey. We do not operate the trains. Each train is run by its own
+    operator, and that operator's terms govern the booking — including what
+    happens if a departure is changed or withdrawn.
+  </p>
+
+  <h2 id="process">How a booking is confirmed</h2>
+  <p>
+    You tell us the departure and cabin category you want; we check live
+    availability with the operator and hold it while you decide. Confirmation
+    follows the operator's own process — a deposit against the cabin, then the
+    balance due before departure. Every step is set out on the journey page for
+    the train you are booking, before you commit to anything.
+  </p>
+
+  <h2 id="pricing">Pricing</h2>
+  <p>
+    Operator tariffs are <strong>never published on this site</strong>. They move
+    with season, cabin category and occupancy, and a figure on a web page is out
+    of date the day it goes up. We quote the current fare for your dates and
+    cabin, from the operator, in writing. This is a permanent policy rather than
+    a gap.
+  </p>
+
+  <h2 id="schedules">Departures and schedules</h2>
+  <p>
+    The season runs broadly September to April, with no departures through the
+    Indian summer. Published schedules change year to year, so we confirm
+    current dates against live availability rather than printing a timetable.
+  </p>
+
+  {
+    trains.map((train) => (
+      <>
+        <h2 id={train.id}>{train.data.title} — {train.data.operatorName}</h2>
+        <p>{train.data.operatorDisclosure}</p>
+        {train.data.policies.map((policy) => (
+          <>
+            <h3 class="policy__sub">{policy.heading}</h3>
+            <p>{policy.body}</p>
+          </>
+        ))}
+      </>
+    ))
+  }
+
+  {
+    trains.length < 3 && (
+      <p>
+        <em>
+          The Golden Chariot and the Deccan Odyssey are content-complete and
+          their terms join this page with their journey pages in M5.
+        </em>
+      </p>
+    )
+  }
+
+  <h2 id="questions">Questions</h2>
+  <p>
+    If anything here is unclear before you book, ask us rather than guessing.
+    The contact details in the footer reach a person, not a queue.
+  </p>
+</Policy>
+
+<style>
+  .policy__sub {
+    margin-top: 1.75rem;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+</style>

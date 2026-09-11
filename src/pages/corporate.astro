@@ -1,0 +1,425 @@
+---
+/**
+ * Corporate — PAGE_TEMPLATES T5.
+ * ---------------------------------------------------------------------------
+ * Two things here are not what the template literally asks for, and both are
+ * the same rule applied twice:
+ *
+ *   · T5 §3 specifies "Proposal in 48h" as the key differentiator, marked
+ *     "(confirm with client)". `responseSla` is null (PRD Open Question #12),
+ *     so the step is written WITHOUT the number. A response-time promise on a
+ *     corporate page is a commitment somebody has to keep at 4pm on a Friday;
+ *     we do not make it on the client's behalf.
+ *   · T5 §5 says omit the proof section entirely if nothing is supplied, and
+ *     never fake it. Nothing is supplied (Open Question #5), so there is no
+ *     logo row and no anonymised case snippets.
+ *
+ * The mobile bar reorders to [Call][Form][WhatsApp] — corporate enquiries come
+ * by phone far more than consumer ones do (T5 §7).
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import StickyMobileBar from '../components/StickyMobileBar.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Lotus from '../components/Lotus.astro';
+
+import { getSiteSettings } from '../lib/site-settings';
+import { breadcrumbSchema } from '../lib/schema';
+
+const settings = await getSiteSettings();
+
+/* Team-suited regions: short flights, group-capable properties, and enough to
+   do that a mixed group of forty is not standing around. */
+const TEAM_SLUGS = ['rajasthan-golden-triangle', 'kerala', 'bali', 'vietnam'];
+const destinations = (await getCollection('destinations'))
+  .filter((entry) => TEAM_SLUGS.includes(entry.id))
+  .sort((a, b) => TEAM_SLUGS.indexOf(a.id) - TEAM_SLUGS.indexOf(b.id));
+
+const CAPABILITIES = [
+  {
+    title: 'Offsites',
+    detail:
+      'Twenty to two hundred people, somewhere with the meeting rooms and the evenings both handled. We book the whole property where the numbers justify it.',
+  },
+  {
+    title: 'Incentive trips (MICE)',
+    detail:
+      'The trip people actually compete for. Built around one or two things nobody can book for themselves, rather than around a longer hotel list.',
+  },
+  {
+    title: 'Conferences',
+    detail:
+      'Venue, room blocks, AV, transfers and the arrivals desk. One point of contact who answers the phone on the morning it matters.',
+  },
+  {
+    title: 'Group logistics',
+    detail:
+      'Forty people, six flights and one coach that has to be in the right place. This is the unglamorous half, and it is the half that decides how the trip is remembered.',
+  },
+];
+
+const STEPS = [
+  {
+    title: 'Brief us',
+    detail:
+      'Numbers, dates, budget band and what the trip is actually for. Fifteen minutes on a call saves a fortnight of revised proposals.',
+  },
+  {
+    title: 'We come back with a proposal',
+    detail:
+      'A costed plan with properties named, not a brochure — and a named person to take your questions about it.',
+  },
+  {
+    title: 'We run the whole trip',
+    detail:
+      'Including the parts you would otherwise be doing at midnight: the manifest, the rooming list, the transfers, the one delegate whose flight moved.',
+    lotus: true,
+  },
+];
+
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: 'Corporate', url: new URL('/corporate/', Astro.site).href },
+]);
+---
+
+<Base
+  title="Corporate Travel, Offsites & Incentive Trips | India Visit"
+  description="Company offsites, incentive travel, conferences and group logistics across India and beyond — GST invoicing, one vendor, one point of contact."
+>
+  <Fragment slot="head">
+    <JsonLd schema={crumbs} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1 · Hero -------------------------------------------------------------- -->
+  <section class="band band-tight intro">
+    <div class="container-content">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Corporate</span>
+      </nav>
+      <h1 class="intro__title">Corporate travel &amp; offsites</h1>
+      <p class="intro__lede prose-measure">
+        One vendor, GST invoicing, and a single person who answers the phone
+        for the whole trip. {settings.yearsExperience} years of doing this for
+        companies that cannot afford the trip to go wrong.
+      </p>
+      <p class="intro__actions">
+        <a class="intro__call" href={settings.phoneHref} data-analytics="call_click">
+          {settings.phone}
+        </a>
+        <span class="intro__or">or</span>
+        <a class="intro__jump" href="#brief">send us a brief</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 · Capabilities ------------------------------------------------------- -->
+  <section class="band band-tight" aria-labelledby="cap-heading">
+    <div class="container-content">
+      <p class="eyebrow">What we run</p>
+      <h2 id="cap-heading">Four kinds of trip</h2>
+      <ul class="caps fade-up-stagger">
+        {
+          CAPABILITIES.map((item) => (
+            <li class="caps__item">
+              <h3 class="caps__title">{item.title}</h3>
+              <p class="caps__detail">{item.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 · How we work — plum band ------------------------------------------- -->
+  <section class="band band-tight band-plum on-dark" aria-labelledby="how-heading">
+    <div class="container-content">
+      <p class="eyebrow">How we work with companies</p>
+      <h2 id="how-heading" class="how__heading">Three steps, one point of contact</h2>
+      <ol class="how fade-up-stagger">
+        {
+          STEPS.map((step, index) => (
+            <li class="how__step">
+              <span class="how__no">{String(index + 1).padStart(2, '0')}</span>
+              <h3 class="how__title">
+                {step.title}
+                {step.lotus && <Lotus size={16} class="how__mark" />}
+              </h3>
+              <p class="how__detail">{step.detail}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4 · Destinations for teams --------------------------------------------- -->
+  {
+    destinations.length > 0 && (
+      <section class="band band-tight" aria-labelledby="teams-heading">
+        <div class="container-content">
+          <p class="eyebrow">Where groups work</p>
+          <h2 id="teams-heading">Destinations that suit a group</h2>
+          <ul class="tiles fade-up-stagger">
+            {destinations.map((entry) => (
+              <li class="tile">
+                <a class="tile__link" href={`/destinations/${entry.id}/`}>
+                  <span class="tile__frame">
+                    <Image
+                      src={entry.data.heroImage}
+                      alt={entry.data.heroImageAlt}
+                      widths={[320, 480, 640]}
+                      sizes="(min-width: 64rem) 16rem, (min-width: 40rem) 30vw, 45vw"
+                      loading="lazy"
+                      decoding="async"
+                      quality={58}
+                      class="tile__img"
+                    />
+                  </span>
+                  <span class="tile__label">{entry.data.shortLabel}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 6 · Corporate form ------------------------------------------------------ -->
+  <section class="band band-tight band-offwhite" id="brief" aria-labelledby="brief-heading">
+    <div class="container-content brief">
+      <div>
+        <p class="eyebrow">Send us a brief</p>
+        <h2 id="brief-heading" class="brief__heading">Tell us what the trip is for</h2>
+        <p class="brief__detail prose-measure">
+          Numbers, rough dates and a budget band are enough to start. If it is
+          easier to say it than type it, call — corporate enquiries usually
+          move faster that way.
+        </p>
+        <p class="brief__call">
+          <a href={settings.phoneHref} data-analytics="call_click">{settings.phone}</a>
+        </p>
+      </div>
+
+      <div class="brief__form">
+        <EnquiryForm leadType="corporate" />
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+  <StickyMobileBar
+    slot="after-footer"
+    layout="corporate"
+    waContext="Corporate"
+    enquireHref="#brief"
+  />
+</Base>
+
+<style>
+  .intro {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-crimson);
+  }
+
+  .intro__title {
+    font-size: var(--text-h1);
+  }
+
+  .intro__lede {
+    margin-top: 1rem;
+    font-size: var(--text-xl);
+    color: var(--color-ink-muted);
+  }
+
+  .intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  /* Corporate leads with Call, so the number is the loud thing on this page. */
+  .intro__call {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-crimson);
+    text-decoration: none;
+  }
+
+  .intro__or {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .intro__jump {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .caps,
+  .tiles {
+    display: grid;
+    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .caps {
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  }
+
+  .caps__title {
+    font-size: var(--text-2xl);
+  }
+
+  .caps__detail {
+    margin-top: 0.6rem;
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- how it works -------------------------------------------------------- */
+  .how__heading {
+    margin-top: 0.5rem;
+  }
+
+  .how {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .how__no {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--color-yellow);
+  }
+
+  .how__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    font-size: var(--text-2xl);
+  }
+
+  .how__mark {
+    color: var(--color-yellow);
+  }
+
+  .how__detail {
+    margin-top: 0.6rem;
+    color: var(--color-on-dark-muted);
+  }
+
+  /* ---- team destinations --------------------------------------------------- */
+  .tiles {
+    grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
+  }
+
+  .tile__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tile__frame {
+    display: block;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    background-color: var(--color-offwhite);
+  }
+
+  .tile__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tile__label {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .tile__img {
+      transition: transform var(--duration-slow) var(--ease-brand);
+    }
+
+    .tile__link:hover .tile__img {
+      transform: scale(1.04);
+    }
+  }
+
+  /* ---- brief --------------------------------------------------------------- */
+  .brief {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .brief {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .brief__heading {
+    margin-top: 1rem;
+    font-size: var(--text-h2);
+  }
+
+  .brief__detail {
+    margin-top: 1rem;
+    color: var(--color-ink-muted);
+  }
+
+  .brief__call {
+    margin-top: 1.5rem;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+  }
+
+  .brief__call a {
+    text-decoration: none;
+  }
+</style>

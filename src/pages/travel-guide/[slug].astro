@@ -1,0 +1,439 @@
+---
+/**
+ * Article — PAGE_TEMPLATES T9.
+ * ---------------------------------------------------------------------------
+ * The conversion rule is structural rather than editorial: every article
+ * embeds at least one journey card, enforced in the schema by
+ * `embeddedJourneys.min(1)`. An article that cannot route a reader to a trip
+ * is a blog post, and this is not a blog.
+ *
+ * The author block exists for E-E-A-T. It says "twenty years curating India"
+ * and nothing that has not been verified — no name, because the founder's
+ * name is still null by design (see the `founder` note in content.config.ts).
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import { Picture } from 'astro:assets';
+
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleBody from '../../components/ArticleBody.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import JourneyCard from '../../components/JourneyCard.astro';
+import FaqAccordion from '../../components/FaqAccordion.astro';
+import ConvertBand from '../../components/ConvertBand.astro';
+import StickyMobileBar from '../../components/StickyMobileBar.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import Lotus from '../../components/Lotus.astro';
+
+import { getSiteSettings } from '../../lib/site-settings';
+import { articleSchema, breadcrumbSchema, faqSchema } from '../../lib/schema';
+import { categoryLabel, readingTime } from '../../lib/posts';
+import { heroPreload, HERO_FORMATS, HERO_QUALITY } from '../../lib/hero-image';
+
+/**
+ * The article hero IS the LCP element, so it gets the same treatment every
+ * other hero on the site gets — AVIF first and a matched preload.
+ *
+ * It shipped without one and measured 2.6s, past the 2.5s hard ceiling: a
+ * plain <Image> is WebP-only and unpreloaded, so the browser did not learn
+ * about the largest thing on the page until it had parsed down to it. The
+ * widths stop at 1280 because this image is capped by the prose container, not
+ * by the viewport, and `sizes` is passed to BOTH sides so the preload and the
+ * element resolve to one file.
+ */
+const HEAD_WIDTHS = [480, 640, 960, 1280];
+const HEAD_SIZES = '(min-width: 64rem) 68rem, 96vw';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const post = entry.data;
+const { Content, headings } = await render(entry);
+
+const settings = await getSiteSettings();
+const minutes = readingTime(entry.body ?? '');
+
+/* TOC only when there is enough structure to be worth one (T9 §2). Four
+   headings is the threshold: three links is a list, not a table of contents. */
+const sections = headings.filter((heading) => heading.depth === 2);
+const showToc = sections.length >= 4;
+
+const embedded = (
+  await Promise.all(post.embeddedJourneys.map((ref) => getEntry('journeys', ref.id)))
+).filter((journey) => journey !== undefined && !journey.data.draft);
+
+const related = (await getCollection('posts', ({ data }) => !data.draft))
+  .filter((item) => item.id !== entry.id)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+
+const pageUrl = new URL(`/travel-guide/${entry.id}/`, Astro.site).href;
+const siteUrl = Astro.site?.href ?? '/';
+
+const schemas = [
+  articleSchema({
+    siteUrl,
+    url: pageUrl,
+    headline: post.title,
+    description: post.seo.metaDescription,
+    image: new URL(post.heroImage.src, Astro.site).href,
+    datePublished: post.publishDate,
+    dateModified: post.updatedDate,
+    authorName: settings.siteName,
+  }),
+  breadcrumbSchema([
+    { name: 'Home', url: siteUrl },
+    { name: 'Travel Guide', url: new URL('/travel-guide/', Astro.site).href },
+    { name: post.title, url: pageUrl },
+  ]),
+];
+if (post.faq) schemas.push(faqSchema(post.faq));
+
+const headLink = await heroPreload(post.heroImage, HEAD_WIDTHS, HEAD_SIZES);
+
+const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-GB', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Base title={post.seo.metaTitle} description={post.seo.metaDescription} ogImage={post.seo.ogImage}>
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      href={headLink.href}
+      imagesrcset={headLink.imagesrcset}
+      imagesizes={headLink.imagesizes}
+      type={headLink.type}
+      fetchpriority="high"
+    />
+    {schemas.map((schema) => <JsonLd schema={schema} />)}
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1 · Slim hero ------------------------------------------------------ -->
+  <article>
+    <header class="band band-tight head">
+      <div class="container-content">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="/travel-guide/">Travel Guide</a>
+        </nav>
+
+        <p class="head__category">{categoryLabel(post.category)}</p>
+        <h1 class="head__title prose-measure">{post.title}</h1>
+
+        <p class="head__meta">
+          <span class="head__author">
+            <Lotus size={16} class="head__mark" />
+            <span>{settings.siteName} — {settings.yearsExperience} years curating India</span>
+          </span>
+          <span class="head__dot" aria-hidden="true">·</span>
+          <time datetime={(post.updatedDate ?? post.publishDate).toISOString()}>{dateLabel}</time>
+          {post.updatedDate && <span class="visually-hidden">(updated)</span>}
+          <span class="head__dot" aria-hidden="true">·</span>
+          <span>{minutes} min read</span>
+        </p>
+
+        <Picture
+          src={post.heroImage}
+          alt={post.heroImageAlt}
+          widths={HEAD_WIDTHS}
+          sizes={HEAD_SIZES}
+          formats={[...HERO_FORMATS]}
+          fallbackFormat="webp"
+          quality={HERO_QUALITY}
+          loading="eager"
+          decoding="sync"
+          fetchpriority="high"
+          class="head__image"
+          pictureAttributes={{ class: 'head__picture' }}
+        />
+      </div>
+    </header>
+
+    <!-- 2 + 3 · TOC and body --------------------------------------------- -->
+    <div class="band band-tight">
+      <div class="container-content body">
+        {
+          showToc && (
+            <nav class="toc" aria-labelledby="toc-heading">
+              <h2 id="toc-heading" class="toc__heading">On this page</h2>
+              <ol class="toc__list">
+                {sections.map((section) => (
+                  <li>
+                    <a href={`#${section.slug}`}>{section.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )
+        }
+
+        <div class="body__main">
+          <ArticleBody>
+            <Content />
+          </ArticleBody>
+
+          <!-- Required: at least one journey card mid-article (T9 §3). The
+               schema enforces the minimum, so this can never render empty. -->
+          {
+            embedded.length > 0 && (
+              <aside class="embed" aria-labelledby="embed-heading">
+                <p class="eyebrow">Travel this</p>
+                <h2 id="embed-heading" class="embed__heading">The journey behind the writing</h2>
+                <div class="embed__cards">
+                  {embedded.map((journey) => (
+                    <JourneyCard
+                      slug={journey!.id}
+                      title={journey!.data.title}
+                      image={journey!.data.heroImage}
+                      imageAlt={journey!.data.heroImageAlt}
+                      nights={journey!.data.nights}
+                      days={journey!.data.days}
+                      routeCities={journey!.data.routeCities}
+                      variant={journey!.data.variant}
+                      signatureFeature={journey!.data.signatureFeature}
+                    />
+                  ))}
+                </div>
+              </aside>
+            )
+          }
+
+          <!-- 4 · Author block — E-E-A-T ---------------------------------- -->
+          <aside class="author">
+            <Lotus size={22} class="author__mark" />
+            <div>
+              <p class="author__name">{settings.siteName}</p>
+              <p class="author__bio">
+                {settings.yearsExperience} years arranging private journeys across
+                India and its neighbours. Every itinerary on this site was written
+                by the person who plans them, not by a content team.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ, where the article has one ---------------------------------- -->
+    {post.faq && <FaqAccordion faq={post.faq} heading="Questions this raises" id="faq" surface="offwhite" />}
+  </article>
+
+  <!-- 5 · Convert ---------------------------------------------------------- -->
+  <div id="enquire">
+    <ConvertBand
+      heading="Planning this trip?"
+      body="If this is the journey you have in mind, tell us your dates and we will draft it properly — day by day, with a price."
+      leadType="general"
+      waContext={post.title}
+    />
+  </div>
+
+  <!-- 6 · Related ---------------------------------------------------------- -->
+  {
+    related.length > 0 && (
+      <section class="band band-tight" aria-labelledby="related-heading">
+        <div class="container-content">
+          <h2 id="related-heading">More from the guide</h2>
+          <div class="related fade-up-stagger">
+            {related.map((item) => (
+              <ArticleCard
+                slug={item.id}
+                title={item.data.title}
+                category={item.data.category}
+                excerpt={item.data.excerpt}
+                image={item.data.heroImage}
+                imageAlt={item.data.heroImageAlt}
+                publishDate={item.data.publishDate}
+                updatedDate={item.data.updatedDate}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <Footer slot="footer" />
+  <StickyMobileBar slot="after-footer" waContext={post.title} enquireHref="#enquire" />
+</Base>
+
+<style>
+  .head {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-crimson);
+  }
+
+  .head__category {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-crimson);
+  }
+
+  .head__title {
+    margin-top: 0.75rem;
+    font-size: var(--text-h1);
+    line-height: var(--leading-display);
+  }
+
+  .head__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .head__author {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+
+  .head__dot {
+    opacity: 0.5;
+  }
+
+  .head__picture {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  .head__image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  /* ---- TOC + body ------------------------------------------------------- */
+  .body {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 64rem) {
+    .body {
+      grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+
+  .toc__heading {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .toc__list {
+    margin: 1rem 0 0;
+    padding-left: 1.1rem;
+    font-size: var(--text-sm);
+  }
+
+  .toc__list li + li {
+    margin-top: 0.6rem;
+  }
+
+  .toc__list a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .toc__list a:hover {
+    color: var(--color-crimson);
+    text-decoration: underline;
+  }
+
+  /* ---- embedded journey ------------------------------------------------- */
+  .embed {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .embed__heading {
+    margin-top: 0.5rem;
+    font-size: var(--text-2xl);
+  }
+
+  .embed__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  /* ---- author ------------------------------------------------------------ */
+  .author {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-offwhite);
+    max-width: var(--container-prose);
+  }
+
+  .author__mark {
+    flex: none;
+    color: var(--color-crimson);
+  }
+
+  .author__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .author__bio {
+    margin-top: 0.4rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .related {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+    gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
+    margin-top: 2rem;
+  }
+</style>

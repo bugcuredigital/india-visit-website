@@ -10,11 +10,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
-const CATEGORY_LABELS: Record<string, string> = {
-  'planning-visas': 'Planning & Visas',
-  'best-time': 'Best Time to Go',
-  guides: 'Guides',
-};
+import { categoryLabel } from '../lib/posts';
 
 interface Props {
   slug: string;
@@ -50,7 +46,7 @@ const dateLabel = shown.toLocaleDateString('en-GB', {
   </div>
 
   <p class="post__meta">
-    <span class="post__category">{CATEGORY_LABELS[category] ?? category}</span>
+    <span class="post__category">{categoryLabel(category)}</span>
     <span class="post__dot" aria-hidden="true">·</span>
     <time datetime={shown.toISOString()}>{dateLabel}</time>
     {updatedDate && <span class="visually-hidden">(updated)</span>}

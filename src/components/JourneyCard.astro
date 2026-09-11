@@ -75,6 +75,18 @@ const isCompact = size === 'compact';
         widths={[400, 600, 900]}
         sizes="(min-width: 64rem) 24rem, (min-width: 40rem) 45vw, 90vw"
         loading="lazy"
+        decoding="async"
+        {/* Card images are lazy by definition — there is no arrangement of
+            this component where one is the LCP element. Saying so explicitly
+            keeps them behind whatever is: on the article page a single card
+            image was racing the hero it sits below. */}
+        fetchpriority="low"
+        {/* Astro's default quality is tuned for images you look AT. A card
+            image is rendered at 400 CSS pixels or less behind a lazy load, and
+            at the default it was the single heaviest asset on the article page
+            — 139KB, racing the hero it sits below. 58 halves it with no
+            visible difference at card size, on every page that shows one. */}
+        quality={58}
         class="card__img"
         transition:name={`journey-image-${slug}`}
       />

@@ -1,0 +1,160 @@
+---
+/**
+ * Policy page shell — PAGE_TEMPLATES T12.
+ * ---------------------------------------------------------------------------
+ * One quiet template for all four legal pages: slim plum band, H1, prose with
+ * anchored H2s, an updated date. NO conversion furniture and NO sticky bar —
+ * T12 is explicit, and it is right: a page someone opens to check a
+ * cancellation term should not be selling to them.
+ *
+ * The provisional notice is the important part of this file. The agency does
+ * not write the client's legal copy: a privacy policy carries obligations
+ * under India's DPDP Act and, for inbound travellers, the GDPR. What ships
+ * here is the STRUCTURE each policy needs, with every section named, so the
+ * client's lawyer is filling in a brief rather than starting from a blank
+ * page — and so nobody can mistake agency drafting for legal advice.
+ */
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { breadcrumbSchema } from '../lib/schema';
+
+interface Props {
+  title: string;
+  heading: string;
+  description: string;
+  path: string;
+  /** Set false only once the client's approved legal copy is in place. */
+  provisional?: boolean;
+  updated?: string;
+}
+
+const { title, heading, description, path, provisional = true, updated } = Astro.props;
+
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: heading, url: new URL(path, Astro.site).href },
+]);
+---
+
+<Base title={title} description={description} noindex={provisional}>
+  <Fragment slot="head">
+    <JsonLd schema={crumbs} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <section class="band band-tight band-plum on-dark">
+    <div class="container-content">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{heading}</span>
+      </nav>
+      <h1>{heading}</h1>
+      {updated && <p class="updated">Last updated {updated}</p>}
+    </div>
+  </section>
+
+  <section class="band band-tight">
+    <div class="container-content">
+      {
+        provisional && (
+          /*
+            Also `noindex` while this is true — a placeholder legal page in a
+            search index is worse than no page, because it is the version
+            people quote back at you.
+          */
+          <p class="notice prose-measure">
+            <strong>This page is not final.</strong> The structure below is the
+            agency's outline of what this policy must cover. The binding text is
+            the client's to supply and their legal adviser's to approve; until
+            then this page is excluded from search engines.
+          </p>
+        )
+      }
+      <div class="policy prose-measure">
+        <slot />
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</Base>
+
+<style>
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-on-dark-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-white);
+  }
+
+  .updated {
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-muted);
+  }
+
+  .notice {
+    margin-bottom: 2.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--color-burgundy);
+    background-color: var(--color-offwhite);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .policy :global(h2) {
+    margin-top: 2.5rem;
+    font-size: var(--text-2xl);
+    scroll-margin-top: 6rem;
+  }
+
+  .policy :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .policy :global(p),
+  .policy :global(ul) {
+    margin-top: 1rem;
+    color: var(--color-ink-muted);
+  }
+
+  .policy :global(ul) {
+    padding-left: 1.25rem;
+  }
+
+  .policy :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  .policy :global(table) {
+    width: 100%;
+    margin-top: 1.25rem;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .policy :global(th),
+  .policy :global(td) {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--color-hairline);
+    text-align: left;
+  }
+
+  .policy :global(th) {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+</style>

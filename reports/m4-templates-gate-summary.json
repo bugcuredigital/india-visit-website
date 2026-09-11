@@ -1,0 +1,141 @@
+{
+  "milestone": "M4 — remaining templates (design revision round 2, continued)",
+  "gate": "full click-through, no dead links, every Phase-1 page type built",
+  "fetchTime": "2026-09-11T11:51:28.495Z",
+  "formFactor": "mobile",
+  "throttling": "simulate",
+  "targets": {
+    "performance": ">= 90",
+    "accessibility": ">= 95",
+    "seo": ">= 95",
+    "lcp": "<= 2.0s working, 2.2s homepage exception, 2.5s hard ceiling"
+  },
+  "pages": {
+    "/": {
+      "scores": {
+        "performance": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/journeys/": {
+      "scores": {
+        "performance": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/journeys/golden-triangle-5n-6d/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/cities/jaipur/": {
+      "scores": {
+        "performance": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/cities/kochi/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/luxury-trains/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "1.0 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/about/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "1.1 s",
+        "lcp": "1.7 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/plan-my-trip/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.5 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    },
+    "/travel-guide/kerala-houseboat-guide/": {
+      "scores": {
+        "performance": 99
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "2.3 s",
+        "cls": "0",
+        "tbt": "0 ms"
+      }
+    }
+  },
+  "lighthouseVersion": "13.4.1",
+  "links": {
+    "pagesBuilt": 33,
+    "references": 1927,
+    "broken": 0,
+    "pending": 0
+  },
+  "notes": [
+    "/travel-guide/{slug}/ measures LCP 2.3s — inside the 2.5s ceiling, above the 2.0s working target. Same cause as the Jaipur hero before it was swapped: a detailed TEMP-PHOTO master encodes expensively. Preloading it as AVIF took it 2.6s -> 2.3s; the client archive replaces the master in M5.",
+    "Every other measured page is at or under the 2.0s working target.",
+    "An earlier /journeys/ run reported 2.9s; two clean repeat runs both returned 1.7s. The outlier was contention from back-to-back Lighthouse runs against one preview server, not a regression."
+  ]
+}

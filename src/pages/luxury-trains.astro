@@ -1,0 +1,293 @@
+---
+/**
+ * Luxury Trains landing — PAGE_TEMPLATES T4.
+ * ---------------------------------------------------------------------------
+ * Two rules govern this page and both are invariants rather than preferences:
+ *
+ *   · the GSA credential line sits DIRECTLY under the H1 (T4 §1). It is the
+ *     differentiator most competitors bury, and it is also a required
+ *     disclosure — agent liability is limited and operator terms apply.
+ *   · NO TARIFFS ANYWHERE (CLAUDE.md invariant #6, permanent). All three
+ *     source documents carry published USD prices; every one is suppressed,
+ *     and there is deliberately no price field on a train card to leak from.
+ *
+ * The train cards are generated from `journeys` where variant === 'B', so the
+ * page cannot drift from the itinerary pages it links to.
+ */
+import { getCollection } from 'astro:content';
+
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import JourneyCard from '../components/JourneyCard.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import ConvertBand from '../components/ConvertBand.astro';
+import StickyMobileBar from '../components/StickyMobileBar.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Lotus from '../components/Lotus.astro';
+
+import { heroPreload } from '../lib/hero-image';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+
+/* TEMP-PHOTO — replaced by the client's archive in M5. */
+import heroImage from '../assets/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg';
+
+const trains = (await getCollection('journeys', ({ data }) => !data.draft && data.variant === 'B'))
+  .sort((a, b) => b.data.nights - a.data.nights);
+
+const heroLink = await heroPreload(heroImage);
+
+const WHY = [
+  {
+    title: 'A heritage hotel on wheels',
+    detail:
+      'Cabins panelled in wood, a lounge car, two restaurants and a butler for each carriage. The train is the hotel, and it is a better one than most of the cities it stops in can offer.',
+  },
+  {
+    title: 'Unpack once',
+    detail:
+      'Seven cities in eight days without a single hotel check-in, and without the 6am transfers that a road itinerary across Rajasthan would demand.',
+  },
+  {
+    title: 'Almost everything is included',
+    detail:
+      'Meals, guided excursions at each stop, entrance fees and transfers are part of the fare. What is not included is set out plainly on each journey page.',
+  },
+];
+
+const FAQ = [
+  {
+    question: 'How does booking a luxury train actually work?',
+    answer:
+      'You tell us the departure you want, we check live availability with the operator, and we hold the cabin while you decide. Confirmation follows the operator’s own process — a deposit, then a balance due before departure — and we set out every step on each train’s page before you commit to anything.',
+  },
+  {
+    question: 'Who are these trains actually suited to?',
+    answer:
+      'Travellers who want to cover a great deal of ground without repacking, and who value a fixed, well-run itinerary over flexibility. They suit first visits to Rajasthan and they suit older travellers particularly well. They do not suit anyone who wants to change their mind mid-trip — the departures are fixed and the route is the route.',
+  },
+  {
+    question: 'Why do you not show prices?',
+    answer:
+      'Because operator tariffs move with season, cabin category and occupancy, and a figure on a page is out of date the day it is published. We quote you the current fare for your dates and cabin, from the operator, in writing. It is a permanent policy rather than a gap on the page.',
+  },
+  {
+    question: 'Are you booking directly with the train operator?',
+    answer:
+      'We are an authorised booking agent. The train is operated and the service delivered by the operator, whose terms apply to your booking; our role is arranging it and looking after you around it. Each train page names its operator, and the booking terms are published in full.',
+  },
+  {
+    question: 'When do these trains run?',
+    answer:
+      'The season runs broadly from September to April, with no departures through the Indian summer. Published schedules change year to year, so we confirm current dates against live availability rather than printing a timetable that ages badly.',
+  },
+];
+
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: 'Luxury Trains', url: new URL('/luxury-trains/', Astro.site).href },
+]);
+---
+
+<Base
+  title="India's Luxury Trains — Palace on Wheels & More | India Visit"
+  description="Authorised booking agents for India's legendary luxury trains. Palace on Wheels, the Golden Chariot and the Deccan Odyssey — routes, cabins and how booking works."
+>
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      href={heroLink.href}
+      imagesrcset={heroLink.imagesrcset}
+      imagesizes={heroLink.imagesizes}
+      type={heroLink.type}
+      fetchpriority="high"
+    />
+    <JsonLd schema={crumbs} />
+    <JsonLd schema={faqSchema(FAQ)} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1 · Hero — GSA credential directly under the H1 (T4 §1) ------------ -->
+  <Hero image={heroImage} alt="The panelled interior of a vintage Indian luxury train carriage" height="short">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Luxury Trains</span>
+    </nav>
+    <h1 class="trains__title">India's legendary luxury trains</h1>
+    <p class="trains__gsa">
+      <Lotus size={18} class="trains__mark" />
+      <span>Authorised booking agents — Palace on Wheels and more</span>
+    </p>
+  </Hero>
+
+  <!-- 2 · Why by train --------------------------------------------------- -->
+  <section class="band band-tight" aria-labelledby="why-heading">
+    <div class="container-content">
+      <p class="eyebrow">Why by train</p>
+      <h2 id="why-heading">Seven cities, one unpacking</h2>
+      <ul class="why fade-up-stagger">
+        {
+          WHY.map((item) => (
+            <li class="why__item">
+              <h3 class="why__title">{item.title}</h3>
+              <p class="why__detail">{item.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 · Train cards ----------------------------------------------------- -->
+  <section class="band band-offwhite" aria-labelledby="trains-heading">
+    <div class="container-content">
+      <p class="eyebrow">{trains.length === 1 ? 'The train' : 'The trains'}</p>
+      <h2 id="trains-heading">Choose your train</h2>
+      <p class="trains__note prose-measure">
+        Every fare is quoted for your dates and cabin rather than printed here —
+        operator tariffs move with season and occupancy, and a number on a page
+        is out of date the day it goes up.
+      </p>
+
+      <div class="cards fade-up-stagger">
+        {
+          trains.map((train) => (
+            <JourneyCard
+              slug={train.id}
+              title={train.data.title}
+              image={train.data.heroImage}
+              imageAlt={train.data.heroImageAlt}
+              nights={train.data.nights}
+              days={train.data.days}
+              routeCities={train.data.routeCities}
+              variant={train.data.variant}
+              signatureFeature={train.data.signatureFeature}
+              size="featured"
+            />
+          ))
+        }
+      </div>
+
+      {
+        trains.length < 3 && (
+          <p class="trains__pending">
+            The Golden Chariot and the Deccan Odyssey are content-complete and
+            join this page in M5.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- 4 · Shared FAQ ------------------------------------------------------ -->
+  <FaqAccordion faq={FAQ} heading="Booking a luxury train" id="faq" />
+
+  <!-- 5 · Disclosure note ------------------------------------------------- -->
+  <section class="band band-tight" aria-label="Operator disclosure">
+    <div class="container-content">
+      <p class="disclosure prose-measure">
+        India Visit is an authorised booking agent. Each train is operated by
+        its own operator, whose terms govern your booking and whose liability
+        is set out in those terms. Full detail is published in our
+        <a href="/booking-terms/">booking terms</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6 · Convert ---------------------------------------------------------- -->
+  <div id="enquire">
+    <ConvertBand
+      heading="Check availability for your dates"
+      body="Tell us roughly when you would like to travel and how many of you there are, and we will come back with live cabin availability and the current fare in writing."
+      leadType="journey"
+      waContext="Luxury trains"
+    />
+  </div>
+
+  <Footer slot="footer" />
+  <StickyMobileBar slot="after-footer" waContext="Luxury trains" enquireHref="#enquire" />
+</Base>
+
+<style>
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-on-dark-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-white);
+  }
+
+  .trains__title {
+    font-size: var(--text-hero);
+    line-height: var(--leading-display);
+    color: var(--color-white);
+  }
+
+  /* Directly under the H1, and yellow is legal here because the ground is the
+     hero scrim (invariant #5). This line is a disclosure, not decoration. */
+  .trains__gsa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-yellow);
+  }
+
+  .why {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .why__title {
+    font-size: var(--text-2xl);
+  }
+
+  .why__detail {
+    margin-top: 0.6rem;
+    color: var(--color-ink-muted);
+  }
+
+  .trains__note {
+    margin-top: 1rem;
+    color: var(--color-ink-muted);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
+    gap: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+    margin-top: 2.25rem;
+  }
+
+  .trains__pending {
+    margin-top: 1.75rem;
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--color-ink-muted);
+  }
+
+  .disclosure {
+    padding-left: 1rem;
+    border-left: 3px solid var(--color-burgundy);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+</style>

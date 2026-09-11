@@ -74,11 +74,21 @@ export interface HeroPreload {
 export async function heroPreload(
   image: ImageMetadata,
   widths: number[] = HERO_WIDTHS,
+  /**
+   * Override for an LCP image that is NOT full-bleed — the article hero sits
+   * inside the prose container, so telling the browser `100vw` would have it
+   * pick a candidate roughly twice the width it will ever render at.
+   *
+   * It MUST match the `sizes` on the element itself. A preload whose
+   * `imagesizes` disagrees with the image's own `sizes` selects a different
+   * candidate, and the page then downloads both.
+   */
+  sizes: string = HERO_SIZES,
 ): Promise<HeroPreload> {
   const optimised = await getImage({
     src: image,
     widths,
-    sizes: HERO_SIZES,
+    sizes,
     format: 'avif',
     quality: HERO_QUALITY,
   });
@@ -86,7 +96,7 @@ export async function heroPreload(
   return {
     href: optimised.src,
     imagesrcset: optimised.srcSet.attribute,
-    imagesizes: HERO_SIZES,
+    imagesizes: sizes,
     type: `image/${optimised.options.format ?? 'avif'}`,
   };
 }

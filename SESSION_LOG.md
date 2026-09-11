@@ -784,3 +784,109 @@ replaces it in M5.
    destination pages (T2 v2), luxury-trains landing, travel-guide index and
    article, corporate, about, reviews, plan-my-trip, policy pages, 404, and the
    card→hero View Transition verified end to end.
+
+---
+
+## 2026-09-11 (later) — M4 remaining templates + two rulings
+
+### Rulings applied
+
+**Jaipur hero — swapped, not excepted.** The old stand-in was a Hawa Mahal
+facade: 953 windows of fine repeating detail, the pathological case for AVIF,
+at 59KB where every other hero lands at 25–35KB. Replaced with Amer Fort above
+Maota Lake at golden hour — mostly sky, water and hillside, which compresses
+almost for free. **19KB, and the page went 2.1s → 1.7s**, matching Kochi. Worth
+keeping as a rule: a hero's encoded size is a property of its *content*, and
+the fix for a heavy hero is usually a different photograph rather than a lower
+quality number.
+
+**Scroll cue — kept, and verified.** Its opacity transition and its keyframe
+animation both already sat inside `@media (prefers-reduced-motion:
+no-preference)`, and the animation is transform-only per the motion spec.
+Desktop-only as built. No change was needed.
+
+**Button radius — still unanswered.** The decision has now arrived twice as a
+literal placeholder (`[PILL / 14px]`, then `[PICK ONE: PILL or 14px]`). Pill
+stays live and both options stay on `/dev/components/#buttons`. Locking the
+token and deleting the loser is a one-line change whenever a choice lands; it
+has not been guessed at.
+
+### Every remaining M4 template, built
+
+`/destinations/` (T2a) · 9 × `/destinations/{slug}/` (T2 v2) · `/luxury-trains/`
+(T4) · `/corporate/` (T5) · `/about/` (T6) · `/reviews/` (T7) ·
+`/travel-guide/` (T8) · `/travel-guide/{slug}/` (T9) · `/plan-my-trip/` (T10) ·
+four policy pages (T12) · `/404/` (T13).
+
+**33 pages build. 1,927 internal references. Zero broken links.**
+
+### The judgement calls, so they can be overruled
+
+- **M5 pull-forward, flagged.** Eight destination pages were drafted now. Their
+  prose is M5 work, but the homepage has linked all nine since T1 v2, so eight
+  of the nine were 404s and the M4 gate is a click-through. No new photography
+  was needed. Logged as **CLIENT_REVIEW_SHEET §17**, and three of those pages
+  now carry *policies* rather than descriptions — no elephant rides at Amer, no
+  promised tiger sightings, no Ladakh trip without acclimatisation days.
+- **Seven sections deliberately do not render** (§18): the About timeline (a
+  timeline is nothing but dates and `foundingYear` is null), certifications, the
+  corporate "48-hour proposal" promise, client logos, the reviews aggregate line
+  *and* its `AggregateRating` schema, the guest gallery, and any numeric
+  response-time promise. Each turns on one client fact.
+- **The policy pages publish structure, not law** (§19). `/privacy/`,
+  `/terms/` and `/cancellation/` carry a visible notice and are `noindex` until
+  real copy lands — agency drafting is not legal advice, and a placeholder
+  privacy policy in a search index is the version people quote back at you.
+  `/booking-terms/` is the exception and is already real: it is built from the
+  operator disclosures and policies in the journey entries, pulled live rather
+  than retyped.
+- **Plan My Trip's stepper is progressive enhancement.** All four fieldsets are
+  in the HTML and the form submits as one long form without JavaScript —
+  verified in the built output. A multi-step form that needs script to be
+  submittable is a lead-capture page that loses leads silently.
+- **Destination journeys are manual only.** CLAUDE.md calls it "auto by tag +
+  manual override"; journeys carry no destination reference, so the only
+  automatic basis available would be fuzzy-matching a region name against a
+  title. That files trips wrongly and does it silently. The tag arrives in M5.
+
+### New check — `npm run check:links`
+
+M4's gate is a click-through and nobody clicks every link on 33 pages; with
+`trailingSlash: 'always'` a missing slash is a 404 too. It walks the built
+output and separates genuinely broken links from routes that are specified but
+unwritten. Its pending list was exactly the rest of M4, which made it a to-do
+list that could not go stale. It is now empty.
+
+### Gate evidence (Lighthouse mobile, simulated)
+
+| | `/` | `/journeys/` | GT | `/cities/jaipur/` | `/luxury-trains/` | `/about/` | `/plan-my-trip/` | article |
+|---|---|---|---|---|---|---|---|---|
+| Performance | 100 | 100 | 100 | 100 | 100 | 100 | 100 | 99 |
+| LCP | 1.7s | 1.7s | 1.7s | **1.7s** | 1.7s | 1.7s | 1.5s | **2.3s** |
+| CLS / TBT | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms | 0 / 0ms |
+
+Accessibility, best-practices and SEO are 100 on every page measured. Full
+figures in `reports/m4-templates-gate-summary.json`.
+
+**One target missed by 0.3s:** the article template at **2.3s**, inside the
+2.5s ceiling. Same cause as the Jaipur hero — a detailed TEMP-PHOTO master.
+Preloading it as AVIF took it from 2.6s to 2.3s; the rest is the photograph,
+and M5 replaces it.
+
+**A measurement note worth keeping.** An early `/journeys/` run reported 2.9s
+and P95. Two clean repeat runs both returned 1.7s and P100 — the outlier was
+contention from three Lighthouse runs queued against one preview server. The
+figure that went in the gate summary is the repeated one, not the first one.
+
+### Exact next action
+
+1. **Client:** review the remaining templates on the PR #3 preview. Desktop and
+   mobile captures attached for the design-significant ones.
+2. **Button radius** — still needs an actual pick (A pill / B 14px).
+3. **CLIENT_REVIEW_SHEET §14–§19** — founder fields, hero-video brief, the two
+   city pages, the eight destination pages (three of which publish policies),
+   the seven deliberately-missing sections, and ⚑ **the legal copy for three
+   policy pages**.
+4. **Then M5:** the remaining 17 itineraries, 7 more articles, real photography
+   replacing all 40 TEMP-PHOTO files and the TEMP-VIDEO clip, and the
+   destination reference on journeys that turns the auto-tagging on.
