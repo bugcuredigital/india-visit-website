@@ -1,0 +1,34 @@
+{
+  "milestone": "M7 \u2014 Tina CMS wiring (pulled forward ahead of M6 by client ruling)",
+  "date": "2026-09-12",
+  "branch": "m7-tina (stacked on m5-content)",
+  "packages": {
+    "tinacms": "3.13.0",
+    "@tinacms/cli": "2.7.0",
+    "node": "26.7.0"
+  },
+  "config": "tina/config.ts mirrors src/content.config.ts for journeys, destinations, cities, posts, testimonials, siteSettings \u2014 camelCase names identical; Zod remains the validator",
+  "media": "repo-based, /public/uploads/ (locked). Image fields map /uploads/<f> (editor) \u2194 ../../../public/uploads/<f> (file); verified: a file in public/uploads referenced that way builds 13 AVIF/WebP variants",
+  "editing_mode": "forms-based for every collection at /admin. Visual editing deliberately absent: it needs output:'server', forbidden by the locked static stack",
+  "smoke_tests": {
+    "phone_change_via_real_form": "PASS \u2014 saved through the /admin form (23 settings keys preserved), built, present on the homepage and every footer",
+    "journey_field_via_real_form": "PASS \u2014 signatureFeature saved, Zod-clean build, present on the page",
+    "create_article_end_to_end": "PASS \u2014 createPosts wrote an Astro-valid .md; build accepted it (draft, so unrendered)",
+    "image_upload": "PASS \u2014 POST /media/upload/<file> landed in public/uploads; a settings entry referencing it built 13 optimised variants served from /_astro/",
+    "invalid_entry": "PASS \u2014 phoneHref 'abc' \u2192 build refused naming the field; dist/ untouched (site stays up)",
+    "api_partial_update_caveat": "updateSiteSettings with partial params REPLACES the settings object \u2014 an API-only hazard; the form submits the full document. Recorded so nobody scripts partial updates"
+  },
+  "bugs_found_by_the_smoke_tests": [
+    "ui.parse/format called .startsWith on the raw field value; for image LIST fields that is an array (gallery: []), which threw 'value.startsWith is not a function' and blanked the journey form \u2014 mappers are now string-guarded and array-aware, with a unit test",
+    "reference arrays modelled as object lists saved related: [{}], which Zod refused \u2014 now plain slug lists",
+    "the settings singleton renders as one collapsed 'Settings' group (the JSON nests under its id) \u2014 one click to open; noted in the cheat sheet"
+  ],
+  "build": "scripts/build.mjs runs `tinacms build` only when TINA_PUBLIC_CLIENT_ID and TINA_TOKEN are set, then `astro build`; Cloudflare deploys keep working without credentials",
+  "gate": "OPEN \u2014 the M7 gate is the owner's own dashboard session, which needs a Tina Cloud project (CLIENT_REVIEW_SHEET \u00a726). Everything the session exercises is proven locally.",
+  "docs": [
+    "docs/CMS_CHEATSHEET.md",
+    "CLAUDE.md TinaCMS section",
+    "EXECUTION_RUNBOOK M7 step 2 superseded (forms, not visual)",
+    "CLIENT_REVIEW_SHEET \u00a726"
+  ]
+}

@@ -18,6 +18,17 @@ Portfolio + lead-generation website for **India Visit**, a travel consultancy (2
 
 Rejected (do not reintroduce, reasons in CONTEXT.md): WordPress, Strapi, Next.js, Vercel, Tina hosted media, client-side CMS fetching.
 
+### TinaCMS — how it is wired (M7)
+
+- **`tina/config.ts` mirrors `src/content.config.ts` field-for-field, and Zod stays the validator.** Tina is the editor; a save that breaks a rule fails the *build* loudly and the last good deploy stays live. Constraints Tina cannot express (Variant B modules required on B, glance rows = days) are stated in field descriptions.
+- **Forms-based editing for every collection, no visual editing.** Tina's contextual editing on Astro now requires `output: 'server'`; the stack is static-only with no exceptions, so the admin at `/admin` is the editor. The M7 gate (edit text, swap an image, change a number, publish a draft article — without touching code) is met through it.
+- **Media stays in `/public/uploads/`** (repo-based, as locked) **and images stay on `astro:assets`** (invariant #3). Verified by experiment: a content entry referencing `../../../public/uploads/<file>` builds the full AVIF/WebP set. Every image field carries the same `ui.parse`/`ui.format` pair — the editor sees `/uploads/<file>`, the file holds `../../../public/uploads/<file>`; `src/assets` paths (the TEMP-PHOTO set) pass through untouched. These mappers are **string-guarded and array-aware**: Tina hands them the raw value, which for a list field is the array, and an unguarded `.startsWith` took the whole journey form down in the first smoke test.
+- **Reference arrays are plain slug lists** (`related`, `relatedJourneys`, `embeddedJourneys`): Tina cannot list a reference field, and wrapping one in an object list saved `[{}]`, which Zod refused. The single `tripRef` on testimonials is a real reference with a path↔id mapping.
+- **Bodies are plain textareas, not rich-text.** Rich-text round-trips through an MDX AST and can re-serialise the prose; a textarea gives it back byte for byte.
+- **A CMS save rewrites a file's frontmatter** — YAML comments are dropped and strings requoted. That is expected: every flag that matters is a *field* (`provisional`, `placeholder`, `draft`, `_dummyDataFlags`), and TEMP-PHOTO tracking is by filename. Do not put anything load-bearing in a frontmatter comment.
+- **`npm run build` is `scripts/build.mjs`:** it runs `tinacms build` only when `TINA_PUBLIC_CLIENT_ID` and `TINA_TOKEN` are set, then `astro build`. Adding those two variables in Cloudflare Pages is what switches the admin on in production. `npm run dev` is `tinacms dev -c "astro dev"`; `dev:astro` is the plain server.
+- **Committed:** `tina/config.ts`, `tina/tina-lock.json`. **Ignored:** `tina/__generated__/`, `public/admin/`.
+
 ## Skill precedence
 
 The globally installed **`ui-ux-pro-max`** skill does not get to design this site.
@@ -180,8 +191,9 @@ Trailing slashes on. Never change a published URL without a 301 in `_redirects`.
 ## Commands
 
 ```bash
-npm run dev        # plain `astro dev` until M7; becomes tinacms dev -c "astro dev" when Tina lands
-npm run build      # production build (must pass before any push to main)
+npm run dev        # tinacms dev -c "astro dev" — the editor at /admin/index.html plus the site (M7)
+npm run dev:astro  # the plain Astro dev server, no CMS
+npm run build      # scripts/build.mjs — tinacms build when cloud credentials exist, then astro build
 npm run preview    # verify built output locally
 npm run pdf:build  # print the 20 branded itinerary PDFs from the built journey pages (needs preview running)
 ```

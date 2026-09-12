@@ -1,6 +1,6 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
-**Updated:** 2026-09-11 (M5 content migration) · **Branch:** `m5-content` (from `m4-templates`, PR #3 still open)
+**Updated:** 2026-09-12 (M7 Tina wiring) · **Branch:** `m7-tina` (stacked on `m5-content` PR #4, on `m4-templates` PR #3 — both open)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
@@ -13,8 +13,8 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 |---|---|---|
 | M0 Pre-flight · M1 Scaffold · M2 Schema · M3 Components | **Merged** | passed |
 | M4 Page templates (three design rounds) | **Built, PR #3 open** | gate evidence posted; the round-3 DESIGN VERDICT arrived as a placeholder and is awaited |
-| **M5 Content migration** | **Built — this branch** | evidence in `reports/m5-gate-summary.json`; two ⚑ items below |
-| M7 Tina CMS *(pulled forward — runs next)* | not started | the owner edits, swaps an image and publishes from the dashboard |
+| M5 Content migration | **Built — PR #4** | evidence in `reports/m5-gate-summary.json`; two ⚑ items below |
+| **M7 Tina CMS** *(pulled forward)* | **Wired — this branch** | smoke tests pass locally (`reports/m7-gate-summary.json`); the gate is the owner's own dashboard session, which needs a Tina Cloud project (§26) |
 | M6 Forms, lead function, GTM *(runs after M7)* | not started | test lead in inbox + Sheet; Turnstile server-verified; PDF release |
 | M8 SEO, analytics, hardening · M9 Launch | not started | PRD §16 checklist |
 
@@ -55,7 +55,9 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 
 ## Next action
 
-Client review of the M5 evidence and §22–§25; then **M7 — Tina wiring** on a
-`m7-tina` branch: `tina/config.ts` mirroring every Zod schema field-for-field,
-repo media to `/public/uploads/`, editor smoke tests, and the dashboard
-session that is the M7 gate.
+1. **Client:** create the Tina Cloud project and put its two values in the
+   Cloudflare Pages environment (§26) — that switches `/admin` on in
+   production with no code change; then the screen-share dashboard session
+   that is the M7 gate.
+2. Review of the M5 evidence and §22–§25 stands.
+3. Then **M6** — forms, the lead function, the PDF release, GTM — on `m6-forms`.
