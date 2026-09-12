@@ -75,9 +75,9 @@ webhook and GTM all sit on the built output and the settings singleton).
 ## M7 — Tina wiring (Day 10–12) — *runs immediately after M5 since the 2026-09-11 resequence*
 
 1. `tina/config.ts` mirroring the Zod schemas field-for-field; repo-based media to `/public/uploads/`
-2. Visual editing on: journeys, posts, destinations, siteSettings; forms-only fallback acceptable for testimonials
+2. ~~Visual editing on: journeys, posts, destinations, siteSettings; forms-only fallback acceptable for testimonials~~ **Superseded in M7:** Tina's visual (contextual) editing on Astro requires `output: 'server'`, which CLAUDE.md's locked static stack forbids. **Forms-based editing for every collection** through `/admin` — journeys, destinations, cities, posts, testimonials and the settings singleton — is what ships, and it satisfies the gate below without an exception to the stack
 3. **Fallback trigger:** if visual editing costs > 1.5 days of fighting, switch to Sveltia on the same content files — do not burn the schedule. **Requires the client's explicit sign-off before activating** (standing rule: documented hedges — Sveltia, Cloudinary, Web3Forms — are surfaced and approved, not switched on unilaterally)
-4. Editor smoke tests: change phone number in settings → live in one build; create a BlogPost end-to-end; upload image ≤2000px; attempt an invalid entry → build fails, site stays up, rollback works
+4. Editor smoke tests: change phone number in settings → live in one build; create a BlogPost end-to-end; upload image ≤2000px; attempt an invalid entry → build fails, site stays up, rollback works. **M7 results:** phone changed through the real form → in the built homepage and every footer; a journey field changed the same way → Zod-clean build; an article created through the API → Astro-valid file, built; an invalid `phoneHref` → build refused with the field named, `dist/` untouched. an image uploaded through the media API landed in `/public/uploads/`, and a settings entry referencing it built thirteen AVIF/WebP variants served from `/_astro/` — the whole upload → `image()` → optimised path, end to end
 5. Client walkthrough ⚑ + one-page cheat sheet (edit, publish, undo)
 
 **Gate:** the client herself successfully edits text, swaps an image, changes a phone number, and publishes a draft article on a screen-share — without touching code.
