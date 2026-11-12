@@ -280,8 +280,8 @@ const journeyVariantB = (image: () => z.ZodTypeAny) =>
         )
         .min(1),
 
-      /** "India Visit is an authorised booking agent (GSA); the train is
-       *  operated by RTDC. Operator terms apply." Never buried. */
+      /** Neutral operator attribution: "Operated by RTDC… Operator terms
+       *  apply." Never an agent/GSA claim (client ruling 2026-11-12). */
       operatorDisclosure: z.string().min(1),
       operatorName: z.string().min(1),
       /** Every B page links here (invariant #6). */

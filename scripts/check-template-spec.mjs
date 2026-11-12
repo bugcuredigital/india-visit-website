@@ -128,9 +128,15 @@ for (const { slug, html } of pages) {
   if (isVariantB) {
     const cabinSection = html.match(/<section[^>]*id="cabins"[\s\S]*?<\/section>/)?.[0] ?? '';
     check(
-      'operator disclosure sits in the cabin section header (Variant B)',
-      /authorised booking agent|GSA|operated by/i.test(cabinSection),
+      'operator attribution sits in the cabin section header (Variant B)',
+      /operated by/i.test(cabinSection) && /operator terms apply/i.test(cabinSection),
       cabinSection ? 'found in the cabin section' : 'no cabin section',
+    );
+    /* Client ruling 2026-11-12: neutral operator attribution only. */
+    check(
+      'no agent / GSA claim anywhere on the page (Variant B)',
+      !/authori[sz]ed (booking )?agents?|\bGSA\b|liability is that of (a )?booking agent/i.test(html),
+      'agent claim found',
     );
     check(
       'links to /booking-terms/ (Variant B)',

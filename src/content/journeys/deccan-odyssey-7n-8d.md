@@ -271,11 +271,10 @@ policies:
 # Client to confirm the operator name and the disclosure wording (PRD Open
 # Question #15, CLIENT_REVIEW_SHEET.md §22).
 operatorName: Maharashtra Tourism Development Corporation (train tour operator)
+# Neutral operator attribution only — client ruling 2026-11-12: no agent/GSA claims.
 operatorDisclosure: >-
-  India Visit is an authorised booking agent for the Deccan Odyssey. The train
-  is run by its train tour operator, Maharashtra Tourism Development
-  Corporation, and the operator's terms apply to your journey. Our liability is
-  that of booking agent.
+  Operated by Maharashtra Tourism Development Corporation, its train tour
+  operator. Operator terms apply to your journey.
 bookingTermsUrl: /booking-terms/
 
 practicalNotes:
@@ -307,7 +306,7 @@ featured: false
 
 seo:
   metaTitle: Deccan Odyssey — Heritage Odyssey, 7 Nights / 8 Days from Delhi
-  metaDescription: Book the Deccan Odyssey's Heritage Odyssey through an authorised agent — Delhi to Delhi by way of Agra, Ranthambore, Udaipur, Jodhpur, Jaisalmer and Jaipur, cabins explained.
+  metaDescription: The Deccan Odyssey's Heritage Odyssey, Delhi to Delhi by way of Agra, Ranthambore, Udaipur, Jodhpur, Jaisalmer and Jaipur, cabins explained.
 ---
 
 The Deccan Odyssey's Heritage Odyssey is the western circuit: Delhi to Agra
@@ -317,7 +316,6 @@ Thar and Jaipur's forts and bazaars — before the train brings you back to the
 capital. Seven nights aboard, the distances covered while you sleep, and every
 excursion, meal and guide arranged before you board.
 
-India Visit books this journey as an authorised agent: the operator runs the
-train and we handle everything around it. The day-by-day programme on this
+The operator runs the train, and we handle everything around it. The day-by-day programme on this
 page follows the operator's route and highlights; the operator's own daily
 timings are supplied with your booking.

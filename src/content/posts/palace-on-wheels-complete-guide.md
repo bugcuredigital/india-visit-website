@@ -26,8 +26,7 @@ faq:
   - question: Is India Visit the operator?
     answer: >-
       No. The train is owned and operated by RTDC, the Rajasthan Tourism
-      Development Corporation. India Visit is an authorised booking agent: we
-      arrange the booking, hold the cabin, handle the paperwork and look after
+      Development Corporation. We arrange the booking, hold the cabin, handle the paperwork and look after
       you around the journey, and the operator's terms govern the booking.
   - question: When does the train run?
     answer: >-
@@ -125,11 +124,9 @@ book — is on our [booking terms](/booking-terms/) page.
 
 ## What we do, and what the operator does
 
-India Visit is an **authorised booking agent** for the Palace on Wheels. The
-train is owned and operated by RTDC, the Rajasthan Tourism Development
-Corporation, Government of Rajasthan, and the operator's terms apply to your
-journey. Our liability is that of booking agent. In practice that means we
-arrange the booking, hold the cabin, handle the paperwork and look after you
+The Palace on Wheels is owned and operated by RTDC, the Rajasthan Tourism
+Development Corporation, Government of Rajasthan, and the operator's terms
+apply to your journey. In practice that means we arrange the booking, hold the cabin, handle the paperwork and look after you
 around the journey; the operator runs the train.
 
 The itinerary below is the journey in full, day by day.
