@@ -32,6 +32,7 @@ import JsonLd from '../components/JsonLd.astro';
 import { getSiteSettings, whatsappLink } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
 import { DESTINATIONS } from '../lib/destinations-strip';
+import { FORMS_LIVE, FORMS_PENDING_LABEL } from '../lib/forms';
 
 const settings = await getSiteSettings();
 
@@ -333,8 +334,8 @@ const crumbs = breadcrumbSchema([
             <button type="button" class="nav__back tap-target" data-back hidden>Back</button>
             <button type="button" class="nav__next tap-target" data-next hidden>Next</button>
             <span class="nav__submit" data-submit>
-              <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit">
-                Send it over
+              <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit" disabled={!FORMS_LIVE}>
+                {FORMS_LIVE ? 'Send it over' : FORMS_PENDING_LABEL}
               </Button>
             </span>
           </div>

@@ -73,9 +73,20 @@ const tagProps = href
     background: none;
   }
 
+  /* Disabled reads as "not yet", never as a faded CTA: no fill, a hairline
+     edge and muted text that still clears AA, because the label is the
+     explanation (the pre-launch forms, src/lib/forms.ts). Outranks every
+     variant's rest colours on specificity. */
   .btn:disabled {
-    opacity: 0.5;
     cursor: not-allowed;
+    background-color: transparent;
+    border-color: var(--color-burgundy-hairline);
+    color: var(--color-ink-muted);
+  }
+
+  .btn--on-dark:disabled {
+    border-color: color-mix(in srgb, var(--color-on-dark) 35%, transparent);
+    color: var(--color-on-dark-muted);
   }
 
   /* ---- Variants ------------------------------------------------------- */

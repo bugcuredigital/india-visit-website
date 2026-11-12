@@ -1161,3 +1161,54 @@ runs only locally, which is enough for a screen-share.
 2. **M6** on `m6-forms`: the lead function, Turnstile, Resend, the Sheet
    webhook, GTM via Partytown — and step 2a, the PDF release with the files
    moved out of `public/`.
+
+---
+
+## 2026-11-12 — Demo day: M4 approved, three PRs merged, demo polish (branch `demo-polish`)
+
+**Resumed after five weeks.** No commits anywhere in the gap. The `gh` CLI's
+active account had become `bugcure-heartfulness`, which cannot merge on this
+repository; the merges ran as `bugcuredigital` (the account that opened the
+PRs) through a per-command token, leaving the active account unchanged.
+
+**DESIGN VERDICT (M4): APPROVED** by the client. PRs #3 → #4 → #5 merged into
+`main` in that order, as merge commits so the stacked branches kept their
+history (#4 and #5 retargeted to `main` before each merge). Production
+(https://india-visit-website.pages.dev) rebuilt and showed all 20 journeys
+about six minutes after the last merge; every key route 200.
+
+**Forms — the instruction offered two options; the disabled one was taken.**
+Every form posts to `/api/lead`, which answers 405 until M6, so a submit
+navigated to an error page. All three forms (the shared `EnquiryForm` — footer,
+ConvertBand, corporate, the PDF gate — plus Plan-My-Trip and the newsletter)
+now read one switch, `FORMS_LIVE` in `src/lib/forms.ts`, and while it is false
+the submit button is disabled and says "Launching shortly" (the client's own
+words; COPY_REGISTER §O1). A "we'll call you" success state was the other
+option and was not used: with nothing behind the form it would promise a call
+to a real visitor on a public URL. `.btn:disabled` no longer fades to 50% —
+it was illegible on crimson — and reads as muted text on a hairline edge
+instead (AA on every ground). 123 submit buttons, all disabled. Runbook M6
+step 2b records the flip.
+
+**Defect found in the demo sweep and fixed: doubled transport labels.** The
+chip printed its mode label before a detail that already began with one —
+"Drive — Drive — 274 km" — sixty-one times across sixteen journeys. Fixed in
+the component (a detail that opens with its own mode word is shown alone), so
+it covers every call site and every future CMS edit; 0 remain.
+
+**Not done — the phone number.** The instruction carried the literal
+placeholder `[CLIENT'S REAL NUMBER / or my number +91XXXXXXXXXX]`, so phone,
+WhatsApp and email stay dummy and flagged. When the values arrive: Site
+settings, then `npm run pdf:build` in the same change — the 20 PDFs carry the
+dummy phone and email in their printed header, and still show the doubled
+chips until that reprint.
+
+**Gate checks on this change:** build clean · Template Spec 20/20 ·
+`check:cms-images` pass · `check-responsive` pass 360–1440.
+
+### Exact next action
+
+1. **Client:** the real phone / WhatsApp / email (and address, or a decision
+   to leave it dummy); the demo-sweep list in the hand-off (founder quote,
+   provisional-day notices, empty reviews).
+2. Then M6 on `m6-forms`, which ends with `FORMS_LIVE = true`.
