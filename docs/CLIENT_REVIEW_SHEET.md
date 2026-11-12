@@ -528,3 +528,35 @@ the slug + `.pdf` to the site root — e.g.
 `/downloads/golden-triangle-5n-6d.pdf` — or ask and we will send the set.
 The photography in them is the TEMP-PHOTO set and is replaced with the pages
 when your archive lands; regenerating all twenty is one command.
+
+
+---
+
+## 26. The editor — what we need from you for the M7 gate (added M7)
+
+The CMS is wired and every collection edits through `/admin`. The gate is
+**your own session**: on a screen-share, you edit a line of text, swap an
+image, change the phone number and publish a draft article, without touching
+code. Two things have to exist first:
+
+1. **A Tina Cloud project** (free tier), created under an account you own,
+   connected to the GitHub repository. It gives us two values —
+   `TINA_PUBLIC_CLIENT_ID` and `TINA_TOKEN` — which go into the Cloudflare
+   Pages environment; the site's build switches the editor on the moment they
+   are there, with no code change. Until then the editor runs only on the
+   agency's machine, which is enough for the screen-share but not for you to
+   use it yourself.
+2. **Your GitHub or email login** for that Tina Cloud project, so the
+   commits the editor makes are attributed to you.
+
+**What to expect the first time you save a page:** the file's formatting
+changes (quotes, line wrapping) and the internal notes we left in the
+frontmatter disappear. That is normal — nothing you can see on the site is
+in those notes — and it only happens once per file.
+
+**One-page cheat sheet:** `docs/CMS_CHEATSHEET.md`.
+
+**Documented hedge, still requiring your sign-off before use:** if the Tina
+Cloud free tier or the editor fights us for more than a day and a half, the
+runbook's fallback is Sveltia on the same content files. It has not been
+needed.

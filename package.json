@@ -7,8 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "tinacms dev -c \"astro dev\"",
+    "build": "node scripts/build.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
@@ -32,7 +32,10 @@
     "check:hero-contrast": "node scripts/check-hero-contrast.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check:cms-images": "node scripts/check-cms-images.mjs",
-    "pdf:build": "node scripts/build-pdfs.mjs"
+    "pdf:build": "node scripts/build-pdfs.mjs",
+    "dev:astro": "astro dev",
+    "build:astro": "astro build",
+    "cms:build": "tinacms build"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
@@ -42,7 +45,9 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@tailwindcss/vite": "^4.1.0",
+    "@tinacms/cli": "^2.7.0",
     "tailwindcss": "^4.1.0",
+    "tinacms": "^3.13.0",
     "typescript": "^5.7.0"
   },
   "allowScripts": {

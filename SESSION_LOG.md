@@ -1112,3 +1112,52 @@ except the article template at P99 / 2.0s. Full figures:
 3. **M6 inherits** the PDF release step: files out of `public/downloads/`,
    released by the lead function after a verified gate submit — and a size
    budget for them (0.8–3.8 MB each today).
+
+---
+
+## 2026-09-12 — M7 Tina CMS wiring (branch `m7-tina`, stacked on M5)
+
+**Done.** `tina/config.ts` mirrors every Zod collection field-for-field
+(journeys with both variants, destinations, cities, posts, testimonials, the
+settings singleton), pinned to tinacms 3.13.0 / @tinacms/cli 2.7.0. Media is
+repo-based in `/public/uploads/` as locked; `npm run build` is a conditional
+script so Cloudflare deploys keep working until the client's Tina Cloud
+credentials exist. Cheat sheet at `docs/CMS_CHEATSHEET.md`.
+
+**Two things the docs did not cover, decided and recorded.** (1) Astro's
+`image()` versus Tina's `/uploads/` paths: settled by experiment — a content
+entry referencing `../../../public/uploads/<file>` builds the full AVIF/WebP
+set, so every image field carries a path mapping and invariant #3 holds with
+the locked media folder. (2) Tina's visual editing on Astro now requires SSR,
+which the stack forbids; **forms-based editing for every collection** ships
+instead and satisfies the gate. Runbook M7 step 2 is superseded accordingly.
+
+**The smoke tests found three bugs in my own config before the client could.**
+The path mappers called `.startsWith` on raw values — for image *list* fields
+that is an array, and `gallery: []` blanked the entire journey form. Reference
+arrays modelled as object lists saved `related: [{}]`, which Zod refused. And
+the API's `updateSiteSettings` with partial params *replaces* the settings
+object — the form submits the whole document, so it is an API-only hazard,
+recorded so nobody scripts partial updates. All three were caught by driving
+the real form over CDP rather than by the API tests, which bypass the mappers.
+
+**Smoke-test results (runbook M7 step 4):** phone changed through the real form
+→ built → on the homepage and every footer; a journey field the same way →
+Zod-clean build; an article created end to end → Astro-valid, built; an image
+uploaded through the media API → in `/public/uploads/` → thirteen optimised
+variants served; an invalid `phoneHref` → build refused naming the field,
+`dist/` untouched. Every test edit reverted; the content tree is clean.
+
+**Gate: OPEN, on the client's side.** The M7 gate is the owner's own dashboard
+session. It needs a Tina Cloud project under their account and its two
+values in the Cloudflare environment (review sheet §26); until then the editor
+runs only locally, which is enough for a screen-share.
+
+### Exact next action
+
+1. **Client:** Tina Cloud project + the two environment variables (§26); then
+   the screen-share session. Review of the M5 evidence (§22–§25) and the M4
+   design verdict placeholder both still stand.
+2. **M6** on `m6-forms`: the lead function, Turnstile, Resend, the Sheet
+   webhook, GTM via Partytown — and step 2a, the PDF release with the files
+   moved out of `public/`.

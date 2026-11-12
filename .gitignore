@@ -41,3 +41,9 @@ docs/references/*.png
 
 # Raw review captures. The committed evidence is the JPEG set beside them.
 reports/**/*.png
+
+# TinaCMS — the compiled /admin editor and the generated client are build
+# artefacts (scripts/build.mjs rebuilds them when Tina Cloud credentials are
+# present). tina/tina-lock.json IS committed: Tina Cloud reads it.
+public/admin/
+tina/__generated__/
