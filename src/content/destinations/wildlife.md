@@ -8,7 +8,7 @@ tagline: Tiger, leopard and rhino, in reserves chosen for the animals rather tha
 region: india
 order: 6
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-wildlife.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-wildlife.jpg
 heroImageAlt: A tiger resting in warm light on dry grass
 
 intro: >-

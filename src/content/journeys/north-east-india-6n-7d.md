@@ -6,7 +6,7 @@ signatureFeature: Living Hills, Clear Rivers and One-Horned Rhino
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this in M5; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-north-east.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-north-east.jpg
 heroImageAlt: A deep green valley in the Khasi Hills with a waterfall falling in the distance
 gallery: []
 

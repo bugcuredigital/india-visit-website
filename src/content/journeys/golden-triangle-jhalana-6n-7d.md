@@ -6,7 +6,7 @@ signatureFeature: Delhi · Agra · Jaipur, and a Leopard Safari Inside the City
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-gt-jhalana.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-gt-jhalana.jpg
 heroImageAlt: A leopard standing on a rock in dry scrub forest
 gallery: []
 

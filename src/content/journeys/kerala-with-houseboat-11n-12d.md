@@ -6,7 +6,7 @@ signatureFeature: 1 Night Aboard a Traditional Houseboat
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this in M5; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-kerala-houseboat.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-kerala-houseboat.jpg
 heroImageAlt: A kettuvallam houseboat drifting on the Kerala backwaters at sunset, palms reflected in still water
 gallery: []
 

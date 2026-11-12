@@ -10,7 +10,7 @@ signatureFeature: The Indus Monasteries, the Zoji La and the Lakes of Srinagar
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-leh-ladakh.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-leh-ladakh.jpg
 heroImageAlt: Thiksey monastery stacked up its hillside above the Indus valley, Ladakh
 gallery: []
 

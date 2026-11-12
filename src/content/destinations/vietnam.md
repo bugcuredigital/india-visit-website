@@ -8,7 +8,7 @@ tagline: A thousand miles of coast, three distinct cuisines and a bay full of li
 region: beyond-india
 order: 9
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-vietnam.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-vietnam.jpg
 heroImageAlt: Boats among the limestone karsts of Ha Long Bay
 
 intro: >-

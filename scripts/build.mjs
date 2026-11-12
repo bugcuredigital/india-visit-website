@@ -20,6 +20,10 @@ const run = (cmd, args) => {
   if (result.status !== 0) process.exit(result.status ?? 1);
 };
 
+// Fails fast, listing every image path a CMS save has corrupted (or would),
+// before Astro stops at the first ImageNotFound.
+run('node', ['scripts/check-image-paths.mjs']);
+
 if (hasCloud) {
   console.log('\n[build] Tina Cloud credentials present — building the /admin editor.\n');
   run('npx', ['tinacms', 'build']);

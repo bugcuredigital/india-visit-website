@@ -12,7 +12,7 @@ signatureFeature: Trivandrum to Kochi by Way of Kanyakumari, the Backwaters and 
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-kerala-trivandrum.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-kerala-trivandrum.jpg
 heroImageAlt: The curve of Kovalam beach with the lighthouse on the headland beyond
 gallery: []
 

@@ -8,7 +8,7 @@ tagline: Living root bridges, the wettest villages on earth, and the quietest co
 region: india
 order: 5
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-north-east.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-north-east.jpg
 heroImageAlt: Green hills of Meghalaya under low cloud
 
 intro: >-

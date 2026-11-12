@@ -12,7 +12,7 @@ signatureFeature: Homestays, a Trek to Nongriat and the World's Largest River Is
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-north-east-roots.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-north-east-roots.jpg
 heroImageAlt: The double-decker living root bridge at Nongriat, grown from the roots of rubber trees across a forest stream
 gallery: []
 

@@ -8,7 +8,7 @@ tagline: High desert, Tibetan monasteries and light that behaves differently at 
 region: india
 order: 4
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-ladakh.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-ladakh.jpg
 heroImageAlt: A turquoise high-altitude lake below bare Himalayan peaks in Ladakh
 
 intro: >-

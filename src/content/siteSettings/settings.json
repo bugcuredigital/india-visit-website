@@ -23,14 +23,14 @@
     "yearsExperience": 20,
     "supportPromise": "24/7 On-Trip Support",
     "homeHero": {
-      "poster": "../../assets/temp-video/TEMP-VIDEO-home-hero-poster.jpg",
+      "poster": "/uploads/TEMP-VIDEO-home-hero-poster.jpg",
       "posterAlt": "The Taj Mahal in silhouette against an amber sunrise sky",
       "videoWebm": null,
       "videoMp4": "/uploads/TEMP-VIDEO-home-hero.mp4"
     },
     "pageHeroes": {
       "luxuryTrains": {
-        "image": "../../assets/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg",
+        "image": "/uploads/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg",
         "alt": "The panelled interior of a vintage Indian luxury train carriage"
       }
     },

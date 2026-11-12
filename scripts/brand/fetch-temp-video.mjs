@@ -57,7 +57,7 @@ import { basename, join } from 'node:path';
 import sharp from 'sharp';
 
 const VIDEO_DIR = 'public/uploads';
-const POSTER_DIR = 'src/assets/temp-video';
+const POSTER_DIR = 'public/uploads';
 const PROVENANCE = 'docs/brand/processed/TEMP-VIDEO-PROVENANCE.md';
 
 /** Poster master. 16:9 to match the footage exactly — a poster cropped to a

@@ -6,7 +6,7 @@ signatureFeature: Delhi · Agra · Jaipur in Six Unhurried Days
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this in M5; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-golden-triangle.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-golden-triangle.jpg
 heroImageAlt: The Taj Mahal at Agra standing against a warm golden-hour sky
 gallery: []
 
@@ -66,7 +66,7 @@ itineraryDays:
       what it wanted to be.
     # TEMP-PHOTO stand-ins — replaced by the client's archive in M5.
     dayImages:
-      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-delhi-humayun.jpg
+      - /uploads/temp-photos/TEMP-PHOTO-day-gt-delhi-humayun.jpg
     overnight: Overnight in Delhi
   - dayNo: 2
     title: Into Rajasthan — Delhi to Jaipur
@@ -92,9 +92,9 @@ itineraryDays:
       sky. Hawa Mahal's honeycomb facade is best seen from the street.
     # TEMP-PHOTO stand-ins — replaced by the client's archive in M5.
     dayImages:
-      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-jaipur-amber.jpg
-      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-jaipur-hawa-mahal.jpg
-      - ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
+      - /uploads/temp-photos/TEMP-PHOTO-day-gt-jaipur-amber.jpg
+      - /uploads/temp-photos/TEMP-PHOTO-day-gt-jaipur-hawa-mahal.jpg
+      - /uploads/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
     overnight: Overnight in Jaipur
   - dayNo: 4
     title: Fatehpur Sikri — A Capital Abandoned
@@ -121,8 +121,8 @@ itineraryDays:
       inlay workshops the city still lives by.
     # TEMP-PHOTO stand-ins — replaced by the client's archive in M5.
     dayImages:
-      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-agra-taj-trees.jpg
-      - ../../assets/temp-photos/TEMP-PHOTO-day-gt-agra-taj-reflection.jpg
+      - /uploads/temp-photos/TEMP-PHOTO-day-gt-agra-taj-trees.jpg
+      - /uploads/temp-photos/TEMP-PHOTO-day-gt-agra-taj-reflection.jpg
     overnight: Overnight in Agra
   - dayNo: 6
     title: Agra — Departure

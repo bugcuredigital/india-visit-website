@@ -6,7 +6,7 @@ signatureFeature: The Golden Temple, the Ganges and the Taj in Twelve Days
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-gt-amritsar.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-gt-amritsar.jpg
 heroImageAlt: The Golden Temple at Amritsar reflected in the still water of the Amrit Sarovar
 gallery: []
 

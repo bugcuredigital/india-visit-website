@@ -8,7 +8,7 @@ tagline: Forts on every ridge, and the three cities most people meet India throu
 region: india
 order: 1
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-rajasthan.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-rajasthan.jpg
 heroImageAlt: Sandstone rooftops and fort walls of Jaisalmer seen from above
 
 intro: >-
@@ -21,19 +21,19 @@ intro: >-
 experiences:
   - name: Amer Fort
     text: Sandstone and marble around four courtyards, with the mirrored Sheesh Mahal at its heart.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-amber-fort.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-amber-fort.jpg
     imageAlt: Visitors walking the zigzag ramps up to Amer Fort
   - name: The Taj Mahal
     text: Best at first light, before the heat and the crowds, when the marble takes colour from the sky.
-    image: ../../assets/temp-photos/TEMP-PHOTO-day-gt-agra-taj-trees.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-day-gt-agra-taj-trees.jpg
     imageAlt: The Taj Mahal framed by a dark tree in the foreground
   - name: City palaces
     text: Seven storeys of Mughal, Rajput and European ideas, still part-occupied by the families that built them.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
     imageAlt: A columned palace doorway in Jaipur
   - name: The bazaars
     text: Jewellery, block-printed cloth, brass and blue pottery, sold in the same lanes for three centuries.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-bazaar.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-bazaar.jpg
     imageAlt: Bowls of brightly coloured powders on a Rajasthani market stall
 
 practicalNotes:

@@ -32,6 +32,7 @@
     "check:hero-contrast": "node scripts/check-hero-contrast.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check:cms-images": "node scripts/check-cms-images.mjs",
+    "check:image-paths": "node scripts/check-image-paths.mjs",
     "pdf:build": "node scripts/build-pdfs.mjs",
     "dev:astro": "astro dev",
     "build:astro": "astro build",

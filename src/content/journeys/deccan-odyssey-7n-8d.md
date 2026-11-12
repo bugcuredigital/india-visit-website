@@ -21,7 +21,7 @@ signatureFeature: Delhi to Delhi Through Royal Rajasthan and Ranthambore
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-home-hero-udaipur.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-home-hero-udaipur.jpg
 heroImageAlt: The palaces of Udaipur at the edge of Lake Pichola in warm evening light
 gallery: []
 

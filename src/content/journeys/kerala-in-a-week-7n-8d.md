@@ -14,7 +14,7 @@ signatureFeature: Kochi to the Southern Coast — Hills, a Houseboat and Varkala
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-kerala-week.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-kerala-week.jpg
 heroImageAlt: The red cliff and palm-backed beach at Varkala at daybreak
 gallery: []
 

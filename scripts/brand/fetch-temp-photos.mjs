@@ -30,7 +30,7 @@ import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
 
-const OUT_DIR = 'src/assets/temp-photos';
+const OUT_DIR = 'public/uploads/temp-photos';
 const PROVENANCE = 'docs/brand/processed/TEMP-PHOTO-PROVENANCE.md';
 
 /**

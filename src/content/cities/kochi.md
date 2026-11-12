@@ -7,7 +7,7 @@ name: Kochi
 state: Kerala
 hook: Six hundred years of arrivals, and every one of them left something behind.
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
 heroImageAlt: Chinese fishing nets standing over the water at Fort Kochi at dusk
 
 quickFacts:
@@ -39,27 +39,27 @@ intro:
 experiences:
   - name: The Chinese fishing nets
     text: Cantilevered nets on the Fort Kochi shoreline, worked by hand at dawn and dusk. Watch, then eat what comes up.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-harbour.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-harbour.jpg
     imageAlt: A wooden boat on the water at Kochi at sunset
   - name: Kathakali
     text: Kerala's story-theatre, in makeup that takes longer to apply than the performance runs. Arrive early to watch it being done.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-kathakali.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-kathakali.jpg
     imageAlt: A Kathakali dancer in full costume and makeup
   - name: The spice quarter
     text: Mattancherry's warehouses still handle pepper, cardamom and ginger, and the lanes still smell of all three.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
     imageAlt: A sack of dried red chillies at a spice market
   - name: The backwaters, from here
     text: The channels begin within an hour of the city — a morning cruise, or the start of an overnight houseboat.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
     imageAlt: Coconut palms lining a backwater channel near Kochi
 
 photoStrip:
-  - image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-strip-1.jpg
+  - image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-strip-1.jpg
     alt: Boats on the water below a headland at sunset near Kochi
-  - image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-strip-2.jpg
+  - image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-strip-2.jpg
     alt: A wooded island surrounded by still water in the Kerala backwaters
-  - image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-strip-3.jpg
+  - image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-strip-3.jpg
     alt: Coconut palms against the sea under a clear sky
 
 practicalNotes:

@@ -10,7 +10,7 @@ publishDate: 2026-09-12
 author: India Visit
 
 # TEMP-PHOTO — temporary Unsplash image for design review only (replaced by the client's archive)
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-article-fort.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-article-fort.jpg
 heroImageAlt: Warm afternoon light on the sandstone walls of a Rajasthani fort
 
 embeddedJourneys:
