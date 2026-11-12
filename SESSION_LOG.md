@@ -1212,3 +1212,67 @@ chips until that reprint.
    to leave it dummy); the demo-sweep list in the hand-off (founder quote,
    provisional-day notices, empty reviews).
 2. Then M6 on `m6-forms`, which ends with `FORMS_LIVE = true`.
+
+---
+
+## 2026-11-12 (afternoon) — Consolidated demo round: P0–P5
+
+**P0 — a Tina Cloud save broke the build. Fixed, root-caused, guarded.** The
+client's first production save (2499b91, a title-only edit to Leh Ladakh)
+rewrote the untouched hero to `/uploads../../assets/temp-photos/…`. Root cause,
+read in @tinacms/graphql 2.4.11: on Tina Cloud every stored image path is mapped
+to `assets.tina.io/<client>` + (path minus its first "/uploads") when a document
+opens, and back to "/uploads" + the rest when it saves. Only `/uploads/…`
+survives; local mode skips the mapping entirely, which is why every M7 smoke
+test passed. Reverted (PR #7, tree identical to the last green build), then
+(PR #8) all 69 content image paths moved to the Tina-native form, the 51
+TEMP-PHOTOs and the video poster into `public/uploads/`, the Zod helper
+`cmsImage` maps `/uploads/<file>` onto the file for astro:assets (same 660
+AVIF/WebP variants, hero still preloaded), the Tina parse/format mappers removed,
+and `check:image-paths` runs inside every build: it lists every bad path and
+replays Tina Cloud's mapping on each value (it reproduces the observed
+corruption as a self-test). Runbook M7 step 4a adds the cloud image round trip.
+
+**Then the deploys stalled.** With credentials set, `tinacms build` polled the
+Tina Cloud index with no time limit: after PR #8's 42-file commit one production
+build hung past 18 minutes and the next failed. PR #12 builds the admin with
+`--skip-cloud-checks`, so the public site never waits on the CMS index; Zod and
+check:image-paths still gate every build. Production green again at 13:26.
+
+**P1** real phone/WhatsApp (+91 98102 41121) and email (info@india-visit.com):
+205 tel, 272 wa.me and 54 mailto links, 0 dummy values; PDFs reprinted.
+**P2** every "authorised agent"/GSA/agent-liability line removed sitewide
+(neutral "Operated by …", "Operator terms apply"; the Template Spec check now
+fails on any agent claim); the provisional notice renders on Variant B only;
+the mobile Luxury Rail banner rebuilt (phones: copy on solid ink; desktop: one
+continuous ink wash, eyebrow on a burgundy pill), measured: every run ≥ AA.
+**P3** em-dash pass: 1,101 visible em dashes → 0 (five parallel copy agents on
+content, templates by hand; punctuation only, COPY_REGISTER §Q, CLAUDE.md #7).
+On the way, a pre-existing M5 bug: 12 transport details held an unquoted comma
+in a YAML flow mapping, so the label was cut ("Trek — roughly 3"); all quoted.
+**P4** blocked on rights: 455 images inventoried (204 at ≥1600px); two carry a
+"© Nick Mayo" watermark and one is from Wikimedia; nothing published.
+Pre-selected if cleared: Kerala/Alleppey 4 (Kerala Houseboat hero), Golden
+Triangle Tour/Agra 2 (Golden Triangle hero), Deccan Odyssey 4 (Deccan hero),
+Rajasthan/Jaisalmer 6 (Rajasthan tile).
+**P5** `functions/api/lead.ts` and the live-form wiring shipped switched off
+(`LEADS_LIVE=false`); verified locally under wrangler on every path but the real
+send, which needs the client's Resend key and domain verification.
+
+**Two process mistakes of mine, both contained.** (1) A `git stash` to switch
+branches swept up five copy agents' in-progress edits in the shared tree; every
+file was restored within a minute (one three-way merge, no conflicts) and the
+agents were told to re-read before editing. (2) A commit then picked up those
+restored files because the stash checkout had staged them, so PR #11 was closed
+unmerged and the build fix and P3 were each re-made as clean single commits on
+top of `main` with a temporary index, no history rewritten. Rule taken: no
+stash or branch switch while agents share the working tree; build release
+commits from an explicit file list.
+
+### Exact next action
+
+1. **Client:** Resend (domain + `RESEND_API_KEY`), photo rights, Tina Cloud
+   index check + one test save (M7 4a).
+2. On the Resend key: one real test lead against production → client confirms
+   it landed → flip `LEADS_LIVE` → deploy. Rail: not landed by 4:30 pm, the
+   buttons stay "Launching shortly".
