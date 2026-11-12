@@ -12,7 +12,7 @@
  *
  * Environment (Cloudflare Pages → Settings → Variables, Production + Preview):
  *   RESEND_API_KEY   required — a Resend key with sending access
- *   LEAD_FROM        optional — defaults to "India Visit website <website@india-visit.com>";
+ *   LEAD_FROM        optional — defaults to "India Visit website <enquiries@india-visit.com>";
  *                    the domain must be verified in Resend
  */
 import siteSettings from '../../src/content/siteSettings/settings.json';
@@ -29,7 +29,7 @@ interface Context {
 }
 
 const RECIPIENT = siteSettings.settings.email;
-const DEFAULT_FROM = 'India Visit website <website@india-visit.com>';
+const DEFAULT_FROM = 'India Visit website <enquiries@india-visit.com>';
 
 /** Both honeypots: EnquiryForm's and Plan-My-Trip's. Real people never fill them. */
 const HONEYPOTS = ['companyUrl', 'companyWebsite'];
