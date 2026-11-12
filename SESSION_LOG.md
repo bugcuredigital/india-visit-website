@@ -1276,3 +1276,62 @@ commits from an explicit file list.
 2. On the Resend key: one real test lead against production → client confirms
    it landed → flip `LEADS_LIVE` → deploy. Rail: not landed by 4:30 pm, the
    buttons stay "Launching shortly".
+
+## 2026-11-12 (evening) — Final pre-demo round: forms live, §27, freeze
+
+**Resend (client, 13:16).** `india-visit.com` verified in Resend (DKIM and the
+send CNAMEs in Cloudflare DNS, DNS only). Inbound mail to info@ runs through
+Cloudflare Email Routing to Gmail; Resend's receiving MX was removed in that
+setup and **receiving stays off in Resend** (client rule). `RESEND_API_KEY` is
+set for Production and Preview.
+
+**PR #16 (b0c9dd4):** leads are sent from `enquiries@india-visit.com` (optional
+`LEAD_FROM` override) with the enquirer as reply-to; its deploy picked up the key.
+
+**Test lead.** 14:33 IST, one real lead through the production homepage form
+(a native submit, the buttons still off): HTTP 200 and the thank-you page. The
+client confirmed it in the Gmail inbox, every field intact, reply-to correct.
+
+**Buttons live, after the freeze, on the client's explicit GO.** The
+confirmation reached this session at 17:57, after the 16:30 freeze; the GO was
+taken as the client's own exception for this one merge. Before merging, the PR
+#17 preview was driven with real clicks on the homepage and Plan My Trip forms
+with the honeypot filled (the function answers success and sends nothing): the
+thank-you message rendered and took focus, and `/api/lead` answered 200 JSON.
+Merged 18:00 (`7a07fd4`), live at 18:04 IST, then checked on production the
+same way. Census of production: 54 pages, all 200; 123 lead forms, 102 live and 21 "Launching shortly" (the 20 PDF gates and the newsletter), the same counts as the local build.
+
+**Tadoba test save (M7 4a): no commit reached GitHub.** The last change to the
+Tadoba file is the P3 commit. The cause was not diagnosed (the editor's error
+and the Tina Cloud index status were not checked). Parked by the client to
+13 Nov: `/admin` is not opened in the demo and stays closed to saves until one
+clean diff has been read.
+
+**P4 ruling: stays blocked.** Written up as `CLIENT_REVIEW_SHEET.md` §27, a
+rights-confirmation table. A second pass, looking for images that read as the
+client's own photography, found two more marked files (Dhrubazaan Photography,
+PrassyPhotography) and no "likely own" candidates, so five files never ship.
+The four pre-picked swaps wait for own / licensed / neither. The demo runs on
+the TEMP photos.
+
+**Standing rule 7 (client, 12 Nov):** parallel agents' in-progress work is
+never stashed or committed by another task. Recorded with the pinned session
+rules.
+
+**Docs and captures.** DEMO_PATH.md (final route: `/admin` out, forms live,
+the §27 answer), SITE_STATUS.md, and 16 fresh captures of the route taken from
+production, in `reports/demo-2026-11-12/`. The docs merge carries
+`[CF-Pages-Skip]`, so production stays the verified `7a07fd4` build.
+
+**Freeze** from the docs merge (this entry) until after the 7 pm demo.
+
+Milestones: M6-minimal live (the M6 gate proper has not run); M7 open on step
+4a; M8 not started.
+
+### Exact next action
+
+1. 13 Nov: Tina Cloud index check for `main`, then the Tadoba test save; read
+   the diff (only those two fields, `/uploads/…` paths, no reverted text, the
+   upload in `public/uploads/`, a green build) and rule on `/admin`.
+2. Client: §27 photo rights.
+3. After the demo: M6 proper (Turnstile, Sheet webhook, PDF release, GTM).
