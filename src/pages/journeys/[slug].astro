@@ -328,7 +328,10 @@ const crumbs = breadcrumbSchema([
   <GlanceTable rows={journey.glanceRows} />
 
   <!-- S6 + S7 ----------------------------------------------------------- -->
-  <DayAccordion days={itineraryDays} showProvisionalNotice={true} />
+  <!-- "Awaiting the operator's confirmed copy" is a train-only concept (client
+       ruling 2026-11-12): Variant A keeps its day-level `provisional` flags as
+       the copy-control record, but no notice renders. -->
+  <DayAccordion days={itineraryDays} showProvisionalNotice={isTrain} />
 
   {
     journey.mapGraphic && (

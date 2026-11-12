@@ -4,9 +4,9 @@
  * ---------------------------------------------------------------------------
  * Two rules govern this page and both are invariants rather than preferences:
  *
- *   · the GSA credential line sits DIRECTLY under the H1 (T4 §1). It is the
- *     differentiator most competitors bury, and it is also a required
- *     disclosure — agent liability is limited and operator terms apply.
+ *   · the operator attribution line sits DIRECTLY under the H1 (T4 §1): each
+ *     train is run by its operator, and operator terms apply. No agent/GSA
+ *     claims anywhere (client ruling, 2026-11-12).
  *   · NO TARIFFS ANYWHERE (CLAUDE.md invariant #6, permanent). All three
  *     source documents carry published USD prices; every one is suppressed,
  *     and there is deliberately no price field on a train card to leak from.
@@ -77,7 +77,7 @@ const FAQ = [
   {
     question: 'Are you booking directly with the train operator?',
     answer:
-      'We are an authorised booking agent. The train is operated and the service delivered by the operator, whose terms apply to your booking; our role is arranging it and looking after you around it. Each train page names its operator, and the booking terms are published in full.',
+      'Each train is operated, and the service delivered, by its operator, whose terms apply to your booking. Our role is arranging it and looking after you around it. Each train page names its operator, and the booking terms are published in full.',
   },
   {
     question: 'When do these trains run?',
@@ -94,7 +94,7 @@ const crumbs = breadcrumbSchema([
 
 <Base
   title="India's Luxury Trains — Palace on Wheels & More | India Visit"
-  description="Authorised booking agents for India's legendary luxury trains. Palace on Wheels, the Golden Chariot and the Deccan Odyssey — routes, cabins and how booking works."
+  description="India's legendary luxury trains: Palace on Wheels, the Golden Chariot and the Deccan Odyssey. Routes, cabins and how booking works."
 >
   <Fragment slot="head">
     <link
@@ -112,7 +112,8 @@ const crumbs = breadcrumbSchema([
 
   <Header slot="header" />
 
-  <!-- 1 · Hero — GSA credential directly under the H1 (T4 §1) ------------ -->
+  <!-- 1 · Hero — operator attribution directly under the H1 (T4 §1). Agent/GSA
+       claims removed by client ruling, 2026-11-12. ----------------------- -->
   <Hero image={settings.pageHeroes.luxuryTrains.image} alt={settings.pageHeroes.luxuryTrains.alt} height="short">
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
@@ -122,7 +123,7 @@ const crumbs = breadcrumbSchema([
     <h1 class="trains__title">India's legendary luxury trains</h1>
     <p class="trains__gsa">
       <Lotus size={18} class="trains__mark" />
-      <span>Authorised booking agents — Palace on Wheels and more</span>
+      <span>Each train is run by its operator. Operator terms apply.</span>
     </p>
   </Hero>
 
@@ -189,8 +190,7 @@ const crumbs = breadcrumbSchema([
   <section class="band band-tight" aria-label="Operator disclosure">
     <div class="container-content">
       <p class="disclosure prose-measure">
-        India Visit is an authorised booking agent. Each train is operated by
-        its own operator, whose terms govern your booking and whose liability
+        Each train is operated by its own operator, whose terms govern your booking and whose liability
         is set out in those terms. Full detail is published in our
         <a href="/booking-terms/">booking terms</a>.
       </p>

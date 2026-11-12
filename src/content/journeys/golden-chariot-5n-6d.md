@@ -237,11 +237,10 @@ policies:
 # PROVISIONAL — the source document names IRCTC as the train tour operator;
 # client to confirm the disclosure wording (PRD Open Question #15).
 operatorName: IRCTC — Indian Railway Catering and Tourism Corporation
+# Neutral operator attribution only — client ruling 2026-11-12: no agent/GSA claims.
 operatorDisclosure: >-
-  India Visit is an authorised booking agent for the Golden Chariot. The train
-  is operated by IRCTC, the Indian Railway Catering and Tourism Corporation,
-  and the operator's terms apply to your journey. Our liability is that of
-  booking agent.
+  Operated by IRCTC, the Indian Railway Catering and Tourism Corporation.
+  Operator terms apply to your journey.
 bookingTermsUrl: /booking-terms/
 
 practicalNotes:
@@ -272,7 +271,7 @@ featured: false
 
 seo:
   metaTitle: Golden Chariot — Jewels of the South, 5 Nights / 6 Days
-  metaDescription: Book the Golden Chariot through an authorised agent. Five nights from Bengaluru through Mysore, Mahabalipuram, Thanjavur, Chettinad and Kochi to the backwaters.
+  metaDescription: The Golden Chariot, five nights from Bengaluru through Mysore, Mahabalipuram, Thanjavur, Chettinad and Kochi to the backwaters.
 ---
 
 The Golden Chariot is South India's luxury train, and Jewels of the South is
@@ -282,7 +281,6 @@ at Thanjavur, the merchant mansions of Chettinad, and then over the Ghats to
 Kochi and the backwaters. Six days, one unpacking, and the distances covered
 while you sleep.
 
-India Visit books this journey as an authorised agent: the operator runs the
-train and we handle everything around it — the booking form, the cabin, the
+The operator runs the train, and we handle everything around it: the booking form, the cabin, the
 questions you will have about what a day on board actually looks like, and the
 person who meets you at Bengaluru.

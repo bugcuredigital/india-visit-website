@@ -448,9 +448,9 @@ const WHY_US = [
                 India's legendary luxury trains
               </h2>
               <p class="trains__detail">
-                Palace on Wheels, the Golden Chariot and the Deccan Odyssey —
-                booked through authorised agents, with the operator's terms set
-                out plainly before you commit.
+                Palace on Wheels, the Golden Chariot and the Deccan Odyssey.
+                Each train is run by its operator, and the operator's terms are
+                set out plainly before you commit.
               </p>
               <Button href="/luxury-trains/" variant="on-dark">See the trains</Button>
             </div>
@@ -867,49 +867,36 @@ const WHY_US = [
     color: var(--color-ink-muted);
   }
 
-  /* ---- 7 · luxury trains teaser --------------------------------------- */
+  /* ---- 7 · luxury trains teaser ---------------------------------------
+     Phones: the photograph on top and the copy below it on solid ink. At that
+     width the copy covers nearly the whole banner, and no wash light enough to
+     leave the photograph a photograph kept white type legible over a bright
+     facade (round 3: text a gradient cannot cover gets its own opaque ground).
+     From 48rem the copy sits over the picture under ONE continuous ink wash on
+     the banner itself. The previous veil was a background on the text box, so
+     its top edge drew a seam across the photograph, and its right-hand mask
+     left the end of every line on a weaker veil. INK, not burgundy: a gradient
+     over a photograph is ink, a solid band is burgundy (round 3). */
   .trains {
     position: relative;
     display: grid;
-    align-items: end;
     isolation: isolate;
     overflow: clip;
     border-radius: var(--radius-lg);
-    min-height: 26rem;
     background-color: var(--color-ink);
   }
 
   .trains__image {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+    display: block;
     width: 100%;
-    height: 100%;
+    height: 13rem;
     object-fit: cover;
   }
 
   .trains__body {
     position: relative;
-    padding: 2rem;
+    padding: 1.75rem 1.5rem 2rem;
     color: var(--color-on-dark);
-    /* Two gradients, multiplied by the mask: ink rises from the bottom where
-       the text is, and the whole veil fades out towards the right so the
-       photograph stays a photograph. A `max-width` on this box instead drew a
-       hard vertical edge straight across the image.
-
-       INK, not burgundy — the same rule as the hero (round 3). The dividing
-       line is what the overlay sits on: a gradient over a PHOTOGRAPH is ink,
-       because a coloured wash tints the picture; a solid BAND is burgundy. The
-       first pass made this banner burgundy with the rest and turned a carriage
-       interior into a red panel. */
-    background: linear-gradient(
-      to top,
-      color-mix(in srgb, var(--color-ink) 90%, transparent),
-      color-mix(in srgb, var(--color-ink) 68%, transparent) 55%,
-      color-mix(in srgb, var(--color-ink) 24%, transparent)
-    );
-    -webkit-mask-image: linear-gradient(to right, #000 0 55%, transparent 100%);
-    mask-image: linear-gradient(to right, #000 0 55%, transparent 100%);
   }
 
   .trains__heading {
@@ -927,8 +914,54 @@ const WHY_US = [
   }
 
   @media (min-width: 48rem) {
+    .trains {
+      align-items: end;
+      min-height: 26rem;
+    }
+
+    .trains__image {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      height: 100%;
+    }
+
+    /* One wash, two directions, no edges: rising from the bottom where the copy
+       is, and from the left where the lines start, both feathered to nothing. */
+    .trains::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          to top,
+          color-mix(in srgb, var(--color-ink) 88%, transparent) 0%,
+          color-mix(in srgb, var(--color-ink) 64%, transparent) 40%,
+          color-mix(in srgb, var(--color-ink) 28%, transparent) 72%,
+          transparent 100%
+        ),
+        linear-gradient(
+          to right,
+          color-mix(in srgb, var(--color-ink) 62%, transparent) 0%,
+          color-mix(in srgb, var(--color-ink) 36%, transparent) 45%,
+          transparent 80%
+        );
+    }
+
     .trains__body {
       padding: 3rem;
+    }
+
+    /* The eyebrow is small yellow type over the photograph: no wash that leaves
+       the picture a picture gets it to AA (it measured 1.3:1 over the sky), so
+       it gets its own ground, the burgundy pill the hero trip-type tag uses. */
+    .trains .eyebrow {
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      background-color: var(--color-burgundy);
     }
   }
 

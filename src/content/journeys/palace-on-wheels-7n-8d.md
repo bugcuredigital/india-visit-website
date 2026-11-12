@@ -253,13 +253,10 @@ policies:
       charge is payable by the guest as per the operator's rules.
 
 operatorName: RTDC — Rajasthan Tourism Development Corporation, Government of Rajasthan
-# PROVISIONAL WORDING — pending the client's confirmation of the exact GSA
-# disclosure language (PRD Open Question #15).
+# Neutral operator attribution only — client ruling 2026-11-12: no agent/GSA claims.
 operatorDisclosure: >-
-  India Visit is an authorised booking agent (GSA) for the Palace on Wheels.
-  The train is owned and operated by RTDC, the Rajasthan Tourism Development
-  Corporation, Government of Rajasthan, and the operator's terms apply to your
-  journey. Our liability is that of booking agent.
+  Operated by RTDC, the Rajasthan Tourism Development Corporation, Government
+  of Rajasthan. Operator terms apply to your journey.
 bookingTermsUrl: /booking-terms/
 
 practicalNotes:
@@ -290,9 +287,9 @@ featured: true
 
 seo:
   metaTitle: Palace on Wheels — 7 Nights / 8 Days Luxury Train
-  metaDescription: Book the Palace on Wheels through an authorised agent. Seven nights from Delhi through Jaipur, Ranthambore, Udaipur, Jaisalmer, Jodhpur and Agra, with cabin categories explained.
+  metaDescription: The Palace on Wheels, seven nights from Delhi through Jaipur, Ranthambore, Udaipur, Jaisalmer, Jodhpur and Agra, with cabin categories explained.
 ---
 
 To travel Rajasthan by Palace on Wheels is to unpack once and let the state come to you. The train leaves Delhi and returns to it, and in the week between it threads together the places that made Rajasthan's reputation: Jaipur's forts and bazaars, tiger country at Sawai Madhopur, the lakes and palaces of Udaipur, the desert sandstone of Jaisalmer, the blue lanes beneath Mehrangarh at Jodhpur, and finally Agra and the Taj Mahal.
 
-The appeal is the rhythm as much as the route. Nights are spent aboard while the train moves, mornings arrive somewhere new, and the day's excursions, meals, guides and entrance fees are all arranged before you board. India Visit books this journey as an authorised agent, which means the operator runs the train and we handle everything around it — from the booking form to the person meeting you at the airport.
+The appeal is the rhythm as much as the route. Nights are spent aboard while the train moves, mornings arrive somewhere new, and the day's excursions, meals, guides and entrance fees are all arranged before you board. The operator runs the train and we handle everything around it — from the booking form to the person meeting you at the airport.

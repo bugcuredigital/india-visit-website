@@ -249,3 +249,15 @@ one without them" on acclimatisation days.
 Everything not yet approved is still live on the preview, because a blank page
 is not reviewable — but nothing on the list is treated as settled until it is
 marked so here.
+
+## P. Luxury trains — neutral operator attribution (client ruling, 2026-11-12)
+
+Every "authorised (booking) agent", GSA and agent-liability line was removed sitewide. The replacements below are agency wording that implements the ruling; the ruling itself ("Operated by RTDC" etc., "operator terms apply" stays) is the client's.
+
+| # | Where | Copy | Status |
+|---|---|---|---|
+| P1 | Homepage trains banner | "Palace on Wheels, the Golden Chariot and the Deccan Odyssey. Each train is run by its operator, and the operator's terms are set out plainly before you commit." | **DRAFT** |
+| P2 | `/luxury-trains/` line under the H1 | "Each train is run by its operator. Operator terms apply." | **DRAFT** |
+| P3 | `/luxury-trains/` FAQ "Are you booking directly with the train operator?" | "Each train is operated, and the service delivered, by its operator, whose terms apply to your booking. Our role is arranging it and looking after you around it. …" | **DRAFT** |
+| P4 | Train pages, cabin-section attribution | "Operated by RTDC, the Rajasthan Tourism Development Corporation, Government of Rajasthan." · "Operated by IRCTC, the Indian Railway Catering and Tourism Corporation." · "Operated by Maharashtra Tourism Development Corporation, its train tour operator." — each followed by "Operator terms apply to your journey." | **DRAFT** (operator names as before; the Deccan Odyssey operator is still our inference, §22) |
+| P5 | Train page intros, meta descriptions, `/booking-terms/` "Our role", the Palace on Wheels guide | The agent sentence deleted; the rest of each passage unchanged | — |
