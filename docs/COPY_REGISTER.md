@@ -261,3 +261,15 @@ Every "authorised (booking) agent", GSA and agent-liability line was removed sit
 | P3 | `/luxury-trains/` FAQ "Are you booking directly with the train operator?" | "Each train is operated, and the service delivered, by its operator, whose terms apply to your booking. Our role is arranging it and looking after you around it. …" | **DRAFT** |
 | P4 | Train pages, cabin-section attribution | "Operated by RTDC, the Rajasthan Tourism Development Corporation, Government of Rajasthan." · "Operated by IRCTC, the Indian Railway Catering and Tourism Corporation." · "Operated by Maharashtra Tourism Development Corporation, its train tour operator." — each followed by "Operator terms apply to your journey." | **DRAFT** (operator names as before; the Deccan Odyssey operator is still our inference, §22) |
 | P5 | Train page intros, meta descriptions, `/booking-terms/` "Our role", the Palace on Wheels guide | The agent sentence deleted; the rest of each passage unchanged | — |
+
+## Q. Em-dash pass (client instruction, 2026-11-12)
+
+The prose over-used em dashes and read AI-flavoured. Every page template, the shared microcopy, all 20 journeys, the 8 articles, the 9 destinations and both city pages were swept: dashes rewritten as commas, full stops, colons, parentheses or restructured sentences; titles take a colon; label pairs take the middle dot. **Punctuation only** — the words, facts and meaning are unchanged, so every row above keeps its status (DRAFT stays DRAFT; client-sourced APPROVED text was edited for punctuation at the client's instruction). Strings quoted in the rows above may still show their pre-pass punctuation. Three template lines changed a word or two to read without the dash, listed for the bulk review:
+
+| # | Where | Now reads | Status |
+|---|---|---|---|
+| Q1 | `/destinations/` intro | "…for twenty years, six across India and three beyond it." | DRAFT |
+| Q2 | `/reviews/` meta description | "…in their own words and published only with their consent." | DRAFT |
+| Q3 | `/plan-my-trip/` | "…a price. Not a brochure, and not a quote with three options." | DRAFT |
+
+House rule from here on (CLAUDE.md invariant #7): at most one em dash per screen.

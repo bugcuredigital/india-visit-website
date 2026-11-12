@@ -34,8 +34,8 @@ practicalNotes:
 faq:
   - question: Where should we actually stay?
     answer: >-
-      Two bases works better than touring: Ubud for the interior — rice
-      terraces, temples, the craft villages — and then one coast, chosen for
+      Two bases works better than touring: Ubud for the interior (rice
+      terraces, temples, the craft villages) and then one coast, chosen for
       what you want from it. Seminyak for restaurants, Sanur for quiet, the
       Bukit for cliffs and surf.
   - question: Is Bali too crowded now?
@@ -58,7 +58,7 @@ relatedJourneys:
   - bali-5n-6d
 
 seo:
-  metaTitle: Bali Tours — Ubud, Rice Terraces, Temples & Coast
+  metaTitle: "Bali Tours: Ubud, Rice Terraces, Temples & Coast"
   metaDescription: Plan a Bali journey around Ubud and one coast, with water temples, rice terraces and honest notes on which parts of the island are worth your days.
 ---
 
@@ -66,8 +66,8 @@ Bali rewards restraint. The island is small, the traffic is worse than the map
 suggests, and the travellers who enjoy it most are the ones who picked two
 bases and stayed put rather than trying to circle it.
 
-Our itineraries generally split between Ubud — the rice terraces at Tegallalang
-and Jatiluwih, the water temples, the craft villages at Mas and Celuk — and one
+Our itineraries generally split between Ubud (the rice terraces at Tegallalang
+and Jatiluwih, the water temples, the craft villages at Mas and Celuk) and one
 coast chosen for what you want from it: Seminyak for restaurants and beach
 clubs, Uluwatu for the cliffs and the surf, or somewhere quieter. A private car
 with a driver moves you between the two, and a leisure day is left empty on

@@ -2,9 +2,9 @@
 # DRAFT — agency-written (word control, CLAUDE.md invariant #9). Listed in
 # docs/COPY_REGISTER.md §L. Seasonal facts are drawn from the client's Ladakh
 # itinerary and the Ladakh destination page; nothing here is a promise.
-title: Best Time to Visit Ladakh — Month by Month
+title: Best Time to Visit Ladakh, Month by Month
 category: best-time
-excerpt: Ladakh has a short season and a hard edge to it. When the passes open, when the lakes are reachable, what the altitude does to a plan — and the two months we would actually pick.
+excerpt: Ladakh has a short season and a hard edge to it. When the passes open, when the lakes are reachable, what the altitude does to a plan, and the two months we would actually pick.
 publishDate: 2026-09-12
 author: India Visit
 
@@ -19,7 +19,7 @@ faq:
   - question: Can I visit Ladakh in winter?
     answer: >-
       Leh is reachable by air all year, and a winter visit is possible for the
-      determined — the frozen-river Chadar trek runs in January and February.
+      determined: the frozen-river Chadar trek runs in January and February.
       But the roads out of Leh are closed, most hotels shut, and temperatures
       fall well below freezing at night. We do not recommend it for a first
       visit.
@@ -27,7 +27,7 @@ faq:
     answer: >-
       Eight to ten. The first two are acclimatisation and cannot be skipped;
       after that, three days for the Indus valley monasteries and the rest for
-      wherever you are going next — Nubra, Pangong, or west over the Zoji La
+      wherever you are going next: Nubra, Pangong, or west over the Zoji La
       to Kashmir.
   - question: Is the altitude really a problem?
     answer: >-
@@ -37,8 +37,8 @@ faq:
       days into every Ladakh itinerary for that reason.
 
 seo:
-  metaTitle: Best Time to Visit Ladakh — Month by Month Guide
-  metaDescription: When the Ladakh passes open, when Pangong and Nubra are reachable, what the altitude does to your plan, and which months we would pick — a month-by-month guide.
+  metaTitle: "Best Time to Visit Ladakh: Month by Month Guide"
+  metaDescription: A month-by-month guide to when the Ladakh passes open, when Pangong and Nubra are reachable, what the altitude does to your plan, and which months we would pick.
 ---
 
 Ladakh is the one region we sell where the calendar decides almost everything.
@@ -74,7 +74,7 @@ Pangong and Nubra.
 clear, and Pangong and Nubra are reachable. The second half of the month is
 one of the two windows we favour.
 
-**July and August.** Peak season — warm, dry (Ladakh sits behind the monsoon,
+**July and August.** Peak season: warm, dry (Ladakh sits behind the monsoon,
 which is the point of it), and busy. The Hemis festival falls in July. If you
 are travelling in these months, book well ahead; the good hotels in Leh fill.
 
@@ -93,7 +93,7 @@ with flexible dates.
 Whatever month you choose, the first two days are the same. You fly into Leh
 and you do very little, because your body has had no time to adjust and it
 will let you know. Day three stays at the town's own altitude. Only after that
-does the itinerary climb — to the monasteries up the Indus, and then over the
+does the itinerary climb, to the monasteries up the Indus, and then over the
 passes.
 
 We will not sell a Ladakh journey without those days built in, and we say so on
@@ -104,7 +104,7 @@ that follow.
 
 The route we run most often does something most Ladakh itineraries do not: it
 drives out. West along the Indus to Alchi and Lamayuru, a night in Kargil, and
-then over the Zoji La into Kashmir — Srinagar's lakes and Mughal gardens, and
+then over the Zoji La into Kashmir: Srinagar's lakes and Mughal gardens, and
 the meadow at Gulmarg. The rock of Ladakh and the green of the Kashmir valley in
 one trip is the contrast people remember, and it is only possible between June
 and September, when the pass is open. Which brings the answer back to where it

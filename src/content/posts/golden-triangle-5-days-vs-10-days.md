@@ -2,9 +2,9 @@
 # DRAFT — agency-written (word control, CLAUDE.md invariant #9). Listed in
 # docs/COPY_REGISTER.md §L. The comparison is between four Golden Triangle
 # journeys on this site, all ported from the client's own documents.
-title: Golden Triangle — 5 Days or 10? Which Itinerary Suits You
+title: "Golden Triangle: 5 Days or 10? Which Itinerary Suits You"
 category: guides
-excerpt: Four ways to do Delhi, Agra and Jaipur — the six-day classic, a week with leopards, ten days with Varanasi by train, or twelve from the Golden Temple — and an honest way to choose between them.
+excerpt: Four ways to do Delhi, Agra and Jaipur (the six-day classic, a week with leopards, ten days with Varanasi by train, or twelve from the Golden Temple) and an honest way to choose between them.
 publishDate: 2026-09-12
 author: India Visit
 
@@ -20,10 +20,10 @@ faq:
   - question: Can the Golden Triangle be done in four days?
     answer: >-
       It can, and people do, and they see the Taj at eleven in the morning
-      with everybody else. Six days is the honest minimum — it is what lets
+      with everybody else. Six days is the honest minimum: it is what lets
       you reach each city at the right hour. We would rather you took six
       than four.
-  - question: Which order — Delhi, Agra, Jaipur or Delhi, Jaipur, Agra?
+  - question: "Which order: Delhi, Agra, Jaipur or Delhi, Jaipur, Agra?"
     answer: >-
       Both work, and the road between Agra and Jaipur passes Fatehpur Sikri
       either way. Our six-day classic runs Jaipur first and saves the Taj for
@@ -31,17 +31,17 @@ faq:
       Taj comes at sunset on day three and sunrise on day four.
   - question: Is Varanasi worth the extra days?
     answer: >-
-      If you have them, yes — it is a different India from the Mughal north,
+      If you have them, yes. It is a different India from the Mughal north,
       and the dawn boat on the Ganges is the single experience travellers
       mention most. It adds four days and two overnight trains, which is the
       trade.
 
 seo:
-  metaTitle: Golden Triangle — 5 Days vs 10 Days, Which Itinerary Suits You?
-  metaDescription: How to choose between the six-day Golden Triangle, a week with the Jhalana leopards, ten days with Varanasi by train, or twelve days from Amritsar — an honest comparison.
+  metaTitle: "Golden Triangle: 5 Days vs 10 Days, Which Itinerary Suits You?"
+  metaDescription: "How to choose between the six-day Golden Triangle, a week with the Jhalana leopards, ten days with Varanasi by train, or twelve days from Amritsar: an honest comparison."
 ---
 
-The Golden Triangle — Delhi, Agra and Jaipur — is the best week-long
+The Golden Triangle (Delhi, Agra and Jaipur) is the best week-long
 introduction to northern India, and it is also the route most often done badly:
 compressed into four days, with the Taj at the wrong hour and Jaipur as a drive
 past. We run four versions of it, from six days to twelve, and the useful
@@ -56,13 +56,13 @@ treated as a destination on the road rather than a stop for photographs.
 Sunrise at the Taj is the fifth morning.
 
 *Choose it if:* you have a week or less, it is your first trip to India, or the
-Triangle is a prelude to somewhere else — Kerala, Ladakh, a train.
+Triangle is a prelude to somewhere else (Kerala, Ladakh, a train).
 
 ## A week, with leopards
 
 **The Golden Triangle with Jhalana Leopards, 6 nights / 7 days.** The same
 three cities, run Agra-first so the Taj comes at sunset on day three and
-sunrise on day four, and then three nights in Jaipur — one of them given
+sunrise on day four, and then three nights in Jaipur. One of them is given
 entirely to the Jhalana Leopard Reserve, a rocky forest inside the city limits
 with one of the highest leopard densities in India. Two safaris, dawn and dusk.
 
@@ -88,7 +88,7 @@ overnight trains put you off, we substitute flights for either leg.
 **The Golden Triangle from Amritsar, 11 nights / 12 days.** Begins four
 hundred kilometres north-west of Delhi at the Golden Temple, with the Wagah
 border ceremony, then Le Corbusier's Chandigarh, the Ganges at Rishikesh and
-Haridwar, and only then Delhi, Jaipur and Agra — with the Chand Baori stepwell
+Haridwar, and only then Delhi, Jaipur and Agra, with the Chand Baori stepwell
 on the road between the last two.
 
 *Choose it if:* you have the time, the Sikh and Hindu north matters to you as
@@ -99,7 +99,7 @@ would be repetition.
 
 Count your nights, subtract two for the journey in and out, and be realistic
 about what the remainder buys. Six nights is the Triangle done properly.
-Seven adds one thing — a safari, a stepwell, a fort — without changing the
+Seven adds one thing (a safari, a stepwell, a fort) without changing the
 shape. Ten and beyond change the shape, and the question becomes what you
 want the extra days to be *for*: the river, the border, the train.
 

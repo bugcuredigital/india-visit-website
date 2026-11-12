@@ -134,7 +134,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
         <p class="head__meta">
           <span class="head__author">
             <Lotus size={16} class="head__mark" />
-            <span>{settings.siteName} — {settings.yearsExperience} years curating India</span>
+            <span>{settings.siteName} · {settings.yearsExperience} years curating India</span>
           </span>
           <span class="head__dot" aria-hidden="true">·</span>
           <time datetime={(post.updatedDate ?? post.publishDate).toISOString()}>{dateLabel}</time>
@@ -231,7 +231,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
   <div id="enquire">
     <ConvertBand
       heading="Planning this trip?"
-      body="If this is the journey you have in mind, tell us your dates and we will draft it properly — day by day, with a price."
+      body="If this is the journey you have in mind, tell us your dates and we will draft it properly, day by day, with a price."
       leadType="general"
       waContext={post.title}
     />

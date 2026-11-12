@@ -30,7 +30,7 @@ practicalNotes:
     text: Five to eight days. Paro and Thimphu need three; Punakha earns the rest.
   - icon: pace
     label: Pace
-    text: Relaxed, with one demanding day — the Tiger's Nest ascent is four to five hours return.
+    text: "Relaxed, with one demanding day: the Tiger's Nest ascent is four to five hours return."
 
 faq:
   - question: Is there a daily fee, and what does it cover?
@@ -42,7 +42,7 @@ faq:
   - question: Do we need a visa and a guide?
     answer: >-
       Yes to both. Bhutan requires a visa arranged in advance through a
-      licensed operator, and independent travel is not permitted — you travel
+      licensed operator, and independent travel is not permitted: you travel
       with a licensed Bhutanese guide throughout. Indian, Bangladeshi and
       Maldivian nationals have a different arrangement.
   - question: How hard is the walk to the Tiger's Nest?
@@ -59,14 +59,14 @@ relatedJourneys:
   - bhutan-paro-thimphu-punakha-7n-8d
 
 seo:
-  metaTitle: Bhutan Tours — Paro, Thimphu, Punakha & the Tiger's Nest
+  metaTitle: "Bhutan Tours: Paro, Thimphu, Punakha & the Tiger's Nest"
   metaDescription: Plan a Bhutan journey through Paro, Thimphu and Punakha with the Tiger's Nest ascent, plus clear notes on the daily fee, visas and seasons.
 ---
 
 Bhutan is the rare destination where the restrictions are the reason to go. A
 daily fee, a licensed guide and no independent travel add up to a country that
-has not been reshaped around visitors, and it shows within an hour of landing —
-or of crossing the border, for the many Indian travellers who come by road.
+has not been reshaped around visitors, and it shows within an hour of landing
+(or of crossing the border, for the many Indian travellers who come by road).
 
 The standard route runs Paro to Thimphu to Punakha and back: Rinpung Dzong and
 the old watchtower museum, the great Buddha above the capital and the dzong
@@ -78,8 +78,8 @@ you are used to the altitude and the walking.
 For Indian travellers the arrangements are different from those for everyone
 else, and better: an entry permit rather than a visa, a lower rate of the
 Sustainable Development Fee, rupees accepted almost everywhere, and a choice
-between the flight into Paro — one of the most dramatic approaches in the
-world — and the road up from Phuntsholing through the foothills. The guide
+between the flight into Paro (one of the most dramatic approaches in the
+world) and the road up from Phuntsholing through the foothills. The guide
 below sets all of it out.
 
 Go in March to May or September to November for the mountains, and around one

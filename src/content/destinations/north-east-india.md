@@ -13,7 +13,7 @@ heroImageAlt: Green hills of Meghalaya under low cloud
 
 intro: >-
   The seven states east of Bangladesh are the least visited part of India and
-  the least like the rest of it — Khasi and Naga rather than Hindu or Mughal,
+  the least like the rest of it: Khasi and Naga rather than Hindu or Mughal,
   hills rather than plains, and a landscape shaped by the heaviest rainfall
   recorded anywhere. Meghalaya alone justifies the flight.
 
@@ -35,7 +35,7 @@ faq:
   - question: Do I need a special permit?
     answer: >-
       Meghalaya and Assam do not require one. Arunachal Pradesh, Nagaland,
-      Mizoram and Manipur do — an Inner Line Permit for Indian nationals and a
+      Mizoram and Manipur do: an Inner Line Permit for Indian nationals and a
       Protected Area Permit for most foreign passports. We arrange them, but
       they need lead time, so tell us early if those states are on your list.
   - question: What are the living root bridges?
@@ -59,7 +59,7 @@ relatedJourneys:
   - north-east-root-bridges-majuli-6n-7d
 
 seo:
-  metaTitle: North East India Tours — Meghalaya, Assam & the Khasi Hills
+  metaTitle: "North East India Tours: Meghalaya, Assam & the Khasi Hills"
   metaDescription: Plan a North East India journey through Shillong, Cherrapunji, the living root bridges and Assam, with notes on permits, seasons and pace.
 ---
 
@@ -70,8 +70,8 @@ understood; and the visitor numbers are a fraction of anywhere else in the
 country, which is the reason to go now.
 
 We run two journeys here, and they are deliberately different. The first is
-the Meghalaya and Assam circuit — Shillong, the Cherrapunji plateau, the clear
-river at Dawki, and then Kaziranga for the one-horned rhino — which is the
+the Meghalaya and Assam circuit (Shillong, the Cherrapunji plateau, the clear
+river at Dawki, and then Kaziranga for the one-horned rhino), which is the
 route for a first visit and for anyone who wants the region's set pieces. The
 second is the experiential route: Khasi homestays at Mawlynnong, the trek down
 three and a half thousand steps to the double-decker root bridge at Nongriat,
@@ -79,8 +79,8 @@ Shillong's food and music, and two nights on Majuli, the largest river island
 in the world, among the Vaishnavite satras and the mask-makers. It trades
 comfort for immersion, and it asks a little fitness of you.
 
-Both begin and end at Guwahati, both run from October to April — the monsoon
-makes the root-bridge treks unsafe and the roads slow — and Indian nationals
+Both begin and end at Guwahati, both run from October to April (the monsoon
+makes the root-bridge treks unsafe and the roads slow), and Indian nationals
 need no permit for Meghalaya or Assam. Foreign nationals should ask us about
 current requirements when booking.
 

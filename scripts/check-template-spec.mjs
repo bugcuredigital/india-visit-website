@@ -94,9 +94,11 @@ for (const { slug, html } of pages) {
   /* 2. day titles + overnight lines ------------------------------------- */
   const dayTitles = textOf(html, 'day__title');
   const overnights = textOf(html, 'day__overnight');
-  const untitled = dayTitles.filter((t) => !t.includes('—'));
+  // "Place: Evocative Phrase". The separator was an em dash until the client's
+  // em-dash ruling (2026-11-12); the two-part structure is what the spec fixes.
+  const untitled = dayTitles.filter((t) => !/\S\s*[:—]\s+\S/.test(t));
   check(
-    'day titles follow "Place — Evocative Phrase"',
+    'day titles follow "Place: Evocative Phrase"',
     dayTitles.length > 0 && untitled.length === 0,
     untitled.length ? `${untitled.length} without an em dash: ${untitled.slice(0, 2).join(' / ')}` : `${dayTitles.length} days`,
   );

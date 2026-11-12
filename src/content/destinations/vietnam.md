@@ -13,7 +13,7 @@ heroImageAlt: Boats among the limestone karsts of Ha Long Bay
 
 intro: >-
   Vietnam runs more than a thousand miles north to south, and the ends of it are
-  genuinely different countries in temperament — Hanoi's old quarter and the
+  genuinely different countries in temperament: Hanoi's old quarter and the
   limestone bays in the north, imperial Hue and the tailors of Hoi An in the
   centre, and the Mekong delta below Ho Chi Minh City. Most journeys take all
   three, and the internal flights make that reasonable.
@@ -41,7 +41,7 @@ faq:
       February to April is the best compromise.
   - question: Do Indian passport holders need a visa?
     answer: >-
-      Yes — Vietnam operates an e-visa for Indian nationals, applied for online
+      Yes. Vietnam operates an e-visa for Indian nationals, applied for online
       in advance. It is straightforward but not instant, so we start it early.
       We confirm the current requirement at booking rather than from memory.
   - question: Is Ha Long Bay worth an overnight?
@@ -60,7 +60,7 @@ relatedJourneys:
   - vietnam-hanoi-halong-hoian-7n-8d
 
 seo:
-  metaTitle: Vietnam Tours — Hanoi, Ha Long Bay, Hoi An & the Mekong
+  metaTitle: "Vietnam Tours: Hanoi, Ha Long Bay, Hoi An & the Mekong"
   metaDescription: Plan a Vietnam journey from Hanoi and the limestone bays to Hue, Hoi An and the Mekong delta, with notes on the region-by-region seasons and visas.
 ---
 
@@ -73,12 +73,12 @@ For a first visit we take the north and the centre and leave the south for
 another time: Hanoi's Old Quarter and its street food, a night on the water
 among the limestone karsts of Ha Long Bay, and then a ninety-minute flight to
 Da Nang for the beach and the lantern-lit old town of Hoi An. It is the journey
-below, and it is built for first-timers — one internal flight, one night
+below, and it is built for first-timers: one internal flight, one night
 afloat, and a last day chosen between a mountaintop spectacle and a quiet cave.
 
 The middle section is the one travellers most often want to extend. Hoi An's
 old town, the tailors, and the beach an hour away make a good argument for an
-extra two nights, and Hue — the imperial capital, three hours north — is the
+extra two nights, and Hue (the imperial capital, three hours north) is the
 natural addition for anyone with the time.
 
 The visa is an electronic one, applied for before you fly and tied to the

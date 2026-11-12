@@ -109,13 +109,13 @@ const isTrain = journey.variant === 'B';
 
 const primaryCta = isTrain ? 'Check Availability' : 'Customise This Journey';
 const convertHeading = isTrain
-  ? 'Departures fill early — check availability for your dates'
+  ? 'Departures fill early: check availability for your dates'
   : 'Shall we tailor this to your dates?';
 const convertBody =
   journey.customiseCopy ??
   (isTrain
     ? 'Tell us your preferred season and cabin and we will come back with what is still open, and what it involves.'
-    : 'This itinerary can be tailored to your dates, pace and interests — extend a stay, add a retreat, change the order. Our team handles every transfer, guide and reservation.');
+    : 'This itinerary can be tailored to your dates, pace and interests: extend a stay, add a retreat, change the order. Our team handles every transfer, guide and reservation.');
 
 const waContext = `${journey.title} (${journey.nights}N/${journey.days}D)`;
 
@@ -401,7 +401,7 @@ const crumbs = breadcrumbSchema([
             <p class="eyebrow">Take it with you</p>
             <h2 id="download-heading" class="pdfgate__heading">Download this itinerary</h2>
             <p class="pdfgate__detail prose-measure">
-              The full day-by-day as a branded PDF — the same itinerary as this
+              The full day-by-day as a branded PDF: the same itinerary as this
               page, section for section. Leave a name, an email and a phone
               number and it is sent to you straight away.
             </p>

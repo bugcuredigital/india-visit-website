@@ -26,7 +26,14 @@ run('node', ['scripts/check-image-paths.mjs']);
 
 if (hasCloud) {
   console.log('\n[build] Tina Cloud credentials present — building the /admin editor.\n');
-  run('npx', ['tinacms', 'build']);
+  // --skip-cloud-checks: the public site must never wait on, or fail because
+  // of, Tina Cloud's indexing of the branch. Without it the CLI polls the index
+  // every five seconds with no limit and fails the deploy on any status but
+  // "complete" (2026-11-12: a 42-file content commit kept the index busy, one
+  // build hung past 18 minutes and the next failed). Content safety does not
+  // rest on these checks — Zod and check:image-paths gate every build — and
+  // the editor simply catches up when Tina Cloud finishes indexing.
+  run('npx', ['tinacms', 'build', '--skip-cloud-checks']);
 } else {
   console.log('\n[build] No Tina Cloud credentials (TINA_PUBLIC_CLIENT_ID / TINA_TOKEN) — skipping the /admin build. The site builds as usual.\n');
 }

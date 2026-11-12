@@ -142,8 +142,8 @@ const MONTHS = [
     {!FORMS_LIVE ? FORMS_PENDING_LABEL : isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
   </Button>
 
-  {!isFooter && !isPdf && <p class="form__note">We reply personally — no call centre, no spam.</p>}
-  {isPdf && <p class="form__note">The PDF is the same itinerary as this page, section for section. We may follow up once — no list, no spam.</p>}
+  {!isFooter && !isPdf && <p class="form__note">We reply personally. No call centre, no spam.</p>}
+  {isPdf && <p class="form__note">The PDF is the same itinerary as this page, section for section. We may follow up once. No list, no spam.</p>}
 </form>
 
 <style>
