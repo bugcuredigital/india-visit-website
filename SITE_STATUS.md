@@ -42,10 +42,9 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
    and the gate form is a shell; M6 moves them behind the lead function.
 4. **Copy approval** — every drafted string is `DRAFT` in `docs/COPY_REGISTER.md`
    until struck or approved.
-5. **Contact details are still dummy** — phone, WhatsApp, email and address in
-   Site settings (`+91 0000000000`, `hello@example.com`). They show in every
-   footer and in the printed header of all 20 PDFs, so the PDFs are reprinted
-   (`npm run pdf:build`) in the same change that sets the real values.
+5. **Address is still dummy** ("Dummy Address, New Delhi", flagged). Phone,
+   WhatsApp and email are real since 2026-11-12 (+91 98102 41121,
+   info@india-visit.com), and the 20 PDFs were reprinted with them.
 
 ## Provisional (renders, flagged, reversible)
 
@@ -59,8 +58,6 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 
 ## Next action
 
-0. **Client:** the real phone / WhatsApp / email for Site settings (item 5
-   above) — the demo instruction carried a placeholder, not a number.
 1. **Client:** create the Tina Cloud project and put its two values in the
    Cloudflare Pages environment (§26) — that switches `/admin` on in
    production with no code change; then the screen-share dashboard session
