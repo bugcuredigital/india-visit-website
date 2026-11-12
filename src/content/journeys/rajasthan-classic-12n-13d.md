@@ -6,7 +6,7 @@ signatureFeature: Udaipur to the Taj, with the Evenings Arranged Too
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-rajasthan-tour.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-rajasthan-tour.jpg
 heroImageAlt: A domed chhatri at the Jagmandir island palace on Lake Pichola, Udaipur
 gallery: []
 

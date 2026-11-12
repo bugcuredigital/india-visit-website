@@ -6,7 +6,7 @@ publishDate: 2026-09-09
 author: India Visit
 
 # TEMP-PHOTO — temporary Unsplash image for design review only (replaced in M5)
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-article-kerala-houseboat.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-article-kerala-houseboat.jpg
 heroImageAlt: A wooden boat moored beside the palms of a Kerala backwater channel
 
 embeddedJourneys:

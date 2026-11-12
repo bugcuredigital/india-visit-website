@@ -8,7 +8,7 @@ tagline: Cave temples, Deccan sultanates and the coast that traded with Rome.
 region: india
 order: 3
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-south-west.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-south-west.jpg
 heroImageAlt: Stone temple ruins standing across open ground at Hampi
 
 intro: >-

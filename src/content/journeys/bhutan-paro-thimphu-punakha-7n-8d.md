@@ -6,7 +6,7 @@ signatureFeature: Three Valleys, the Dochula Pass and the Walk to the Tiger's Ne
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-bhutan.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-bhutan.jpg
 heroImageAlt: Punakha Dzong standing at the meeting of two rivers below forested Himalayan slopes
 gallery: []
 

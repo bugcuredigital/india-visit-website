@@ -7,7 +7,7 @@ name: Jaipur
 state: Rajasthan
 hook: The pink city that was planned on paper before a stone of it was laid.
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-hero.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-hero.jpg
 heroImageAlt: Amer Fort standing on the hillside above Maota Lake outside Jaipur at golden hour
 
 quickFacts:
@@ -39,27 +39,27 @@ intro:
 experiences:
   - name: Amer Fort
     text: Sandstone and marble around four courtyards, with the mirrored Sheesh Mahal at its heart. Go at opening time.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-amber-fort.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-amber-fort.jpg
     imageAlt: Visitors walking the zigzag ramps up to Amer Fort
   - name: The City Palace
     text: Seven storeys of Mughal, Rajput and European ideas, still part-occupied by the family that built it.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
     imageAlt: A columned doorway in the City Palace at Jaipur
   - name: Hawa Mahal
     text: The palace of the winds — 953 windows built for watching a street you could not be seen on. Best from the pavement opposite.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-hawa-mahal.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-hawa-mahal.jpg
     imageAlt: The Hawa Mahal seen from the street in daylight
   - name: The bazaars
     text: Johari for jewellery, Bapu for block-printed cloth and slippers, Tripolia for brass. Haggling is expected and cheerful.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-bazaar.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-bazaar.jpg
     imageAlt: Bowls of brightly coloured powders on a market stall
 
 photoStrip:
-  - image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-strip-1.jpg
+  - image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-strip-1.jpg
     alt: Sandstone architecture in the old city of Jaipur
-  - image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-strip-2.jpg
+  - image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-strip-2.jpg
     alt: A walkway beside water below the fort at Jaipur
-  - image: ../../assets/temp-photos/TEMP-PHOTO-city-jaipur-strip-3.jpg
+  - image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-strip-3.jpg
     alt: Fort walls standing against a clear sky above Jaipur
 
 practicalNotes:

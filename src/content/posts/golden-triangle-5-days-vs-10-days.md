@@ -9,7 +9,7 @@ publishDate: 2026-09-12
 author: India Visit
 
 # TEMP-PHOTO — temporary Unsplash image for design review only (replaced by the client's archive)
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-golden-triangle.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-golden-triangle.jpg
 heroImageAlt: The Taj Mahal at Agra standing against a warm golden-hour sky
 
 embeddedJourneys:

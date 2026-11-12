@@ -6,7 +6,7 @@ signatureFeature: A Week in Royal Rajasthan
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this in M5; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-luxury-train.jpg
 heroImageAlt: The wood-panelled interior of a vintage saloon carriage, warm lamps along the ceiling and upholstered armchairs either side of the aisle
 gallery: []
 

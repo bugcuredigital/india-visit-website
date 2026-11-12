@@ -6,7 +6,7 @@ signatureFeature: Delhi · Lucknow · Varanasi · Agra · Jaipur, by Train and R
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-gt-varanasi.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-gt-varanasi.jpg
 heroImageAlt: Wooden boats on the Ganges below the temples and ghats of Varanasi
 gallery: []
 

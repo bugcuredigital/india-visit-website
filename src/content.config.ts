@@ -38,15 +38,46 @@ const faqSchema = z
   .min(1);
 
 /**
- * A file the client uploaded through the CMS. Tina's repo-based media land in
- * `/public/uploads/`, and Astro's `image()` helper cannot be used for them —
- * `image()` resolves files Vite can process, and the public directory is
- * copied verbatim. So anything that is not an image (video, at present) is a
- * validated path string rather than an asset reference.
+ * Every image field. The file stores exactly what Tina writes — `/uploads/<file>`,
+ * optionally in a subfolder — and nothing else is accepted.
+ *
+ * Why only that form: on Tina Cloud, opening a document maps each stored image
+ * path to `https://assets.tina.io/<client>` + (path minus its first "/uploads"),
+ * and saving maps it back as "/uploads" + the rest (@tinacms/graphql
+ * resolveMediaRelativeToCloud / resolveMediaCloudToRelative). A path already in
+ * the /uploads form survives that round trip unchanged; any other form does
+ * not. On 2026-11-12 a title-only save turned "../../assets/temp-photos/x.jpg"
+ * into "/uploads../../assets/temp-photos/x.jpg" and broke the production build.
+ * Local mode skips the mapping entirely, which is why the M7 smoke tests passed.
+ *
+ * The transform then points astro:assets at the file in public/uploads/ — a
+ * path relative to the entry, three levels down like every collection — so
+ * every image still gets the AVIF/WebP set, dimensions and preload. Anything
+ * that is not an image (video, at present) is a plain path string below.
+ * `npm run check:image-paths` runs the same rule over every file before the
+ * build and lists every offender at once.
  *
  * The regex is the guard rail: a typo, an absolute URL to somebody else's CDN,
  * or a file left outside the media folder fails the build with a message that
- * says what to do, rather than shipping a hero that silently never plays.
+ * says what to do, rather than a broken image, or a hero video that silently never plays.
+ */
+const CMS_IMAGE_PATH = /^\/uploads\/(?:[A-Za-z0-9._-]+\/)*[A-Za-z0-9._-]+\.(?:jpe?g|png|webp|avif)$/;
+
+const cmsImage = (image: () => z.ZodTypeAny) =>
+  z
+    .string()
+    .regex(
+      CMS_IMAGE_PATH,
+      'Image paths must be "/uploads/<file>" — the form the CMS saves. Anything else ' +
+        '(a path starting "/uploads../" or "../", or a full URL) is corrupted or hand-written: ' +
+        're-pick the image in /admin, or run `npm run check:image-paths` for the full list.',
+    )
+    .transform((path) => `../../../public${path}`)
+    .pipe(image());
+
+/**
+ * A non-image file uploaded through the CMS — the hero video. Validated as a
+ * path string; it is served from public/ as it is.
  */
 const uploadPath = (extension: string) =>
   z
@@ -76,9 +107,9 @@ const journeyBase = (image: () => z.ZodTypeAny) => ({
   /** "Custom Journey" (A) / "Luxury Train — Fixed Departures" (B). */
   tripTypeTag: z.string().min(1),
 
-  heroImage: image(),
+  heroImage: cmsImage(image),
   heroImageAlt: z.string().min(1),
-  gallery: z.array(image()).default([]),
+  gallery: z.array(cmsImage(image)).default([]),
 
   nights: z.number().int().nonnegative(),
   days: z.number().int().positive(),
@@ -139,14 +170,14 @@ const journeyBase = (image: () => z.ZodTypeAny) => ({
          * to a screen-reader user what they have just read. It also keeps the
          * Tina field a plain image list, which is what the CMS is good at.
          */
-        dayImages: z.array(image()).max(4).default([]),
+        dayImages: z.array(cmsImage(image)).max(4).default([]),
         /** Set when the copy still needs the client's sign-off (M5). */
         provisional: z.boolean().default(false),
       }),
     )
     .min(1),
 
-  mapGraphic: image().optional(),
+  mapGraphic: cmsImage(image).optional(),
 
   /** S13 — icon-led practical grid. High SEO value. */
   practicalNotes: z
@@ -302,7 +333,7 @@ const destinations = defineCollection({
       name: z.string().min(1),
       /** One evocative line under the H1. */
       tagline: z.string().min(1),
-      heroImage: image(),
+      heroImage: cmsImage(image),
       heroImageAlt: z.string().min(1),
       /** Short label for the homepage tile strip (all nine since T1 v2). */
       shortLabel: z.string().min(1),
@@ -331,7 +362,7 @@ const destinations = defineCollection({
           z.object({
             name: z.string().min(1),
             text: z.string().min(1),
-            image: image(),
+            image: cmsImage(image),
             imageAlt: z.string().min(1),
           }),
         )
@@ -382,7 +413,7 @@ const cities = defineCollection({
       /** One line under the H1. Positioning, not a description. */
       hook: z.string().min(1),
 
-      heroImage: image(),
+      heroImage: cmsImage(image),
       heroImageAlt: z.string().min(1),
 
       /** T15 §b — the scannable strip directly under the hero. */
@@ -403,7 +434,7 @@ const cities = defineCollection({
           z.object({
             name: z.string().min(1),
             text: z.string().min(1),
-            image: image(),
+            image: cmsImage(image),
             imageAlt: z.string().min(1),
           }),
         )
@@ -414,7 +445,7 @@ const cities = defineCollection({
       photoStrip: z
         .array(
           z.object({
-            image: image(),
+            image: cmsImage(image),
             alt: z.string().min(1),
           }),
         )
@@ -472,7 +503,7 @@ const posts = defineCollection({
     z.object({
       title: z.string().min(1),
       category: z.enum(['planning-visas', 'best-time', 'guides']),
-      heroImage: image(),
+      heroImage: cmsImage(image),
       heroImageAlt: z.string().min(1),
       excerpt: z.string().min(1).max(300),
       publishDate: z.coerce.date(),
@@ -513,7 +544,7 @@ const testimonials = defineCollection({
       /** Real on placeholders too: the journey exists, only the guest does not. */
       tripLabel: z.string().min(1),
       quote: z.string().min(1).optional(),
-      photo: image().optional(),
+      photo: cmsImage(image).optional(),
       /**
        * MUST be true on a real testimonial. Never publish one without recorded
        * consent — the pages filter on this and the schema refuses a real entry
@@ -622,7 +653,7 @@ const siteSettings = defineCollection({
        * the client uploads anything.
        */
       homeHero: z.object({
-        poster: image(),
+        poster: cmsImage(image),
         posterAlt: z.string().min(1),
         /** WebM first where present: smaller at equal quality. */
         videoWebm: uploadPath('webm').nullable(),
@@ -646,7 +677,7 @@ const siteSettings = defineCollection({
        */
       pageHeroes: z.object({
         luxuryTrains: z.object({
-          image: image(),
+          image: cmsImage(image),
           alt: z.string().min(1),
         }),
       }),
@@ -677,7 +708,7 @@ const siteSettings = defineCollection({
         quote: z.string().min(1),
         /** A real asset reference, not a path string — so dropping the client's
          *  photograph in is a content edit with no code change. */
-        portrait: image().nullable(),
+        portrait: cmsImage(image).nullable(),
         portraitAlt: z.string().min(1),
       }),
 

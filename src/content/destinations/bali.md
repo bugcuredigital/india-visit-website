@@ -8,7 +8,7 @@ tagline: Rice terraces, water temples and a Hindu culture that survived the rest
 region: beyond-india
 order: 8
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-bali.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-bali.jpg
 heroImageAlt: Terraced rice paddies and palms in Bali
 
 intro: >-

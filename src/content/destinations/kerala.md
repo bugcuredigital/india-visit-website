@@ -14,26 +14,26 @@ intro: >-
   itineraries we build here are shaped around that rather than against it.
 
 # TEMP-PHOTO — temporary Unsplash image for design review only (replaced in M5)
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-kerala.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-kerala.jpg
 heroImageAlt: A traditional houseboat moored on a palm-lined backwater channel near Alappuzha
 
 # T2 v2 §4 — supplied at M4 to prove the treatment. TEMP-PHOTO throughout.
 experiences:
   - name: The backwaters
     text: Six hundred miles of canal, lake and river, best met from the deck of a converted rice barge.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
     imageAlt: Coconut palms lining a backwater channel in Kerala
   - name: Tea country
     text: The Kannan Devan Hills above Munnar, where the plantations start at three thousand feet and keep climbing.
-    image: ../../assets/temp-photos/TEMP-PHOTO-article-tea-gardens.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-article-tea-gardens.jpg
     imageAlt: Rolling tea gardens on the hills above Munnar
   - name: Fort Kochi
     text: Six centuries of arrivals — Arab, Chinese, Portuguese, Dutch, British — and almost none of it erased.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
     imageAlt: Chinese fishing nets standing over the water at Fort Kochi
   - name: The spice trail
     text: Pepper, cardamom and ginger still move through Mattancherry's warehouses, as they have since the Romans.
-    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
+    image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
     imageAlt: A sack of dried red chillies at a Kerala spice market
 
 practicalNotes:

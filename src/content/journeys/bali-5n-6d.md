@@ -6,7 +6,7 @@ signatureFeature: Rice Terraces, Then the Sea
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this in M5; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-bali.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-bali.jpg
 heroImageAlt: A figure walking a path through bright green rice terraces below a misty ridge at dawn
 gallery: []
 

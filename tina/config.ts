@@ -15,17 +15,18 @@
  * 2. Field names are camelCase and identical to the Zod keys — the content
  *    files are shared, so there is nothing to translate.
  *
- * 3. MEDIA. Repo-based, in /public/uploads/ (CLAUDE.md locked stack). Tina
- *    stores an image as "/uploads/<file>"; Astro's image() helper (which is
- *    what gives every photograph its AVIF/WebP set — invariant #3) needs a
- *    path relative to the content file. Verified in M7 by experiment: a content
- *    entry referencing "../../../public/uploads/<file>" builds thirteen
- *    optimised variants into dist/_astro/. So every image field carries the
- *    same parse/format pair: the editor sees and picks "/uploads/<file>", the
- *    file on disk holds "../../../public/uploads/<file>". Paths that do not
- *    start with /uploads/ (the TEMP-PHOTO set under src/assets/) pass through
- *    untouched, so nothing already on the site is disturbed until the client
- *    replaces it.
+ * 3. MEDIA. Repo-based, in /public/uploads/ (CLAUDE.md locked stack), and every
+ *    image field stores exactly what Tina writes: "/uploads/<file>". No
+ *    parse/format mapping. On Tina Cloud the GraphQL layer itself maps a stored
+ *    path to https://assets.tina.io/<client> + (path minus "/uploads") when a
+ *    document opens, and back to "/uploads" + the rest when it saves; any path
+ *    not already in the /uploads form is corrupted by that round trip (2026-11-12:
+ *    "../../assets/temp-photos/x.jpg" saved as "/uploads../../assets/..."),
+ *    even on a save that never touched the image. So the files hold the
+ *    Tina-native form and the Zod schema (cmsImage in src/content.config.ts)
+ *    maps it to "../../../public/uploads/<file>" for astro:assets, which keeps
+ *    the AVIF/WebP set (invariant #3). The TEMP-PHOTO set lives in
+ *    /public/uploads/temp-photos/ for the same reason.
  *
  * 4. REFERENCES. Tina stores a reference as the target's file path
  *    ("src/content/journeys/x.md"); Astro's reference() wants the entry id
@@ -44,10 +45,7 @@
  */
 import { defineConfig, type Collection, type TinaField } from 'tinacms';
 
-/* ------------------------------------------------------------ media paths -- */
-
-const UPLOADS_STORED = '../../../public/uploads/';
-const UPLOADS_TINA = '/uploads/';
+/* ------------------------------------------------------- list-safe mappers -- */
 
 /**
  * Every mapper is STRING-GUARDED and ARRAY-AWARE. Tina hands `ui.parse` and
@@ -64,15 +62,6 @@ const each = (fn: (value: string) => string): Mapper => (value) => {
   return typeof value === 'string' ? fn(value) : value;
 };
 
-/** Tina → file: "/uploads/x.jpg" becomes "../../../public/uploads/x.jpg". */
-const toStored = each((value) =>
-  value.startsWith(UPLOADS_TINA) ? UPLOADS_STORED + value.slice(UPLOADS_TINA.length) : value,
-);
-
-/** file → Tina: the reverse, leaving src/assets paths as they are. */
-const toTina = each((value) =>
-  value.startsWith(UPLOADS_STORED) ? UPLOADS_TINA + value.slice(UPLOADS_STORED.length) : value,
-);
 
 const imageField = (name: string, label: string, description?: string, required = true): TinaField => ({
   type: 'image',
@@ -80,10 +69,6 @@ const imageField = (name: string, label: string, description?: string, required 
   label,
   required,
   description,
-  ui: {
-    parse: (value: any) => toStored(value) as any,
-    format: (value: any) => toTina(value) as any,
-  },
 });
 
 /* ------------------------------------------------------------- references -- */
@@ -214,10 +199,6 @@ const journeys: Collection = {
       name: 'gallery',
       label: 'Gallery',
       list: true,
-      ui: {
-        parse: (value: any) => toStored(value) as any,
-        format: (value: any) => toTina(value) as any,
-      },
     },
 
     { type: 'number', name: 'nights', label: 'Nights', required: true },
@@ -317,10 +298,6 @@ const journeys: Collection = {
           label: 'Day images (0–4)',
           list: true,
           description: 'Up to four. Two render side by side; more become a grid.',
-          ui: {
-            parse: (value: any) => toStored(value) as any,
-            format: (value: any) => toTina(value) as any,
-          },
         },
         { type: 'boolean', name: 'provisional', label: 'Provisional (awaiting confirmed copy)' },
       ],

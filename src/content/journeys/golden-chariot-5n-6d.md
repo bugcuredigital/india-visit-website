@@ -6,7 +6,7 @@ signatureFeature: Mysore to the Backwaters in Six Days
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-golden-chariot.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-golden-chariot.jpg
 heroImageAlt: Mysore Palace seen through the arches of its gateway
 gallery: []
 

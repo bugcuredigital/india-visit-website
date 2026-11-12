@@ -8,7 +8,7 @@ tagline: A kingdom that measures its success in something other than output.
 region: beyond-india
 order: 7
 
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-bhutan.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-bhutan.jpg
 heroImageAlt: The Tiger's Nest monastery built into a Bhutanese cliff face
 
 intro: >-

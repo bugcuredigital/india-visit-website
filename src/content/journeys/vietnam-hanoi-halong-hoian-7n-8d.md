@@ -6,7 +6,7 @@ signatureFeature: The Old Quarter, a Night on the Bay and the Lanterns of Hoi An
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
-heroImage: ../../assets/temp-photos/TEMP-PHOTO-journey-vietnam.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-journey-vietnam.jpg
 heroImageAlt: A bridge in Hoi An lit with coloured lanterns at night, crowded with people
 gallery: []
 
