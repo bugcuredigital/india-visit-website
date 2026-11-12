@@ -32,7 +32,7 @@ import JsonLd from '../components/JsonLd.astro';
 import { getSiteSettings, whatsappLink } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
 import { DESTINATIONS } from '../lib/destinations-strip';
-import { FORMS_LIVE, FORMS_PENDING_LABEL } from '../lib/forms';
+import { LEADS_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR } from '../lib/forms';
 
 const settings = await getSiteSettings();
 
@@ -168,6 +168,9 @@ const crumbs = breadcrumbSchema([
           method="post"
           action="/api/lead"
           data-lead-form
+          data-success-text={LEAD_SUCCESS}
+          data-error-text={LEAD_ERROR}
+          {...(LEADS_LIVE ? { 'data-live': '' } : {})}
           data-stepper
           novalidate
         >
@@ -334,10 +337,11 @@ const crumbs = breadcrumbSchema([
             <button type="button" class="nav__back tap-target" data-back hidden>Back</button>
             <button type="button" class="nav__next tap-target" data-next hidden>Next</button>
             <span class="nav__submit" data-submit>
-              <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit" disabled={!FORMS_LIVE}>
-                {FORMS_LIVE ? 'Send it over' : FORMS_PENDING_LABEL}
+              <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit" disabled={!LEADS_LIVE}>
+                {LEADS_LIVE ? 'Send it over' : FORMS_PENDING_LABEL}
               </Button>
             </span>
+            {LEADS_LIVE && <p class="form__status" data-lead-status role="status" aria-live="polite"></p>}
           </div>
 
           <p class="form__reassure">
@@ -367,6 +371,10 @@ const crumbs = breadcrumbSchema([
 
   <Footer slot="footer" />
 </Base>
+
+<script>
+  import '../scripts/lead-form';
+</script>
 
 <script is:inline>
   (() => {

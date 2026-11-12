@@ -12,7 +12,7 @@
  *   · Turnstile mounts into the marked container in M6
  */
 import Button from './Button.astro';
-import { FORMS_LIVE, FORMS_PENDING_LABEL } from '../lib/forms';
+import { LEADS_LIVE, PDF_GATE_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR } from '../lib/forms';
 
 interface Props {
   /** Tags the lead so corporate enquiries route separately. */
@@ -55,6 +55,7 @@ const {
 const isCompact = layout === 'compact';
 const isFooter = layout === 'footer';
 const isPdf = layout === 'pdf';
+const live = isPdf ? PDF_GATE_LIVE : LEADS_LIVE;
 
 const uid = Math.random().toString(36).slice(2, 8);
 const id = (name: string) => `${name}-${uid}`;
@@ -70,6 +71,9 @@ const MONTHS = [
   method="post"
   action="/api/lead"
   data-lead-form
+  data-success-text={LEAD_SUCCESS}
+  data-error-text={LEAD_ERROR}
+  {...(live ? { 'data-live': '' } : {})}
   novalidate
 >
   <!-- Context so every lead is attributable. Populated in M6. -->
@@ -138,13 +142,18 @@ const MONTHS = [
   <!-- Turnstile mounts here in M6; invisible, so no visible CAPTCHA friction. -->
   <div data-turnstile></div>
 
-  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block disabled={!FORMS_LIVE}>
-    {!FORMS_LIVE ? FORMS_PENDING_LABEL : isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
+  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block disabled={!live}>
+    {!live ? FORMS_PENDING_LABEL : isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
   </Button>
 
+  {live && <p class="form__status" data-lead-status role="status" aria-live="polite"></p>}
   {!isFooter && !isPdf && <p class="form__note">We reply personally. No call centre, no spam.</p>}
   {isPdf && <p class="form__note">The PDF is the same itinerary as this page, section for section. We may follow up once. No list, no spam.</p>}
 </form>
+
+<script>
+  import '../scripts/lead-form';
+</script>
 
 <style>
   .form__honeypot {
@@ -234,6 +243,36 @@ const MONTHS = [
     margin-top: 0.15em;
     flex: none;
     accent-color: var(--color-crimson);
+  }
+
+  /* Live forms only: the failure line under the button, and the success line the
+     script puts in place of the fields (created by script, so :global). */
+  .form__status:empty {
+    display: none;
+  }
+
+  .form__status {
+    margin-top: 0.85rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-crimson);
+  }
+
+  .form--on-dark .form__status {
+    color: var(--color-yellow);
+  }
+
+  /* Focus moves here so a screen reader announces it; it is not a control,
+     so it shows no ring. */
+  .form :global(.form__done:focus) {
+    outline: none;
+  }
+
+  .form :global(.form__done) {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    line-height: 1.35;
   }
 
   .form__note {
