@@ -150,38 +150,55 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
 </header>
 
 <script is:inline>
+  // The ClientRouter swaps the whole body on every navigation but never re-runs
+  // an inline script it has already run (this one is identical on every page),
+  // so binding happens in boot(): now, and on every astro:page-load. Bound once
+  // at load, the burger was dead on every page reached through a link
+  // (2026-11-12). The dataset guards stop a double bind, which would toggle
+  // the menu twice per tap.
   (() => {
-    const burger = document.querySelector('[data-burger]');
-    const panel = document.querySelector('[data-mobile-nav]');
-    if (!burger || !panel) return;
-
-    const setOpen = (open) => {
+    const setOpen = (burger, panel, open) => {
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       panel.hidden = !open;
     };
 
-    burger.addEventListener('click', () => {
-      setOpen(burger.getAttribute('aria-expanded') !== 'true');
-    });
+    const boot = () => {
+      const burger = document.querySelector('[data-burger]');
+      const panel = document.querySelector('[data-mobile-nav]');
+      if (burger && panel && !burger.dataset.ready) {
+        burger.dataset.ready = '1';
+        burger.addEventListener('click', () => {
+          setOpen(burger, panel, burger.getAttribute('aria-expanded') !== 'true');
+        });
+      }
 
+      // Transparent-over-hero headers solidify once the sentinel scrolls away.
+      // A sentinel + observer costs nothing per frame, unlike a scroll listener.
+      const sentinel = document.getElementById('header-sentinel');
+      const header = document.querySelector('[data-header]');
+      if (sentinel && header && !header.dataset.observed && 'IntersectionObserver' in window) {
+        header.dataset.observed = '1';
+        new IntersectionObserver(
+          ([entry]) => header.classList.toggle('is-solid', !entry.isIntersecting),
+          { threshold: 0 },
+        ).observe(sentinel);
+      }
+    };
+
+    // One Escape listener for the life of the document; it finds today's burger.
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
-        setOpen(false);
+      if (event.key !== 'Escape') return;
+      const burger = document.querySelector('[data-burger]');
+      const panel = document.querySelector('[data-mobile-nav]');
+      if (burger && panel && burger.getAttribute('aria-expanded') === 'true') {
+        setOpen(burger, panel, false);
         burger.focus();
       }
     });
 
-    // Transparent-over-hero headers solidify once the sentinel scrolls away.
-    // A sentinel + observer costs nothing per frame, unlike a scroll listener.
-    const sentinel = document.getElementById('header-sentinel');
-    const header = document.querySelector('[data-header]');
-    if (sentinel && header && 'IntersectionObserver' in window) {
-      new IntersectionObserver(
-        ([entry]) => header.classList.toggle('is-solid', !entry.isIntersecting),
-        { threshold: 0 },
-      ).observe(sentinel);
-    }
+    boot();
+    document.addEventListener('astro:page-load', boot);
   })();
 </script>
 

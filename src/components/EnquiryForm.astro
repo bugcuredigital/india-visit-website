@@ -12,7 +12,7 @@
  *   · Turnstile mounts into the marked container in M6
  */
 import Button from './Button.astro';
-import { LEADS_LIVE, PDF_GATE_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR } from '../lib/forms';
+import { LEADS_LIVE, PDF_GATE_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD } from '../lib/forms';
 
 interface Props {
   /** Tags the lead so corporate enquiries route separately. */
@@ -74,6 +74,7 @@ const MONTHS = [
   data-success-text={LEAD_SUCCESS}
   data-error-text={LEAD_ERROR}
   {...(live ? { 'data-live': '' } : {})}
+  data-astro-reload
   novalidate
 >
   <!-- Context so every lead is attributable. Populated in M6. -->
@@ -85,11 +86,12 @@ const MONTHS = [
   <input type="hidden" name="utm" value="" data-utm />
 
   <!-- Honeypot: real people never fill this in. Not display:none, which some
-       bots detect — off-screen and removed from the a11y tree instead. -->
+       bots detect — off-screen and removed from the a11y tree instead. Its name
+       and label must mean nothing to browser AutoFill (src/lib/forms.ts). -->
   <!-- data-allow-clip: parked off-screen on purpose (spam honeypot). -->
   <div class="form__honeypot" aria-hidden="true" data-allow-clip>
-    <label for={id('company-url')}>Website</label>
-    <input type="text" id={id('company-url')} name="companyUrl" tabindex="-1" autocomplete="off" />
+    <label for={id('leave-empty')}>Leave this field empty</label>
+    <input type="text" id={id('leave-empty')} name={HONEYPOT_FIELD} tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other" />
   </div>
 
   <div class="form__grid">
