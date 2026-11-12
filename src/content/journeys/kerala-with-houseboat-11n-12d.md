@@ -205,7 +205,12 @@ customiseCopy: >-
   time on the coast. Our team handles every transfer, guide and reservation, so
   your only task is to enjoy the journey.
 
-related: []
+related:
+  - kerala-in-a-week-7n-8d
+  - kerala-southern-coast-12n-13d
+  - golden-chariot-5n-6d
+# Gated branded PDF — regenerated from this entry by `npm run pdf:build`.
+pdfFile: /downloads/kerala-with-houseboat-11n-12d.pdf
 featured: true
 
 seo:

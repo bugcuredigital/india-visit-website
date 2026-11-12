@@ -357,8 +357,13 @@ const HERO_VIDEO_JS = `
   /* The journey hero — tallest copy column on the site. Firm further up, and
      then a faster falloff so the extra reach is not paid for at the top. */
   .hero--full {
-    --scrim-firm: 24rem;
-    --scrim-feather: 26rem;
+    /* 24rem held for the six M4 journeys; M5 added titles that run to three
+       lines at 390px ("North East India — Root Bridges and Majuli"), which
+       lifted the H1's top line above the firm zone on six pages at 2.4–2.9:1.
+       Four more rem of firm ground, and the feather shortened to match so the
+       top of the hero stays a photograph. Measured, not guessed. */
+    --scrim-firm: 28rem;
+    --scrim-feather: 24rem;
   }
 
   .hero__scrim {

@@ -1,10 +1,7 @@
 ---
-# PROVISIONAL — agency-drafted so the T2 v2 template and the /destinations/
-# index have real content to be reviewed against, and so the M4 click-through
-# has no dead links. Writing the nine destination pages is M5 work
-# (EXECUTION_RUNBOOK M5 step 2); this is a pull-forward of the prose only.
-# Every entry is logged in docs/CLIENT_REVIEW_SHEET.md §17.
-# Imagery is TEMP-PHOTO (Unsplash), replaced by the client's archive in M5.
+# DRAFT prose — agency-written for M5 (word control, invariant #9); listed in
+# docs/COPY_REGISTER.md §D and CLIENT_REVIEW_SHEET.md §17. Imagery is
+# TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: Wildlife Journeys
 shortLabel: Wildlife
 tagline: Tiger, leopard and rhino, in reserves chosen for the animals rather than the numbers.
@@ -60,7 +57,11 @@ faq:
       a Rajasthan route without a detour; Kaziranga pairs with Meghalaya and
       Assam.
 
-relatedJourneys: []
+relatedJourneys:
+  - tadoba-tiger-trails-2n-3d
+  - golden-triangle-jhalana-6n-7d
+  - rajasthan-jawai-10n-11d
+  - north-east-india-6n-7d
 
 seo:
   metaTitle: India Wildlife Tours — Tiger, Leopard & Rhino Safaris
@@ -70,9 +71,25 @@ seo:
 We sell wildlife journeys carefully, because the category attracts more
 overpromising than any other part of Indian travel. No reserve guarantees a
 tiger, the parks that advertise the highest numbers are often the most crowded,
-and a two-night stay is usually a disappointment waiting to be booked.
+and a two-night stay booked without understanding the odds is usually a
+disappointment waiting to happen.
 
-What works: three nights and six safaris per reserve, guides we have used for
-years, and reserves picked for the animal you actually want to see. Tadoba for
-tiger, Jhalana and Jawai for leopard, Kaziranga for rhino — and a frank
-conversation about what the season can and cannot deliver.
+What works is picking the reserve for the animal you actually want to see, and
+being honest about the season. Tadoba, three hours from Nagpur, for tiger —
+one of the highest densities in India, and the one reserve we are prepared to
+sell as a long weekend, because three safaris there give a real chance.
+Jhalana, inside Jaipur's city limits, and Jawai, in the granite hills of
+southern Rajasthan, for leopard — Jawai increasingly recognised as one of the
+best places in the world to see them. Kaziranga in Assam for the one-horned
+rhino, which it holds two thirds of. Ranthambore, from the Palace on Wheels or
+the Deccan Odyssey, for tiger country seen from a train.
+
+The journeys below fold each of these into something larger — the Golden
+Triangle with a leopard day, the full Rajasthan circuit ending at Jawai, the
+North East with Kaziranga — and one of them is the safari alone. What none of
+them does is promise a sighting. The forest is worth the trip regardless, and
+we would rather say so than sell you a tiger.
+
+Season matters more here than anywhere else: the parks close for the monsoon,
+and the hot months of April and May, uncomfortable for cities, are when the
+animals come to water and sightings are best.

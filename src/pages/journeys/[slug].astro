@@ -33,6 +33,7 @@ import type { CollectionEntry } from 'astro:content';
 
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
+import Logo from '../../components/Logo.astro';
 import Footer from '../../components/Footer.astro';
 import Hero from '../../components/Hero.astro';
 import QuickFactsBar from '../../components/QuickFactsBar.astro';
@@ -45,6 +46,7 @@ import BookingStepper from '../../components/BookingStepper.astro';
 import PoliciesAccordion from '../../components/PoliciesAccordion.astro';
 import PracticalNotesGrid from '../../components/PracticalNotesGrid.astro';
 import ConvertBand from '../../components/ConvertBand.astro';
+import EnquiryForm from '../../components/EnquiryForm.astro';
 import RelatedJourneys from '../../components/RelatedJourneys.astro';
 import StickyMobileBar from '../../components/StickyMobileBar.astro';
 import Button from '../../components/Button.astro';
@@ -193,6 +195,16 @@ const crumbs = breadcrumbSchema([
 
   <Header slot="header" />
 
+  <!-- Print only: the brand line at the top of the PDF (scripts/build-pdfs.mjs).
+       Everything in it is siteSettings, so the PDF cannot carry a stale number. -->
+  <div class="print-only print-brand">
+    <Logo height={36} isHome={true} />
+    <p class="print-brand__line">
+      <strong>{settings.siteName}</strong> · {settings.phone} · {settings.email}
+      <span class="print-brand__url">{Astro.url.href}</span>
+    </p>
+  </div>
+
   <!-- S1 ---------------------------------------------------------------- -->
   <Hero
     image={journey.heroImage}
@@ -250,10 +262,12 @@ const crumbs = breadcrumbSchema([
         WhatsApp us
       </Button>
       {
-        /* Gated PDF arrives in M5; the hook is here so that milestone is a
-           content change, not a template change. */
+        /* The PDF is GATED (PRD §8.1 — email + phone), so the hero button goes
+           to the gate section rather than to the file. The file itself is
+           released by the lead function in M6; the direct path is never
+           printed in the hero. */
         journey.pdfFile && (
-          <Button href={journey.pdfFile} variant="on-dark" size="lg" data-analytics="pdf_download">
+          <Button href="#download" variant="on-dark" size="lg" data-analytics="pdf_gate_open">
             Download the itinerary
           </Button>
         )
@@ -370,6 +384,37 @@ const crumbs = breadcrumbSchema([
   <!-- S13 — required on both variants (see the header note). White on B
        because the booking stepper above it is already off-white. -->
   <PracticalNotesGrid notes={journey.practicalNotes} surface={isTrain ? 'white' : 'offwhite'} />
+
+  <!-- PDF GATE (M5) — email + phone for the branded itinerary (PRD §8.1). The
+       PDF is printed from THIS page by scripts/build-pdfs.mjs, so it cannot
+       drift from what is above. The form is the shared EnquiryForm in its
+       `pdf` layout; the release-on-submit lands with the lead function in M6,
+       and until then the submit behaves like every other form shell. -->
+  {
+    journey.pdfFile && (
+      <section class="band band-tight band-offwhite pdfgate" id="download" aria-labelledby="download-heading">
+        <div class="container-content pdfgate__inner">
+          <div>
+            <p class="eyebrow">Take it with you</p>
+            <h2 id="download-heading" class="pdfgate__heading">Download this itinerary</h2>
+            <p class="pdfgate__detail prose-measure">
+              The full day-by-day as a branded PDF — the same itinerary as this
+              page, section for section. Leave a name, an email and a phone
+              number and it is sent to you straight away.
+            </p>
+          </div>
+          <div class="pdfgate__form">
+            <EnquiryForm
+              layout="pdf"
+              leadType="pdf"
+              journeySlug={entry.id}
+              journeyTitle={journey.title}
+            />
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- S14 — the single conversion moment. `#enquire` is what the hero CTA
        points at, so the primary action never leaves the page. -->
@@ -654,5 +699,58 @@ const crumbs = breadcrumbSchema([
     margin-top: 1rem;
     font-size: var(--text-lg);
     color: var(--color-ink-muted);
+  }
+
+  /* ---- PDF gate (M5) ------------------------------------------------------ */
+  .pdfgate__inner {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 64rem) {
+    .pdfgate__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .pdfgate__heading {
+    margin-top: 0.75rem;
+    font-size: var(--text-h2);
+  }
+
+  .pdfgate__detail {
+    margin-top: 1rem;
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- print-only brand header ------------------------------------------- */
+  /* Hidden on screen HERE, not only via the global `.print-only` utility: a
+     scoped selector carries an attribute token and outranks it, and the first
+     build of this shipped the brand line visible under the nav. */
+  .print-brand {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0 0.75rem;
+    border-bottom: 1px solid var(--color-hairline);
+    margin-bottom: 0.75rem;
+  }
+
+  .print-brand__line {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .print-brand__url {
+    display: block;
+    font-size: var(--text-xs);
+  }
+
+  @media print {
+    .print-brand {
+      display: flex;
+    }
   }
 </style>

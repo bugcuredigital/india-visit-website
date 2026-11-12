@@ -1,0 +1,48 @@
+{
+  "milestone": "M5 — content migration",
+  "date": "2026-09-11",
+  "branch": "m5-content (from m4-templates; PR #3 for M4 still open)",
+  "build": { "pages": 54, "sitemapUrls": 49, "sitemapExcludes": ["/dev/components/", "/privacy/", "/terms/", "/cancellation/ (noindex while provisional)", "/404/"], "astroCheck": "0 errors, 0 warnings" },
+  "content": {
+    "journeys": { "total": 20, "variantA": 17, "variantB": 3, "portedThisMilestone": 14, "templateSpec6": "all 20 pass the automated half" },
+    "articles": { "total": 8, "newThisMilestone": 7, "launchSet": "PRD §7.8 complete" },
+    "destinations": { "total": 9, "proseWrittenThisMilestone": 9, "experienceTiles": ["rajasthan-golden-triangle", "kerala"] },
+    "cities": 2,
+    "pdfs": { "total": 20, "method": "printed from the built journey page through the print stylesheet (scripts/build-pdfs.mjs)", "location": "public/downloads/ — guessable until M6 moves them behind the lead function", "sizeMB": "see du in log; 0.8–3.8 MB each, flagged for M6" },
+    "tempPhotos": 52, "clientPhotos": 0
+  },
+  "gate": {
+    "templateSpec6_all20": "PASS",
+    "tariffGrep_threeTrainPages": "PASS — check:template-spec §7 per page and audit:hardcoded §2: no USD/price pattern on any train page",
+    "uniqueTitleMeta": "PASS — every journey and post carries seo.metaTitle ≤70 / metaDescription ≤180 (schema-enforced; two over-length descriptions caught and trimmed)",
+    "sitemapAllRoutes": "PASS — @astrojs/sitemap added (first-party; CLAUDE.md SEO requirement 'auto sitemap'); 49 indexable routes listed",
+    "clientReviewSheet": "§12 resolved, §22–§25 added (train docs, omitted items, articles, PDFs)",
+    "checkLinks": "PASS — 0 broken, 0 pending across 54 pages",
+    "checkCmsImages": "PASS — 5 documented exemptions, 0 images outside the CMS",
+    "checkHeroContrast": "33 pages discovered; first full run 6 mobile H1 failures on three-line titles (2.4–2.9:1); --scrim-firm raised 24→28rem on hero--full; the six re-audited at 3.1–3.8:1 with two controls unchanged. Remaining hero--full pages only got darker, homepage untouched.",
+    "checkResponsive": "PASS on /journeys/, a new journey, the Golden Chariot (after the chip-wrap fix), an article, a destination",
+    "checkKeyboard": "PASS — 70 tab stops on a journey page with the PDF gate",
+    "checkNoJs": "PASS", "checkHeroVideo": "15/15",
+    "auditHardcoded": "PASS — no contact details in code, no tariff figures, no third-party agency branding"
+  },
+  "lighthouse_mobile_simulated": {
+    "/journeys/leh-ladakh-kashmir-10n-11d/": "P100 A100 BP100 SEO100 · LCP 1.8s · CLS 0 · TBT 0ms",
+    "/journeys/deccan-odyssey-7n-8d/": "P100 · LCP 1.7s",
+    "/journeys/ (20 cards)": "P100 · LCP 1.7s",
+    "/travel-guide/bhutan-for-indian-travellers/": "P99 · LCP 2.0s",
+    "/destinations/rajasthan-golden-triangle/ (8 cards)": "P100 · LCP 1.7s",
+    "/luxury-trains/ (3 trains)": "P100 · LCP 1.7s",
+    "/travel-guide/ (8 articles)": "P100 · LCP 1.5s"
+  },
+  "defects_found_and_fixed": [
+    "Golden Chariot: a long transport label pushed the phone page 100px sideways — TransportChip now wraps; six labels shortened",
+    "Print-only brand header rendered on screen — the page's scoped display:flex outranked the global .print-only utility; now hidden in the scoped rule and shown only under @media print",
+    "Jawai hero came down black-and-white from Unsplash — replaced with the Jaisalmer master; Deccan Odyssey takes the Udaipur master",
+    "Two meta descriptions at 182 characters — schema caught them"
+  ],
+  "stop_and_flag": [
+    "Deccan Odyssey: the supplied document has NO day-by-day; eight provisional days built from the route only. Must not launch until the operator's programme arrives (CLIENT_REVIEW_SHEET §22).",
+    "Both train documents are another agency's; operator rules ported, that agency's fees/name stripped, operator name for the Deccan Odyssey is our inference (§22)."
+  ],
+  "schema_changes": ["journeys.cabinCategories min(2) → min(1): the Golden Chariot runs one cabin class", "EnquiryForm gains layout 'pdf' and leadType 'pdf'"]
+}

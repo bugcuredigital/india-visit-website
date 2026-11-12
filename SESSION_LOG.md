@@ -1023,3 +1023,92 @@ review arrived as a literal placeholder (`[APPROVED — M4 design-complete / OR
 deltas: <your specifics>]`), so M4 design is not formally marked approved and
 PR #3 remains unmerged. The instruction to proceed to M5 was explicit and is
 being followed; M5 branches from `m4-templates` until PR #3 merges.
+
+---
+
+## 2026-09-11 — M5 content migration (branch `m5-content`)
+
+**Sequence ruling applied:** the runbook now runs M5 → M7 → M6 → M8 → M9;
+nothing in M6 assumed Tina existed first (verified — no `tina/` or
+`functions/` yet, every M6 step sits on the built output and the settings
+singleton).
+
+### Done
+
+- **All 20 journeys live** — 14 ported this milestone from `docs/itineraries/`
+  (11 Variant A, 2 Variant B), all 20 passing Template Spec §6. Leh Ladakh was
+  the full rewrite the spec called for; the mid-format documents gained intro,
+  highlights and glance tables. Kerala's three pages are now three products
+  (§12, resolved — the short document ran one way and ended on the coast, so
+  it was never a subset).
+- **8 launch articles** — the seven missing from PRD §7.8 written; the four
+  visa/entry pieces carry a "rules change" line and are listed for the client's
+  read first.
+- **Destination prose for all 9**, replacing the pull-forward stubs; every
+  destination and journey cross-linked (`related` ×3 on every journey,
+  `relatedJourneys` on every destination).
+- **20 branded PDFs** — printed *from the journey pages* through a print
+  stylesheet, so section-for-section parity is a property of the build; a
+  name/email/phone gate on every journey page in the shared `EnquiryForm`.
+- **Sitemap** — `@astrojs/sitemap` added (the CLAUDE.md "auto sitemap"
+  requirement and the M5 gate line), filtered to exclude the dev page and the
+  three `noindex` policies: 49 URLs.
+- **52 TEMP-PHOTO stand-ins** (12 new, every id checked against its Unsplash
+  page — five candidates were Unsplash+ and were dropped).
+- `SITE_STATUS.md` created — **the instruction named it as a standing rule but
+  no such file or rule existed in the repo**, so its shape is inferred: a
+  one-page status board updated in the same commits as the work.
+
+### Two STOP-AND-FLAG items (CLIENT_REVIEW_SHEET §22)
+
+1. **The Deccan Odyssey document has no day-by-day.** The Template Spec
+   recorded it as content-complete; it is not. Eight provisional days are built
+   from the route in the operator's order and the document's own highlight
+   sentences — nothing invented — and every one carries the on-page
+   provisional notice. **It must not launch until the operator's programme
+   arrives.**
+2. **Both train documents are another agency's.** Handled as the Palace on
+   Wheels was in M4: operator rules ported, that agency's bank charge, service
+   fee, festive supplement and name stripped (the third-party audit enforces
+   the last). The Deccan Odyssey's operator is never named in its document;
+   "Maharashtra Tourism Development Corporation" is our inference and is
+   flagged as such.
+
+### Things chosen in the port, listed for reversal (§23)
+
+Hotel names not published; elephant rides at Amer written as jeep, consistent
+with the published policy; the sanctuary painting omitted; the Ladakh
+acclimatisation wording on the destination page aligned to the client's own
+one-rest-day route rather than contradicting it; four factual overstatements
+in the source documents quietly corrected.
+
+### Defects the gate found
+
+The Golden Chariot's long transport label pushed a phone page sideways (chip
+now wraps); the print-only brand header rendered on screen because the
+scoped rule outranked the global utility; a hero came down black-and-white;
+and six three-line mobile H1s fell under 3:1 on the `full` hero — its firm zone
+went from 24 to 28rem and the six re-measure at 3.1–3.8:1. Every one was found
+by an audit, not by eye.
+
+### Gate evidence
+
+54 pages · `astro check` 0/0 · 20/20 Template Spec §6 · tariff grep clean ·
+0 broken links · 0 images outside the CMS · sitemap 49 routes · responsive,
+keyboard, no-JS, hero-video all pass · Lighthouse P100 on every sampled page
+except the article template at P99 / 2.0s. Full figures:
+`reports/m5-gate-summary.json`; captures in `reports/m5/`.
+
+### Exact next action
+
+1. **Client:** §22 (train operator names, advance %, the Deccan Odyssey
+   programme), §23, §24, §25 in the review sheet; the DRAFT rows in
+   `docs/COPY_REGISTER.md` §L–§N.
+2. **M7 — Tina wiring** on `m7-tina`, per the resequence: `tina/config.ts`
+   mirroring every Zod schema field-for-field, repo media to
+   `/public/uploads/`, the editor smoke tests, and the 1.5-day Sveltia trigger
+   still requiring the client's sign-off before it is pulled. The M7 gate is
+   the owner's own dashboard session.
+3. **M6 inherits** the PDF release step: files out of `public/downloads/`,
+   released by the lead function after a verified gate submit — and a size
+   budget for them (0.8–3.8 MB each today).

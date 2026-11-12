@@ -1,10 +1,7 @@
 ---
-# PROVISIONAL — agency-drafted so the T2 v2 template and the /destinations/
-# index have real content to be reviewed against, and so the M4 click-through
-# has no dead links. Writing the nine destination pages is M5 work
-# (EXECUTION_RUNBOOK M5 step 2); this is a pull-forward of the prose only.
-# Every entry is logged in docs/CLIENT_REVIEW_SHEET.md §17.
-# Imagery is TEMP-PHOTO (Unsplash), replaced by the client's archive in M5.
+# DRAFT prose — agency-written for M5 (word control, invariant #9); listed in
+# docs/COPY_REGISTER.md §D and CLIENT_REVIEW_SHEET.md §17. Imagery is
+# TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: Bhutan
 shortLabel: Bhutan
 tagline: A kingdom that measures its success in something other than output.
@@ -58,7 +55,8 @@ faq:
       Commonly, via Delhi or Kolkata, and it pairs particularly well with a
       North East India route given the geography.
 
-relatedJourneys: []
+relatedJourneys:
+  - bhutan-paro-thimphu-punakha-7n-8d
 
 seo:
   metaTitle: Bhutan Tours — Paro, Thimphu, Punakha & the Tiger's Nest
@@ -67,10 +65,22 @@ seo:
 
 Bhutan is the rare destination where the restrictions are the reason to go. A
 daily fee, a licensed guide and no independent travel add up to a country that
-has not been reshaped around visitors, and it shows within an hour of landing.
+has not been reshaped around visitors, and it shows within an hour of landing —
+or of crossing the border, for the many Indian travellers who come by road.
 
-The standard route runs Paro to Thimphu to Punakha and back, taking in the
-dzongs, the Buddhist monastic calendar and — if the timing works — one of the
-autumn tsechu festivals. The Tiger's Nest walk is the day everyone remembers,
-and it is worth arranging the itinerary so that it falls late enough that you
-are acclimatised and early enough that the weather is still on your side.
+The standard route runs Paro to Thimphu to Punakha and back: Rinpung Dzong and
+the old watchtower museum, the great Buddha above the capital and the dzong
+that houses its government, the Dochula Pass with its 108 chortens, and
+Punakha Dzong where two rivers meet. The Tiger's Nest walk is the day everyone
+remembers, and the itinerary below saves it for the last full morning, once
+you are used to the altitude and the walking.
+
+For Indian travellers the arrangements are different from those for everyone
+else, and better: an entry permit rather than a visa, a lower rate of the
+Sustainable Development Fee, rupees accepted almost everywhere, and a choice
+between the flight into Paro — one of the most dramatic approaches in the
+world — and the road up from Phuntsholing through the foothills. The guide
+below sets all of it out.
+
+Go in March to May or September to November for the mountains, and around one
+of the autumn tsechu festivals if the dates can be made to fit.

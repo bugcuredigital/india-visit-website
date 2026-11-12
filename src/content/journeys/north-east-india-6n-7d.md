@@ -146,7 +146,12 @@ practicalNotes:
     label: Getting around
     text: A private car with a driver is the only practical way to cover this route; public transport between these points is slow and infrequent.
 
-related: []
+related:
+  - north-east-root-bridges-majuli-6n-7d
+  - bhutan-paro-thimphu-punakha-7n-8d
+  - tadoba-tiger-trails-2n-3d
+# Gated branded PDF — regenerated from this entry by `npm run pdf:build`.
+pdfFile: /downloads/north-east-india-6n-7d.pdf
 featured: true
 
 seo:

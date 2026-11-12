@@ -219,7 +219,10 @@ const journeyVariantB = (image: () => z.ZodTypeAny) =>
             flagship: z.boolean().default(false),
           }),
         )
-        .min(2),
+        /* min(1), not min(2): the Golden Chariot runs a single cabin class
+           (Deluxe), and the operator document says so. A schema that demanded
+           two would have forced an invented tier onto a real train. */
+        .min(1),
 
       /** Season-labelled; changes yearly, so it is a plain editable string.
        *  Stays generic until the schedule half of Open Question #15 resolves. */

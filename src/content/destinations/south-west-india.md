@@ -1,10 +1,7 @@
 ---
-# PROVISIONAL — agency-drafted so the T2 v2 template and the /destinations/
-# index have real content to be reviewed against, and so the M4 click-through
-# has no dead links. Writing the nine destination pages is M5 work
-# (EXECUTION_RUNBOOK M5 step 2); this is a pull-forward of the prose only.
-# Every entry is logged in docs/CLIENT_REVIEW_SHEET.md §17.
-# Imagery is TEMP-PHOTO (Unsplash), replaced by the client's archive in M5.
+# DRAFT prose — agency-written for M5 (word control, invariant #9); listed in
+# docs/COPY_REGISTER.md §D and CLIENT_REVIEW_SHEET.md §17. Imagery is
+# TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: South & West India Heritage
 shortLabel: South & West
 tagline: Cave temples, Deccan sultanates and the coast that traded with Rome.
@@ -61,6 +58,7 @@ faq:
 
 relatedJourneys:
   - western-southern-india-12n-13d
+  - golden-chariot-5n-6d
 
 seo:
   metaTitle: South & West India Tours — Ajanta, Ellora, Hampi, Mysore
@@ -73,7 +71,19 @@ almost none of it crowded.
 
 The spine of the journey is the rock-cut architecture — Ajanta's painted
 Buddhist caves and Ellora's Kailasa temple, carved downward out of a single
-hillside — with the Deccan sultanate cities, the Vijayanagara ruins at Hampi
-and the Wodeyar palaces at Mysore filling out the rest. It is the most
-demanding itinerary we run and the one travellers most often describe as the
-best thing they have done in India.
+hillside over a century — with the Deccan sultanate cities, the Vijayanagara
+ruins at Hampi spread across a landscape of boulders, and the Wodeyar palace
+at Mysore filling out the rest. The thirteen-day journey below strings them
+together by flight, overnight train and road, and it is the most demanding
+itinerary we run: long distances, early starts, and the sense throughout of
+being somewhere the rest of the country has not caught up with.
+
+The Golden Chariot covers part of the same ground from a train — Mysore, the
+Pallava shore temples at Mahabalipuram, the Chola summit at Thanjavur, the
+merchant mansions of Chettinad and then over the Ghats to Kochi — and for
+travellers who would rather unpack once, it is the way to see the south's
+temples without the drives between them.
+
+It is also the India that rewards a second visit most. Travellers who take
+this route tend to describe it afterwards as the best thing they have done in
+the country, and almost none of them would have chosen it first.

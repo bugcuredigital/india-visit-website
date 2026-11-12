@@ -149,7 +149,12 @@ practicalNotes:
     label: Pace
     text: Moderate. Two driving days of roughly four to five hours each, with monument mornings and free afternoons in between.
 
-related: []
+related:
+  - golden-triangle-jhalana-6n-7d
+  - golden-triangle-varanasi-9n-10d
+  - golden-triangle-amritsar-11n-12d
+# Gated branded PDF — regenerated from this entry by `npm run pdf:build`.
+pdfFile: /downloads/golden-triangle-5n-6d.pdf
 featured: true
 
 seo:

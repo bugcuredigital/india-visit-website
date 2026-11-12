@@ -78,12 +78,38 @@ faq:
 
 relatedJourneys:
   - kerala-with-houseboat-11n-12d
+  - kerala-in-a-week-7n-8d
+  - kerala-southern-coast-12n-13d
+  - golden-chariot-5n-6d
 
 seo:
   metaTitle: Kerala Tours & Backwater Journeys
   metaDescription: Plan a Kerala journey through Fort Kochi, the Munnar tea hills, Periyar's tiger reserve and the Alappuzha backwaters, with practical notes on seasons and pace.
 ---
 
-Kerala rewards travellers who slow down. The state is narrow and green, stacked from the Arabian Sea up into the Western Ghats, and the distances are short enough that a twelve-day journey can take in a spice-trading port, a mile-high tea plantation, a tiger reserve and a night afloat without ever feeling rushed.
+Kerala is narrow, green and stacked from the Arabian Sea up into the Western
+Ghats, and that geography is the whole reason it works as a journey: in a week
+you can go from a spice port to a mile-high tea plantation to a tiger reserve
+to a night afloat, and never spend more than four hours in a car. It is the
+most unhurried state in India, and the itineraries we build here are shaped
+around that rather than against it.
 
-What stays with people is rarely a monument. It is the Chinese fishing nets working against the sunset at Fort Kochi, mist moving through the Kannan Devan Hills at first light, the sound of a houseboat crew cooking dinner while the canal goes quiet. Kerala is not a checklist destination, and the itineraries we build here are deliberately unhurried.
+We run three. A week from Kochi down to the coast at Varkala, which is the
+version for a first visit; the eleven-night houseboat journey, which adds a
+Kodaikanal day and three nights on the sand at Mararikulam and is the slow
+one; and the southern circuit, which begins at Trivandrum, reaches Kanyakumari
+at the tip of the subcontinent, and turns north through Kovalam, Kumarakom,
+Periyar and Munnar to finish in Kochi. They share a state and almost nothing
+else, and the differences are set out on each page.
+
+What stays with people is rarely a monument. It is the Chinese fishing nets
+working against the sunset at Fort Kochi, mist moving through the Kannan Devan
+Hills at first light, the sound of a houseboat crew cooking dinner while the
+canal goes quiet, and the particular stillness of a beach at Mararikulam with
+nothing planned for the day. Kerala is not a checklist destination. It is the
+one we recommend to anyone who has been to India before and wants to be
+somewhere rather than see it.
+
+A practical note, because it is asked every time: the houseboat night is one
+night, boats moor before dark, and the crew cooks on board. The guide below
+explains exactly how it works.

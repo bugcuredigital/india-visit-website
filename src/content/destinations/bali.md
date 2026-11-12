@@ -1,10 +1,7 @@
 ---
-# PROVISIONAL — agency-drafted so the T2 v2 template and the /destinations/
-# index have real content to be reviewed against, and so the M4 click-through
-# has no dead links. Writing the nine destination pages is M5 work
-# (EXECUTION_RUNBOOK M5 step 2); this is a pull-forward of the prose only.
-# Every entry is logged in docs/CLIENT_REVIEW_SHEET.md §17.
-# Imagery is TEMP-PHOTO (Unsplash), replaced by the client's archive in M5.
+# DRAFT prose — agency-written for M5 (word control, invariant #9); listed in
+# docs/COPY_REGISTER.md §D and CLIENT_REVIEW_SHEET.md §17. Imagery is
+# TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: Bali
 shortLabel: Bali
 tagline: Rice terraces, water temples and a Hindu culture that survived the rest of Indonesia's.
@@ -71,7 +68,18 @@ bases and stayed put rather than trying to circle it.
 
 Our itineraries generally split between Ubud — the rice terraces at Tegallalang
 and Jatiluwih, the water temples, the craft villages at Mas and Celuk — and one
-coast chosen for what you want from it. The Hindu culture is the part people
-underestimate before they arrive: the daily offerings, the temple calendar and
-the dance are not staged for visitors, which is precisely why they are worth
-seeing.
+coast chosen for what you want from it: Seminyak for restaurants and beach
+clubs, Uluwatu for the cliffs and the surf, or somewhere quieter. A private car
+with a driver moves you between the two, and a leisure day is left empty on
+purpose, because the whole point of Bali's south coast is knowing when not to
+plan anything.
+
+The Hindu culture is the part people underestimate before they arrive. Bali is
+the one Hindu island in the largest Muslim country on earth, and the daily
+offerings, the temple calendar and the dance are not staged for visitors,
+which is precisely why they are worth seeing. For a traveller from India it is
+familiar and foreign at the same time.
+
+The practical side is easy: a visa on arrival for Indian passport holders, a
+dry season from April to October, and connections through Singapore, Kuala
+Lumpur or Jakarta. The guide below covers all three.

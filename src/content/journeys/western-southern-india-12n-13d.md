@@ -223,7 +223,12 @@ practicalNotes:
     label: Pace
     text: Active. Two internal flights, two overnight trains and several full sightseeing days — rewarding, but not a rest.
 
-related: []
+related:
+  - golden-chariot-5n-6d
+  - kerala-with-houseboat-11n-12d
+  - rajasthan-classic-12n-13d
+# Gated branded PDF — regenerated from this entry by `npm run pdf:build`.
+pdfFile: /downloads/western-southern-india-12n-13d.pdf
 featured: true
 
 seo:

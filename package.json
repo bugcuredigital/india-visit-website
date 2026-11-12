@@ -31,10 +31,12 @@
     "crop": "node scripts/crop.mjs",
     "check:hero-contrast": "node scripts/check-hero-contrast.mjs",
     "check:links": "node scripts/check-links.mjs",
-    "check:cms-images": "node scripts/check-cms-images.mjs"
+    "check:cms-images": "node scripts/check-cms-images.mjs",
+    "pdf:build": "node scripts/build-pdfs.mjs"
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^5.13.0"
   },
   "devDependencies": {

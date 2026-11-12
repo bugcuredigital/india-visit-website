@@ -118,13 +118,23 @@ schema refuses any entry whose `consentConfirmed` is not `true`.
 All heroes currently use flagged `PLACEHOLDER-IMAGE` graphics. Awaiting the
 photo archive (pre-processed to ≤2000px wide).
 
-## 12. Kerala journeys — differentiation check (M5)
+## 12. Kerala journeys — differentiation check (M5) — DONE, please confirm
 
-Three Kerala itineraries are in scope and must read as distinct products, not
-near-duplicates: the 11N Houseboat journey, the 12N Trivandrum circuit, and
-the shorter general Kerala itinerary. If the third turns out to be a true
-subset of another with no distinct identity, the agency will flag it rather
-than publish a duplicate.
+Three Kerala itineraries were in scope and had to read as distinct products.
+They now do, and the differences are structural rather than cosmetic:
+
+| Page | Nights | Runs | What makes it itself |
+|---|---|---|---|
+| **Kerala in a Week** (`/journeys/kerala-in-a-week-7n-8d/`) | 7 | Kochi → Munnar → Thekkady → Alappuzha → Varkala; **Kochi in, Trivandrum out** | The first-visit week: one direction, no doubling back, beach finish. Ported from your shortest Kerala document. |
+| **Kerala with Houseboat** (`/journeys/kerala-with-houseboat-11n-12d/`) | 11 | Kochi → Munnar/Kodaikanal → Periyar → Alappuzha → **three nights at Mararikulam** → Kochi | The slow version: a Kodaikanal day and three beach nights. |
+| **Kerala and the Southern Coast** (`/journeys/kerala-southern-coast-12n-13d/`) | 12 | **Trivandrum → Kanyakumari** → Kovalam → Alappuzha → Kumarakom → Periyar → Munnar → Kochi | The southern circuit: the tip of India, two Kovalam days, Kumarakom. |
+
+Distinct title, duration, slug, intro and meta description on each, and each
+page names the other two. The short document was **not** a true subset — it
+runs one way and ends on the coast, which neither of the others does — so no
+stop-and-flag was needed. If you would rather the week were called "Kerala
+Highlights" (the Template Spec's suggestion), say so; the slug can change
+before launch with no 301 needed, because nothing has been indexed.
 
 ## 13. Response-time SLA (PRD Open Question #12)
 
@@ -388,3 +398,133 @@ One thing worth confirming while you are looking: the footer form and the page
 forms both require the **consent checkbox** linking to the privacy policy. That
 wording is itself awaiting your adviser (§19), so the footer form inherits the
 same open question.
+
+
+---
+
+## 22. The two new luxury-train pages ⚑ (M5 — one STOP-AND-FLAG)
+
+Both train documents you supplied are **another agency's documents**. They
+name that agency six and five times, carry its bank-charge and service-fee
+clauses, and one of them names IRCTC as the operator while the other never
+names the operator at all. This is exactly what the Palace on Wheels document
+was too, and it was handled the same way in M4: **the operator's rules are
+ported, the other agency's commercial terms are not, and its name appears
+nowhere on the site** (the `audit:hardcoded` third-party check enforces this).
+
+**What that leaves for you to confirm, per train:**
+
+| | Golden Chariot | Deccan Odyssey |
+|---|---|---|
+| Operator named on the page | IRCTC (the document says so) | **Maharashtra Tourism Development Corporation** — the document only says "the train tour operator"; MTDC is public knowledge but is **our inference** |
+| Advance in the booking steps | 30% (the document's figure — *that agency's* term) | 30% (same) |
+| Cancellation slabs | 35% ≥80 days · 60% 65–79 · 100% ≤64 | 10% >95 days · 30% 60–94 · 50% 45–59 · 100% <45 |
+| Omitted on purpose | the USD 235 bank charge, the US$100 service/postponement charge, the USD 400 festive supplement (a tariff figure), the RBI refund-timing clause | the same, plus the per-cabin USD tariffs (never published, invariant #6) |
+| Cabin classes | **One** — Deluxe only, as the document states. The schema was relaxed from "at least two" to allow it | Deluxe Cabin and Presidential Suite |
+
+**⚑ STOP-AND-FLAG — Deccan Odyssey has no day-by-day.** The Template Spec
+recorded this document as "content-complete". It is not: it carries the route,
+a highlights paragraph, cabins, inclusions, exclusions, the confirmation
+process and the policies — and **no daily programme**. A Variant B page cannot
+be built without one, and we will not invent an operator's fixed-departure
+schedule. What is on the page instead: eight days built strictly from the route
+in the operator's own order (eight stops, matching 7N/8D exactly) and the
+document's own highlight sentences, every one marked *provisional* on the page.
+**The page must not launch until you supply the operator's daily programme.**
+Until then it renders, so the design can be reviewed, with the provisional
+notice showing.
+
+**Also to confirm:** the disclosure wording on both pages mirrors the Palace
+on Wheels wording you have already seen (PRD Open Question #15); and whether
+India Visit's own advance percentage on trains is 30%, 40% (the Palace on
+Wheels figure) or something else — it is currently printed per document.
+
+---
+
+## 23. Things in your itinerary documents that are NOT on the site (M5)
+
+Read this one. These are choices we made while porting, and each is
+reversible on your word.
+
+1. **Hotel names.** The 13-day Rajasthan document names its hotels (The
+   Suryaa, Fateh Garh, Indana, Pushkara, Grand Mercure). They are not published
+   — they are commercially variable and belong in the quotation. Tell us if
+   you want named properties on any page.
+2. **Elephant rides at Amer.** Two documents offer "elephant or jeep" for the
+   climb to Amer Fort. Every page says **jeep**, consistent with the policy the
+   Rajasthan destination page already publishes. If you want the elephant
+   option offered, say so and we will change the page *and* the policy — they
+   cannot say different things.
+3. **The elephant sanctuary morning** (13-day Rajasthan, day 10). The document
+   lists feeding, bathing, a walk alongside, and *body-painting the elephant*.
+   The page keeps feeding, bathing and the walk and omits the painting. Confirm
+   or strike the whole activity.
+4. **"Elephant ride at the Elephant Arrival Spot"** (12-night Kerala, Munnar
+   day). Omitted from the page for the same reason as item 2.
+5. **Leh Ladakh — acclimatisation.** Your document has one rest day. The page
+   keeps your route and day order exactly, but describes day 3 as *gentle, at
+   the town's own altitude* (which it is — Leh Palace, the bazaar, Spituk and
+   Phyang), and the Ladakh destination page's wording is aligned to "one fully
+   free day, one gentle day" rather than "two full rest days". Both now say the
+   same thing. If you would rather add a second full rest day, it becomes an
+   11-night journey.
+6. **Overstatements corrected in the port.** "Varanasi, the oldest city in the
+   world (5000 AD)" → "among the oldest continuously inhabited cities";
+   "12 km long Lakshman Jhula" → "the Lakshman Jhula suspension bridge";
+   "Siachen Glacier" as a Leh sightseeing option → dropped; the Jaipur "painted
+   pink in the 18th century for the Prince of Wales" → 1876. Nothing else was
+   changed in substance.
+7. **Tadoba and *The Jungle Book*.** Your document says Tadoba was the
+   inspiration; the page says "often said to have inspired". Pench and Seoni
+   make the same claim.
+
+---
+
+## 24. The seven new Travel Guide articles — DRAFT (M5)
+
+All seven launch articles from PRD §7.8 now exist alongside the Kerala
+houseboat guide. **Every word is agency-drafted** (word control) and listed in
+`docs/COPY_REGISTER.md` §L. The facts are drawn from your itinerary documents
+and the destination pages; the four **visa and entry** articles carry a
+"rules change — we confirm before you travel" line and we would like you to
+read those four first:
+
+| Article | Category | The regulatory claim to check |
+|---|---|---|
+| Bhutan for Indian Travellers | Planning & Visas | entry permit not visa; SDF per night at the Indian rate; INR accepted |
+| Bali Visa on Arrival for Indians | Planning & Visas | VoA for Indian passports, 30 days, extendable once; six months' validity |
+| Vietnam E-Visa Guide | Planning & Visas | e-visa only (no VoA); port of entry must match; Tet delays |
+| First Trip to India | Planning & Visas | e-visa for most nationalities; not valid at every land border |
+| Best Time to Visit Ladakh | Best Time | pass opening months; Hemis in July; Chadar in Jan–Feb |
+| Palace on Wheels — Complete Guide | Guides | restates the journey entry only — nothing new |
+| Golden Triangle — 5 Days or 10 | Guides | compares four journeys on the site — nothing new |
+
+No article states a fee amount, a price or a processing time as a promise.
+
+---
+
+## 25. The twenty branded PDFs ⚑ (M5) — and what gating means before M6
+
+Every journey page now has a "Download this itinerary" gate — name, email and
+phone, as PRD §8.1 specifies — and a branded PDF exists for all twenty. The
+PDF is **printed from the web page itself** (headless Chrome, print
+stylesheet), so it matches the page section for section by construction: the
+brand header with your phone and email, the hero, the intro, highlights, the
+glance table, every day expanded, inclusions, practical notes, and on the
+trains the cabins, booking steps and policies.
+
+**Two honest limits until M6:**
+
+1. The gate form is a shell like every other form on the site — the function
+   that validates the submission and releases the file is M6 work. Submitting
+   it today does nothing.
+2. The files currently sit at `/downloads/<slug>.pdf` so that you can review
+   them; that path is guessable. **M6 moves them behind the function** so that
+   only a completed gate releases one. This is recorded as an M6 step in the
+   runbook, and the site must not launch with the files where they are now.
+
+**To review:** open any journey page on the preview, add `/downloads/` +
+the slug + `.pdf` to the site root — e.g.
+`/downloads/golden-triangle-5n-6d.pdf` — or ask and we will send the set.
+The photography in them is the TEMP-PHOTO set and is replaced with the pages
+when your archive lands; regenerating all twenty is one command.
