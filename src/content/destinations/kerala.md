@@ -28,7 +28,7 @@ experiences:
     image: /uploads/temp-photos/TEMP-PHOTO-article-tea-gardens.jpg
     imageAlt: Rolling tea gardens on the hills above Munnar
   - name: Fort Kochi
-    text: Six centuries of arrivals — Arab, Chinese, Portuguese, Dutch, British — and almost none of it erased.
+    text: Six centuries of arrivals (Arab, Chinese, Portuguese, Dutch, British) and almost none of it erased.
     image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
     imageAlt: Chinese fishing nets standing over the water at Fort Kochi
   - name: The spice trail

@@ -21,7 +21,7 @@ faq:
     answer: >-
       Officially a few working days; in practice we advise applying at least
       two weeks before travel, and earlier around Vietnamese public holidays
-      such as Tet, when processing slows. Rules and timings change — we confirm
+      such as Tet, when processing slows. Rules and timings change; we confirm
       the current position when you book.
   - question: Can I get a visa on arrival in Vietnam instead?
     answer: >-
@@ -30,7 +30,7 @@ faq:
       it at check-in.
   - question: Which airport should I fly into?
     answer: >-
-      For the journey we run most often — Hanoi, Ha Long Bay and Hoi An — fly
+      For the journey we run most often (Hanoi, Ha Long Bay and Hoi An), fly
       into Hanoi (HAN) and out of Da Nang (DAD). The e-visa must list the port
       you actually arrive at, so decide the routing before you apply.
 
@@ -58,10 +58,10 @@ What to have ready before you start the application:
 
 - a scan of the **passport data page**, valid for at least six months beyond
   your arrival;
-- a **passport-style photograph** to the portal's specification — this is the
-  most common reason applications are sent back;
-- your **entry and exit dates**, and the **port of entry** — the airport you
-  will actually land at;
+- a **passport-style photograph** to the portal's specification (this is the
+  most common reason applications are sent back);
+- your **entry and exit dates**, and the **port of entry** (the airport you
+  will actually land at);
 - a **hotel address** for the first night, which we supply.
 
 The visa is tied to the details you enter. If you apply for Hanoi and land at
@@ -71,8 +71,8 @@ the border. Check it twice; we check it a third time.
 ## How long it takes
 
 The portal quotes a few working days. In practice we ask clients to apply at
-least two weeks ahead, and earlier if the dates fall around **Tet** — the lunar
-new year, usually late January or February — when much of the country closes
+least two weeks ahead, and earlier if the dates fall around **Tet** (the lunar
+new year, usually late January or February), when much of the country closes
 and processing slows. Print the approval letter and carry it with your
 passport.
 
@@ -84,20 +84,20 @@ useful routing is **into Hanoi and out of Da Nang**: the domestic flight
 between them takes about ninety minutes and is far easier than connecting
 through Ho Chi Minh City. Book the e-visa for the airport you land at.
 
-## When to go — it depends where
+## When to go: it depends where
 
 Vietnam runs more than a thousand miles north to south, and the ends of it sit
 in different climates.
 
-**The north** — Hanoi and Ha Long Bay — is best from **October to April**.
+**The north** (Hanoi and Ha Long Bay) is best from **October to April**.
 Hanoi's winter can be damp and grey in February and March, so if your dates
 are flexible aim for October, November or the spring.
 
-**The centre** — Da Nang, Hoi An and Hue — sees heavy rain in **October and
+**The centre** (Da Nang, Hoi An and Hue) sees heavy rain in **October and
 November**. February to August is the drier window here, with the beach at its
 best from May.
 
-**The south** — Ho Chi Minh City and the Mekong — is warm all year, with the
+**The south** (Ho Chi Minh City and the Mekong) is warm all year, with the
 dry season from December to April.
 
 So a single "best time" does not exist. For the Hanoi–Ha Long–Hoi An journey,
@@ -108,7 +108,7 @@ south to suit them.
 
 ## Money
 
-The Vietnamese Dong runs to large numbers — a coffee costs tens of thousands —
+The Vietnamese Dong runs to large numbers (a coffee costs tens of thousands),
 so it pays to learn the notes early. Carry cash for markets and street food;
 cards are accepted in hotels and larger restaurants. Change money at a bank or
 a licensed counter, not on the street.

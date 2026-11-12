@@ -1,5 +1,5 @@
 ---
-title: Kerala Houseboat Guide — How It Works and What to Expect
+title: "Kerala Houseboat Guide: How It Works and What to Expect"
 category: guides
 excerpt: What a night aboard a kettuvallam is actually like, which stretch of backwater to choose, and how houseboats differ from one another.
 publishDate: 2026-09-09
@@ -25,15 +25,15 @@ faq:
       arrange with notice.
 
 seo:
-  metaTitle: Kerala Houseboat Guide — What to Expect
+  metaTitle: "Kerala Houseboat Guide: What to Expect"
   metaDescription: How a Kerala houseboat night works, which backwater stretch to pick, what is included on board, and how to choose between boats.
 ---
 
-The Kerala houseboat is the state's most photographed experience and the one travellers ask about most often. It is also widely misunderstood — so here is what a night aboard actually involves.
+The Kerala houseboat is the state's most photographed experience and the one travellers ask about most often. It is also widely misunderstood, so here is what a night aboard actually involves.
 
 ## What a kettuvallam is
 
-The boats began as cargo vessels, carrying rice and spices along the backwaters before roads reached the interior. A kettuvallam is built from planks tied together — the name means "tied boat" — and the converted versions keep that hull while adding private sleeping quarters, a dining area and a deck.
+The boats began as cargo vessels, carrying rice and spices along the backwaters before roads reached the interior. A kettuvallam is built from planks tied together (the name means "tied boat"), and the converted versions keep that hull while adding private sleeping quarters, a dining area and a deck.
 
 ## The shape of the night
 

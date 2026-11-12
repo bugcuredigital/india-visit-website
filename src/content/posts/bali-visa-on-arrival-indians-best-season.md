@@ -5,7 +5,7 @@
 # travel" because they change.
 title: Bali Visa on Arrival for Indians, and When to Go
 category: planning-visas
-excerpt: How the visa on arrival works for an Indian passport at Denpasar, what to carry, how the flights connect, and why April to October is the season — with the months to avoid.
+excerpt: How the visa on arrival works for an Indian passport at Denpasar, what to carry, how the flights connect, and why April to October is the season, with the months to avoid.
 publishDate: 2026-09-12
 author: India Visit
 
@@ -33,8 +33,8 @@ faq:
     answer: >-
       It need not be. The island runs from village guesthouses to some of the
       most expensive hotels in Asia, and the difference is mostly about where
-      you stay rather than what you do. A private driver — the easiest way to
-      move between Ubud and the coast — costs less than most visitors expect.
+      you stay rather than what you do. A private driver, the easiest way to
+      move between Ubud and the coast, costs less than most visitors expect.
 
 seo:
   metaTitle: Bali Visa on Arrival for Indians + Best Season to Visit
@@ -62,7 +62,7 @@ What you need to carry:
 
 - a passport with **at least six months' validity** from the date of arrival,
   with a blank page;
-- a **confirmed onward or return ticket** — immigration does ask;
+- a **confirmed onward or return ticket** (immigration does ask);
 - the fee, in a form the counter accepts, or the e-visa confirmation if you
   applied ahead.
 
@@ -74,7 +74,7 @@ longer, tell us before you go.
 
 There are no reliable direct flights from most Indian cities. The typical
 routing runs through **Singapore, Kuala Lumpur or Jakarta** into Denpasar, and
-the whole journey — with the connection — is a long day. It is worth choosing
+with the connection, the whole journey is a long day. It is worth choosing
 the connection for the layover as much as the price: Singapore's airport is
 the easiest place in the region to spend three hours.
 
@@ -82,7 +82,7 @@ the easiest place in the region to spend three hours.
 
 Bali's year divides simply into a dry season and a wet one.
 
-**April to October** is the dry season and the reliable window — warm, clear
+**April to October** is the dry season and the reliable window: warm, clear
 and comfortable, with the coolest and driest months in the middle. It is also
 the busiest, particularly July and August, when Australian and European
 holidays coincide.
@@ -101,8 +101,8 @@ greenest after the rains.
 The island rewards restraint. The traffic is worse than the map suggests, and
 the travellers who enjoy Bali most are the ones who chose two bases and stayed
 put rather than trying to circle it. Our itineraries generally split between
-**Ubud** — the rice terraces at Tegallalang and Jatiluwih, the water temples,
-the craft villages — and **one coast** chosen for what you want from it:
+**Ubud** (the rice terraces at Tegallalang and Jatiluwih, the water temples,
+the craft villages) and **one coast** chosen for what you want from it:
 Seminyak for restaurants and beach clubs, Uluwatu for the cliffs and the surf,
 or somewhere quieter.
 

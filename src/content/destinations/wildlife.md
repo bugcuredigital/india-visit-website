@@ -21,7 +21,7 @@ intro: >-
 practicalNotes:
   - icon: calendar
     label: Best time
-    text: February to May for tiger sightings — hot, dry, and animals come to water. Most parks close in monsoon.
+    text: "February to May for tiger sightings: hot, dry, and animals come to water. Most parks close in monsoon."
   - icon: plane
     label: Getting there
     text: Nagpur (NAG) for Tadoba, Jaipur (JAI) for Jhalana and Jawai, Guwahati (GAU) for Kaziranga.
@@ -37,7 +37,7 @@ faq:
     answer: >-
       No, and we will never tell you otherwise. Tadoba and Bandhavgarh have
       among the highest encounter rates in the country and three nights gives
-      you six safaris, which stacks the odds properly — but a wild animal in
+      you six safaris, which stacks the odds properly. But a wild animal in
       625 square kilometres is not a booking. Anyone promising a sighting is
       selling something else.
   - question: Which reserve should we choose?
@@ -64,8 +64,8 @@ relatedJourneys:
   - north-east-india-6n-7d
 
 seo:
-  metaTitle: India Wildlife Tours — Tiger, Leopard & Rhino Safaris
-  metaDescription: Tiger safaris at Tadoba, leopards at Jhalana and Jawai, rhino at Kaziranga — India wildlife journeys with honest notes on seasons and sightings.
+  metaTitle: "India Wildlife Tours: Tiger, Leopard & Rhino Safaris"
+  metaDescription: "Tiger safaris at Tadoba, leopards at Jhalana and Jawai, rhino at Kaziranga: India wildlife journeys with honest notes on seasons and sightings."
 ---
 
 We sell wildlife journeys carefully, because the category attracts more
@@ -75,18 +75,18 @@ and a two-night stay booked without understanding the odds is usually a
 disappointment waiting to happen.
 
 What works is picking the reserve for the animal you actually want to see, and
-being honest about the season. Tadoba, three hours from Nagpur, for tiger —
+being honest about the season. Tadoba, three hours from Nagpur, for tiger:
 one of the highest densities in India, and the one reserve we are prepared to
 sell as a long weekend, because three safaris there give a real chance.
 Jhalana, inside Jaipur's city limits, and Jawai, in the granite hills of
-southern Rajasthan, for leopard — Jawai increasingly recognised as one of the
+southern Rajasthan, for leopard. Jawai is increasingly recognised as one of the
 best places in the world to see them. Kaziranga in Assam for the one-horned
 rhino, which it holds two thirds of. Ranthambore, from the Palace on Wheels or
 the Deccan Odyssey, for tiger country seen from a train.
 
-The journeys below fold each of these into something larger — the Golden
+The journeys below fold each of these into something larger: the Golden
 Triangle with a leopard day, the full Rajasthan circuit ending at Jawai, the
-North East with Kaziranga — and one of them is the safari alone. What none of
+North East with Kaziranga. One of them is the safari alone. What none of
 them does is promise a sighting. The forest is worth the trip regardless, and
 we would rather say so than sell you a tiger.
 

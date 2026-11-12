@@ -30,8 +30,8 @@ const trains = (await getCollection('journeys', ({ data }) => !data.draft))
 ---
 
 <Policy
-  title="Booking Terms — Luxury Trains | India Visit"
-  heading="Booking terms — luxury trains"
+  title="Booking Terms: Luxury Trains | India Visit"
+  heading="Booking terms: luxury trains"
   description="How luxury-train bookings work through India Visit: the operator's role, the confirmation process, and cancellation terms."
   path="/booking-terms/"
 >
@@ -47,7 +47,7 @@ const trains = (await getCollection('journeys', ({ data }) => !data.draft))
   <p>
     You tell us the departure and cabin category you want; we check live
     availability with the operator and hold it while you decide. Confirmation
-    follows the operator's own process — a deposit against the cabin, then the
+    follows the operator's own process: a deposit against the cabin, then the
     balance due before departure. Every step is set out on the journey page for
     the train you are booking, before you commit to anything.
   </p>
@@ -71,7 +71,7 @@ const trains = (await getCollection('journeys', ({ data }) => !data.draft))
   {
     trains.map((train) => (
       <>
-        <h2 id={train.id}>{train.data.title} — {train.data.operatorName}</h2>
+        <h2 id={train.id}>{train.data.title}<span class="op-name">{train.data.operatorName}</span></h2>
         <p>{train.data.operatorDisclosure}</p>
         {train.data.policies.map((policy) => (
           <>
@@ -102,6 +102,18 @@ const trains = (await getCollection('journeys', ({ data }) => !data.draft))
 </Policy>
 
 <style>
+  /* The operator on its own line under the train's name: the two used to be
+     joined by an em dash, and the operator name carries one of its own. */
+  .op-name {
+    display: block;
+    margin-top: 0.3rem;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-ink-muted);
+  }
+
   .policy__sub {
     margin-top: 1.75rem;
     font-family: var(--font-display);

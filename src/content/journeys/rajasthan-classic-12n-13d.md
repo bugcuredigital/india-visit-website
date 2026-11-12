@@ -48,7 +48,7 @@ highlights:
   - lead: Descend
     text: the Chand Baori stepwell at Abhaneri and walk Fatehpur Sikri on the road between Jaipur and Agra.
   - lead: Learn
-    text: to tie a sari, have your palm read, and see a Bollywood film in a Jaipur cinema — the small things people remember.
+    text: to tie a sari, have your palm read, and see a Bollywood film in a Jaipur cinema. The small things people remember.
 
 glanceRows:
   - { dayNo: 1, destination: Delhi, signatureExperience: "Arrival in the capital" }
@@ -67,7 +67,7 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Delhi — Arrival
+    title: "Delhi: Arrival"
     narrative: >-
       Met on arrival and transferred to your hotel. Delhi has been inhabited
       since the sixth century BC and has been the capital of many kingdoms,
@@ -77,19 +77,19 @@ itineraryDays:
       grid of broad roads. The evening is free.
     overnight: Overnight in Delhi
   - dayNo: 2
-    title: Delhi — Two Cities and a Henna Evening
+    title: "Delhi: Two Cities and a Henna Evening"
     narrative: >-
       Old Delhi first, Shah Jahan's city of 1639: Raj Ghat and the Gandhi
       museum, a drive past the Red Fort and Chandni Chowk, and the Jama Masjid.
       A rickshaw through the market is optional and worth it. In the afternoon,
       Qutub Minar, built in 1192 and a UNESCO site, Humayun's Tomb, India Gate,
       a drive past Parliament and the presidential estate, and the
-      Lakshminarayan Temple. In the evening, a mehndi artist comes to the hotel
-      — henna has been used to decorate hands in India, the Near East and North
+      Lakshminarayan Temple. In the evening, a mehndi artist comes to the hotel.
+      Henna has been used to decorate hands in India, the Near East and North
       Africa since antiquity, and the pattern lasts a week or two.
     overnight: Overnight in Delhi
   - dayNo: 3
-    title: Udaipur — The City of Lakes
+    title: "Udaipur: The City of Lakes"
     transport: { mode: flight, detail: Fly — Delhi to Udaipur }
     narrative: >-
       Transfer to the airport for the flight to Udaipur, met on arrival and
@@ -97,23 +97,23 @@ itineraryDays:
       Udai Singh in 1559; its rulers, the Suryavanshi descendants of the sun,
       head all the Rajput clans, and Maharana Pratap, who fought Akbar at
       Haldighati in 1576, was born here. In the evening, a boat on Lake
-      Pichola — four kilometres long, ringed by hills, palaces, temples and
-      bathing ghats — with a stop at the island palace of Jag Niwas.
+      Pichola (four kilometres long, ringed by hills, palaces, temples and
+      bathing ghats) with a stop at the island palace of Jag Niwas.
     overnight: Overnight in Udaipur
   - dayNo: 4
-    title: Udaipur — The Palace and the Lanes
+    title: "Udaipur: The Palace and the Lanes"
     narrative: >-
       The City Palace on the bank of Pichola, begun by Udai Singh in 1559 and
       added to for four centuries; then the Jagdish Temple, one of the city's
       largest, built in the Indo-Aryan style for Vishnu; a drive around Fateh
       Sagar lake; the Bhartiya Lok Kala Mandal folk museum; and Sahelion ki
       Bari, the garden of the maidens. In the afternoon, a guided heritage walk
-      through the real Udaipur — the lanes, the bazaars, and the jewellers,
+      through the real Udaipur: the lanes, the bazaars, and the jewellers,
       potters and bamboo-workers who still work in them, with a city explorer
       whose knowledge of the place is infectious.
     overnight: Overnight in Udaipur
   - dayNo: 5
-    title: Ranakpur — The Road to Jodhpur
+    title: "Ranakpur: The Road to Jodhpur"
     transport: { mode: drive, detail: Drive — via Ranakpur }
     narrative: >-
       North to the Jain temples of Ranakpur, ninety-eight kilometres from
@@ -125,83 +125,83 @@ itineraryDays:
       Delhi to Gujarat. The rest of the day is at leisure.
     overnight: Overnight in Jodhpur
   - dayNo: 6
-    title: Jodhpur — Mehrangarh and a Bishnoi Village
+    title: "Jodhpur: Mehrangarh and a Bishnoi Village"
     narrative: >-
       Mehrangarh in the morning, one of the largest forts in India on a
       sandstone hill above the city, with the Moti Mahal and Phool Mahal
       inside its walls. Then Jaswant Thada, the marble memorial of 1889 that
       glows when the sun is on it, and the Umaid gardens with the Government
-      Museum. In the afternoon, a jeep safari to a Bishnoi village — a
+      Museum. In the afternoon, a jeep safari to a Bishnoi village, a
       community whose faith has protected its trees and its animals for five
       hundred years, and whose welcome to visitors goes back to the maharajas
       who first brought them.
     overnight: Overnight in Jodhpur
   - dayNo: 7
-    title: Pushkar — The Desert Lake
+    title: "Pushkar: The Desert Lake"
     transport: { mode: drive, detail: Drive — about 6 hours }
     narrative: >-
       A long drive east to Pushkar, a small town of temples and ghats around a
-      holy lake at the edge of the desert. The afternoon is free — the ghats
+      holy lake at the edge of the desert. The afternoon is free: the ghats
       at sunset, and the bazaar that runs down to them.
     overnight: Overnight in Pushkar
   - dayNo: 8
-    title: Pushkar to Jaipur — A Cooking Lesson and a Village Fair
+    title: "Pushkar to Jaipur: A Cooking Lesson and a Village Fair"
     transport: { mode: drive, detail: Drive — Pushkar to Jaipur }
     narrative: >-
       A tour of Pushkar, one of the most sacred pilgrimage sites for Hindus and
       home to the only temple in the country dedicated to Brahma, then the road
-      to Jaipur — the pink city, painted for the Prince of Wales in the
-      nineteenth century, founded by Maharaja Jai Singh more than two hundred
-      and sixty years ago. In the afternoon, an authentic culinary experience:
-      the basic ingredients, the simple nuances that make an Indian dish work,
-      and a meal cooked by you with a little help. In the evening, Chokhi
-      Dhani, a Rajasthani village fair recreated nightly — folk dancers, a
+      to Jaipur. The pink city, painted for the Prince of Wales in the
+      nineteenth century, was founded by Maharaja Jai Singh more than two
+      hundred and sixty years ago. In the afternoon, an authentic culinary
+      experience: the basic ingredients, the simple nuances that make an Indian
+      dish work, and a meal cooked by you with a little help. In the evening,
+      Chokhi Dhani, a Rajasthani village fair recreated nightly: folk dancers, a
       magic show, puppets, an acrobat on a bamboo pole, an astrologer and a
-      fortune-telling parrot — with dinner included.
+      fortune-telling parrot, with dinner included.
     overnight: Overnight in Jaipur
   - dayNo: 9
-    title: Jaipur — Yoga, Amer and the Bazaars
+    title: "Jaipur: Yoga, Amer and the Bazaars"
     narrative: >-
       An early yoga class, then breakfast and a full day in the city. Amer Fort
       first, the earlier capital, built by Raja Man Singh in red sandstone and
-      marble around four courtyards — the Suraj Pol gate, the Sila Devi temple,
+      marble around four courtyards: the Suraj Pol gate, the Sila Devi temple,
       the two audience halls, the Sheesh Mahal and the water-cooled Sukh Niwas.
       Then the seven-storey City Palace in its blend of Mughal, Rajput and
       European styles, the Jantar Mantar observatory, and a drive past the
       Hawa Mahal. A tour of Jaipur is not complete without its shops: textiles,
       carpets, precious and semi-precious stones, jewellery, and miniature
-      painting. This is also the day for the smaller things — learning to tie a
+      painting. This is also the day for the smaller things: learning to tie a
       sari in a shop, a palm reading, a Bollywood film in a local cinema.
     overnight: Overnight in Jaipur
   - dayNo: 10
-    title: Abhaneri and Fatehpur Sikri — The Road to Agra
+    title: "Abhaneri and Fatehpur Sikri: The Road to Agra"
     transport: { mode: drive, detail: Drive — via Abhaneri and Fatehpur Sikri }
     narrative: >-
-      A morning at an elephant sanctuary outside the city — feeding the animals,
+      A morning at an elephant sanctuary outside the city, feeding the animals,
       bathing them, and walking alongside them around the farm. Then the road to
       Agra with two stops. Abhaneri, once Abha Nagri, the city of brightness,
       is famous for the stepwells the region built to harvest rain; Chand
       Baori, in front of the Harshat Mata Temple, is among the largest and
       deepest in India. Fatehpur Sikri, Akbar's abandoned capital and a UNESCO
-      site, follows — the Jama Masjid, Salim Chishti's tomb, the Panch Mahal
+      site, follows: the Jama Masjid, Salim Chishti's tomb, the Panch Mahal
       and the Buland Darwaza. In Agra this evening, Mohabbat the Taj, a stage
       play of the love of Shah Jahan and Mumtaz Mahal and the twenty-two years
       of craftsmanship behind the building.
     overnight: Overnight in Agra
   - dayNo: 11
-    title: Agra — The Taj, the Fort and a Family Kitchen
+    title: "Agra: The Taj, the Fort and a Family Kitchen"
     narrative: >-
       The Taj Mahal in the morning: white marble on the Yamuna, built by Shah
       Jahan between 1631 and 1648 for Mumtaz Mahal, and closed on Fridays. Then
       Agra Fort, the sixteenth-century UNESCO site with the Khas Mahal, the
       Jahangir Palace and the two audience halls. Agra is famous for marble
       inlay, and there is time for it. In the evening, a cooking class in an
-      Indian home — the lady of the house demonstrating several dishes — and
+      Indian home (the lady of the house demonstrating several dishes) and
       dinner with the family, which is the best introduction to how people
       actually live.
     overnight: Overnight in Agra
   - dayNo: 12
-    title: Delhi — Akshardham on the Way Back
+    title: "Delhi: Akshardham on the Way Back"
     transport: { mode: drive, detail: Drive — Agra to Delhi }
     narrative: >-
       After breakfast, the road back to Delhi and a visit to Swaminarayan
@@ -212,7 +212,7 @@ itineraryDays:
       last night.
     overnight: Overnight in Delhi
   - dayNo: 13
-    title: Delhi — Departure
+    title: "Delhi: Departure"
     narrative: >-
       Transfer to the airport in time for your onward flight.
     overnight: Departure
@@ -250,7 +250,7 @@ practicalNotes:
     text: Delhi's Indira Gandhi International (DEL) is the arrival and departure point; the Delhi–Udaipur leg is a short domestic flight, included.
   - icon: clock
     label: Ideal duration
-    text: Thirteen days, because this itinerary is built around evenings as much as mornings — the boat, the village fair, the cooking, the stage show — and those cannot be compressed.
+    text: Thirteen days, because this itinerary is built around evenings as much as mornings (the boat, the village fair, the cooking, the stage show), and those cannot be compressed.
   - icon: pace
     label: Pace
     text: Moderate. One long drive (Jodhpur to Pushkar, about six hours), one flight, and a programme that fills most evenings. Tell us if you would rather leave some of them free.
@@ -264,8 +264,8 @@ pdfFile: /downloads/rajasthan-classic-12n-13d.pdf
 featured: false
 
 seo:
-  metaTitle: Majestic Rajasthan — 12 Nights / 13 Days, Udaipur to the Taj
-  metaDescription: Thirteen days through Delhi, Udaipur, Jodhpur, Pushkar, Jaipur and Agra — palaces and forts by day, and boat rides, village fairs, cooking classes and a Taj stage show by evening.
+  metaTitle: "Majestic Rajasthan: 12 Nights / 13 Days, Udaipur to the Taj"
+  metaDescription: "Thirteen days through Delhi, Udaipur, Jodhpur, Pushkar, Jaipur and Agra: palaces and forts by day, and boat rides, village fairs, cooking classes and a Taj stage show by evening."
 ---
 
 Majestic Rajasthan is the western beauty of India, and in particular its rural
@@ -280,4 +280,4 @@ Most itineraries stop at the monuments; this one goes on to a boat on Lake
 Pichola, a village fair at Chokhi Dhani, a cooking lesson in an Agra home, a
 yoga class before Amer, and the stage story of the Taj the night before you see
 it. It is the version for travellers who want the days *and* the nights
-arranged — and every one of them can be dropped or swapped.
+arranged, and every one of them can be dropped or swapped.

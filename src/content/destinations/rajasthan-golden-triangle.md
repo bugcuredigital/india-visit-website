@@ -15,7 +15,7 @@ intro: >-
   Rajasthan is where most first journeys to India begin, and with reason: Delhi,
   Agra and Jaipur sit within a day's drive of one another and between them cover
   a Mughal capital, the Taj Mahal and a planned pink city. Push west and the
-  state keeps giving — Udaipur on its lakes, the blue lanes of Jodhpur, Jaisalmer
+  state keeps giving: Udaipur on its lakes, the blue lanes of Jodhpur, Jaisalmer
   rising out of the Thar.
 
 experiences:
@@ -48,20 +48,20 @@ practicalNotes:
     text: Six days for the Golden Triangle; ten to fourteen to take in the western cities properly.
   - icon: pace
     label: Pace
-    text: Moderate. The distances are real — Delhi to Jaipur is five hours — so we plan morning departures.
+    text: Moderate. The distances are real (Delhi to Jaipur is five hours), so we plan morning departures.
 
 faq:
   - question: What exactly is the Golden Triangle?
     answer: >-
-      Delhi, Agra and Jaipur — three cities that form a rough triangle about
+      Delhi, Agra and Jaipur: three cities that form a rough triangle about
       five hours' drive apart on each side. It is the most efficient way to see
       a Mughal capital, the Taj Mahal and a Rajput city in under a week, which
       is why it is the standard first journey to India.
   - question: Is six days enough, or should we take longer?
     answer: >-
       Six days covers the three cities without rushing them. If you have ten,
-      the better use of the extra days is west into Rajasthan proper — Udaipur
-      and Jodhpur — rather than more time in the same three.
+      the better use of the extra days is west into Rajasthan proper (Udaipur
+      and Jodhpur) rather than more time in the same three.
   - question: How hot does it actually get?
     answer: >-
       Comfortably warm from October to March, genuinely difficult from April to
@@ -85,7 +85,7 @@ relatedJourneys:
   - deccan-odyssey-7n-8d
 
 seo:
-  metaTitle: Rajasthan & Golden Triangle Tours — Delhi, Agra, Jaipur
+  metaTitle: "Rajasthan & Golden Triangle Tours: Delhi, Agra, Jaipur"
   metaDescription: Plan a Rajasthan journey through Delhi, Agra and Jaipur, and west to Udaipur, Jodhpur and Jaisalmer, with practical notes on seasons, duration and pace.
 ---
 
@@ -94,8 +94,8 @@ few places that does not disappoint the picture. Every ridge carries a fort,
 every city was built by someone determined to outdo the last, and the whole
 state runs on a scale that makes sense only when you are standing in it.
 
-The Golden Triangle is the entry point — Delhi's layered capitals, the Taj
-Mahal at Agra, and Jaipur's planned grid of nine sectors — and it is genuinely
+The Golden Triangle is the entry point (Delhi's layered capitals, the Taj
+Mahal at Agra, and Jaipur's planned grid of nine sectors), and it is genuinely
 the best week-long introduction to the country. We run it four ways: the
 six-day classic, a week with the leopards of Jhalana, ten days with Varanasi
 by train, and twelve from the Golden Temple at Amritsar. The article on
@@ -105,8 +105,8 @@ Beyond the Triangle the state opens out, and this is where the longer journeys
 go: Udaipur's lake palaces and a heritage walk through its lanes, Jodhpur's
 blue old city under Mehrangarh and a Bishnoi village by jeep, Jaisalmer's
 sandstone fort still lived in after eight centuries, Pushkar's lake, and the
-leopard hills at Jawai. Two luxury trains — the Palace on Wheels and the
-Deccan Odyssey — cover the same ground with one unpacking.
+leopard hills at Jawai. Two luxury trains, the Palace on Wheels and the
+Deccan Odyssey, cover the same ground with one unpacking.
 
 What we do differently is the hour. Amer before the heat, the Taj at first
 light, the Jama Masjid when the courtyard is quiet, a rooftop in Jodhpur as

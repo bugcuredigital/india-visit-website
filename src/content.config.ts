@@ -104,7 +104,7 @@ const seoSchema = z.object({
  */
 const journeyBase = (image: () => z.ZodTypeAny) => ({
   title: z.string().min(1),
-  /** "Custom Journey" (A) / "Luxury Train — Fixed Departures" (B). */
+  /** "Custom Journey" (A) / "Luxury Train · Fixed Departures" (B). */
   tripTypeTag: z.string().min(1),
 
   heroImage: cmsImage(image),

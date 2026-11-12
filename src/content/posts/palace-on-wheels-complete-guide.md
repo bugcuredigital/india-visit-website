@@ -3,9 +3,9 @@
 # docs/COPY_REGISTER.md §L. Every fact here is drawn from the Palace on Wheels
 # journey entry, which is itself ported from the operator document. No tariff
 # figure appears on this page or anywhere on the site (invariant #6).
-title: Palace on Wheels — The Complete Guide to Cabins, Route and Booking
+title: "Palace on Wheels: The Complete Guide to Cabins, Route and Booking"
 category: guides
-excerpt: What a week on the Palace on Wheels is actually like — the route, the four cabin categories and what separates them, how a booking is confirmed step by step, and the cancellation terms in plain language.
+excerpt: "What a week on the Palace on Wheels is actually like: the route, the four cabin categories and what separates them, how a booking is confirmed step by step, and the cancellation terms in plain language."
 publishDate: 2026-09-12
 author: India Visit
 
@@ -19,7 +19,7 @@ embeddedJourneys:
 faq:
   - question: How much does the Palace on Wheels cost?
     answer: >-
-      We do not publish operator tariffs on this site, and never will — they
+      We do not publish operator tariffs on this site, and never will. They
       move with season, cabin category and occupancy, and a figure on a web
       page is out of date the day it goes up. Tell us your dates and cabin and
       we quote the current fare, from the operator, in writing.
@@ -36,8 +36,8 @@ faq:
       publishing a timetable that could go stale.
 
 seo:
-  metaTitle: Palace on Wheels — Complete Guide to Cabins, Route & Booking
-  metaDescription: A plain-language guide to the Palace on Wheels — the seven-night route through Rajasthan, the four cabin categories, the six-step booking process and the cancellation terms.
+  metaTitle: "Palace on Wheels: Complete Guide to Cabins, Route & Booking"
+  metaDescription: "A plain-language guide to the Palace on Wheels: the seven-night route through Rajasthan, the four cabin categories, the six-step booking process and the cancellation terms."
 ---
 
 The Palace on Wheels is the train most people picture when they picture a
@@ -63,19 +63,19 @@ are all arranged before you board. You unpack once.
 
 ## The four cabin categories
 
-Every cabin on the train shares the journey inclusions — accommodation, all
+Every cabin on the train shares the journey inclusions: accommodation, all
 meals on board, the excursions, the entrances, the cultural programmes, the
 camel, the boat and the rickshaw. What separates the categories is how you
 travel *off* the train, and a few comforts on it.
 
 - **Deluxe Cabin.** The base category. Excursions are by coach with a shared
   guide.
-- **Super Deluxe Cabin.** A private car — an Innova or similar — for the
+- **Super Deluxe Cabin.** A private car (an Innova or similar) for the
   excursions, a dedicated private guide, and one thirty-minute spa session
   for a couple.
 - **Suite.** The private car and private guide, plus Indian brands of liquor
   and beer included, subject to stock.
-- **Presidential Suite.** A luxury private car — a Fortuner or similar — the
+- **Presidential Suite.** A luxury private car (a Fortuner or similar), the
   private guide, Indian *and* foreign brands of liquor and beer, and the spa
   session.
 
@@ -97,7 +97,7 @@ The process is the operator's, and it runs in six steps.
    confirmation email and letter, with a breakdown of the amount received and
    the balance due.
 4. **Adjust the details.** Tell us what you would like added or changed and
-   we check what is possible with the operator — some changes cannot be
+   we check what is possible with the operator. Some changes cannot be
    accommodated on a fixed-departure train.
 5. **Clear the balance** at least 95 days before arrival in India. We send a
    receipt.
@@ -119,8 +119,8 @@ amount is refunded or credited without any fee. All foreign passport holders
 need a valid Indian visa before boarding a flight to India, and a refund
 request arising from visa refusal falls under the cancellation rules above.
 
-The full wording — and the equivalent terms for the other luxury trains we
-book — is on our [booking terms](/booking-terms/) page.
+The full wording (and the equivalent terms for the other luxury trains we
+book) is on our [booking terms](/booking-terms/) page.
 
 ## What we do, and what the operator does
 

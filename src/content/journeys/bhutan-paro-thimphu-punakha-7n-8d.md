@@ -1,6 +1,6 @@
 ---
 variant: A
-title: Bhutan — Paro, Thimphu and Punakha
+title: "Bhutan: Paro, Thimphu and Punakha"
 tripTypeTag: Custom Journey
 signatureFeature: Three Valleys, the Dochula Pass and the Walk to the Tiger's Nest
 
@@ -34,19 +34,19 @@ bestSeason: March to May and September to November
 # and glance table added).
 highlights:
   - lead: Land
-    text: at Paro on one of the most scenic approaches in the world, weaving between Himalayan peaks into the valley — or drive up from the border through changing country.
+    text: at Paro on one of the most scenic approaches in the world, weaving between Himalayan peaks into the valley, or drive up from the border through changing country.
   - lead: See
     text: Rinpung Dzong, the fortress-monastery above Paro, and the National Museum in the old watchtower on the hill behind it.
   - lead: Stand
     text: beneath the Buddha Dordenma above Thimphu, and at Tashichho Dzong, seat of Bhutan's government and its clergy.
   - lead: Eat
-    text: ema datshi and red rice at a Thimphu table, visit the market, and watch archery — the national sport — at the traditional ground.
+    text: ema datshi and red rice at a Thimphu table, visit the market, and watch archery (the national sport) at the traditional ground.
   - lead: Cross
     text: the Dochula Pass, with its 108 chortens against the high peaks when the weather allows, and descend to Punakha's warm valley.
   - lead: Walk
     text: through farmland to Chimi Lhakhang, and stand at Punakha Dzong, arguably the most beautiful in the country, where two rivers meet.
   - lead: Climb
-    text: to Taktsang, the Tiger's Nest, clinging to its cliff nine hundred metres above the Paro valley — given a whole, unhurried morning.
+    text: to Taktsang, the Tiger's Nest, clinging to its cliff nine hundred metres above the Paro valley, given a whole, unhurried morning.
 
 glanceRows:
   - { dayNo: 1, destination: Paro, signatureExperience: "Arrival by air or road; a walk in the valley" }
@@ -60,18 +60,18 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Paro — Arrival in the Valley
-    transport: { mode: flight, detail: Fly to Paro, or by road via Phuntsholing }
+    title: "Paro: Arrival in the Valley"
+    transport: { mode: flight, detail: "Fly to Paro, or by road via Phuntsholing" }
     narrative: >-
       By air, fly directly into Paro on one of the world's most scenic
       approaches, weaving between Himalayan peaks before touching down in the
       valley. By road, enter through Phuntsholing on the West Bengal border
-      and drive up — a full day's journey through changing landscapes. Settle
+      and drive up, a full day's journey through changing landscapes. Settle
       in and take a gentle walk around Paro town, framed by pine-covered
       hills.
     overnight: Overnight in Paro
   - dayNo: 2
-    title: Paro — The Dzong and the Watchtower
+    title: "Paro: The Dzong and the Watchtower"
     narrative: >-
       A relaxed day in the valley, getting acquainted with Bhutanese
       architecture and everyday life before the big hike later in the trip.
@@ -80,7 +80,7 @@ itineraryDays:
       evening, a stroll along the Paro River.
     overnight: Overnight in Paro
   - dayNo: 3
-    title: Thimphu — A Capital Without Traffic Lights
+    title: "Thimphu: A Capital Without Traffic Lights"
     transport: { mode: drive, detail: Drive — about 1½ hours }
     narrative: >-
       A short, scenic drive to Thimphu, one of the few capital cities in the
@@ -89,26 +89,26 @@ itineraryDays:
       government and clergy. The evening is at leisure in the town.
     overnight: Overnight in Thimphu
   - dayNo: 4
-    title: Thimphu — Markets, Lunch and Archery
+    title: "Thimphu: Markets, Lunch and Archery"
     narrative: >-
       A slower day exploring the capital's living culture, from its markets to
       its craft traditions. A visit to the local market and a traditional
-      Bhutanese lunch of ema datshi — chillies in cheese — and red rice.
+      Bhutanese lunch of ema datshi (chillies in cheese) and red rice.
       Optionally, the Folk Heritage Museum, or the traditional archery ground,
       where the national sport is played with more noise and ceremony than you
       would expect.
     overnight: Overnight in Thimphu
   - dayNo: 5
-    title: Punakha — Over the Dochula Pass
+    title: "Punakha: Over the Dochula Pass"
     transport: { mode: drive, detail: Drive — about 3 hours over the Dochula Pass }
     narrative: >-
       Over the dramatic Dochula Pass, one of Bhutan's most photographed spots
-      — 108 chortens set against the Himalayan peaks, weather permitting — and
+      (108 chortens set against the Himalayan peaks, weather permitting), and
       down into Punakha's subtropical valley. Punakha Dzong, arguably the most
       beautiful fortress in the country, stands where two rivers meet.
     overnight: Overnight in Punakha
   - dayNo: 6
-    title: Punakha — Rice Fields and the Divine Madman
+    title: "Punakha: Rice Fields and the Divine Madman"
     transport: { mode: walk, detail: A short walk through farmland }
     narrative: >-
       A gentle valley day surrounded by rice fields and river views. A short
@@ -117,8 +117,8 @@ itineraryDays:
       the village walls.
     overnight: Overnight in Punakha
   - dayNo: 7
-    title: Paro — The Tiger's Nest
-    transport: { mode: walk, detail: Hike — Taktsang monastery, a full morning }
+    title: "Paro: The Tiger's Nest"
+    transport: { mode: walk, detail: "Hike — Taktsang monastery, a full morning" }
     narrative: >-
       Return to Paro for the trip's signature experience, kept unhurried and
       given a full morning: the hike to Taktsang Monastery, the Tiger's Nest,
@@ -127,7 +127,7 @@ itineraryDays:
       altitude and the walking.
     overnight: Overnight in Paro
   - dayNo: 8
-    title: Paro — Departure
+    title: "Paro: Departure"
     narrative: >-
       By air, fly out from Paro with one last look at the Himalaya from above.
       By road, drive back down to Phuntsholing and cross the border.
@@ -137,7 +137,7 @@ itineraryDays:
 practicalNotes:
   - icon: passport
     label: Entry
-    text: Indian nationals do not need a visa — a valid passport or voter ID and an entry permit, arranged online in advance or on arrival. Other nationalities need a visa; ask us when booking.
+    text: "Indian nationals do not need a visa: a valid passport or voter ID and an entry permit, arranged online in advance or on arrival. Other nationalities need a visa; ask us when booking."
   - icon: currency
     label: The daily fee
     text: Bhutan's Sustainable Development Fee applies per night for Indian nationals, at a different rate from other visitors. We confirm the current rate before you book and include it in the quotation.
@@ -160,18 +160,18 @@ pdfFile: /downloads/bhutan-paro-thimphu-punakha-7n-8d.pdf
 featured: false
 
 seo:
-  metaTitle: Bhutan — Paro, Thimphu & Punakha, 7 Nights / 8 Days | India Visit
-  metaDescription: A relaxed week in Bhutan for Indian travellers — Paro, Thimphu, the Dochula Pass and Punakha, ending with the Tiger's Nest, with entry-permit, daily-fee and air-or-road notes.
+  metaTitle: "Bhutan: Paro, Thimphu & Punakha, 7 Nights / 8 Days | India Visit"
+  metaDescription: "A relaxed week in Bhutan for Indian travellers: Paro, Thimphu, the Dochula Pass and Punakha, ending with the Tiger's Nest, with entry-permit, daily-fee and air-or-road notes."
 ---
 
 Bhutan controls tourism deliberately, and the effect is a country that has
-stayed itself. This week takes the three valleys that make a first visit —
-Paro, the capital at Thimphu, and Punakha across the Dochula Pass — at a pace
+stayed itself. This week takes the three valleys that make a first visit
+(Paro, the capital at Thimphu, and Punakha across the Dochula Pass) at a pace
 the country sets rather than the itinerary: a dzong a day, a market, an archery
 ground, a temple reached through rice fields, and the walk up to the Tiger's
 Nest saved for the last full morning, when you are ready for it.
 
 It is written for travellers from India, who need a permit rather than a visa
 and pay a daily fee at a different rate, and it works by air into Paro or by
-road from the Bengal border — both are set out below. Every transfer, guide and
+road from the Bengal border. Both are set out below. Every transfer, guide and
 permit is arranged.

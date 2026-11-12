@@ -232,7 +232,7 @@ const faq = faqSchema(destination.faq);
   <!-- 5 · Practical strip -------------------------------------------------- -->
   <PracticalNotesGrid
     notes={destination.practicalNotes}
-    heading={`Practical notes — ${destination.shortLabel}`}
+    heading={`Practical notes: ${destination.shortLabel}`}
     surface={destination.experiences ? 'offwhite' : 'white'}
   />
 
@@ -260,7 +260,7 @@ const faq = faqSchema(destination.faq);
   <!-- 7 · FAQ --------------------------------------------------------------- -->
   <FaqAccordion
     faq={destination.faq}
-    heading={`${destination.shortLabel} — common questions`}
+    heading={`${destination.shortLabel}: common questions`}
     id="faq"
     surface="offwhite"
   />
