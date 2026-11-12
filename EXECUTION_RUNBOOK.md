@@ -87,6 +87,7 @@ webhook and GTM all sit on the built output and the settings singleton).
 1. Multi-step Plan-My-Trip form logic + per-journey prefilled enquiry forms
 2. `functions/api/lead.ts`: validate → Turnstile verify → Resend email → Sheet webhook → JSON response; honeypot; rate limit; hidden fields (page URL, UTM, journey slug, lead type incl. corporate tag)
    **2a. PDF release (added M5).** The twenty branded PDFs are generated in M5 (`npm run pdf:build`) and the gate form (`leadType: pdf`, name + email + phone) exists on every journey page. In M6: the function derives the file from `journeySlug` and returns it only after a valid, Turnstile-verified submit; **the files move out of `public/downloads/` behind the function** (or a signed URL) so the gate is real. Until that lands the paths are guessable — the site must not launch with them in `public/`.
+   **2b. Forms switch (added 2026-11-12).** Until the function exists every submit button renders disabled as "Launching shortly" — `FORMS_LIVE` in `src/lib/forms.ts`, read by all three forms. Flip it to `true` in the same commit that adds `functions/api/lead.ts`, never before: a live button over a missing function POSTs into a 405.
 3. Form success states (Namaste motif) + auto-response email copy
 4. WhatsApp deep links with per-page context; click-to-call; sticky mobile bar behavior
 5. Section entrances are CSS + IntersectionObserver sitewide (the default); GSAP + ScrollTrigger only for 1–2 homepage set pieces, lazy-loaded, + CounterStat islands; verify ≤ 40KB budget & reduced-motion

@@ -12,6 +12,7 @@
  *   · Turnstile mounts into the marked container in M6
  */
 import Button from './Button.astro';
+import { FORMS_LIVE, FORMS_PENDING_LABEL } from '../lib/forms';
 
 interface Props {
   /** Tags the lead so corporate enquiries route separately. */
@@ -137,8 +138,8 @@ const MONTHS = [
   <!-- Turnstile mounts here in M6; invisible, so no visible CAPTCHA friction. -->
   <div data-turnstile></div>
 
-  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block>
-    {isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
+  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block disabled={!FORMS_LIVE}>
+    {!FORMS_LIVE ? FORMS_PENDING_LABEL : isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
   </Button>
 
   {!isFooter && !isPdf && <p class="form__note">We reply personally — no call centre, no spam.</p>}

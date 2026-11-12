@@ -1,6 +1,6 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
-**Updated:** 2026-09-12 (M7 Tina wiring) · **Branch:** `m7-tina` (stacked on `m5-content` PR #4, on `m4-templates` PR #3 — both open)
+**Updated:** 2026-11-12 (demo polish) · **Production:** `main` at https://india-visit-website.pages.dev — M4, M5 and M7 merged (PRs #3, #4, #5)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
@@ -12,10 +12,10 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 | Milestone | Status | Gate |
 |---|---|---|
 | M0 Pre-flight · M1 Scaffold · M2 Schema · M3 Components | **Merged** | passed |
-| M4 Page templates (three design rounds) | **Built, PR #3 open** | gate evidence posted; the round-3 DESIGN VERDICT arrived as a placeholder and is awaited |
-| M5 Content migration | **Built — PR #4** | evidence in `reports/m5-gate-summary.json`; two ⚑ items below |
-| **M7 Tina CMS** *(pulled forward)* | **Wired — this branch** | smoke tests pass locally (`reports/m7-gate-summary.json`); the gate is the owner's own dashboard session, which needs a Tina Cloud project (§26) |
-| M6 Forms, lead function, GTM *(runs after M7)* | not started | test lead in inbox + Sheet; Turnstile server-verified; PDF release |
+| M4 Page templates (three design rounds) | **Merged** | DESIGN VERDICT: **APPROVED** (client, 2026-11-12) |
+| M5 Content migration | **Merged** | evidence in `reports/m5-gate-summary.json`; two ⚑ items below |
+| **M7 Tina CMS** *(pulled forward)* | **Merged** | smoke tests pass locally (`reports/m7-gate-summary.json`); the gate is the owner's own dashboard session, which needs a Tina Cloud project (§26) |
+| M6 Forms, lead function, GTM *(runs after M7)* | not started | test lead in inbox + Sheet; Turnstile server-verified; PDF release. **Until then every submit button is disabled — "Launching shortly"** (`src/lib/forms.ts`) |
 | M8 SEO, analytics, hardening · M9 Launch | not started | PRD §16 checklist |
 
 ## What is on the site
@@ -42,6 +42,10 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
    and the gate form is a shell; M6 moves them behind the lead function.
 4. **Copy approval** — every drafted string is `DRAFT` in `docs/COPY_REGISTER.md`
    until struck or approved.
+5. **Contact details are still dummy** — phone, WhatsApp, email and address in
+   Site settings (`+91 0000000000`, `hello@example.com`). They show in every
+   footer and in the printed header of all 20 PDFs, so the PDFs are reprinted
+   (`npm run pdf:build`) in the same change that sets the real values.
 
 ## Provisional (renders, flagged, reversible)
 
@@ -55,6 +59,8 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 
 ## Next action
 
+0. **Client:** the real phone / WhatsApp / email for Site settings (item 5
+   above) — the demo instruction carried a placeholder, not a number.
 1. **Client:** create the Tina Cloud project and put its two values in the
    Cloudflare Pages environment (§26) — that switches `/admin` on in
    production with no code change; then the screen-share dashboard session

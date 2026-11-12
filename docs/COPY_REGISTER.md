@@ -231,6 +231,12 @@ than descriptions and are worth a specific look: the Wildlife page's "we would
 rather say so than sell you a tiger", and the Ladakh page's "we will not sell
 one without them" on acclimatisation days.
 
+## O. Pre-launch states (2026-11-12)
+
+| # | Where | Copy | Status | Note |
+|---|---|---|---|---|
+| O1 | Every form's submit button, until M6 makes the forms live | "Launching shortly" | **APPROVED** | Your own words, from the demo-polish instruction. Replaced by the normal button labels when `FORMS_LIVE` flips in M6 |
+
 ## What to do with this file
 
 1. Read the **DRAFT** rows, especially the ones marked ⚑ — those are claims,
