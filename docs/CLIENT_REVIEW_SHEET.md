@@ -14,6 +14,11 @@ tied to a PRD Open Question are also blocked on that question.
 
 ## 1. Palace on Wheels — GSA disclosure wording ⚑ (PRD Open Question #15)
 
+**Superseded 2026-11-12 (client ruling): no "authorised agent", GSA or
+agent-liability wording anywhere on the site.** All three train pages now carry
+a neutral attribution ("Operated by …", "Operator terms apply to your journey"),
+so the draft below is kept only as the record and needs no approval.
+
 The source document names a *different agency* as the booking agent, so its
 disclosure language could not be reused. The wording below is the agency's
 draft and needs your exact approved text.
@@ -102,6 +107,10 @@ a schema change. Train pages are exempt permanently.
 
 ## 9. Contact details — all placeholder
 
+**Updated 2026-11-12:** phone and WhatsApp (+91 98102 41121) and email
+(info@india-visit.com) are real and live. Still needed: the WhatsApp prefill
+wording, the postal address (still flagged dummy) and the social handles.
+
 Every value in `siteSettings` is a placeholder, inventoried in that file's
 `_dummyDataFlags` array. Needed before launch: phone, WhatsApp number, the
 WhatsApp prefill wording, email, postal address, and social handles
@@ -114,6 +123,9 @@ could be built. **Real reviews with recorded consent are required** — the
 schema refuses any entry whose `consentConfirmed` is not `true`.
 
 ## 11. Photography
+
+**Updated 2026-11-12:** the heroes now carry licensed TEMP-PHOTO stand-ins
+(Unsplash), and the Drive folder is answered in §27.
 
 All heroes currently use flagged `PLACEHOLDER-IMAGE` graphics. Awaiting the
 photo archive (pre-processed to ≤2000px wide).
@@ -560,3 +572,45 @@ in those notes — and it only happens once per file.
 Cloud free tier or the editor fights us for more than a day and a half, the
 runbook's fallback is Sveltia on the same content files. It has not been
 needed.
+
+## 27. Photo rights — the Drive folder ⚑ (added 2026-11-12)
+
+The folder you shared ("India Visit photos", ten subfolders) was downloaded and
+inventoried on 12 November: **455 images, 204 of them at 1600px or more** on the
+long side (the bar for replacing a stand-in). **Nothing from it is on the site.**
+The demo and the site run on the licensed stand-ins (Unsplash, commercial use
+allowed) until you answer this section.
+
+**Why nothing went live.** Every file's metadata (camera, author, copyright) has
+been stripped, most are standard web-export sizes (1600 / 1920 / 2048px), and
+five carry somebody else's mark:
+
+| File | Mark |
+|---|---|
+| `Golden Triangle Tour/Fatehpur 2.jpg` | "© Nick Mayo" |
+| `Rajasthan/Fateh pur 5.jpg` | "© Nick Mayo" |
+| `North East/Assamese Crafts 3.jpg` | "Dhrubazaan Photography" logo |
+| `West To South/Mahabalipur 1.jpg` | "facebook.com/PrassyPhotography" |
+| `North East/Brahmhaputra.jpg` | sourced from Wikimedia (usually a Creative Commons licence with attribution terms) |
+
+**These five never ship**, whatever else is cleared. We also looked for images
+that read as your own photography (snapshots from your trips, your guests, your
+team) to list as "likely own": **we found none.** Every usable image looks
+professionally made — postcard-style landscapes, drone shots, posed models,
+resort marketing. If some of them are yours, or licensed to you, please say which.
+
+**What we would use first, once cleared** — the best image for each demo-path slot:
+
+| Folder / file | Would replace | On | Own · Licensed (from whom, which licence) · Neither |
+|---|---|---|---|
+| `Kerala/Alleppey 4.jpg` (3355px) | `TEMP-PHOTO-journey-kerala-houseboat.jpg` | Kerala with Houseboat hero and its homepage card | |
+| `Golden Triangle Tour/Agra 2.jpg` (2000px) | `TEMP-PHOTO-journey-golden-triangle.jpg` | Golden Triangle hero and card | |
+| `Deccan Odyssey/Deccan Odyssey 4.jpg` (1920px) | `TEMP-PHOTO-home-hero-udaipur.jpg` | Deccan Odyssey hero (this looks like the operator's own press photograph: operator permission is enough) | |
+| `Rajasthan/Jaisalmer 6.jpg` (2977px) | `TEMP-PHOTO-dest-rajasthan.jpg` | Rajasthan destination hero and its homepage tile | |
+
+**How to answer.** Mark each row *Own*, *Licensed* (with the source and the
+licence, which must allow use on your website) or *Neither*, and tell us if
+other folders are cleared as a whole. Cleared images are swapped through the
+CMS image fields (content only, no code), processed to the site's sizes and
+formats, and each swap is checked side by side so a photograph is only replaced
+by a better one.
