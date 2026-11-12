@@ -281,3 +281,4 @@ House rule from here on (CLAUDE.md invariant #7): at most one em dash per screen
 | R1 | In place of an enquiry / Plan-My-Trip form after it sends | "Thank you — we'll reply personally within a day." | **APPROVED** (client's words) |
 | R2 | Under the button if sending fails | "Sorry, that did not go through. Please call or WhatsApp us." | **DRAFT** |
 | R3 | The button while sending | "Sending…" | **DRAFT** |
+| R4 | Under the button when a form is refused, one line per problem (browser and server say the same thing) | "Please tell us your name." · "Please give a phone or WhatsApp number." · "Please check your email address." · "Please tick the consent box so we can reply." · "That is longer than we can take." · "Please check the form and try again." | **DRAFT** (added 2026-11-12, consent fix) |

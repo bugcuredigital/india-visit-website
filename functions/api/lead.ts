@@ -16,7 +16,7 @@
  *                    the domain must be verified in Resend
  */
 import siteSettings from '../../src/content/siteSettings/settings.json';
-import { LEAD_SUCCESS as SUCCESS } from '../../src/lib/forms';
+import { FIELD_MESSAGES, HONEYPOT_FIELD, LEAD_ERROR, LEAD_SUCCESS as SUCCESS } from '../../src/lib/forms';
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -31,8 +31,8 @@ interface Context {
 const RECIPIENT = siteSettings.settings.email;
 const DEFAULT_FROM = 'India Visit website <enquiries@india-visit.com>';
 
-/** Both honeypots: EnquiryForm's and Plan-My-Trip's. Real people never fill them. */
-const HONEYPOTS = ['companyUrl', 'companyWebsite'];
+/** The honeypot (src/lib/forms.ts says why its name must mean nothing to AutoFill). */
+const HONEYPOTS = [HONEYPOT_FIELD];
 
 const LIMITS: Record<string, number> = { name: 120, phone: 40, email: 160, message: 3000, notes: 3000 };
 
@@ -49,9 +49,11 @@ function answer(request: Request, status: number, body: { ok: boolean; message?:
       headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
     });
   }
-  // No JavaScript: a plain page with the same message and a way back.
+  // No JavaScript: a plain page with the same message, or the reasons it was
+  // refused, and a way back. A real refusal never reads as a success.
   const back = request.headers.get('referer') ?? '/';
-  const text = body.ok ? SUCCESS : 'Sorry, that did not go through. Please call or WhatsApp us.';
+  const reasons = body.errors ? [...new Set(Object.values(body.errors))].join(' ') : '';
+  const text = body.ok ? SUCCESS : reasons || LEAD_ERROR;
   return new Response(
     `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>India Visit</title>` +
       `<body style="font-family:system-ui,sans-serif;max-width:36rem;margin:15vh auto;padding:0 1rem;color:#1A1523">` +
@@ -69,10 +71,20 @@ export const onRequestPost = async ({ request, env }: Context): Promise<Response
   }
   const get = (key: string) => String(form.get(key) ?? '').trim();
 
+  // One log line per outcome, never the visitor's details: Cloudflare's
+  // real-time logs then say why any submission did or did not become an email.
+  const log = (outcome: string, detail: Record<string, unknown> = {}) =>
+    console.log(JSON.stringify({ lead: outcome, page: get('pageUrl') || null, ...detail }));
+
   // A filled honeypot gets the success answer and no email, so a bot learns nothing.
-  if (HONEYPOTS.some((key) => get(key))) return answer(request, 200, { ok: true, message: SUCCESS });
+  const trap = HONEYPOTS.find((key) => get(key));
+  if (trap) {
+    log('dropped: honeypot', { field: trap });
+    return answer(request, 200, { ok: true, message: SUCCESS });
+  }
 
   if (get('intent') === 'newsletter' || get('leadType') === 'pdf') {
+    log('refused: form not live');
     return answer(request, 409, { ok: false, message: 'This form is not live yet.' });
   }
 
@@ -80,14 +92,20 @@ export const onRequestPost = async ({ request, env }: Context): Promise<Response
   const name = get('name');
   const phone = get('phone');
   const email = get('email');
-  if (!name) errors.name = 'Please tell us your name.';
-  if (phone.replace(/\D/g, '').length < 7) errors.phone = 'Please give a phone or WhatsApp number.';
-  if (email && !EMAIL.test(email)) errors.email = 'That email address does not look right.';
-  if (!form.get('consent')) errors.consent = 'Please tick the consent box.';
-  for (const [key, max] of Object.entries(LIMITS)) if (get(key).length > max) errors[key] = 'That is longer than we can take.';
-  if (Object.keys(errors).length) return answer(request, 422, { ok: false, errors });
+  if (!name) errors.name = FIELD_MESSAGES.name;
+  if (phone.replace(/\D/g, '').length < 7) errors.phone = FIELD_MESSAGES.phone;
+  if (email && !EMAIL.test(email)) errors.email = FIELD_MESSAGES.email;
+  if (!form.get('consent')) errors.consent = FIELD_MESSAGES.consent;
+  for (const [key, max] of Object.entries(LIMITS)) if (get(key).length > max) errors[key] = FIELD_MESSAGES.tooLong;
+  if (Object.keys(errors).length) {
+    log('refused: invalid', { fields: Object.keys(errors) });
+    return answer(request, 422, { ok: false, errors });
+  }
 
-  if (!env.RESEND_API_KEY) return answer(request, 503, { ok: false, message: 'Email is not configured.' });
+  if (!env.RESEND_API_KEY) {
+    log('refused: RESEND_API_KEY not set');
+    return answer(request, 503, { ok: false, message: 'Email is not configured.' });
+  }
 
   // Everything the visitor sent, in a stable order, so the inbox reads the same every time.
   const skip = new Set([...HONEYPOTS, 'consent']);
@@ -113,8 +131,10 @@ export const onRequestPost = async ({ request, env }: Context): Promise<Response
   });
 
   if (!sent.ok) {
-    console.log('resend error', sent.status, (await sent.text()).slice(0, 300));
+    log('failed: resend', { status: sent.status, body: (await sent.text()).slice(0, 300) });
     return answer(request, 502, { ok: false, message: 'Sending failed.' });
   }
+  const receipt = (await sent.json().catch(() => ({}))) as { id?: string };
+  log('sent', { resendId: receipt.id ?? null });
   return answer(request, 200, { ok: true, message: SUCCESS });
 };

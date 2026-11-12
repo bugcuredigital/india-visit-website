@@ -32,7 +32,7 @@ import JsonLd from '../components/JsonLd.astro';
 import { getSiteSettings, whatsappLink } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
 import { DESTINATIONS } from '../lib/destinations-strip';
-import { LEADS_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR } from '../lib/forms';
+import { LEADS_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD } from '../lib/forms';
 
 const settings = await getSiteSettings();
 
@@ -172,6 +172,7 @@ const crumbs = breadcrumbSchema([
           data-error-text={LEAD_ERROR}
           {...(LEADS_LIVE ? { 'data-live': '' } : {})}
           data-stepper
+          data-astro-reload
           novalidate
         >
           <input type="hidden" name="leadType" value="general" />
@@ -179,10 +180,11 @@ const crumbs = breadcrumbSchema([
           <input type="hidden" name="utm" value="" data-utm />
 
           <!-- Honeypot, matching EnquiryForm: off-screen rather than
-               display:none, which some bots detect. -->
+               display:none, which some bots detect. Its name and label must
+               mean nothing to browser AutoFill (src/lib/forms.ts). -->
           <div class="form__honeypot" aria-hidden="true" data-allow-clip>
-            <label for="company-web">Company website</label>
-            <input id="company-web" name="companyWebsite" type="text" tabindex="-1" autocomplete="off" />
+            <label for="leave-empty">Leave this field empty</label>
+            <input id="leave-empty" name={HONEYPOT_FIELD} type="text" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other" />
           </div>
 
           <!-- Progress dots. Hidden without JS, because without JS every
