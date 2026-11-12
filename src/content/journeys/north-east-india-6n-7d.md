@@ -1,6 +1,6 @@
 ---
 variant: A
-title: North East India — Meghalaya and Kaziranga
+title: "North East India: Meghalaya and Kaziranga"
 tripTypeTag: Custom Journey
 signatureFeature: Living Hills, Clear Rivers and One-Horned Rhino
 
@@ -41,7 +41,7 @@ highlights:
   - lead: Drift
     text: on the Umngot river at Dawki, so clear that the boats appear to hang in mid-air above the riverbed.
   - lead: Track
-    text: the one-horned rhinoceros by jeep through Kaziranga's elephant grass — a UNESCO site and the species' great stronghold.
+    text: the one-horned rhinoceros by jeep through the elephant grass of Kaziranga, a UNESCO site and the species' great stronghold.
   - lead: Return
     text: along the Brahmaputra floodplains, with the river in view for most of the drive back to Guwahati.
 
@@ -56,7 +56,7 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Guwahati — On the Brahmaputra
+    title: "Guwahati: On the Brahmaputra"
     narrative: >-
       The journey begins on the banks of one of the few rivers in the world to
       carry a masculine name. Guwahati is a working city where wide river views
@@ -66,7 +66,7 @@ itineraryDays:
       light goes.
     overnight: Overnight in Guwahati
   - dayNo: 2
-    title: Into the Hills — Guwahati to Shillong
+    title: "Into the Hills: Guwahati to Shillong"
     transport: { mode: drive, detail: Drive — about 3 hours }
     narrative: >-
       Three hours of steady climbing out of the plains and into pine country.
@@ -77,7 +77,7 @@ itineraryDays:
       where Shillong actually is when it is not being looked at.
     overnight: Overnight in Shillong
   - dayNo: 3
-    title: Cherrapunji — Gorges, Falls and Limestone
+    title: "Cherrapunji: Gorges, Falls and Limestone"
     transport: { mode: drive, detail: Drive — about 1.5 hours }
     narrative: >-
       Deeper into Khasi Hills country to Cherrapunji, known locally as Sohra and
@@ -89,7 +89,7 @@ itineraryDays:
       seven streams falling down one cliff face at once.
     overnight: Overnight in Shillong
   - dayNo: 4
-    title: Dawki — A River You Can See Through
+    title: "Dawki: A River You Can See Through"
     transport: { mode: drive, detail: Drive — day trip }
     narrative: >-
       A day trip to Dawki on the Bangladesh border, where the Umngot river runs
@@ -99,7 +99,7 @@ itineraryDays:
       is plenty. Back up to Shillong for the night.
     overnight: Overnight in Shillong
   - dayNo: 5
-    title: Down to the Plains — Shillong to Kaziranga
+    title: "Down to the Plains: Shillong to Kaziranga"
     transport: { mode: drive, detail: Drive — 5 to 6 hours }
     narrative: >-
       The longest drive of the trip, and the one that earns this itinerary its
@@ -107,21 +107,21 @@ itineraryDays:
       hills and east along the Assam plains to Kaziranga National Park. A UNESCO
       World Heritage Site on the Brahmaputra floodplain, Kaziranga holds roughly
       two-thirds of the world's remaining one-horned rhinoceros. Check in near
-      the park and settle in early — tomorrow starts before dawn.
+      the park and settle in early; tomorrow starts before dawn.
     overnight: Overnight near Kaziranga
   - dayNo: 6
-    title: Kaziranga — Grassland and Rhino
+    title: "Kaziranga: Grassland and Rhino"
     narrative: >-
       A full day given to the park. The morning jeep safari goes out through
       elephant grass that stands well above the vehicle, into a mosaic of
       grassland and wetland that supports rhino, wild buffalo, swamp deer and, if
-      the day is generous, tiger — Kaziranga has one of the highest tiger
+      the day is generous, tiger. Kaziranga has one of the highest tiger
       densities anywhere, though seeing one is luck rather than planning. The
       afternoon is free; there is usually the option of a gentle nature walk
       around the property as the light softens.
     overnight: Overnight near Kaziranga
   - dayNo: 7
-    title: Kaziranga — Departure
+    title: "Kaziranga: Departure"
     transport: { mode: drive, detail: Drive — 4 to 5 hours }
     narrative: >-
       A last morning at the park's edge, then the drive back west to Guwahati
@@ -155,13 +155,13 @@ pdfFile: /downloads/north-east-india-6n-7d.pdf
 featured: true
 
 seo:
-  metaTitle: North East India in 7 Days — Meghalaya & Kaziranga | India Visit
-  metaDescription: Seven days through Assam and Meghalaya — Shillong, the Cherrapunji falls, the transparent Umngot river at Dawki, and rhino safari at Kaziranga.
+  metaTitle: "North East India in 7 Days: Meghalaya & Kaziranga | India Visit"
+  metaDescription: "Seven days through Assam and Meghalaya: Shillong, the Cherrapunji falls, the transparent Umngot river at Dawki, and rhino safari at Kaziranga."
 ---
 
 Most first trips to India go west and south. This one goes east, into the seven
 states that sit beyond the narrow corridor of land connecting them to the rest of
-the country — and into landscapes that look nothing like the India of the
+the country, and into landscapes that look nothing like the India of the
 brochures.
 
 Meghalaya means "abode of clouds", and it earns the name: gorges and plunge

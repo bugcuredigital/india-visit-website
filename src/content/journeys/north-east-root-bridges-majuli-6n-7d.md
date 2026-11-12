@@ -1,6 +1,6 @@
 ---
 variant: A
-title: North East India — Root Bridges and Majuli
+title: "North East India: Root Bridges and Majuli"
 tripTypeTag: Custom Journey
 signatureFeature: Homestays, a Trek to Nongriat and the World's Largest River Island
 
@@ -41,15 +41,15 @@ highlights:
   - lead: Stay
     text: with a Khasi family in Mawlynnong, a village so tidy it is called the cleanest in Asia, and eat what they cook under a tin roof.
   - lead: Walk
-    text: the living root bridges — the single-decker at Riwai, still growing, and the famous double-decker at Nongriat, reached on foot down a forested valley.
+    text: "the living root bridges: the single-decker at Riwai, still growing, and the famous double-decker at Nongriat, reached on foot down a forested valley."
   - lead: Swim
     text: in the natural pools beside the double-decker bridge, with the river running past your guesthouse window that night.
   - lead: Taste
-    text: Shillong — jadoh and tungrymbai at a Khasi eatery, and the homegrown indie and rock scene at a music bar in the evening.
+    text: "Shillong: jadoh and tungrymbai at a Khasi eatery, and the homegrown indie and rock scene at a music bar in the evening."
   - lead: Cross
     text: the Brahmaputra by ferry to Majuli, the largest river island in the world, and its centuries-old Vaishnavite satras.
   - lead: Sit
-    text: with the island's artisans — mask-makers, potters and weavers — and take a boat on the river at sunrise or sunset.
+    text: with the island's artisans (mask-makers, potters and weavers) and take a boat on the river at sunrise or sunset.
 
 glanceRows:
   - { dayNo: 1, destination: Guwahati to Mawlynnong, signatureExperience: "Into rural Meghalaya; a Khasi homestay" }
@@ -62,32 +62,32 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Mawlynnong — Into the Khasi Hills
+    title: "Mawlynnong: Into the Khasi Hills"
     transport: { mode: drive, detail: Drive — about 4 hours from Guwahati }
     narrative: >-
       Land in Guwahati and drive straight into the folds of rural Meghalaya to
       Mawlynnong, a village so tidy and green that it is often called the
-      cleanest in Asia — bamboo dustbins line every path, and orchids grow
+      cleanest in Asia. Bamboo dustbins line every path, and orchids grow
       wild along the garden fences. Settle into a homestay with a local Khasi
       family, sharing meals and stories under a tin roof, and take an evening
       walk to the village's living root bridges, grown patiently over
       generations by the Khasi people.
     overnight: Overnight in a homestay at Mawlynnong
   - dayNo: 2
-    title: Mawlynnong — Village Life at Its Own Pace
+    title: "Mawlynnong: Village Life at Its Own Pace"
     narrative: >-
-      A slow, unhurried day to soak in Khasi village life — no rushing between
+      A slow, unhurried day to soak in Khasi village life: no rushing between
       sights, just time to notice the details. Visit the Riwai single-decker
       living root bridge, still growing stronger with age, and, if you like,
       climb the bamboo skywalk for a view across the valley to the plains of
       Bangladesh beyond.
     overnight: Overnight in a homestay at Mawlynnong
   - dayNo: 3
-    title: Nongriat — Down to the Double-Decker Bridge
-    transport: { mode: walk, detail: Trek — roughly 3,500 steps down from Tyrna }
+    title: "Nongriat: Down to the Double-Decker Bridge"
+    transport: { mode: walk, detail: "Trek — roughly 3,500 steps down from Tyrna" }
     narrative: >-
-      Drive to Tyrna and trek down into a steep, forested valley — roughly
-      three and a half thousand steps — to Nongriat, a village reachable only
+      Drive to Tyrna and trek down into a steep, forested valley (roughly
+      three and a half thousand steps) to Nongriat, a village reachable only
       on foot; the effort is very much part of the reward. The famous
       double-decker living root bridge is here, two tiers of rubber-tree roots
       trained across the stream over decades, and the natural pools beside it
@@ -95,31 +95,31 @@ itineraryDays:
       river running just outside your window.
     overnight: Overnight in Nongriat
   - dayNo: 4
-    title: Shillong — Up from the Valley
-    transport: { mode: walk, detail: Trek — back up to Tyrna, then drive to Shillong }
+    title: "Shillong: Up from the Valley"
+    transport: { mode: walk, detail: "Trek — back up to Tyrna, then drive to Shillong" }
     narrative: >-
       Trek back up to Tyrna and trade the jungle quiet for Shillong's café
-      culture and cooler air. Eat at a Khasi eatery — jadoh, the smoked pork
-      rice, and tungrymbai, the fermented soybean — and in the evening find a
+      culture and cooler air. Eat at a Khasi eatery (jadoh, the smoked pork
+      rice, and tungrymbai, the fermented soybean) and in the evening find a
       table at a music bar: Shillong's homegrown indie and rock scene has a
       devoted following across the region.
     overnight: Overnight in Shillong
   - dayNo: 5
-    title: Majuli — Across the Brahmaputra
+    title: "Majuli: Across the Brahmaputra"
     transport: { mode: boat, detail: Ferry from Nimati Ghat }
     narrative: >-
       Travel onward to Majuli, the largest river island in the world, cradled
       by the Brahmaputra and home to centuries-old Assamese Vaishnavite
-      culture — by road via Guwahati to Jorhat, or with a short flight. Cross by
+      culture (by road via Guwahati to Jorhat, or with a short flight). Cross by
       ferry from Nimati Ghat, watching the river widen around you. Visit a
       satra, one of the island's monasteries, and watch the monks demonstrate
       traditional mask-making or handloom weaving.
     overnight: Overnight in Majuli
   - dayNo: 6
-    title: Majuli — Island Rhythms
+    title: "Majuli: Island Rhythms"
     transport: { mode: boat, detail: Boat ride on the Brahmaputra }
     narrative: >-
-      A full day given over to island rhythms — river, craft, and quiet
+      A full day given over to island rhythms: river, craft, and quiet
       conversation with the people who call Majuli home. A boat on the
       Brahmaputra at sunrise or sunset, the island's fields glowing gold in the
       low light, and time with the artisans as they work: pottery shaped by
@@ -127,8 +127,8 @@ itineraryDays:
       looms.
     overnight: Overnight in Majuli
   - dayNo: 7
-    title: Guwahati — Departure
-    transport: { mode: boat, detail: Ferry, then 4–5 hours by road }
+    title: "Guwahati: Departure"
+    transport: { mode: boat, detail: "Ferry, then 4–5 hours by road" }
     narrative: >-
       Take the ferry back to the mainland and drive to Guwahati for your
       onward flight, carrying home a very different picture of the North East.
@@ -150,7 +150,7 @@ practicalNotes:
     text: October to April. The monsoon from June to September makes the root-bridge trek unsafe and the roads slow, and Meghalaya's rain is the heaviest recorded anywhere.
   - icon: pace
     label: Style
-    text: This route trades comfort for immersion — homestays, a guesthouse and village life over resorts. It is the North East for people who want to be in it rather than look at it.
+    text: "This route trades comfort for immersion: homestays, a guesthouse and village life over resorts. It is the North East for people who want to be in it rather than look at it."
 
 related:
   - north-east-india-6n-7d
@@ -161,7 +161,7 @@ pdfFile: /downloads/north-east-root-bridges-majuli-6n-7d.pdf
 featured: false
 
 seo:
-  metaTitle: North East India — Root Bridges & Majuli, 6 Nights / 7 Days
+  metaTitle: "North East India: Root Bridges & Majuli, 6 Nights / 7 Days"
   metaDescription: Khasi homestays at Mawlynnong, the trek to Nongriat's double-decker root bridge, Shillong, and the satras and artisans of Majuli island on the Brahmaputra.
 ---
 
@@ -172,6 +172,6 @@ Shillong for its food and its music, and two on Majuli, the largest river
 island in the world, among the Vaishnavite satras and the mask-makers.
 
 It is the route we recommend to travellers who have done the Kaziranga and
-Cherrapunji circuit, or who never wanted to — and to anyone whose idea of a
+Cherrapunji circuit, or who never wanted to, and to anyone whose idea of a
 journey is a conversation under a tin roof rather than a view from a car
 window. It asks a little fitness of you and gives back a great deal.

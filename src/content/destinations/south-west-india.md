@@ -61,7 +61,7 @@ relatedJourneys:
   - golden-chariot-5n-6d
 
 seo:
-  metaTitle: South & West India Tours — Ajanta, Ellora, Hampi, Mysore
+  metaTitle: "South & West India Tours: Ajanta, Ellora, Hampi, Mysore"
   metaDescription: A heritage journey through Mumbai, the Ajanta and Ellora caves, the Deccan sultanate cities, Hampi and Mysore, with notes on seasons, duration and pace.
 ---
 
@@ -69,18 +69,18 @@ South and West India is the route we recommend to people who have already done
 the north and want to know what else there is. The answer is: a great deal, and
 almost none of it crowded.
 
-The spine of the journey is the rock-cut architecture — Ajanta's painted
+The spine of the journey is the rock-cut architecture (Ajanta's painted
 Buddhist caves and Ellora's Kailasa temple, carved downward out of a single
-hillside over a century — with the Deccan sultanate cities, the Vijayanagara
+hillside over a century), with the Deccan sultanate cities, the Vijayanagara
 ruins at Hampi spread across a landscape of boulders, and the Wodeyar palace
 at Mysore filling out the rest. The thirteen-day journey below strings them
 together by flight, overnight train and road, and it is the most demanding
 itinerary we run: long distances, early starts, and the sense throughout of
 being somewhere the rest of the country has not caught up with.
 
-The Golden Chariot covers part of the same ground from a train — Mysore, the
+The Golden Chariot covers part of the same ground from a train: Mysore, the
 Pallava shore temples at Mahabalipuram, the Chola summit at Thanjavur, the
-merchant mansions of Chettinad and then over the Ghats to Kochi — and for
+merchant mansions of Chettinad and then over the Ghats to Kochi. For
 travellers who would rather unpack once, it is the way to see the south's
 temples without the drives between them.
 

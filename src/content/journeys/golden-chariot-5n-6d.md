@@ -1,7 +1,7 @@
 ---
 variant: B
-title: Golden Chariot — Jewels of the South
-tripTypeTag: Luxury Train — Fixed Departures
+title: "Golden Chariot: Jewels of the South"
+tripTypeTag: Luxury Train · Fixed Departures
 signatureFeature: Mysore to the Backwaters in Six Days
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
@@ -42,7 +42,7 @@ highlights:
   - lead: Walk
     text: the seventh-century shore temples of Mahabalipuram, carved by the Pallavas on a strip of land between the Bay of Bengal and a salt lake.
   - lead: Stand
-    text: inside the Brihadeeswara Temple at Thanjavur — a UNESCO World Heritage Site and the summit of Chola architecture.
+    text: inside the Brihadeeswara Temple at Thanjavur, a UNESCO World Heritage Site and the summit of Chola architecture.
   - lead: Visit
     text: the tile works and the merchant mansions of Chettinad, built by a trading community that furnished them from across the world.
   - lead: Watch
@@ -58,19 +58,19 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Bengaluru to Mysuru — Boarding and the Palace
-    transport: { mode: train, detail: Departs Yeshwanthpur, Bengaluru }
+    title: "Bengaluru to Mysuru: Boarding and the Palace"
+    transport: { mode: train, detail: "Departs Yeshwanthpur, Bengaluru" }
     narrative: >-
       Arrive at Yeshwanthpur station in Bengaluru in the morning for a welcome
       and registration, and the train departs at half past ten. Lunch is served
-      on board as it runs south-west to Mysuru. In the afternoon, Mysore Palace
-      — the Amba Vilas, a historical palace and royal residence, seat of the
+      on board as it runs south-west to Mysuru. In the afternoon, Mysore Palace:
+      the Amba Vilas, a historical palace and royal residence, seat of the
       Wadiyar dynasty and the Kingdom of Mysore, and one of the most visited
       buildings in the country. Back to the train for dinner as it moves on
       overnight towards Chengalpattu.
     overnight: Overnight aboard
   - dayNo: 2
-    title: Mahabalipuram — The Pallava Shore
+    title: "Mahabalipuram: The Pallava Shore"
     transport: { mode: train, detail: Overnight to Chengalpattu }
     narrative: >-
       A relaxed breakfast on board as the train arrives at Chengalpattu. The
@@ -81,11 +81,11 @@ itineraryDays:
       and eighth centuries. Dinner on the train as it heads for Thanjavur.
     overnight: Overnight aboard
   - dayNo: 3
-    title: Thanjavur and Chettinad — Chola Stone, Merchant Mansions
+    title: "Thanjavur and Chettinad: Chola Stone, Merchant Mansions"
     transport: { mode: train, detail: Overnight to Kochi }
     narrative: >-
       The Brihadeeswara Temple, called Rajarajesvaram by the Chola king who
-      built it and Periya Kovil — the big temple — by the town: a UNESCO World
+      built it and Periya Kovil (the big temple) by the town: a UNESCO World
       Heritage Site on the south bank of the Cauvery, and the high point of the
       Chola style. Lunch is served on board as the train moves to Chettinad,
       where the afternoon takes in the Athangudi tile works and the mansions
@@ -93,16 +93,16 @@ itineraryDays:
       to Kerala overnight.
     overnight: Overnight aboard
   - dayNo: 4
-    title: Kochi — The Dutch Palace and a Dance
+    title: "Kochi: The Dutch Palace and a Dance"
     narrative: >-
-      After breakfast on board, the Mattancherry Palace in Fort Kochi —
-      popularly the Dutch Palace, built by the Portuguese and renovated by the
-      Dutch — followed by a performance of Kerala's classical dance forms at
+      After breakfast on board, the Mattancherry Palace in Fort Kochi
+      (popularly the Dutch Palace, built by the Portuguese and renovated by the
+      Dutch), followed by a performance of Kerala's classical dance forms at
       an exclusive venue. Back to the train for lunch, and an India evening
       on board with dinner.
     overnight: Overnight aboard
   - dayNo: 5
-    title: Cherthala — The Backwaters by Houseboat
+    title: "Cherthala: The Backwaters by Houseboat"
     transport: { mode: boat, detail: Houseboat cruise on the backwaters }
     narrative: >-
       Cherthala sits twenty kilometres north of Alappuzha, a satellite of Kochi
@@ -112,7 +112,7 @@ itineraryDays:
       dinner as it begins the run back to Karnataka.
     overnight: Overnight aboard
   - dayNo: 6
-    title: Bengaluru — The Journey Ends
+    title: "Bengaluru: The Journey Ends"
     transport: { mode: train, detail: Overnight to Bengaluru City }
     narrative: >-
       Breakfast is served on board as the train arrives at KSR Bengaluru City
@@ -151,7 +151,7 @@ exclusions:
 
 departureSeasonLabel: 2026–27 season
 departureInfo: >-
-  Seasonal departures — enquire for current dates. The Golden Chariot runs a
+  Seasonal departures: enquire for current dates. The Golden Chariot runs a
   fixed-departure schedule set by the operator and revised each season, so we
   confirm live availability for your dates rather than publish a timetable
   that could go stale. A seasonal supplement applies to departures over
@@ -173,13 +173,13 @@ bookingSteps:
     detail: Once the advance is received you get a confirmation email and letter, along with a breakdown of the amount received and the balance due.
   - step: 4
     title: Adjust the details
-    detail: Tell us about anything you would like added or changed and we will check what is possible with the operator — some changes cannot be accommodated on a fixed-departure train.
+    detail: Tell us about anything you would like added or changed and we will check what is possible with the operator. Some changes cannot be accommodated on a fixed-departure train.
   - step: 5
     title: Clear the balance 95 days before arrival
     detail: The balance must be cleared at least 95 days before arrival in India. We send a receipt once it is in.
   - step: 6
     title: Arrival assistance
-    detail: About a week before departure we share your arrival assistance details — who will meet you at the airport and the name of your assigned guest relations manager.
+    detail: "About a week before departure we share your arrival assistance details: who will meet you at the airport and the name of your assigned guest relations manager."
 
 policies:
   - heading: Cancellation charges
@@ -216,7 +216,7 @@ policies:
     body: >-
       If a scheduled departure does not operate, you will be informed at least
       one week beforehand, and the full amount received is refunded, credited
-      against future travel, or held as a credit note — without any
+      against future travel, or held as a credit note, without any
       cancellation fee. We cannot compensate for consequential costs such as
       air tickets or hotel bookings made independently.
   - heading: Visas and travel documents
@@ -236,7 +236,7 @@ policies:
 
 # PROVISIONAL — the source document names IRCTC as the train tour operator;
 # client to confirm the disclosure wording (PRD Open Question #15).
-operatorName: IRCTC — Indian Railway Catering and Tourism Corporation
+operatorName: IRCTC (Indian Railway Catering and Tourism Corporation)
 # Neutral operator attribution only — client ruling 2026-11-12: no agent/GSA claims.
 operatorDisclosure: >-
   Operated by IRCTC, the Indian Railway Catering and Tourism Corporation.
@@ -258,7 +258,7 @@ practicalNotes:
     text: Moderate. You unpack once and the train moves overnight, with a full excursion most days and lunch on board or at a venue en route.
 
 customiseCopy: >-
-  Departures fill early, and the train runs a single cabin class — tell us your
+  Departures fill early, and the train runs a single cabin class. Tell us your
   dates and we will check live availability with the operator.
 
 related:
@@ -270,7 +270,7 @@ pdfFile: /downloads/golden-chariot-5n-6d.pdf
 featured: false
 
 seo:
-  metaTitle: Golden Chariot — Jewels of the South, 5 Nights / 6 Days
+  metaTitle: "Golden Chariot: Jewels of the South, 5 Nights / 6 Days"
   metaDescription: The Golden Chariot, five nights from Bengaluru through Mysore, Mahabalipuram, Thanjavur, Chettinad and Kochi to the backwaters.
 ---
 

@@ -1,6 +1,6 @@
 ---
 variant: A
-title: Bali — Ubud and the South Coast
+title: "Bali: Ubud and the South Coast"
 tripTypeTag: Custom Journey
 signatureFeature: Rice Terraces, Then the Sea
 
@@ -39,7 +39,7 @@ highlights:
   - lead: Watch
     text: sunset at Uluwatu Temple, set on a cliff two hundred feet above the surf on the island's south-western tip.
   - lead: Keep
-    text: one day entirely unplanned — the south coast is best understood by not scheduling it.
+    text: one day entirely unplanned. The south coast is best understood by not scheduling it.
 
 glanceRows:
   - { dayNo: 1, destination: Ubud, signatureExperience: "Fly into Denpasar and head inland to the rice-field country" }
@@ -51,21 +51,21 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Ubud — Inland to the Green Heart
+    title: "Ubud: Inland to the Green Heart"
     transport: { mode: flight, detail: Fly — into Denpasar }
     narrative: >-
       Fly into Denpasar and head inland, away from the coast, to Ubud. This is
       Bali's cultural centre and its greenest quarter: terraced rice fields
       stepping down the valleys, art studios on the back lanes, and small family
-      temples on almost every corner. Check in — a rice-field or jungle-view
-      room is worth asking for — and do nothing much. The point of starting here
+      temples on almost every corner. Check in (a rice-field or jungle-view room
+      is worth asking for) and do nothing much. The point of starting here
       rather than at the beach is that Ubud sets the pace for the rest of it.
     overnight: Overnight in Ubud
   - dayNo: 2
-    title: Ubud — Terraces and the Art Market
+    title: "Ubud: Terraces and the Art Market"
     narrative: >-
       Out early to Tegallalang, where the rice terraces are cut into the hillside
-      in the subak system the island has used since the ninth century — a network
+      in the subak system the island has used since the ninth century, a network
       of irrigation shared between villages and managed by temple committees
       rather than by anyone official. Morning light and an early start are what
       separate this from the photograph everyone has seen. Later, Ubud town: the
@@ -73,38 +73,38 @@ itineraryDays:
       more than one dish and takes a while.
     overnight: Overnight in Ubud
   - dayNo: 3
-    title: To the Coast — Ubud to Seminyak
+    title: "To the Coast: Ubud to Seminyak"
     transport: { mode: drive, detail: Drive — 1.5 to 2 hours }
     narrative: >-
       A short transfer south, an hour and a half or so depending on traffic
       through Denpasar, and the landscape changes completely: jungle green gives
       way to ocean blue, and the pace shifts from contemplative to coastal. Check
-      in to a beach-side stay, and keep the evening free — the west-facing
+      in to a beach-side stay, and keep the evening free. The west-facing
       beaches here do the best sunsets on the island, and you will want to be
       sitting down for it rather than travelling.
     overnight: Overnight in Seminyak
   - dayNo: 4
-    title: Uluwatu — A Temple on the Cliff
+    title: "Uluwatu: A Temple on the Cliff"
     narrative: >-
       A slow beach day built around one unmissable thing. Pura Luhur Uluwatu
       stands on a limestone cliff some seventy metres above the Indian Ocean at
       the island's south-western tip, and has done since the eleventh century.
       Go for sunset, when the temple is a silhouette and the surf is a long way
-      below. The resident macaques are practised thieves — sunglasses off,
+      below. The resident macaques are practised thieves: sunglasses off,
       pockets closed. Either side of it, the beach clubs or a quiet stretch of
       sand, as you prefer.
     overnight: Overnight in Seminyak
   - dayNo: 5
-    title: South Coast — A Day Left Open
+    title: "South Coast: A Day Left Open"
     narrative: >-
       Nothing is scheduled today, and that is deliberate. The south coast rewards
       people who know when to stop planning. If you would rather fill it, the
-      obvious candidates are a traditional Balinese massage — an hour, and
-      genuinely not a spa-menu imitation — or a first surf lesson on the gentler
+      obvious candidates are a traditional Balinese massage (an hour, and
+      genuinely not a spa-menu imitation) or a first surf lesson on the gentler
       beach breaks at Kuta or Canggu. Both can be arranged the evening before.
     overnight: Overnight in Seminyak
   - dayNo: 6
-    title: Denpasar — Departure
+    title: "Denpasar: Departure"
     narrative: >-
       A free morning to take the last of the island calm, then the transfer to
       Denpasar for your flight. Most connections back to India route through
@@ -138,18 +138,18 @@ pdfFile: /downloads/bali-5n-6d.pdf
 featured: true
 
 seo:
-  metaTitle: Bali in 6 Days — Ubud, Rice Terraces & the South Coast | India Visit
-  metaDescription: An unhurried six-day Bali itinerary — Ubud's terraces and art studios, then the south coast and Uluwatu at sunset, with a day deliberately left open.
+  metaTitle: "Bali in 6 Days: Ubud, Rice Terraces & the South Coast | India Visit"
+  metaDescription: "An unhurried six-day Bali itinerary: Ubud's terraces and art studios, then the south coast and Uluwatu at sunset, with a day deliberately left open."
 ---
 
 Bali is two islands pretending to be one. Inland there is Ubud: rice terraces
 cut into the hillsides, irrigation shared between villages by temple committee
 rather than by government, art studios down every back lane, and a quiet that
-takes about a day to adjust to. On the south coast there is the other Bali — surf,
+takes about a day to adjust to. On the south coast there is the other Bali: surf,
 long west-facing beaches, and a clifftop temple that has been watching the
 Indian Ocean since the eleventh century.
 
 This itinerary gives you three nights of the first and two of the second, in that
 order, because the pace only works one way round. It also leaves one full day
-with nothing in it at all. That is not an oversight — it is the most useful day
+with nothing in it at all. That is not an oversight. It is the most useful day
 of the six, and the one people tell us about afterwards.

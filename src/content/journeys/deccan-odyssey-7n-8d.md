@@ -1,7 +1,7 @@
 ---
 variant: B
-title: Deccan Odyssey — Heritage Odyssey
-tripTypeTag: Luxury Train — Fixed Departures
+title: "Deccan Odyssey: Heritage Odyssey"
+tripTypeTag: Luxury Train · Fixed Departures
 signatureFeature: Delhi to Delhi Through Royal Rajasthan and Ranthambore
 
 # ⚑ STOP-AND-FLAG — CLIENT_REVIEW_SHEET.md §22.
@@ -73,27 +73,27 @@ glanceRows:
 # ⚑ PROVISIONAL, all eight — see the note at the top of this file.
 itineraryDays:
   - dayNo: 1
-    title: Delhi — Boarding
+    title: "Delhi: Boarding"
     transport: { mode: train, detail: Departs Delhi }
     narrative: >-
       Board the Deccan Odyssey at Delhi. The week ahead runs south to Agra and
-      then west across Rajasthan — Sawai Madhopur, Udaipur, Jodhpur, Jaisalmer
-      and Jaipur — before returning to the capital, with the distances covered
+      then west across Rajasthan (Sawai Madhopur, Udaipur, Jodhpur, Jaisalmer
+      and Jaipur) before returning to the capital, with the distances covered
       overnight while you sleep. The operator's daily programme, including
       boarding time and the order of the evening, is supplied on booking.
     overnight: Overnight aboard
     provisional: true
   - dayNo: 2
-    title: Agra — The Taj and the Fort
+    title: "Agra: The Taj and the Fort"
     transport: { mode: train, detail: Overnight from Delhi }
     narrative: >-
-      Agra holds two of India's World Heritage Sites within a few kilometres of
-      each other — the Taj Mahal and Agra Fort — and the day is given to them.
+      Agra holds two of India's World Heritage Sites, the Taj Mahal and Agra
+      Fort, within a few kilometres of each other, and the day is given to them.
       The operator's programme sets the order and the timings.
     overnight: Overnight aboard
     provisional: true
   - dayNo: 3
-    title: Sawai Madhopur — Tigers at Ranthambore
+    title: "Sawai Madhopur: Tigers at Ranthambore"
     transport: { mode: train, detail: Overnight from Agra }
     narrative: >-
       Sawai Madhopur is the railhead for Ranthambore, and the day's excursion
@@ -103,7 +103,7 @@ itineraryDays:
     overnight: Overnight aboard
     provisional: true
   - dayNo: 4
-    title: Udaipur — The City of Lakes
+    title: "Udaipur: The City of Lakes"
     transport: { mode: train, detail: Overnight from Sawai Madhopur }
     narrative: >-
       Udaipur, the lake city of Mewar, with its palaces at the water's edge.
@@ -111,7 +111,7 @@ itineraryDays:
     overnight: Overnight aboard
     provisional: true
   - dayNo: 5
-    title: Jodhpur — Beneath Mehrangarh
+    title: "Jodhpur: Beneath Mehrangarh"
     transport: { mode: train, detail: Overnight from Udaipur }
     narrative: >-
       Jodhpur, the blue city, under one of the largest forts in India. The
@@ -120,16 +120,16 @@ itineraryDays:
     overnight: Overnight aboard
     provisional: true
   - dayNo: 6
-    title: Jaisalmer — The Golden City
+    title: "Jaisalmer: The Golden City"
     transport: { mode: train, detail: Overnight from Jodhpur }
     narrative: >-
-      Jaisalmer rises out of the Thar in honey-coloured sandstone — the fort
+      Jaisalmer rises out of the Thar in honey-coloured sandstone: the fort
       still lived in, the carved havelis, and the desert beyond. The day's
       programme is the operator's.
     overnight: Overnight aboard
     provisional: true
   - dayNo: 7
-    title: Jaipur — The Pink City
+    title: "Jaipur: The Pink City"
     transport: { mode: train, detail: Overnight from Jaisalmer }
     narrative: >-
       Jaipur, with its forts, palaces and the bazaars the operator's
@@ -138,7 +138,7 @@ itineraryDays:
     overnight: Overnight aboard
     provisional: true
   - dayNo: 8
-    title: Delhi — The Journey Ends
+    title: "Delhi: The Journey Ends"
     transport: { mode: train, detail: Overnight from Jaipur }
     narrative: >-
       Breakfast aboard as the train arrives in Delhi, where the journey ends.
@@ -162,7 +162,7 @@ cabinCategories:
 # Verbatim from the operator document.
 inclusions:
   - Accommodation in a double or twin-bedded cabin with en suite bathroom
-  - All meals — breakfast, lunch and dinner
+  - All meals (breakfast, lunch and dinner)
   - Soft beverages during the journey
   - Valet service
   - Still-camera fees
@@ -179,7 +179,7 @@ exclusions:
 
 departureSeasonLabel: 2026–27 season
 departureInfo: >-
-  Seasonal departures — enquire for current dates. The Deccan Odyssey runs a
+  Seasonal departures: enquire for current dates. The Deccan Odyssey runs a
   fixed-departure schedule set by the operator and revised each season, so we
   confirm live availability for your dates rather than publish a timetable
   that could go stale. Each departure needs a minimum occupancy to operate;
@@ -201,13 +201,13 @@ bookingSteps:
     detail: Once the advance is received you get a confirmation email and letter, along with a breakdown of the amount received and the balance due.
   - step: 4
     title: Adjust the details
-    detail: Tell us about anything you would like added or changed and we will check what is possible with the operator — some changes cannot be accommodated on a fixed-departure train.
+    detail: Tell us about anything you would like added or changed and we will check what is possible with the operator. Some changes cannot be accommodated on a fixed-departure train.
   - step: 5
     title: Clear the balance 95 days before arrival
     detail: The balance must be cleared at least 95 days before arrival in India. We send a receipt once it is in.
   - step: 6
     title: Arrival assistance
-    detail: About a week before departure we share your arrival assistance details — who will meet you at the airport and the name of your assigned guest relations manager.
+    detail: "About a week before departure we share your arrival assistance details: who will meet you at the airport and the name of your assigned guest relations manager."
 
 policies:
   - heading: Cancellation charges
@@ -248,7 +248,7 @@ policies:
     body: >-
       If a scheduled departure does not operate, you will be informed at least
       one week beforehand, and the full amount received is refunded, credited
-      against future travel, or held as a credit note — without any
+      against future travel, or held as a credit note, without any
       cancellation fee. We cannot compensate for consequential costs such as
       air tickets or hotel bookings made independently.
   - heading: Visas and travel documents
@@ -293,7 +293,7 @@ practicalNotes:
 
 customiseCopy: >-
   Departures fill early, and the two cabin categories sell out at different
-  rates — tell us your dates and we will check live availability with the
+  rates. Tell us your dates and we will check live availability with the
   operator.
 
 related:
@@ -305,14 +305,14 @@ pdfFile: /downloads/deccan-odyssey-7n-8d.pdf
 featured: false
 
 seo:
-  metaTitle: Deccan Odyssey — Heritage Odyssey, 7 Nights / 8 Days from Delhi
+  metaTitle: "Deccan Odyssey: Heritage Odyssey, 7 Nights / 8 Days from Delhi"
   metaDescription: The Deccan Odyssey's Heritage Odyssey, Delhi to Delhi by way of Agra, Ranthambore, Udaipur, Jodhpur, Jaisalmer and Jaipur, cabins explained.
 ---
 
 The Deccan Odyssey's Heritage Odyssey is the western circuit: Delhi to Agra
-for the Taj, then a week's arc across Rajasthan — the tiger reserve at
+for the Taj, then a week's arc across Rajasthan (the tiger reserve at
 Ranthambore, the lakes of Udaipur, Jodhpur under Mehrangarh, Jaisalmer in the
-Thar and Jaipur's forts and bazaars — before the train brings you back to the
+Thar and Jaipur's forts and bazaars) before the train brings you back to the
 capital. Seven nights aboard, the distances covered while you sleep, and every
 excursion, meal and guide arranged before you board.
 

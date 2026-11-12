@@ -21,8 +21,8 @@ intro:
   - >-
     Kochi is less a city than a set of islands and peninsulas that learned to
     trade with each other. Arabs came for pepper, then the Chinese, then the
-    Portuguese in 1500, then the Dutch, then the British — and unusually, none
-    of them erased what the last lot built. The result is a small stretch of
+    Portuguese in 1500, then the Dutch, then the British. Unusually, none of
+    them erased what the last lot built. The result is a small stretch of
     waterfront where a 16th-century Portuguese church, a Dutch palace, a
     synagogue and a working fishing beach sit within a mile of one another.
   - >-
@@ -33,7 +33,7 @@ intro:
     actually does the business.
   - >-
     For most of our travellers Kochi is the beginning of Kerala rather than the
-    whole of it — a day or two here before the backwaters, or a last day after
+    whole of it: a day or two here before the backwaters, or a last day after
     coming back off a houseboat.
 
 experiences:
@@ -50,7 +50,7 @@ experiences:
     image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
     imageAlt: A sack of dried red chillies at a spice market
   - name: The backwaters, from here
-    text: The channels begin within an hour of the city — a morning cruise, or the start of an overnight houseboat.
+    text: "The channels begin within an hour of the city: a morning cruise, or the start of an overnight houseboat."
     image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
     imageAlt: Coconut palms lining a backwater channel near Kochi
 
@@ -81,7 +81,7 @@ practicalNotes:
     label: Best time
     text: >-
       October to March is dry and warm. The southwest monsoon arrives in June
-      and is heavy through July and August — some travellers come for exactly
+      and is heavy through July and August. Some travellers come for exactly
       that, and for the Ayurveda season that goes with it, but it is not the
       time for walking the fort.
 
@@ -110,7 +110,7 @@ faq:
       book separately once you are there.
   - question: Can you see a Kathakali performance without sitting through several hours?
     answer: >-
-      Yes — the shows put on for visitors run about an hour and a half, with
+      Yes. The shows put on for visitors run about an hour and a half, with
       the makeup applied on stage beforehand, which is worth arriving for. The
       full traditional form runs all night and is a different proposition
       entirely; if that is what you want, tell us and we will find one.
@@ -127,8 +127,8 @@ provisional: true
 order: 2
 
 seo:
-  metaTitle: Kochi Travel Guide — Fort Kochi, Best Time to Visit | India Visit
+  metaTitle: "Kochi Travel Guide: Fort Kochi, Best Time to Visit | India Visit"
   metaDescription: >-
-    What to see in Kochi, how long to stay and when to go — the Chinese fishing
+    What to see in Kochi, how long to stay and when to go: the Chinese fishing
     nets, Mattancherry's spice quarter, Kathakali, and the journeys that visit.
 ---

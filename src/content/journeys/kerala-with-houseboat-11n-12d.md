@@ -63,7 +63,7 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Kochi — Queen of the Arabian Sea
+    title: "Kochi: Queen of the Arabian Sea"
     narrative: >-
       Arrive in Kochi and transfer to your hotel. This port city blends the
       architectural fingerprints of medieval Holland, Portugal and England with
@@ -73,9 +73,9 @@ itineraryDays:
       dance tradition, Kochi is a gentle introduction to Kerala.
     overnight: Overnight in Kochi
   - dayNo: 2
-    title: Fort Kochi — Churches, Synagogue and Fishing Nets
+    title: "Fort Kochi: Churches, Synagogue and Fishing Nets"
     narrative: >-
-      Spend the morning among Kochi's most storied corners — Portuguese
+      Spend the morning among Kochi's most storied corners: Portuguese
       churches, ancient mosques and temples, and the historic Jewish synagogue.
       Don't miss the Chinese fishing nets: ten-metre cantilevered structures
       worked by a team of fishermen using a stone counterweight system
@@ -83,7 +83,7 @@ itineraryDays:
       Kochi Fort, Marine Drive and Cherai Beach at your own pace.
     overnight: Overnight in Kochi
   - dayNo: 3
-    title: Into the Hills — Kochi to Munnar
+    title: "Into the Hills: Kochi to Munnar"
     transport: { mode: drive, detail: Drive 172 km }
     narrative: >-
       Climb from Kochi into Munnar, Kerala's largest tea-growing region, set
@@ -94,17 +94,17 @@ itineraryDays:
       which blooms only once every twelve years.
     overnight: Overnight in Munnar
   - dayNo: 4
-    title: Munnar — Waterfalls, Tea and Top Station
+    title: "Munnar: Waterfalls, Tea and Top Station"
     narrative: >-
       Explore the wider Munnar region. Visit the Atukkad Waterfalls, tucked
       between hills and jungle, then continue to Chithirapuram's tea estates
       and the Floriculture Centre. Take in sweeping Western Ghats views from
       Top Station, and learn how the leaves in your cup are grown and processed
-      at the Tata Tea Museum. The day reaches toward Kodaikanal — the Princess
-      of Hill Stations — before returning to Munnar for the night.
+      at the Tata Tea Museum. The day reaches toward Kodaikanal, the Princess
+      of Hill Stations, before returning to Munnar for the night.
     overnight: Overnight in Munnar
   - dayNo: 5
-    title: Munnar to Thekkady — Into Tiger Country
+    title: "Munnar to Thekkady: Into Tiger Country"
     transport: { mode: drive, detail: Drive 159 km }
     narrative: >-
       Continue by road to Thekkady, home of the Periyar Tiger and Elephant
@@ -115,7 +115,7 @@ itineraryDays:
       well worth the time.
     overnight: Overnight in Thekkady
   - dayNo: 6
-    title: Periyar — A Day on the Water
+    title: "Periyar: A Day on the Water"
     transport: { mode: boat, detail: Lake boat safari }
     narrative: >-
       Spend the day in and around Periyar National Park, some 700 square
@@ -126,39 +126,39 @@ itineraryDays:
       explore further afield.
     overnight: Overnight in Thekkady
   - dayNo: 7
-    title: Alappuzha — Venice of the East
+    title: "Alappuzha: Venice of the East"
     transport: { mode: drive, detail: Drive 109 km }
     narrative: >-
       Drive to Alappuzha, once known as Alleppey and fondly nicknamed the
       Venice of the East for its maze of canals, backwaters, lagoons and
       beaches. A cruise through the backwaters here is one of Kerala's
-      essential experiences. Nearby Kuttanad — Kerala's rice bowl — is one of
+      essential experiences. Nearby Kuttanad, Kerala's rice bowl, is one of
       the few places on earth where rice is cultivated below sea level, its
       paddies framed by coconut palms.
     overnight: Overnight in Alappuzha
   - dayNo: 8
-    title: Aboard a Kettuvallam — A Night on the Backwaters
+    title: "Aboard a Kettuvallam: A Night on the Backwaters"
     transport: { mode: boat, detail: Overnight houseboat }
     narrative: >-
       Today is dedicated to Alappuzha's true calling card. Board a traditional
-      kettuvallam — once used to ferry grain, now converted into a floating
-      cottage with sleeping quarters, a dining area and a deck to relax on —
+      kettuvallam (once used to ferry grain, now converted into a floating
+      cottage with sleeping quarters, a dining area and a deck to relax on)
       and drift through a network of lakes and canals shaped by rivers, waves
       and shifting shore currents. Meals are prepared fresh on board by your
       crew as the backwaters slip quietly by.
     overnight: Overnight aboard the houseboat
   - dayNo: 9
-    title: Mararikulam — To the Coast
+    title: "Mararikulam: To the Coast"
     transport: { mode: drive, detail: Drive 11 km }
     narrative: >-
       Drive to Mararikulam, a quiet beach village a short distance from
       Alappuzha. Mararikulam Beach was rated by National Geographic among the
-      world's top five hammock beaches — reason enough to slow down entirely.
+      world's top five hammock beaches, reason enough to slow down entirely.
       Spend the evening unwinding by the shore and easing into the pace of
       coastal Kerala life.
     overnight: Overnight in Mararikulam
   - dayNo: 10
-    title: Cherthala — Beach Days and Nearby Temples
+    title: "Cherthala: Beach Days and Nearby Temples"
     narrative: >-
       A full day at leisure on Mararikulam Beach, with the option to explore
       nearby Cherthala and several of its important temples. The Karthyayani
@@ -168,7 +168,7 @@ itineraryDays:
       Venkatachalapathy Moorthy.
     overnight: Overnight in Mararikulam
   - dayNo: 11
-    title: Arthunkal — Leisure and Heritage
+    title: "Arthunkal: Leisure and Heritage"
     narrative: >-
       A second day to enjoy the beach or explore further afield. Visit Saint
       Augustine Church near Aroor, one of the oldest Latin Catholic churches in
@@ -178,7 +178,7 @@ itineraryDays:
       Christian church.
     overnight: Overnight in Mararikulam
   - dayNo: 12
-    title: Kochi — Departure
+    title: "Kochi: Departure"
     narrative: >-
       Transfer to Kochi airport for your onward flight, bringing to a close a
       journey through Kerala's hills, wildlife reserves, backwaters and shores.
@@ -200,7 +200,7 @@ practicalNotes:
     text: Relaxed. Longer drives sit on transfer days, with full leisure days on the coast.
 
 customiseCopy: >-
-  This itinerary can be tailored to your dates, pace and interests — add an
+  This itinerary can be tailored to your dates, pace and interests: add an
   Ayurvedic wellness retreat, extend your houseboat stay, or build in extra
   time on the coast. Our team handles every transfer, guide and reservation, so
   your only task is to enjoy the journey.
@@ -214,10 +214,10 @@ pdfFile: /downloads/kerala-with-houseboat-11n-12d.pdf
 featured: true
 
 seo:
-  metaTitle: Kerala with Houseboat — 11 Nights / 12 Days Tour
+  metaTitle: "Kerala with Houseboat: 11 Nights / 12 Days Tour"
   metaDescription: A twelve-day Kerala journey from Fort Kochi through Munnar's tea hills and Periyar's tiger reserve to a night aboard a traditional houseboat and the beaches of Mararikulam.
 ---
 
-Some places you visit. Kerala, you sink into. This twelve-day journey moves at the pace of the land itself — from the spice-scented lanes of old Kochi, up through mist-wrapped tea gardens perched a mile above sea level, into forests where wild elephants still outnumber roads, and finally down onto water, where the last days unfold aboard a gently drifting houseboat and along a beach once ranked among the world's finest.
+Some places you visit. Kerala, you sink into. This twelve-day journey moves at the pace of the land itself, from the spice-scented lanes of old Kochi, up through mist-wrapped tea gardens perched a mile above sea level, into forests where wild elephants still outnumber roads, and finally down onto water, where the last days unfold aboard a gently drifting houseboat and along a beach once ranked among the world's finest.
 
-Every layer of Kerala's long, layered history is here for the finding: Portuguese churches and a centuries-old Jewish synagogue in Fort Kochi, Chinese fishing nets swinging against the sunset, hand-plucked tea rolling over the Kannan Devan Hills, tigers and elephants moving through Periyar's reserve, and a maze of backwater canals that has earned the region its nickname, the Venice of the East. This is Kerala at a traveller's pace — never rushed, always arriving somewhere worth the drive.
+Every layer of Kerala's long, layered history is here for the finding: Portuguese churches and a centuries-old Jewish synagogue in Fort Kochi, Chinese fishing nets swinging against the sunset, hand-plucked tea rolling over the Kannan Devan Hills, tigers and elephants moving through Periyar's reserve, and a maze of backwater canals that has earned the region its nickname, the Venice of the East. This is Kerala at a traveller's pace: never rushed, always arriving somewhere worth the drive.

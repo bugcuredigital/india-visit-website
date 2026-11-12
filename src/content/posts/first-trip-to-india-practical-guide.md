@@ -3,9 +3,9 @@
 # docs/COPY_REGISTER.md §L. The practical guidance below is the agency's
 # general advice, drawn from the practical notes across the client's
 # itineraries; the visa section is marked "verify before travel".
-title: Your First Trip to India — A Practical Guide for Foreign Visitors
+title: "Your First Trip to India: A Practical Guide for Foreign Visitors"
 category: planning-visas
-excerpt: The visa, the season, how long to come for, what a private journey actually includes, money, health, and the handful of things first-time visitors wish they had known — from twenty years of planning them.
+excerpt: The visa, the season, how long to come for, what a private journey actually includes, money, health, and the handful of things first-time visitors wish they had known, from twenty years of planning them.
 publishDate: 2026-09-12
 author: India Visit
 
@@ -28,16 +28,16 @@ faq:
     answer: >-
       With a private car, a driver and a guide, and hotels chosen by someone
       who has stayed in them, the everyday risks are the ordinary ones of any
-      large country — traffic, sun and the wrong glass of water. We plan around
+      large country: traffic, sun and the wrong glass of water. We plan around
       all three. On-trip support is a phone call, not a form.
   - question: How much should I tip?
     answer: >-
       Tipping is customary and appreciated. We give every traveller a simple
-      guide before departure — for drivers, guides, hotel staff and
-      restaurants — so it is never a source of anxiety on the day.
+      guide before departure (for drivers, guides, hotel staff and
+      restaurants), so it is never a source of anxiety on the day.
 
 seo:
-  metaTitle: First Trip to India — A Practical Guide for Foreign Visitors
+  metaTitle: "First Trip to India: A Practical Guide for Foreign Visitors"
   metaDescription: Visas, seasons, how long to come for, what a private journey includes, money, health and the things first-time visitors to India wish they had known.
 ---
 
@@ -60,7 +60,7 @@ processing time is usually a few days. Print the approval and carry it with
 your passport; airlines check it at check-in.
 
 The e-visa is valid for tourism and for the airports and seaports it lists.
-It is not valid for every land border — if your journey crosses into Nepal or
+It is not valid for every land border. If your journey crosses into Nepal or
 Bhutan and back, tell us, because the re-entry needs thought.
 
 ## When to come
@@ -72,7 +72,7 @@ February** is the sweet spot for the Golden Triangle and Rajasthan;
 delays road travel rather than ruining it.
 
 The exceptions are the mountains. **Ladakh** is a June-to-September
-destination — the passes are closed the rest of the year — and the hill
+destination (the passes are closed the rest of the year), and the hill
 stations are at their best in the shoulder months. **Kerala** is pleasant from
 October to March and green and wet through the monsoon. Wildlife reserves
 close for the monsoon and are at their best, for sightings, in the hot months
@@ -81,7 +81,7 @@ of April and May.
 ## How long
 
 Two weeks is the honest answer for a first visit that reaches more than one
-region — a week in the north and a week in Kerala is the pairing we suggest
+region. A week in the north and a week in Kerala is the pairing we suggest
 most. If you have less, one region done properly beats two done in a hurry:
 six days is the Golden Triangle; a week is Kerala north to south. If you have
 more, add a train, or the mountains.
@@ -92,7 +92,7 @@ Every itinerary on this site is a private journey: your own car and driver
 throughout, a local guide in each city, hotels chosen because we have stayed
 in them, and every transfer, entrance and reservation arranged before you
 arrive. It is not a group tour and there is no coach. The day-by-day plan is a
-starting point — tell us what to change and we rebuild it around you.
+starting point. Tell us what to change and we rebuild it around you.
 
 What it does not include, unless the page says so, is international flights,
 visa fees, travel insurance, lunches and tips. We are explicit about
@@ -115,7 +115,7 @@ optional. Pharmacies are everywhere and good.
 
 ## The small things
 
-- **Dress** modestly at religious sites — shoulders and knees covered — and
+- **Dress** modestly at religious sites (shoulders and knees covered) and
   carry a scarf; shoes come off at temples and some monuments.
 - The **Taj Mahal is closed on Fridays**, and several museums close on
   Mondays. We plan around every one of these.

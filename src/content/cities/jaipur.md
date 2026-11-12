@@ -26,8 +26,8 @@ intro:
     plan is still legible, which is why the old city reads as one composition
     rather than as a collection of monuments.
   - >-
-    The pink came later — an 1876 paint job for a royal visit, in the colour of
-    welcome — and it stuck. What visitors tend to remember is not any single
+    The pink came later (an 1876 paint job for a royal visit, in the colour of
+    welcome) and it stuck. What visitors tend to remember is not any single
     building but the density: a fort on the ridge, an observatory measuring the
     sky in stone, a palace facade built so that women of the court could watch
     the street without being seen from it, and bazaars that have been selling
@@ -46,7 +46,7 @@ experiences:
     image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
     imageAlt: A columned doorway in the City Palace at Jaipur
   - name: Hawa Mahal
-    text: The palace of the winds — 953 windows built for watching a street you could not be seen on. Best from the pavement opposite.
+    text: "The palace of the winds: 953 windows built for watching a street you could not be seen on. Best from the pavement opposite."
     image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-hawa-mahal.jpg
     imageAlt: The Hawa Mahal seen from the street in daylight
   - name: The bazaars
@@ -68,7 +68,7 @@ practicalNotes:
     text: >-
       Jaipur International is 13 km from the centre, with direct flights from
       Delhi, Mumbai and several Gulf cities. Most of our travellers arrive by
-      road from Delhi — 274 km, about five hours with a stop — because the
+      road from Delhi (274 km, about five hours with a stop) because the
       drive is part of the Golden Triangle rather than a transfer.
   - icon: pace
     label: Getting around
@@ -80,8 +80,8 @@ practicalNotes:
   - icon: calendar
     label: Best time
     text: >-
-      October to March, comfortably. April and May are genuinely hot — over
-      40°C by afternoon — and July to September brings the monsoon, which is
+      October to March, comfortably. April and May are genuinely hot (over
+      40°C by afternoon), and July to September brings the monsoon, which is
       dramatic but limits the time you can spend outdoors.
 
 faq:
@@ -126,8 +126,8 @@ provisional: true
 order: 1
 
 seo:
-  metaTitle: Jaipur Travel Guide — What to See, Best Time to Visit | India Visit
+  metaTitle: "Jaipur Travel Guide: What to See, Best Time to Visit | India Visit"
   metaDescription: >-
-    What to see in Jaipur, when to go, and how long to stay — Amer Fort, the
+    What to see in Jaipur, when to go, and how long to stay: Amer Fort, the
     City Palace, Hawa Mahal and the bazaars, with the journeys that visit.
 ---

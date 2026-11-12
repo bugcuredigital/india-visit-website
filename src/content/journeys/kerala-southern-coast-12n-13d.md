@@ -44,7 +44,7 @@ highlights:
   - lead: Stand
     text: at Kanyakumari, where three seas meet at the tip of the subcontinent, and take the ferry to the Vivekananda Rock Memorial.
   - lead: Rest
-    text: two full days on the beaches of Kovalam — Lighthouse, Hawa and Samudra — with Ayurveda in the resorts behind them.
+    text: two full days on the beaches of Kovalam (Lighthouse, Hawa and Samudra), with Ayurveda in the resorts behind them.
   - lead: Board
     text: a houseboat at Alappuzha and cruise the canals to Kumarakom, past paddy fields and villages, for a night on the water.
   - lead: Watch
@@ -73,17 +73,17 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Thiruvananthapuram — Arrival
+    title: "Thiruvananthapuram: Arrival"
     narrative: >-
       Met on arrival at Thiruvananthapuram and taken to your hotel. The first
-      day is at leisure — the capital of Kerala is a low, green, unhurried
+      day is at leisure. The capital of Kerala is a low, green, unhurried
       city, and it rewards an evening walk more than a programme.
     overnight: Overnight in Thiruvananthapuram
   - dayNo: 2
-    title: Thiruvananthapuram — The Temple and the Museum
+    title: "Thiruvananthapuram: The Temple and the Museum"
     narrative: >-
       The Sri Padmanabhaswamy Temple, the city's great Vishnu shrine, and then
-      the Napier Museum — nineteenth-century Indo-Saracenic, with a collection
+      the Napier Museum: nineteenth-century Indo-Saracenic, with a collection
       of bronzes, old ornaments and a temple chariot, and the Sree Chithra Art
       Gallery holding paintings by Raja Ravi Varma and Nicholas Roerich. One
       of the oldest zoos in India sits in the same grounds. The museum is
@@ -91,7 +91,7 @@ itineraryDays:
       around that. A free afternoon.
     overnight: Overnight in Thiruvananthapuram
   - dayNo: 3
-    title: Kanyakumari — The Tip of the Subcontinent
+    title: "Kanyakumari: The Tip of the Subcontinent"
     transport: { mode: drive, detail: Drive — about 90 km each way }
     narrative: >-
       A full day's excursion south to Kanyakumari, where the Arabian Sea, the
@@ -104,7 +104,7 @@ itineraryDays:
       Thiruvananthapuram for the night.
     overnight: Overnight in Thiruvananthapuram
   - dayNo: 4
-    title: Kovalam — To the Coast
+    title: "Kovalam: To the Coast"
     transport: { mode: drive, detail: Drive — about 15 km }
     narrative: >-
       The short drive to Kovalam, and the change of pace that comes with it.
@@ -113,19 +113,19 @@ itineraryDays:
       its own right. Settle in; the next day is entirely free.
     overnight: Overnight in Kovalam
   - dayNo: 5
-    title: Kovalam — Three Beaches
+    title: "Kovalam: Three Beaches"
     narrative: >-
-      A day given to the beach. Kovalam has three — Lighthouse Beach under its
+      A day given to the beach. Kovalam has three: Lighthouse Beach under its
       rocky promontory, Hawa or Eve's Beach with the bluest water, and Samudra
       Beach, where you can try your hand with the local fishermen. The seaport
       at Vizhinjam, three kilometres away, has temples, churches and a mosque
       if you would like an hour away from the sand.
     overnight: Overnight in Kovalam
   - dayNo: 6
-    title: Alappuzha — Onto the Water
+    title: "Alappuzha: Onto the Water"
     transport: { mode: boat, detail: Board a houseboat at Alappuzha }
     narrative: >-
-      North to Alappuzha, criss-crossed with canals — backwaters, beaches and
+      North to Alappuzha, criss-crossed with canals: backwaters, beaches and
       lagoons that are any traveller's idea of Kerala. Kuttanad, beside it, is
       endless paddy and coconut palm, one of the few places on earth where
       rice is grown below sea level; in August the Nehru Trophy boat race fills
@@ -134,7 +134,7 @@ itineraryDays:
       moored on the water.
     overnight: Overnight aboard the houseboat
   - dayNo: 7
-    title: Kumarakom — Vembanad Lake
+    title: "Kumarakom: Vembanad Lake"
     transport: { mode: drive, detail: Drive — about 55 km }
     narrative: >-
       To your hotel in Kumarakom, on the shore of the freshwater Vembanad
@@ -144,26 +144,26 @@ itineraryDays:
       to see them.
     overnight: Overnight in Kumarakom
   - dayNo: 8
-    title: Thekkady — Periyar by Boat
+    title: "Thekkady: Periyar by Boat"
     transport: { mode: drive, detail: Drive — about 110 km }
     narrative: >-
       Up into the hills to Thekkady and the Periyar Tiger Reserve. The
-      sanctuary's forest — banyan, teak, rosewood, tamarind, orchid — is as
+      sanctuary's forest (banyan, teak, rosewood, tamarind, orchid) is as
       much the point as its animals, which include elephant, sambar, wild
       boar, wild dog and langur; tigers and leopards are present and rarely
       seen. A boat on Periyar Lake is the way to watch the shore, and the
       day ends early after the long climb.
     overnight: Overnight in Thekkady
   - dayNo: 9
-    title: Munnar — Into the Tea Gardens
+    title: "Munnar: Into the Tea Gardens"
     transport: { mode: drive, detail: Drive — about 90 km }
     narrative: >-
       Through the hills to Munnar and its tea plantations, below Anamudi, the
-      highest peak in South India. The rest of the day is at leisure — the
+      highest peak in South India. The rest of the day is at leisure; the
       estates are best walked in the late afternoon light.
     overnight: Overnight in Munnar
   - dayNo: 10
-    title: Munnar — A Free Day in the Hills
+    title: "Munnar: A Free Day in the Hills"
     narrative: >-
       A whole day free in Munnar. Attukad Waterfalls and the Chithirapuram
       estates are close by; the Floriculture Centre holds a range of flower and
@@ -172,25 +172,25 @@ itineraryDays:
       your driver can take you to whichever you choose.
     overnight: Overnight in Munnar
   - dayNo: 11
-    title: Kochi — Down to the Coast
+    title: "Kochi: Down to the Coast"
     transport: { mode: drive, detail: Drive — about 125 km }
     narrative: >-
       Down from the hills to Kochi, and an afternoon to begin on a city that
-      carries the marks of everyone who has visited it — Arab, Chinese,
-      Portuguese, Dutch, British. In the evening, optionally, a Kathakali
+      carries the marks of everyone who has visited it (Arab, Chinese,
+      Portuguese, Dutch, British). In the evening, optionally, a Kathakali
       performance: the classical dance-drama of Kerala, with its painted faces
       and its hours of preparation, which is worth arriving early for.
     overnight: Overnight in Kochi
   - dayNo: 12
-    title: Kochi — Churches, the Synagogue and the Fort
+    title: "Kochi: Churches, the Synagogue and the Fort"
     narrative: >-
-      The morning in Fort Kochi and Mattancherry — the Portuguese churches, the
-      mosques and temples, and the Paradesi synagogue of 1568 in Jew Town — and
+      The morning in Fort Kochi and Mattancherry (the Portuguese churches, the
+      mosques and temples, and the Paradesi synagogue of 1568 in Jew Town) and
       a free afternoon. The Hill Palace, the Chinese fishing nets, Cherai
       Beach and the marina are all within reach if you would like to fill it.
     overnight: Overnight in Kochi
   - dayNo: 13
-    title: Kochi — Departure
+    title: "Kochi: Departure"
     narrative: >-
       Check out at noon and transfer to Kochi airport for your return flight.
     overnight: Departure
@@ -219,13 +219,13 @@ pdfFile: /downloads/kerala-southern-coast-12n-13d.pdf
 featured: false
 
 seo:
-  metaTitle: Kerala & the Southern Coast — 12 Nights / 13 Days | India Visit
-  metaDescription: Trivandrum to Kochi in thirteen days — Kanyakumari at the tip of India, two days at Kovalam, a houseboat to Kumarakom, Periyar by boat and Munnar's tea gardens.
+  metaTitle: "Kerala & the Southern Coast: 12 Nights / 13 Days | India Visit"
+  metaDescription: "Trivandrum to Kochi in thirteen days: Kanyakumari at the tip of India, two days at Kovalam, a houseboat to Kumarakom, Periyar by boat and Munnar's tea gardens."
 ---
 
 This is Kerala from the south, which almost nobody does and which turns out to
-be the better order. It begins at Thiruvananthapuram, reaches Kanyakumari —
-where three seas meet at the very tip of the subcontinent — and only then turns
+be the better order. It begins at Thiruvananthapuram, reaches Kanyakumari,
+where three seas meet at the very tip of the subcontinent, and only then turns
 north: the beaches at Kovalam, a houseboat from Alappuzha to Kumarakom, the
 tiger reserve at Periyar, the tea gardens at Munnar, and Kochi at the end, with
 its churches and its synagogue and its fishing nets.

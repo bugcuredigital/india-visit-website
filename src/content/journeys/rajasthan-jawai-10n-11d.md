@@ -35,7 +35,7 @@ bestSeason: October to March
 # From the source document's "Why You'll Love This Journey".
 highlights:
   - lead: Take
-    text: the complete first-time-in-India route — the Taj Mahal, three great Rajasthani cities, the Thar Desert and a wildlife safari — in one seamless trip.
+    text: "the complete first-time-in-India route in one seamless trip: the Taj Mahal, three great Rajasthani cities, the Thar Desert and a wildlife safari."
   - lead: Stay
     text: in a mix of heritage havelis and palace-style hotels, which in Rajasthan is the point rather than the extra.
   - lead: Ride
@@ -45,7 +45,7 @@ highlights:
   - lead: Travel
     text: at a considered pace, with comfortable drive distances and enough time in each city to explore without rushing.
   - lead: Meet
-    text: Rajasthani culture in the round — folk music, desert food, the bazaars and craft traditions that are centuries old.
+    text: "Rajasthani culture in the round: folk music, desert food, the bazaars and craft traditions that are centuries old."
 
 glanceRows:
   - { dayNo: 1, destination: Delhi, signatureExperience: "Arrival and an orientation drive" }
@@ -62,22 +62,22 @@ glanceRows:
 
 itineraryDays:
   - dayNo: 1
-    title: Delhi — Arrival
+    title: "Delhi: Arrival"
     narrative: >-
       Met on arrival and taken to your hotel. Depending on the hour, a relaxed
       orientation drive past India Gate and the presidential palace at the head
       of Lutyens' avenue.
     overnight: Overnight in Delhi
   - dayNo: 2
-    title: Delhi — Old and New
+    title: "Delhi: Old and New"
     narrative: >-
-      Old Delhi in the morning — the Red Fort, the Jama Masjid, and a rickshaw
+      Old Delhi in the morning: the Red Fort, the Jama Masjid, and a rickshaw
       ride through Chandni Chowk, which is the fastest way to understand how
       the old city works. In the afternoon, New Delhi: the Qutub Minar,
       Humayun's Tomb and the Lotus Temple.
     overnight: Overnight in Delhi
   - dayNo: 3
-    title: Agra — The Taj at Sunset
+    title: "Agra: The Taj at Sunset"
     transport: { mode: drive, detail: Drive — 3 to 4 hours }
     narrative: >-
       South to Agra. Agra Fort first, the red-sandstone seat of the Mughal
@@ -85,7 +85,7 @@ itineraryDays:
       day, which is the first of two visits.
     overnight: Overnight in Agra
   - dayNo: 4
-    title: Agra to Jaipur — Sunrise, Then Fatehpur Sikri
+    title: "Agra to Jaipur: Sunrise, Then Fatehpur Sikri"
     transport: { mode: drive, detail: Drive — 4 to 5 hours }
     narrative: >-
       The Taj again at sunrise, before breakfast, when the marble takes colour
@@ -94,25 +94,25 @@ itineraryDays:
       capital, on the way.
     overnight: Overnight in Jaipur
   - dayNo: 5
-    title: Jaipur — The Pink City
+    title: "Jaipur: The Pink City"
     narrative: >-
       Amer Fort on its hill, with the drive up to the gate by jeep, its
       mirrored halls and the Sheesh Mahal; then the City Palace, the Jantar
       Mantar observatory and the Hawa Mahal from the street. The evening is
-      free for Jaipur's bazaars — textiles, gemstones and the handicrafts the
+      free for Jaipur's bazaars: textiles, gemstones and the handicrafts the
       city has traded for three centuries.
     overnight: Overnight in Jaipur
   - dayNo: 6
-    title: Jodhpur — The Blue City
+    title: "Jodhpur: The Blue City"
     transport: { mode: drive, detail: Drive — 5 to 6 hours }
     narrative: >-
       West across the state to Jodhpur, named the blue city for the
       indigo-washed houses that spill across the old town beneath its fort.
-      The evening is at leisure — the city's pace is easier than Jaipur's, and
+      The evening is at leisure. The city's pace is easier than Jaipur's, and
       it is best met slowly from a rooftop.
     overnight: Overnight in Jodhpur
   - dayNo: 7
-    title: Jodhpur — Mehrangarh
+    title: "Jodhpur: Mehrangarh"
     narrative: >-
       Mehrangarh Fort, one of the largest and best preserved in India, four
       hundred feet above the city with the blue roofs spread out below. Then
@@ -120,7 +120,7 @@ itineraryDays:
       Sardar Market around the clock tower, where the city does its shopping.
     overnight: Overnight in Jodhpur
   - dayNo: 8
-    title: Jaisalmer — The Golden City
+    title: "Jaisalmer: The Golden City"
     transport: { mode: drive, detail: Drive — 5 to 6 hours }
     narrative: >-
       Further west into the Thar to Jaisalmer, whose honey-coloured sandstone
@@ -128,28 +128,28 @@ itineraryDays:
       and take the evening on the ramparts as the light goes.
     overnight: Overnight in Jaisalmer
   - dayNo: 9
-    title: Jaisalmer — The Living Fort and the Dunes at Sam
+    title: "Jaisalmer: The Living Fort and the Dunes at Sam"
     narrative: >-
-      Jaisalmer Fort is one of the few living forts left in the world — still
-      home to thousands of residents — with intricately carved Jain temples
+      Jaisalmer Fort is one of the few living forts left in the world, still
+      home to thousands of residents, with intricately carved Jain temples
       inside its walls. Then the havelis, Patwon Ki Haveli and Nathmal Ki
       Haveli, whose merchants competed in stone. In the evening, out to the Sam
       sand dunes for the desert at its most classic: a camel ride across the
       dunes, the sunset, and folk music and dance under the stars.
     overnight: Overnight in Jaisalmer
   - dayNo: 10
-    title: Jawai — Into Leopard Country
+    title: "Jawai: Into Leopard Country"
     transport: { mode: drive, detail: Drive — about 5 hours }
     narrative: >-
       South-east to Jawai, a landscape of granite hills, ancient banyan trees
       and a shimmering lake, and one of the most extraordinary wildlife
-      destinations in India — leopards live here in remarkable harmony with the
+      destinations in India. Leopards live here in remarkable harmony with the
       Rabari shepherd communities whose villages sit among the rocks. In the
       evening, a leopard safari across the hills, which are also home to
       crocodiles, sloth bears and more than a hundred species of birds.
     overnight: Overnight in Jawai
   - dayNo: 11
-    title: Jawai — A Last Safari and Departure
+    title: "Jawai: A Last Safari and Departure"
     transport: { mode: drive, detail: Drive — about 3 hours to Jodhpur or Udaipur airport }
     narrative: >-
       An optional early-morning safari for a final chance at Jawai's leopards,
@@ -161,7 +161,7 @@ itineraryDays:
 
 # Verbatim from the source document's "Inclusions Recommended" (Open Question #13).
 inclusions:
-  - Accommodation — two nights Delhi, one night Agra, two nights Jaipur, two nights Jodhpur, two nights Jaisalmer, one night Jawai
+  - "Accommodation: two nights Delhi, one night Agra, two nights Jaipur, two nights Jodhpur, two nights Jaisalmer, one night Jawai"
   - Private air-conditioned vehicle for all inter-city drives and local sightseeing
   - Camel safari at the Sam sand dunes, and one leopard safari at Jawai with permits, jeep and naturalist guide
   - Monument entry fees and English-speaking local guides in each city
@@ -170,13 +170,13 @@ inclusions:
 practicalNotes:
   - icon: calendar
     label: Best time to visit
-    text: October to March — warm sunny days, cool nights, and the best of the leopard sightings at Jawai. Rajasthan is not comfortable from April to the monsoon.
+    text: "October to March: warm sunny days, cool nights, and the best of the leopard sightings at Jawai. Rajasthan is not comfortable from April to the monsoon."
   - icon: plane
     label: Getting there
     text: Arrive at Delhi (DEL). Depart from Jodhpur (JDH) or Udaipur (UDR), both about three hours from Jawai and both connected to Delhi and Mumbai.
   - icon: clock
     label: What to bring
-    text: Comfortable walking shoes for the forts, light layers for the desert evenings, and a camera — Jawai in particular rewards a long lens.
+    text: Comfortable walking shoes for the forts, light layers for the desert evenings, and a camera. Jawai in particular rewards a long lens.
   - icon: pace
     label: Pace
     text: Moderate. Three long drives of five to six hours across the state, deliberately spaced, with two nights in each of the big cities so nothing is rushed.
@@ -190,14 +190,14 @@ pdfFile: /downloads/rajasthan-jawai-10n-11d.pdf
 featured: false
 
 seo:
-  metaTitle: Rajasthan Circuit with Jawai Leopard Safari — 10 Nights / 11 Days
-  metaDescription: The complete Rajasthan — Delhi, Agra, Jaipur, Jodhpur, Jaisalmer and a leopard safari at Jawai — in eleven days, with heritage hotels, a desert sunset and every transfer arranged.
+  metaTitle: "Rajasthan Circuit with Jawai Leopard Safari: 10 Nights / 11 Days"
+  metaDescription: "The complete Rajasthan in eleven days: Delhi, Agra, Jaipur, Jodhpur, Jaisalmer and a leopard safari at Jawai, with heritage hotels, a desert sunset and every transfer arranged."
 ---
 
 If one journey could hold the whole of Rajasthan, it would be this one. From
 Delhi and the marble of the Taj into the pink city of Jaipur, the blue city of
 Jodhpur, the golden dunes of Jaisalmer, and finally to the granite hills of
-Jawai, where leopards live among the rocks and the shepherd villages — it is
+Jawai, where leopards live among the rocks and the shepherd villages. It is
 the definitive first journey to India: forts rising from the desert, bazaars,
 a camel at sunset, and a genuine wildlife encounter at the end.
 

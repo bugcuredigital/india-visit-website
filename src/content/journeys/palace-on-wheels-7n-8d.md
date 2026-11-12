@@ -1,7 +1,7 @@
 ---
 variant: B
 title: Palace on Wheels
-tripTypeTag: Luxury Train — Fixed Departures
+tripTypeTag: Luxury Train · Fixed Departures
 signatureFeature: A Week in Royal Rajasthan
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
@@ -54,7 +54,7 @@ highlights:
 
 glanceRows:
   - { dayNo: 1, destination: Delhi, signatureExperience: "Boarding, welcome ceremony and departure" }
-  - { dayNo: 2, destination: Jaipur, signatureExperience: "The Pink City — fort, palace and bazaars" }
+  - { dayNo: 2, destination: Jaipur, signatureExperience: "The Pink City: fort, palace and bazaars" }
   - { dayNo: 3, destination: Sawai Madhopur & Chittorgarh, signatureExperience: "Morning tiger safari, then Rajasthan's greatest fort" }
   - { dayNo: 4, destination: Udaipur, signatureExperience: "Lake Pichola boat ride and the City Palace" }
   - { dayNo: 5, destination: Jaisalmer, signatureExperience: "Golden City havelis and a camel ride on the dunes" }
@@ -68,7 +68,7 @@ glanceRows:
 # complete; every one is flagged for client sign-off in M5.
 itineraryDays:
   - dayNo: 1
-    title: Delhi — All Aboard
+    title: "Delhi: All Aboard"
     provisional: true
     transport: { mode: overnight-train, detail: Board at Delhi }
     narrative: >-
@@ -77,7 +77,7 @@ itineraryDays:
       as the week ahead begins.
     overnight: Overnight aboard the train
   - dayNo: 2
-    title: Jaipur — The Pink City
+    title: "Jaipur: The Pink City"
     provisional: true
     narrative: >-
       Wake in Jaipur, the ideal gateway to royal Rajasthan. The day takes in
@@ -85,15 +85,15 @@ itineraryDays:
       before returning to the train.
     overnight: Overnight aboard the train
   - dayNo: 3
-    title: Sawai Madhopur & Chittorgarh — Tigers and Ramparts
+    title: "Sawai Madhopur & Chittorgarh: Tigers and Ramparts"
     provisional: true
     narrative: >-
       A morning safari at Sawai Madhopur, on the edge of the Ranthambore
-      reserve, in search of tiger. Later, the ramparts of Chittorgarh — the
+      reserve, in search of tiger. Later, the ramparts of Chittorgarh, the
       largest fort in Rajasthan and among the most storied in India.
     overnight: Overnight aboard the train
   - dayNo: 4
-    title: Udaipur — Venice of the East
+    title: "Udaipur: Venice of the East"
     provisional: true
     transport: { mode: boat, detail: Lake Pichola boat ride }
     narrative: >-
@@ -102,7 +102,7 @@ itineraryDays:
       the water.
     overnight: Overnight aboard the train
   - dayNo: 5
-    title: Jaisalmer — The Golden City
+    title: "Jaisalmer: The Golden City"
     provisional: true
     narrative: >-
       Jaisalmer rises out of the Thar Desert in sandstone the colour of honey.
@@ -110,7 +110,7 @@ itineraryDays:
       for a camel ride as the light goes long.
     overnight: Overnight aboard the train
   - dayNo: 6
-    title: Jodhpur — Beneath Mehrangarh
+    title: "Jodhpur: Beneath Mehrangarh"
     provisional: true
     narrative: >-
       Mehrangarh Fort stands above Jodhpur on a sheer rock face, with the
@@ -118,16 +118,16 @@ itineraryDays:
       lanes beneath before the train moves on.
     overnight: Overnight aboard the train
   - dayNo: 7
-    title: Bharatpur & Agra — Birdlife and the Taj
+    title: "Bharatpur & Agra: Birdlife and the Taj"
     provisional: true
     transport: { mode: drive, detail: Rickshaw ride at Bharatpur }
     narrative: >-
       A morning among the birdlife of Keoladeo at Bharatpur, explored by
-      cycle-rickshaw, then on to Agra and the Taj Mahal — the journey's closing
+      cycle-rickshaw, then on to Agra and the Taj Mahal, the journey's closing
       note before the last night on board.
     overnight: Overnight aboard the train
   - dayNo: 8
-    title: Delhi — Journey's End
+    title: "Delhi: Journey's End"
     provisional: true
     narrative: >-
       The train arrives back in Delhi after breakfast. Disembark with
@@ -140,7 +140,7 @@ itineraryDays:
 cabinCategories:
   - name: Deluxe Cabin
     facilities:
-      - The base cabin category — every journey inclusion below applies
+      - "The base cabin category: every journey inclusion below applies"
       - Excursions by coach with a shared guide
   - name: Super Deluxe Cabin
     facilities:
@@ -187,7 +187,7 @@ exclusions:
 
 departureSeasonLabel: 2026–27 season
 departureInfo: >-
-  Seasonal departures — enquire for current dates. The Palace on Wheels runs a
+  Seasonal departures: enquire for current dates. The Palace on Wheels runs a
   fixed-departure schedule that the operator sets and may revise each season,
   so we confirm live availability with RTDC for your dates rather than publish
   a timetable that could go stale.
@@ -204,13 +204,13 @@ bookingSteps:
     detail: Once the advance is received you get a confirmation email and letter, along with a breakdown of the amount received and the balance due.
   - step: 4
     title: Adjust the details
-    detail: Tell us about anything you would like added or changed and we will check what is possible with the operator — some changes cannot be accommodated on a fixed-departure train.
+    detail: Tell us about anything you would like added or changed and we will check what is possible with the operator. Some changes cannot be accommodated on a fixed-departure train.
   - step: 5
     title: Clear the balance 95 days before arrival
     detail: The balance must be cleared at least 95 days before arrival in India. We send a receipt once it is in.
   - step: 6
     title: Arrival assistance
-    detail: About a week before departure we share your arrival assistance details — who will meet you at the airport and the name of your assigned guest relations manager.
+    detail: "About a week before departure we share your arrival assistance details: who will meet you at the airport and the name of your assigned guest relations manager."
 
 policies:
   - heading: Cancellation charges
@@ -252,7 +252,7 @@ policies:
       cancellation or refund rules. Any resulting difference or additional
       charge is payable by the guest as per the operator's rules.
 
-operatorName: RTDC — Rajasthan Tourism Development Corporation, Government of Rajasthan
+operatorName: RTDC (Rajasthan Tourism Development Corporation, Government of Rajasthan)
 # Neutral operator attribution only — client ruling 2026-11-12: no agent/GSA claims.
 operatorDisclosure: >-
   Operated by RTDC, the Rajasthan Tourism Development Corporation, Government
@@ -274,8 +274,8 @@ practicalNotes:
     text: Moderate. You unpack once and the train moves overnight, with a full excursion most days.
 
 customiseCopy: >-
-  Departures fill early, and cabin categories sell out at different rates —
-  tell us your dates and we will check live availability with the operator.
+  Departures fill early, and cabin categories sell out at different rates.
+  Tell us your dates and we will check live availability with the operator.
 
 related:
   - deccan-odyssey-7n-8d
@@ -286,10 +286,10 @@ pdfFile: /downloads/palace-on-wheels-7n-8d.pdf
 featured: true
 
 seo:
-  metaTitle: Palace on Wheels — 7 Nights / 8 Days Luxury Train
+  metaTitle: "Palace on Wheels: 7 Nights / 8 Days Luxury Train"
   metaDescription: The Palace on Wheels, seven nights from Delhi through Jaipur, Ranthambore, Udaipur, Jaisalmer, Jodhpur and Agra, with cabin categories explained.
 ---
 
 To travel Rajasthan by Palace on Wheels is to unpack once and let the state come to you. The train leaves Delhi and returns to it, and in the week between it threads together the places that made Rajasthan's reputation: Jaipur's forts and bazaars, tiger country at Sawai Madhopur, the lakes and palaces of Udaipur, the desert sandstone of Jaisalmer, the blue lanes beneath Mehrangarh at Jodhpur, and finally Agra and the Taj Mahal.
 
-The appeal is the rhythm as much as the route. Nights are spent aboard while the train moves, mornings arrive somewhere new, and the day's excursions, meals, guides and entrance fees are all arranged before you board. The operator runs the train and we handle everything around it — from the booking form to the person meeting you at the airport.
+The appeal is the rhythm as much as the route. Nights are spent aboard while the train moves, mornings arrive somewhere new, and the day's excursions, meals, guides and entrance fees are all arranged before you board. The operator runs the train and we handle everything around it, from the booking form to the person meeting you at the airport.

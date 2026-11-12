@@ -24,9 +24,13 @@ const MODE_LABEL: Record<Props['mode'], string> = {
 };
 
 /** Words a detail may already open with ("Drive — 274 km", "Fly — Delhi to
- *  Udaipur"). Such a detail labels itself and is shown alone: prefixing the
- *  mode label as well printed "Drive — Drive — 274 km" on sixteen journeys.
- *  Matched per mode, so "Delhi to Agra — 3 hours" still gets its label. */
+ *  Udaipur"). Such a detail labels itself: its own word becomes the label
+ *  and the rest the detail, so the chip never reads "Drive — Drive — 274 km"
+ *  (the bug found on sixteen journeys). Matched per mode, so "Delhi to Agra —
+ *  3 hours" still gets its label. The separator is the middle dot the design
+ *  uses for every other label pair ("5 Nights · 6 Days"), not an em dash:
+ *  the copy rule is at most one em dash per screen (client ruling 2026-11-12),
+ *  and a chip on every travel day would spend it on its own. */
 const SELF_LABEL: Record<Props['mode'], string[]> = {
   flight: ['Flight', 'Fly'],
   'overnight-train': ['Overnight train', 'Train'],
@@ -35,10 +39,11 @@ const SELF_LABEL: Record<Props['mode'], string[]> = {
   boat: ['Boat', 'Cruise', 'Ferry'],
   walk: ['On foot', 'Walk', 'Hike', 'Trek'],
 };
-const lowered = detail.toLowerCase();
-const text = SELF_LABEL[mode].some((word) => lowered.startsWith(`${word.toLowerCase()} —`))
-  ? detail
-  : `${MODE_LABEL[mode]} — ${detail}`;
+const own = SELF_LABEL[mode]
+  .map((word) => new RegExp(`^(${word})\\s*[—:·]\\s+`, 'i').exec(detail))
+  .find(Boolean);
+const label = own ? own[1] : MODE_LABEL[mode];
+const rest = own ? detail.slice(own[0].length) : detail;
 
 /** Simple stroked glyphs — no icon-font dependency for six shapes. */
 const MODE_PATH: Record<Props['mode'], string> = {
@@ -55,7 +60,7 @@ const MODE_PATH: Record<Props['mode'], string> = {
   <svg class="chip__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
     <path d={MODE_PATH[mode]} fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
   </svg>
-  <span class="chip__text">{text}</span>
+  <span class="chip__text">{label} · {rest}</span>
 </span>
 
 <style>

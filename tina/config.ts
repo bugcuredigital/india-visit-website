@@ -188,7 +188,7 @@ const journeys: Collection = {
       name: 'tripTypeTag',
       label: 'Trip-type tag',
       required: true,
-      description: '"Custom Journey" or "Luxury Train — Fixed Departures".',
+      description: '"Custom Journey" or "Luxury Train · Fixed Departures".',
     },
     { type: 'string', name: 'signatureFeature', label: 'Signature feature (one line)' },
 
@@ -326,7 +326,7 @@ const journeys: Collection = {
       name: 'departureInfo',
       label: 'Departures text (Variant B)',
       ui: { component: 'textarea' },
-      description: 'Stays generic ("Seasonal departures — enquire for current dates") until the schedule question resolves.',
+      description: 'Stays generic ("Seasonal departures: enquire for current dates") until the schedule question resolves.',
     },
     {
       type: 'object',
