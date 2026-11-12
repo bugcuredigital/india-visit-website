@@ -10,10 +10,12 @@
  *
  * LEADS_LIVE flips to true only after an end-to-end test email has landed in
  * the inbox (client rule, 2026-11-12) — never on the strength of a deploy.
+ * Flipped 2026-11-12 after the production test lead (14:33 IST) was confirmed
+ * in the inbox by the client.
  */
 
 /** The enquiry forms (every EnquiryForm layout except the PDF gate) and Plan-My-Trip. */
-export const LEADS_LIVE = false;
+export const LEADS_LIVE = true;
 
 /** The itinerary-PDF gate: waits for the PDF release (runbook M6 step 2a). */
 export const PDF_GATE_LIVE = false;
