@@ -1,0 +1,144 @@
+---
+/**
+ * FAQ accordion — the SEO workhorse section.
+ * ---------------------------------------------------------------------------
+ * Used by city pages (T15 §h), destination pages (T2 §7) and articles (T9),
+ * which is why it takes a plain array and nothing page-specific.
+ *
+ * Native <details>/<summary>, for the same reasons DayAccordion uses it:
+ * keyboard operation, Esc, and find-in-page for free, and — the one that
+ * matters for a section whose whole job is search — the answers are in the
+ * HTML whether or not a panel is open. A JavaScript accordion that reveals
+ * text on click is an accordion that ships its answers to nobody.
+ *
+ * The first question opens by default: an accordion where everything is shut
+ * looks like an empty section, and the first answer is the one that proves
+ * there is something worth opening.
+ *
+ * No height animation. Animating a <details> panel means animating height,
+ * which the motion spec forbids outright (PRD §9.4).
+ */
+interface Props {
+  faq: Array<{ question: string; answer: string }>;
+  heading?: string;
+  id?: string;
+  surface?: 'white' | 'offwhite';
+}
+
+const { faq, heading = 'Common questions', id, surface = 'white' } = Astro.props;
+const headingId = `${id ?? 'faq'}-heading`;
+---
+
+<section
+  class:list={['band', surface === 'offwhite' && 'band-offwhite']}
+  id={id}
+  aria-labelledby={headingId}
+>
+  <div class="container-content faq__layout">
+    <div class="faq__head">
+      <h2 id={headingId}>{heading}</h2>
+    </div>
+
+    <ul class="faq">
+      {faq.map((item, index) => (
+        <li class="faq__item">
+          <details class="faq__panel" open={index === 0}>
+            <summary class="faq__summary">
+              <span class="faq__question">{item.question}</span>
+              <svg class="faq__chevron" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+                <path
+                  d="M1 1.5 6 6.5l5-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </summary>
+            <p class="faq__answer">{item.answer}</p>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* An answer column capped at 68ch sits in a 1280px container, so on a wide
+     screen the section was two-fifths type and three-fifths nothing. Putting
+     the heading in its own column turns that dead space into structure — the
+     grid discipline the reference sites get their composure from — while the
+     measure stays exactly where legibility wants it. */
+  .faq__layout {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 64rem) {
+    .faq__layout {
+      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .faq {
+    max-width: var(--container-prose);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .faq__panel {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .faq__item:last-child .faq__panel {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .faq__summary {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    /* 44px+ target across the full row. */
+    padding: 1.15rem 0;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__question {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    color: var(--color-ink);
+  }
+
+  .faq__chevron {
+    width: 12px;
+    height: 8px;
+    color: var(--color-ink-muted);
+  }
+
+  .faq__answer {
+    padding-bottom: 1.6rem;
+    color: var(--color-ink-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .faq__chevron {
+      transition: transform var(--duration-base) var(--ease-brand);
+    }
+
+    .faq__panel[open] .faq__chevron {
+      transform: rotate(180deg);
+    }
+  }
+</style>

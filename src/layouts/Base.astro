@@ -4,18 +4,20 @@
  * Owns: meta/SEO, canonical, OG/Twitter, favicons, font preloads, skip link,
  * global JSON-LD, and the GTM-via-Partytown stub.
  *
- * Deliberately NOT here yet: Header, Footer, StickyMobileBar (M3) and
- * View Transitions (M4). Those slot in without touching this contract.
+ * Header, Footer and StickyMobileBar arrive through the named slots — every
+ * page composes its own chrome. View Transitions are global from M4.
  */
 import '../styles/global.css';
 import { getSiteSettings } from '../lib/site-settings';
 import { travelAgencySchema } from '../lib/schema';
+import { ClientRouter } from 'astro:transitions';
 import JsonLd from '../components/JsonLd.astro';
 import RevealScript from '../components/RevealScript.astro';
 
 // Vite hashes these, so the preload href and the @font-face src resolve to
 // the same immutable, cache-forever URL.
 import interRegular from '../assets/fonts/inter-400-latin.woff2?url';
+import interSemibold from '../assets/fonts/inter-600-latin.woff2?url';
 import displayBold from '../assets/fonts/archivo-expanded-700-latin.woff2?url';
 
 interface Props {
@@ -70,10 +72,22 @@ const gtmId = siteSettings.gtmContainerId;
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <!-- Fonts: preload only the two faces used above the fold. Both are
-         latin-subset and self-hosted; `swap` keeps text painting immediately. -->
+    <!-- Page-supplied head content FIRST. On any page with a hero this carries
+         the LCP image preload, and preloads are fetched in document order. -->
+    <slot name="head" />
+
+    <!-- Fonts preload AFTER the page's own head slot, and that order is load
+         bearing. The hero preload lives in that slot, and the browser queues
+         preloads in document order — with the fonts first, 63KB of typeface
+         went down the wire ahead of a 39KB LCP image. The image is the thing
+         being measured; it goes first.
+
+         All three faces are latin-subset, self-hosted, and declared
+         `font-display: optional` where they set above-the-fold text, so a font
+         that loses its race costs a weight rather than a layout shift. -->
     <link rel="preload" href={displayBold} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={interRegular} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={interSemibold} as="font" type="font/woff2" crossorigin />
 
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
@@ -94,7 +108,12 @@ const gtmId = siteSettings.gtmContainerId;
     <meta name="twitter:image" content={ogImageUrl} />
 
     <JsonLd schema={orgSchema} />
-    <slot name="head" />
+    <!-- Global cross-document transitions. Astro's default is a cross-fade;
+         a journey card morphs into the itinerary hero where the card and the
+         hero share a `transition:name`. Astro's own animations carry a
+         `prefers-reduced-motion` fallback, so the motion spec holds. -->
+    <ClientRouter />
+
 
     {
       /* GTM via Partytown — off the main thread, so the tag stack costs no LCP.

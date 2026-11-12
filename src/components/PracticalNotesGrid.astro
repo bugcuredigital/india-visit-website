@@ -85,14 +85,17 @@ const ICONS: Record<string, string> = {
   .note__label {
     margin-top: 0.85rem;
     font-family: var(--font-display);
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
     font-weight: 700;
     color: var(--color-ink);
   }
 
+  /* Was --text-sm in ink-muted, which disappeared at a glance. Practical
+     notes are read, not skimmed past. */
   .note__text {
     margin: 0.4rem 0 0;
-    font-size: var(--text-sm);
-    color: var(--color-ink-muted);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    color: var(--color-ink);
   }
 </style>

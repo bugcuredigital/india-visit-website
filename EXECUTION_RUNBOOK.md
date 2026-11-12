@@ -7,10 +7,11 @@ Build order for Claude Code. Each milestone ends with a **gate** — do not proc
 - [ ] Answers to blocking Open Questions: #1 pricing display, #2 trust numbers, #9 Agrandir web licence (buy or approve fallback), #15/#16 train content
 - [ ] Accounts created (client-owned, agency added as member): GitHub org/repo, Cloudflare, Tina Cloud, Resend, GTM container + GA4 property, Meta Pixel, Google Search Console
 - [ ] Domain registered (Cloudflare Registrar) — can run parallel to build
-- [ ] Claude Design pass: homepage, itinerary Variant A + B, destination page, article page mockups approved by client
 - [ ] Assets collected into `/docs/`: brand kit, logo SVGs, font files (licensed), 20 itinerary docs, photo archive (pre-processed ≤2000px)
 
-**Gate:** design mockups approved; font question resolved (Archivo Expanded behind `--font-display` — Agrandir deferred). Train content is no longer a gap: all three trains are content-complete, so the "coming soon" fallback is retired. **Outstanding at M1 start:** approved Claude Design mockups and the photo archive (client-side); the supplied logo file is unusable as vector artwork — see M1 step 6.
+**Gate:** font question resolved (Archivo Expanded behind `--font-display` — Agrandir deferred). Train content is no longer a gap: all three trains are content-complete, so the "coming soon" fallback is retired.
+
+**The separate mockup track is CANCELLED** (client decision, M4). There are no mockups and no `docs/design/` deliverable; the **M4 preview URL is itself the design review**. Visual ground truth = the locked design direction in CLAUDE.md invariant #5 plus the reference captures in `docs/references/`. **Outstanding at M1 start:** the photo archive (client-side); the supplied logo file is unusable as vector artwork — see M1 step 6.
 
 ## M1 — Scaffold & tokens (Day 1)
 
@@ -43,11 +44,13 @@ Rules: every component reads editable values from props/settings (invariant #1);
 ## M4 — Page templates (Day 4–7)
 
 1. `journeys/[slug].astro` — renders BOTH variants from one template with conditional sections; verify against the two seed journeys; run Template Spec §6 checklist
-2. Homepage per approved mockup (hero, trust bar, featured journeys, how-it-works, why-us, destinations strip, testimonials, corporate teaser, lead capture)
+2. Homepage per **PAGE_TEMPLATES T1** (hero, trust bar, featured journeys, how-it-works, why-us, destinations strip, testimonials, corporate teaser, lead capture). The homepage **sets the design language**: it needs client sign-off before the register is rolled across the remaining templates
 3. Destination template · Journeys index (card grid; filter is Phase 2) · Luxury Trains landing (GSA credential + 3 cards incl. coming-soon state) · Travel Guide index + article template (with inline JourneyCard embeds) · Corporate · About · Reviews · Plan-My-Trip (multi-step form UI) · policy pages · custom 404
 4. View Transitions: journey card → itinerary hero morph; global fade fallback
 
 **Gate ⚑:** full click-through on preview URL with seed content; client reviews look & feel. LCP ≤ 1.5s on homepage + both journey seeds (WebPageTest, 4G, Moto-class device profile).
+
+**M4 review loop (client-specified).** Every completed page ships to the PR with **`npm run shot` desktop + mobile captures alongside the preview URL**, so look & feel can be judged against `docs/references/` without guessing. Styling feedback arrives as concrete per-page deltas (type size, spacing, colour count) and is applied as **token/CSS edits, never component rebuilds** — which is why the visual register lives in `tokens.css`. Placeholder imagery is accepted for the M4 gate, but **every placeholder must be flagged in the gate evidence**; the client-facing ⚑ review is scheduled only once real photography lands.
 
 ## M5 — Content migration (Day 7–10, parallelizable with M6)
 

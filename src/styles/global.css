@@ -112,8 +112,15 @@
 @layer components {
   /* ---- Section surfaces ------------------------------------------------
      White is the default and needs no class. `band-offwhite` is the whisper
-     of contrast; `band-plum` is rare and intentional (footer, How-It-Works,
-     one homepage moment, ConvertBand).                                     */
+     of contrast. Dark bands stay rare and intentional, and round 3 fixed
+     WHICH dark:
+
+       .band-burgundy  the default dark ground — ConvertBand, corporate band
+       .band-ink       the footer, and anything that must sit directly under a
+                       burgundy band without the two merging into one mass
+       .band-plum      ONE deliberate moment per page (How It Works). Plum
+                       reads cool next to the photography, which is why it no
+                       longer carries the site.                             */
   .band {
     padding-block: var(--space-section);
   }
@@ -126,13 +133,80 @@
     background-color: var(--color-offwhite);
   }
 
+  .band-burgundy {
+    background-color: var(--color-burgundy);
+    color: var(--color-on-dark);
+  }
+
+  .band-ink {
+    background-color: var(--color-ink);
+    color: var(--color-on-dark);
+  }
+
   .band-plum {
     background-color: var(--color-plum);
     color: var(--color-on-dark);
   }
 
-  .band-plum :is(h1, h2, h3, h4) {
+  :is(.band-burgundy, .band-ink, .band-plum) :is(h1, h2, h3, h4) {
     color: var(--color-on-dark);
+  }
+
+  /* ---- Lotus watermark on dark bands (design round 3, item 10) --------
+     Brand-kit cover style: the glyph oversized, very low opacity, and
+     deliberately cropped by the band edge so it reads as a watermark rather
+     than as an illustration sitting in a corner. Decorative — the markup is
+     aria-hidden, and it carries `data-allow-clip` because being clipped is the
+     entire design (scripts/check-responsive.mjs would otherwise, correctly,
+     report a 300px overflow).
+
+     Anything that must sit above it goes in `.container-content`, which is
+     raised a layer here; the watermark itself stays at z-index 0 rather than
+     negative, so it still paints over the band's own background.            */
+  .band-watermarked {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  .band-watermarked > .container-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .band-watermark {
+    position: absolute;
+    z-index: 0;
+    color: var(--color-on-dark);
+    opacity: 0.06;
+    pointer-events: none;
+    line-height: 0;
+  }
+
+  .band-watermark--right {
+    top: -18%;
+    right: -6%;
+  }
+
+  .band-watermark--left {
+    bottom: -22%;
+    left: -7%;
+  }
+
+  /* Transform-only, one easing, 600ms — the top of the PRD §9.4 band, which is
+     as "slow" as a drift is allowed to be. */
+  @media (prefers-reduced-motion: no-preference) {
+    .band-watermark {
+      transition: transform var(--duration-slower) var(--ease-brand);
+    }
+
+    .band-watermarked:hover .band-watermark--right {
+      transform: translate3d(-1.25rem, 0.75rem, 0) rotate(-3deg);
+    }
+
+    .band-watermarked:hover .band-watermark--left {
+      transform: translate3d(1.25rem, -0.75rem, 0) rotate(3deg);
+    }
   }
 
   .container-content {

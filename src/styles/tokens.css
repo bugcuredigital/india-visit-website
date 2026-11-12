@@ -11,7 +11,9 @@
 
    Two rules do most of the work here:
      1. WHITE is the page. Off-white is a secondary surface — card fills,
-        alternate sections, form fields. Plum bands are rare and intentional.
+        alternate sections, form fields. Dark bands are rare and intentional,
+        and since round 3 they are BURGUNDY (the footer is ink; plum is kept
+        for at most one deliberate moment per page).
      2. CRIMSON IS PUNCTUATION. It marks the one action that matters in a
         viewport. It never floods a section.
 
@@ -20,32 +22,53 @@
    ========================================================================== */
 
 @theme {
-  /* ---- Brand palette (closed set) ------------------------------------- */
+  /* ---- Brand palette (closed set) -------------------------------------
+     COLOUR REBALANCE — design round 3. The owner's note was that deep plum
+     "reads blue and kills the warmth", and they were right: plum was carrying
+     the footer, both ConvertBands, the train cards and the How-It-Works band,
+     so the cool end of the palette was doing most of the visible work on a
+     site whose whole register is warm. The hierarchy is now:
+
+       BURGUNDY  primary dark ground — ConvertBand, corporate band, any dark
+                 section that is not one of the two exceptions below
+       CRIMSON   unchanged: CTAs, active states, small accents
+       INK       the footer, so the page does not end on two identical
+                 burgundy bands stacked on each other
+       PLUM      demoted to "only when necessary" — at most ONE deliberate
+                 moment per page (How It Works) plus fine details
+       YELLOW    unchanged micro-doses, and still only on burgundy/plum/ink  */
   --color-crimson: #c3163a; /* CTAs, active states, small accents */
-  --color-burgundy: #741238; /* hover/pressed, fine rules, quiet details */
-  --color-plum: #452b5e; /* RARE dark bands + footer */
-  --color-yellow: #e5c745; /* micro-doses, ONLY on plum/burgundy */
+  --color-burgundy: #741238; /* PRIMARY dark ground + hover/pressed + fine rules */
+  --color-plum: #452b5e; /* demoted: one deliberate moment, fine details */
+  --color-yellow: #e5c745; /* micro-doses, ONLY on burgundy/plum/ink */
 
   /* ---- Surfaces -------------------------------------------------------- */
   --color-white: #ffffff; /* PRIMARY background, sitewide */
   --color-offwhite: #f7f5f6; /* SECONDARY: card fills, alt sections, inputs */
 
-  /* ---- Ink & neutrals (plum-derived — never pure black) --------------- */
-  --color-ink: #1a1523; /* body + headings on light */
-  --color-ink-muted: #5b4a6b; /* secondary text on light */
-  --color-hairline: #e6e2ea; /* borders on light — plum at low opacity */
-  --color-on-dark: #f7f5f6; /* text on plum/burgundy */
-  --color-on-dark-muted: #cfc4d9; /* secondary text on dark */
+  /* ---- Ink & neutrals (never pure black) ------------------------------
+     Rebased from plum-derived to burgundy-derived in round 3: the muted text
+     and the hairlines were the quiet half of the "reads blue" problem. Every
+     value below clears AA on both white and off-white by a wide margin —
+     ink-muted is 7.25:1 on white, 6.68:1 on off-white.                     */
+  --color-ink: #1a1523; /* body + headings on light; ALSO the footer ground */
+  --color-ink-muted: #674e59; /* secondary text on light — warm, not violet */
+  --color-hairline: #eee3e7; /* borders on light — burgundy at low opacity */
+  --color-on-dark: #f7f5f6; /* text on burgundy/plum/ink */
+  --color-on-dark-muted: #e0cbd4; /* secondary text on dark — 7.2:1 on burgundy */
 
-  /* Card border: plum at ~8%, per the component ruling. */
-  --color-card-border: color-mix(in srgb, var(--color-plum) 8%, transparent);
+  /* Card border and fine rules: burgundy at low opacity. "Fine rules and
+     quiet details" is burgundy's job in the design direction; it was drawing
+     them in plum, which is what made a white page read cool. */
+  --color-card-border: color-mix(in srgb, var(--color-burgundy) 12%, transparent);
+  --color-burgundy-hairline: color-mix(in srgb, var(--color-burgundy) 18%, transparent);
 
   /* ---- Type ------------------------------------------------------------
      --font-display is THE display token. Swapping to Agrandir Grand means
      changing this value plus the @font-face src in fonts.css. Never name a
      display family anywhere else.                                          */
-  --font-display: 'Archivo Expanded', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo Expanded', 'Display Fallback', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', 'Body Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Type IS the design. Display goes big and confident; body stays quiet. */
   --text-xs: 0.8125rem; /* 13px — labels, legal only */
@@ -53,11 +76,14 @@
   --text-base: 1rem; /* 16px floor (Persona 2) */
   --text-lg: 1.0625rem; /* 17px — body on wide viewports */
   --text-xl: 1.1875rem; /* 19px — intro/lede */
-  --text-2xl: clamp(1.375rem, 1.2rem + 0.7vw, 1.625rem); /* H3 */
-  --text-h2: clamp(1.75rem, 3.5vw, 2.75rem); /* section headings */
-  --text-h1: clamp(2.25rem, 5vw, 3.5rem); /* inner-page H1 */
-  --text-hero: clamp(2.5rem, 6vw, 4.5rem); /* homepage/journey hero H1 */
-  --text-stat: clamp(2.25rem, 4vw, 3.25rem); /* CounterStat numerals */
+  /* Display scale, stepped DOWN about 17% in M4 revision 2 (client ruling):
+     confident, less shouty. Body sizes are untouched on purpose — the
+     legibility bump to practical notes and highlights stays. */
+  --text-2xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.4375rem); /* H3 */
+  --text-h2: clamp(1.5rem, 3vw, 2.25rem); /* section headings */
+  --text-h1: clamp(1.875rem, 4.2vw, 2.875rem); /* inner-page H1 */
+  --text-hero: clamp(2.125rem, 4.8vw, 3.5rem); /* homepage/journey hero H1 */
+  --text-stat: clamp(2rem, 3.4vw, 2.75rem); /* CounterStat numerals */
 
   --leading-display: 1.05; /* hero */
   --leading-heading: 1.15; /* H2/H3 */
@@ -86,6 +112,20 @@
   /* ---- Elevation — shadow appears on HOVER, not at rest --------------- */
   --shadow-lift: 0 1px 2px rgb(26 21 35 / 0.04);
   --shadow-lift-hover: 0 8px 28px rgb(26 21 35 / 0.10);
+
+  /* ---- Buttons ---------------------------------------------------------
+     Radius and padding are tokens so the shape of every CTA sitewide is one
+     edit. `--btn-radius` WAS a live A/B (pill against 14px, rendered side by
+     side on the demo page); design round 3 settled it on PILL and the losing
+     option was removed from the demo, because a decided question should stop
+     being asked on a page the client visits. It stays a token: if the call is
+     ever revisited, the shape of every CTA sitewide is still one edit.
+     Padding is one step down from the original scale; the 44px minimum tap
+     target is enforced separately and is not negotiable (PRD §9.3). */
+  --btn-radius: 9999px; /* LOCKED — pill, design round 3 */
+  --btn-pad-sm: 0.875rem;
+  --btn-pad-md: 1.25rem;
+  --btn-pad-lg: 1.625rem;
 
   --radius-sm: 6px;
   --radius-md: 12px; /* cards: 12–16px */

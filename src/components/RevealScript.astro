@@ -11,6 +11,11 @@
  * `.fade-up-stagger` elements as they enter, then stops observing them —
  * entrance animations never replay on scroll.
  *
+ * Runs on first paint AND on every `astro:page-load`, because View Transitions
+ * swap the document without a fresh script execution. Each element is stamped
+ * once, so the double call on initial load with the ClientRouter present does
+ * not build a second observer over the same nodes.
+ *
  * The whole thing is inside a reduced-motion guard: when motion is unwelcome
  * the CSS never hides the elements in the first place, so doing nothing here
  * is the correct behaviour rather than a degraded one.
@@ -20,8 +25,8 @@
 <script is:inline>
   (() => {
     if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
-    const targets = document.querySelectorAll('.fade-up, .fade-up-stagger');
-    if (!targets.length || !('IntersectionObserver' in window)) return;
+    if (!('IntersectionObserver' in window)) return;
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -32,6 +37,16 @@
       },
       { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
     );
-    targets.forEach((el) => io.observe(el));
+
+    const observe = () => {
+      document.querySelectorAll('.fade-up, .fade-up-stagger').forEach((el) => {
+        if (el.dataset.revealed) return;
+        el.dataset.revealed = '1';
+        io.observe(el);
+      });
+    };
+
+    observe();
+    document.addEventListener('astro:page-load', observe);
   })();
 </script>

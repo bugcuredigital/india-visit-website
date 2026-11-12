@@ -1,0 +1,142 @@
+{
+  "milestone": "M4 part 1, revision 3 — T1 v2 restructure, style deltas, 4-journey M5 pull-forward",
+  "branch": "m4-templates",
+  "date": "2026-09-11",
+  "instrument": "Lighthouse 13 mobile, simulated throttling, against `astro preview` on localhost",
+  "rulingsRecorded": {
+    "LCP target": "Revised to <=2.0s working (Lighthouse mobile), 2.5s hard ceiling. Patched into CLAUDE.md invariant 3, the definition of done, and PRD sections 12 and 16. M8 WebPageTest 4G remains the field verdict",
+    "references": "90MB PNG originals stay gitignored in docs/references/; optimised JPEGs (~350KB each, 2.5MB total) committed to docs/design/references/ with a README in each",
+    "trust bar": "Live catalogue count kept — counted, never claimed. Now reads 6 Curated Journeys",
+    "destinations index": "/destinations/ added to the locked URL list in CLAUDE.md and specified as PAGE_TEMPLATES T2a"
+  },
+  "styleDeltas": {
+    "display type": "Stepped down ~17%: hero cap 5.25rem -> 3.5rem, H2 2.75rem -> 2.25rem, inner H1 3.5rem -> 2.875rem, stat numerals 3.25rem -> 2.75rem. Body sizes untouched — last round legibility bump stays",
+    "buttons": "Radius and padding moved to tokens. Padding down one step on every variant; large size 52px/19px -> 48px/17px. Both radius options render side by side on /dev/components/#buttons; Option A (pill) is currently live and switching is one token"
+  },
+  "structuralRevisions": {
+    "T1 v2 homepage": "Rebuilt to the new 11-section order. Destinations moved above journeys and now show all NINE tiles. New Meet-your-travel-consultant section. Corporate and travel-guide condensed into one slim dual strip. Association-logos slot added, rendering nothing until logos are supplied",
+    "T2 v2 destination page": "Patched into PAGE_TEMPLATES — journeys moved up directly after a 2-3 sentence intro, new What-defines-{destination} experience tiles, testimonial slot. Built when destination pages come up in runbook order",
+    "T2a destinations index": "Specified in PAGE_TEMPLATES. Not built yet — it is a runbook-order page",
+    "image-slot convention": "Documented in CLAUDE.md and PAGE_TEMPLATES: every slot renders the grey placeholder or a TEMP-PHOTO, is CMS-fed so the M5 swap is content-only, and has a template-fixed aspect ratio"
+  },
+  "m5PullForward": {
+    "authorised": "4 more journeys ported so the featured six are diverse",
+    "ported": [
+      "golden-triangle-5n-6d — Rajasthan",
+      "bali-5n-6d — international",
+      "north-east-india-6n-7d — new region",
+      "western-southern-india-12n-13d — the canonical direct-port doc, covers south-west-india"
+    ],
+    "result": "Six journeys, five Variant A and one Variant B. All six pass the automated half of Template Spec section 6",
+    "note": "Full M5 still waits. These were ported from the real source documents in docs/itineraries/, not invented"
+  },
+  "founderSection": {
+    "approach": "Entirely CMS-fed via a new siteSettings.founder object. NOTHING is invented",
+    "name": "NULL and stays null until the client supplies it — the section renders without a name line rather than with a guess",
+    "portrait": "NULL — renders the neutral grey 4:5 slot. A stock photograph of a stranger is not used, because presenting one as a real consultancy founder would be a fabrication",
+    "quote": "PROVISIONAL agency draft, logged in docs/CLIENT_REVIEW_SHEET.md section 14 with the two checkable claims flagged for the client to confirm or strike"
+  },
+  "pages": [
+    {
+      "route": "/",
+      "lighthouse": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "1.1 s",
+        "lcp": "2.2 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "hardFailures": []
+    },
+    {
+      "route": "/journeys/kerala-with-houseboat-11n-12d/ — Variant A",
+      "lighthouse": {
+        "performance": 99,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "2.0 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "hardFailures": []
+    },
+    {
+      "route": "/journeys/golden-triangle-5n-6d/ — Variant A, newly ported",
+      "lighthouse": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "hardFailures": []
+    },
+    {
+      "route": "/journeys/palace-on-wheels-7n-8d/ — Variant B",
+      "lighthouse": {
+        "performance": 100,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "fcp": "0.9 s",
+        "lcp": "1.7 s",
+        "tbt": "0 ms",
+        "cls": "0"
+      },
+      "hardFailures": []
+    }
+  ],
+  "clsRegressionFoundAndFixed": {
+    "symptom": "CLS 0.132 on the Palace on Wheels page, reproducible to three decimals across runs, against a previous 0",
+    "misdiagnosis": "First assumed font-metric mismatch on the display face, then font-display swap on it. Adding metric-matched fallbacks and switching the display face to optional changed the number by exactly nothing — which was the clue that the diagnosis was wrong",
+    "actualCause": "Lighthouse named it outright in the audit sub-items: inter-600-latin.woff2. Semibold carries the hero eyebrow, badges, route strip and buttons; when it swapped in, the hero content reflowed, and because that content is bottom-aligned the whole block moved",
+    "whyNotReproducedLocally": "A CDP harness with a reused profile had the font cached, so it recorded zero shifts even under CPU and network throttling. Cold-cache behaviour was the whole bug",
+    "fix": "Inter 600 preloaded AND set to font-display: optional, the same pairing already used for the display face. Preloaded it wins the ~100ms window in almost every real case; when it does not, the page stays still and the metric-matched fallback stands in",
+    "result": "CLS 0 on all four pages, and FCP on journey pages improved from 1.1s to 0.9s"
+  },
+  "scriptedChecks": {
+    "astro check": "0 errors, 0 warnings, 0 hints",
+    "check:template-spec": "PASS — all SIX journey pages",
+    "check:responsive": "PASS, 360-1440px, including clipped-content detection",
+    "check:nojs": "PASS — 0 of 23/14/24 animated elements hidden with scripting disabled",
+    "check:keyboard": "PASS — 64 tab stops on the homepage, 57 on a journey page, skip link first, no trap",
+    "audit:hardcoded": "PASS — no contact details, no operator tariffs, no third-party branding"
+  },
+  "targetMissedByOne": {
+    "metric": "LCP <= 2.0s working target",
+    "homepage": "2.2s — 0.2s over the target, 0.3s inside the 2.5s ceiling",
+    "journeyPages": "1.7s to 2.0s — all within target",
+    "why": "T1 v2 put 9 destination tiles and 6 journey cards on the homepage: 14 images and 405KB of real photography on one page. Observed LCP subparts still total about 75ms; this is bandwidth contention in the simulation",
+    "leversAlreadyApplied": [
+      "hero AVIF quality 42",
+      "768 srcset rung",
+      "hero preload matched to the picture source byte-for-byte",
+      "LCP preload moved ahead of the font preloads in document order"
+    ],
+    "remainingLever": "Above-the-fold image density on the homepage — a design decision, not a code one. Nine tiles is what T1 v2 asks for"
+  },
+  "stillPlaceholder": [
+    "all 19 photographs are TEMP-PHOTO Unsplash stand-ins, replaced by the client archive in M5",
+    "founder name, portrait and quote — see founderSection",
+    "both testimonials flagged PLACEHOLDER TESTIMONIAL (Open Question 3)",
+    "17 dummy-data flags in siteSettings, up from 14 (the three new ones are the founder fields)",
+    "association-logos row renders nothing — none supplied",
+    "links to /destinations/, /journeys/, /luxury-trains/, /travel-guide/, /corporate/, /plan-my-trip/ and the policy pages are still dead until the rest of M4"
+  ]
+}

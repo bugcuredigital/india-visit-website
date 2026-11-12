@@ -1,0 +1,91 @@
+{
+  "milestone": "M4 — design revision round 2 (PRD v1.5)",
+  "gate": "six owner amendments: video hero, iconised trust bar, compact index cards, day images, city pages T15",
+  "fetchTime": "2026-09-11T09:42:38.508Z",
+  "formFactor": "mobile",
+  "throttling": "simulate",
+  "targets": {
+    "performance": ">= 90",
+    "accessibility": ">= 95",
+    "seo": ">= 95",
+    "lcp": "<= 2.0s working, 2.2s homepage exception, 2.5s hard ceiling"
+  },
+  "pages": {
+    "/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": "1.1 s",
+        "largest-contentful-paint": "1.7 s",
+        "cumulative-layout-shift": "0",
+        "total-blocking-time": "0 ms"
+      }
+    },
+    "/journeys/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": "0.9 s",
+        "largest-contentful-paint": "1.7 s",
+        "cumulative-layout-shift": "0",
+        "total-blocking-time": "0 ms"
+      }
+    },
+    "/journeys/golden-triangle-5n-6d/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": "0.9 s",
+        "largest-contentful-paint": "1.7 s",
+        "cumulative-layout-shift": "0",
+        "total-blocking-time": "0 ms"
+      }
+    },
+    "/cities/jaipur/": {
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": "0.9 s",
+        "largest-contentful-paint": "2.1 s",
+        "cumulative-layout-shift": "0",
+        "total-blocking-time": "0 ms"
+      }
+    },
+    "/cities/kochi/": {
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "first-contentful-paint": "0.9 s",
+        "largest-contentful-paint": "1.7 s",
+        "cumulative-layout-shift": "0",
+        "total-blocking-time": "0 ms"
+      }
+    }
+  },
+  "lighthouseVersion": "13.4.1",
+  "notes": [
+    "Homepage video hero: P74/TBT 1500ms before the clip was downscaled from 2560x1440 to 960x540; P100/TBT 0ms after. Decode cost, not transfer cost — LCP never moved either way.",
+    "/cities/jaipur/ LCP 2.1s is 0.1s over the working target and 0.4s inside the hard ceiling. Cause is the TEMP-PHOTO hero: a Hawa Mahal facade of 953 windows is the pathological case for AVIF, at 59KB against 25-35KB for every other hero. Replaced by the client archive in M5; flagged for a ruling.",
+    "Every other changed page is at or under the 2.0s working target."
+  ]
+}

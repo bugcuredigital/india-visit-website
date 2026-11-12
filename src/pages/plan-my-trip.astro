@@ -1,0 +1,794 @@
+---
+/**
+ * Plan My Trip — PAGE_TEMPLATES T10, form per PRD §8.1.
+ * ---------------------------------------------------------------------------
+ * This page has NO other exits pushed: no sticky bar, no related cards, no
+ * convert band. Someone who reached here has already decided; every extra link
+ * is a chance to change their mind. Footer only (T10 §4).
+ *
+ * The four steps exist to raise completion, not to gate: the whole form is in
+ * the HTML at once and the fieldsets are revealed one at a time by ~40 lines of
+ * vanilla JS. **Without JavaScript the page renders as one long form that
+ * submits perfectly well** — the stepper is progressive enhancement, because a
+ * multi-step form that needs script to be submittable is a lead-capture page
+ * that silently loses leads.
+ *
+ * Chips rather than dropdowns wherever the options are known (§8.1): a native
+ * select on a phone is a modal picker, and four taps to say "Rajasthan" costs
+ * completions. They are real radio inputs underneath, so keyboard and screen
+ * reader behaviour is the browser's rather than ours.
+ *
+ * The SLA line uses `responseSla` and renders a non-numeric promise while it is
+ * null (PRD Open Question #12). We do not invent a response time on the
+ * client's behalf — it is a commitment somebody has to keep.
+ */
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
+import Lotus from '../components/Lotus.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+import { breadcrumbSchema } from '../lib/schema';
+import { DESTINATIONS } from '../lib/destinations-strip';
+
+const settings = await getSiteSettings();
+
+const MONTHS = [
+  'Not sure yet', 'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+const DURATIONS = ['Under a week', '7–10 days', '11–14 days', 'Over two weeks', 'Not sure yet'];
+const PARTIES = ['A couple', 'A family', 'Friends', 'Solo', 'A company'];
+const BUDGETS = ['Rather not say', 'Comfortable', 'Premium', 'No ceiling'];
+const CONTACT = ['WhatsApp', 'Phone call', 'Email'];
+
+const STEPS = [
+  { id: 1, label: 'Where' },
+  { id: 2, label: 'When' },
+  { id: 3, label: 'Who' },
+  { id: 4, label: 'You' },
+];
+
+const NEXT = [
+  {
+    title: 'We read it properly',
+    detail: 'A person, not an autoresponder. If something in it needs a question, we ask before we plan.',
+  },
+  {
+    title: 'We come back with a draft',
+    detail: 'A day-by-day itinerary with properties named and a price — not a brochure and not a quote with three options.',
+  },
+  {
+    title: 'We change it until it fits',
+    detail: 'Most itineraries go through two or three revisions. That is the job, not an inconvenience.',
+  },
+];
+
+const MINI_FAQ = [
+  {
+    question: 'Is this free?',
+    answer:
+      'Yes. Planning and quoting costs you nothing, and there is no charge if you decide not to travel with us.',
+  },
+  {
+    question: 'Am I committing to anything?',
+    answer:
+      'No. Nothing is booked and nothing is held until you say so in writing, at which point we set out exactly what a deposit covers.',
+  },
+  {
+    question: 'How do payments work?',
+    answer:
+      'There is no payment on this website. When you are ready, we invoice you directly and set out the schedule and the cancellation terms before anything is due.',
+  },
+];
+
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: 'Plan My Trip', url: new URL('/plan-my-trip/', Astro.site).href },
+]);
+---
+
+<Base
+  title="Plan My Trip | India Visit"
+  description="Tell us the shape of the journey you have in mind and we will come back with a day-by-day plan and a price. No obligation, no call centre."
+>
+  <Fragment slot="head">
+    <JsonLd schema={crumbs} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <section class="band band-tight plan">
+    <div class="container-content plan__grid">
+      <!-- ---- reassurance column ---------------------------------------- -->
+      <aside class="side">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Plan My Trip</span>
+        </nav>
+
+        <h1 class="side__title">Tell us the shape of it</h1>
+        <p class="side__lede">
+          Four short questions. We will come back with a day-by-day plan and a
+          price — and if we are not the right people for the trip, we will say so.
+        </p>
+
+        <h2 class="side__heading">What happens next</h2>
+        <ol class="next">
+          {
+            NEXT.map((item, index) => (
+              <li class="next__item">
+                <span class="next__no">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="next__title">{item.title}</h3>
+                  <p class="next__detail">{item.detail}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        <p class="side__sla">
+          <Lotus size={16} tone="crimson" class="side__mark" />
+          <span>
+            {
+              settings.responseSla
+                ? `We reply within ${settings.responseSla}.`
+                : 'We reply personally, and quickly — never a call centre and never a bot.'
+            }
+          </span>
+        </p>
+
+        <div class="side__direct">
+          <p class="side__label">Or reach us directly</p>
+          <a class="side__phone" href={settings.phoneHref} data-analytics="call_click">
+            {settings.phone}
+          </a>
+          <a
+            class="side__wa"
+            href={whatsappLink(settings, 'Plan My Trip')}
+            rel="noopener"
+            target="_blank"
+            data-analytics="wa_click"
+          >
+            WhatsApp us
+          </a>
+        </div>
+      </aside>
+
+      <!-- ---- the form -------------------------------------------------- -->
+      <div class="formwrap">
+        <form
+          class="form"
+          method="post"
+          action="/api/lead"
+          data-lead-form
+          data-stepper
+          novalidate
+        >
+          <input type="hidden" name="leadType" value="general" />
+          <input type="hidden" name="pageUrl" value={Astro.url.pathname} />
+          <input type="hidden" name="utm" value="" data-utm />
+
+          <!-- Honeypot, matching EnquiryForm: off-screen rather than
+               display:none, which some bots detect. -->
+          <div class="form__honeypot" aria-hidden="true" data-allow-clip>
+            <label for="company-web">Company website</label>
+            <input id="company-web" name="companyWebsite" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Progress dots. Hidden without JS, because without JS every
+               fieldset is visible and there is no progress to show. -->
+          <ol class="dots" data-dots aria-hidden="true">
+            {STEPS.map((step) => <li class="dots__dot" data-dot={step.id}>{step.label}</li>)}
+          </ol>
+
+          <fieldset class="step" data-step="1">
+            <legend class="step__legend">Where do you want to go?</legend>
+            <p class="step__hint">Pick as many as you like, or tell us you are not sure yet.</p>
+            <ul class="chips">
+              {
+                DESTINATIONS.map((destination) => (
+                  <li>
+                    <input
+                      class="chip__input"
+                      type="checkbox"
+                      id={`dest-${destination.slug}`}
+                      name="destinations"
+                      value={destination.label}
+                    />
+                    <label class="chip" for={`dest-${destination.slug}`}>
+                      {destination.label}
+                    </label>
+                  </li>
+                ))
+              }
+              <li>
+                <input class="chip__input" type="checkbox" id="dest-unsure" name="destinations" value="Not sure yet" />
+                <label class="chip" for="dest-unsure">Not sure yet</label>
+              </li>
+            </ul>
+          </fieldset>
+
+          <fieldset class="step" data-step="2">
+            <legend class="step__legend">When, and for how long?</legend>
+
+            <label class="field__label" for="month">Travel month</label>
+            <select class="field" id="month" name="month">
+              {MONTHS.map((month) => <option value={month}>{month}</option>)}
+            </select>
+
+            <p class="field__label" id="duration-label">Roughly how long</p>
+            <ul class="chips" role="group" aria-labelledby="duration-label">
+              {
+                DURATIONS.map((duration, index) => (
+                  <li>
+                    <input
+                      class="chip__input"
+                      type="radio"
+                      id={`dur-${index}`}
+                      name="duration"
+                      value={duration}
+                      checked={index === DURATIONS.length - 1}
+                    />
+                    <label class="chip" for={`dur-${index}`}>{duration}</label>
+                  </li>
+                ))
+              }
+            </ul>
+          </fieldset>
+
+          <fieldset class="step" data-step="3">
+            <legend class="step__legend">Who is travelling?</legend>
+
+            <ul class="chips" role="group" aria-label="Who is travelling">
+              {
+                PARTIES.map((party, index) => (
+                  <li>
+                    <input class="chip__input" type="radio" id={`party-${index}`} name="party" value={party} />
+                    <label class="chip" for={`party-${index}`}>{party}</label>
+                  </li>
+                ))
+              }
+            </ul>
+
+            <label class="field__label" for="travellers">How many of you</label>
+            <input class="field field--narrow" id="travellers" name="travellers" type="number" min="1" inputmode="numeric" />
+
+            <p class="field__label" id="budget-label">
+              Budget band <span class="field__optional">(optional)</span>
+            </p>
+            <ul class="chips" role="group" aria-labelledby="budget-label">
+              {
+                BUDGETS.map((budget, index) => (
+                  <li>
+                    <input
+                      class="chip__input"
+                      type="radio"
+                      id={`budget-${index}`}
+                      name="budget"
+                      value={budget}
+                      checked={index === 0}
+                    />
+                    <label class="chip" for={`budget-${index}`}>{budget}</label>
+                  </li>
+                ))
+              }
+            </ul>
+          </fieldset>
+
+          <fieldset class="step" data-step="4">
+            <legend class="step__legend">How do we reach you?</legend>
+
+            <label class="field__label" for="name">Your name</label>
+            <input class="field" id="name" name="name" type="text" autocomplete="name" required />
+
+            <label class="field__label" for="phone">Phone or WhatsApp</label>
+            <input class="field" id="phone" name="phone" type="tel" autocomplete="tel" required />
+
+            <label class="field__label" for="email">Email</label>
+            <input class="field" id="email" name="email" type="email" autocomplete="email" required />
+
+            <p class="field__label" id="contact-label">Preferred way to be contacted</p>
+            <ul class="chips" role="group" aria-labelledby="contact-label">
+              {
+                CONTACT.map((method, index) => (
+                  <li>
+                    <input
+                      class="chip__input"
+                      type="radio"
+                      id={`contact-${index}`}
+                      name="contactMethod"
+                      value={method}
+                      checked={index === 0}
+                    />
+                    <label class="chip" for={`contact-${index}`}>{method}</label>
+                  </li>
+                ))
+              }
+            </ul>
+
+            <label class="field__label" for="notes">
+              Anything else we should know <span class="field__optional">(optional)</span>
+            </label>
+            <textarea class="field" id="notes" name="notes" rows="4"></textarea>
+
+            <label class="consent">
+              <input type="checkbox" name="consent" required />
+              <span>
+                I agree to India Visit contacting me about this enquiry, per the
+                <a href="/privacy/">privacy policy</a>.
+              </span>
+            </label>
+
+            <!-- Turnstile mounts here in M6. -->
+            <div data-turnstile></div>
+          </fieldset>
+
+          <div class="nav">
+            <button type="button" class="nav__back tap-target" data-back hidden>Back</button>
+            <button type="button" class="nav__next tap-target" data-next hidden>Next</button>
+            <span class="nav__submit" data-submit>
+              <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit">
+                Send it over
+              </Button>
+            </span>
+          </div>
+
+          <p class="form__reassure">
+            No obligation, no call centre, and we never pass your details on.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Mini-FAQ — objection handling, and the only other content here -->
+  <section class="band band-tight band-offwhite" aria-labelledby="mini-heading">
+    <div class="container-content">
+      <h2 id="mini-heading">Before you send it</h2>
+      <dl class="mini">
+        {
+          MINI_FAQ.map((item) => (
+            <div class="mini__item">
+              <dt class="mini__q">{item.question}</dt>
+              <dd class="mini__a">{item.answer}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</Base>
+
+<script is:inline>
+  (() => {
+    const boot = () => {
+      document.querySelectorAll('[data-stepper]').forEach((form) => {
+        if (form.dataset.stepperReady) return;
+        form.dataset.stepperReady = '1';
+
+        const steps = Array.from(form.querySelectorAll('[data-step]'));
+        const dots = Array.from(form.querySelectorAll('[data-dot]'));
+        const back = form.querySelector('[data-back]');
+        const next = form.querySelector('[data-next]');
+        const submit = form.querySelector('[data-submit]');
+        if (steps.length < 2 || !back || !next || !submit) return;
+
+        let index = 0;
+
+        const show = (target, moveFocus) => {
+          index = Math.max(0, Math.min(steps.length - 1, target));
+          steps.forEach((step, i) => {
+            step.hidden = i !== index;
+          });
+          dots.forEach((dot, i) => {
+            dot.dataset.state = i < index ? 'done' : i === index ? 'current' : 'todo';
+          });
+          back.hidden = index === 0;
+          next.hidden = index === steps.length - 1;
+          submit.hidden = index !== steps.length - 1;
+          // Move focus to the new step's legend so a keyboard or screen-reader
+          // user is not left on a button that just disappeared.
+          if (moveFocus) {
+            const legend = steps[index].querySelector('.step__legend');
+            if (legend) {
+              legend.setAttribute('tabindex', '-1');
+              legend.focus({ preventScroll: true });
+            }
+          }
+        };
+
+        next.addEventListener('click', () => show(index + 1, true));
+        back.addEventListener('click', () => show(index - 1, true));
+
+        // Enter should advance rather than submit a half-filled form.
+        form.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter') return;
+          if (event.target && event.target.tagName === 'TEXTAREA') return;
+          if (index < steps.length - 1) {
+            event.preventDefault();
+            show(index + 1, true);
+          }
+        });
+
+        form.querySelector('[data-dots]')?.removeAttribute('aria-hidden');
+        show(0, false);
+      });
+    };
+
+    boot();
+    document.addEventListener('astro:page-load', boot);
+  })();
+</script>
+
+<style>
+  .plan__grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .plan__grid {
+      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .side {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-ink-muted);
+  }
+
+  .side__title {
+    font-size: var(--text-h1);
+    line-height: var(--leading-display);
+  }
+
+  .side__lede {
+    margin-top: 1rem;
+    color: var(--color-ink-muted);
+  }
+
+  .side__heading {
+    margin-top: 2.5rem;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .next {
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .next__item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .next__no {
+    flex: none;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-crimson);
+  }
+
+  .next__title {
+    font-size: var(--text-base);
+  }
+
+  .next__detail {
+    margin-top: 0.3rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .side__sla {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .side__mark {
+    flex: none;
+  }
+
+  .side__direct {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .side__label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .side__phone {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .side__wa {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  /* ---- form -------------------------------------------------------------- */
+  .formwrap {
+    padding: clamp(1.25rem, 0.5rem + 2vw, 2.25rem);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-offwhite);
+  }
+
+  .form__honeypot {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0 0 1.75rem;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  /* No JS means no steps, so no progress indicator. */
+  :global(html:not(.js)) .dots {
+    display: none;
+  }
+
+  .dots__dot {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .dots__dot::before {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-ink-muted);
+  }
+
+  .dots__dot[data-state='current'] {
+    color: var(--color-crimson);
+  }
+
+  .dots__dot[data-state='current']::before,
+  .dots__dot[data-state='done']::before {
+    background-color: var(--color-crimson);
+    border-color: var(--color-crimson);
+  }
+
+  .step {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  /* Without JS every fieldset shows, separated by a rule, and the whole thing
+     submits as one form. */
+  :global(html:not(.js)) .step + .step {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .step__legend {
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    color: var(--color-ink);
+  }
+
+  .step__hint {
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Real inputs, visually hidden but focusable — the label is the chip, so
+     keyboard, screen reader and form submission all behave natively. */
+  .chip__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 1.1rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-white);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .chip:hover {
+    border-color: var(--color-crimson);
+    color: var(--color-crimson);
+  }
+
+  .chip__input:checked + .chip {
+    background-color: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .chip__input:focus-visible + .chip {
+    outline: 3px solid var(--color-crimson);
+    outline-offset: 2px;
+  }
+
+  .field__label {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .field__optional {
+    font-weight: 400;
+    color: var(--color-ink-muted);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+  }
+
+  .field--narrow {
+    max-width: 8rem;
+  }
+
+  textarea.field {
+    min-height: auto;
+  }
+
+  .consent {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .consent input {
+    margin-top: 0.2rem;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .nav__back,
+  .nav__next {
+    padding: 0 1.25rem;
+    border-radius: var(--btn-radius);
+    border: 1px solid var(--color-ink);
+    background: none;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .nav__next {
+    background-color: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .nav__back:hover,
+  .nav__next:hover {
+    border-color: var(--color-crimson);
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+  }
+
+  .form__reassure {
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- mini FAQ ----------------------------------------------------------- */
+  .mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
+    margin: 2rem 0 0;
+  }
+
+  .mini__q {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+  }
+
+  .mini__a {
+    margin: 0.5rem 0 0;
+    color: var(--color-ink-muted);
+  }
+</style>

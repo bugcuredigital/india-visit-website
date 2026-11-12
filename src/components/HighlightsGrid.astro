@@ -64,7 +64,11 @@ const { highlights, heading = 'Journey Highlights' } = Astro.props;
     color: var(--color-crimson);
   }
 
+  /* A step up from the 16px body floor: the highlights are the section
+     travellers actually scan, so they carry more weight than running copy. */
   .highlights__text {
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
     max-width: 46ch;
   }
 

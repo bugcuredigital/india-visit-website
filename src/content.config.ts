@@ -37,6 +37,27 @@ const faqSchema = z
   )
   .min(1);
 
+/**
+ * A file the client uploaded through the CMS. Tina's repo-based media land in
+ * `/public/uploads/`, and Astro's `image()` helper cannot be used for them —
+ * `image()` resolves files Vite can process, and the public directory is
+ * copied verbatim. So anything that is not an image (video, at present) is a
+ * validated path string rather than an asset reference.
+ *
+ * The regex is the guard rail: a typo, an absolute URL to somebody else's CDN,
+ * or a file left outside the media folder fails the build with a message that
+ * says what to do, rather than shipping a hero that silently never plays.
+ */
+const uploadPath = (extension: string) =>
+  z
+    .string()
+    .regex(
+      new RegExp(`^/uploads/[A-Za-z0-9._-]+\\.${extension}$`),
+      `Must be a file uploaded through the CMS media manager — a path like ` +
+        `"/uploads/hero.${extension}". Files live in /public/uploads/, and the path ` +
+        `starts with /uploads/ (not /public/uploads/ and not a full URL).`,
+    );
+
 const seoSchema = z.object({
   metaTitle: z.string().min(1).max(70),
   metaDescription: z.string().min(1).max(180),
@@ -106,7 +127,19 @@ const journeyBase = (image: () => z.ZodTypeAny) => ({
         narrative: z.string().min(1),
         /** "Overnight in Munnar" — always the last line of a day. */
         overnight: z.string().min(1),
-        image: image().optional(),
+        /**
+         * 0–4 photographs for this day (PRD v1.5). Supersedes the single
+         * optional `image` field — a 0–4 list subsumes a 0–1 one, and having
+         * both would leave an editor guessing which to fill.
+         *
+         * A plain list rather than a list of {src, alt} pairs, matching
+         * `gallery` above, and they render with `alt=""`. That is the correct
+         * WCAG call rather than a shortcut: these sit directly beside a
+         * narrative that already describes the day, so alt text would repeat
+         * to a screen-reader user what they have just read. It also keeps the
+         * Tina field a plain image list, which is what the CMS is good at.
+         */
+        dayImages: z.array(image()).max(4).default([]),
         /** Set when the copy still needs the client's sign-off (M5). */
         provisional: z.boolean().default(false),
       }),
@@ -268,9 +301,40 @@ const destinations = defineCollection({
       tagline: z.string().min(1),
       heroImage: image(),
       heroImageAlt: z.string().min(1),
-      /** Short label for the homepage tile strip (7 curated tiles). */
+      /** Short label for the homepage tile strip (all nine since T1 v2). */
       shortLabel: z.string().min(1),
       region: z.enum(['india', 'beyond-india']),
+
+      /**
+       * T2 v2 §2 — TWO OR THREE SENTENCES, and the cap is the point. The
+       * journey cards are the conversion core of a destination page and must
+       * be visible within one scroll; the long-form prose lives in the
+       * markdown body below, behind an expander. If this field is growing,
+       * the sentence you want to add belongs in the body.
+       */
+      intro: z.string().min(1),
+
+      /**
+       * T2 v2 §4 — "What defines {Destination}", image-led tiles.
+       *
+       * OPTIONAL, and deliberately so: a destination whose photography has not
+       * been chosen yet renders no section at all rather than a row of grey
+       * placeholders. Omitting beats faking, the same rule the association
+       * logos and the corporate proof section follow. Two are supplied at M4
+       * to prove the treatment; the rest arrive with the client's archive.
+       */
+      experiences: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            text: z.string().min(1),
+            image: image(),
+            imageAlt: z.string().min(1),
+          }),
+        )
+        .min(3)
+        .max(6)
+        .optional(),
       practicalNotes: z
         .array(
           z.object({
@@ -284,6 +348,114 @@ const destinations = defineCollection({
       faq: faqSchema.max(8),
       /** Auto-listed by tag; this is the manual ordering override. */
       relatedJourneys: z.array(reference('journeys')).default([]),
+      order: z.number().int().default(99),
+      seo: seoSchema,
+    }),
+});
+
+/* ---------------------------------------------------------------- cities -- */
+
+/**
+ * City pages — PAGE_TEMPLATES T15, added in PRD v1.5.
+ *
+ * These sit BENEATH destinations rather than beside them. A destination sells
+ * a region; a city answers "what is there to see in Jaipur" and then routes
+ * the reader to the journeys that go there. That is why the journeys section
+ * is the conversion core of the template and why it is computed rather than
+ * curated: a new journey through Jaipur should appear on the Jaipur page
+ * without anyone remembering to add it.
+ *
+ * The set is deliberately open-ended. Two exist at M4 to prove the template;
+ * the rest is M5/Phase-2 content work, prioritised by the client from the
+ * candidate list in docs/CLIENT_REVIEW_SHEET.md §16.
+ */
+const cities = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/cities' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string().min(1),
+      /** "Rajasthan" — rendered beside the H1 and in the quick-facts strip. */
+      state: z.string().min(1),
+      /** One line under the H1. Positioning, not a description. */
+      hook: z.string().min(1),
+
+      heroImage: image(),
+      heroImageAlt: z.string().min(1),
+
+      /** T15 §b — the scannable strip directly under the hero. */
+      quickFacts: z.object({
+        region: z.string().min(1),
+        bestMonths: z.string().min(1),
+        nearestAirport: z.string().min(1),
+        nearestRail: z.string().min(1),
+        knownFor: z.string().min(1),
+      }),
+
+      /** T15 §c — 2–3 short paragraphs in the editorial voice. */
+      intro: z.array(z.string().min(1)).min(2).max(3),
+
+      /** T15 §d — image-led experience tiles, name plus one line. */
+      experiences: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            text: z.string().min(1),
+            image: image(),
+            imageAlt: z.string().min(1),
+          }),
+        )
+        .min(4)
+        .max(8),
+
+      /** T15 §f — the gallery band. */
+      photoStrip: z
+        .array(
+          z.object({
+            image: image(),
+            alt: z.string().min(1),
+          }),
+        )
+        .min(3)
+        .max(6),
+
+      /** T15 §g — getting there / getting around / best time. */
+      practicalNotes: z
+        .array(
+          z.object({
+            icon: z.string().min(1),
+            label: z.string().min(1),
+            text: z.string().min(1),
+          }),
+        )
+        .min(1),
+
+      /** T15 §h — the SEO workhorse. */
+      faq: faqSchema.max(8),
+
+      /**
+       * Journeys are matched AUTOMATICALLY from each journey's `routeCities`;
+       * this is the ordering override and the escape hatch for a trip that
+       * belongs here but does not name the city in its route.
+       */
+      relatedJourneys: z.array(reference('journeys')).default([]),
+
+      /**
+       * Other spellings this city goes by in journey routes and day titles —
+       * "Cochin" for Kochi, "Amer" for Amber, "Benares" for Varanasi. Without
+       * this the automatic match silently misses trips that plainly visit the
+       * place, which is the worst kind of failure: the page looks finished and
+       * is quietly missing its conversion core.
+       */
+      routeAliases: z.array(z.string().min(1)).default([]),
+
+      /**
+       * TRUE until the client has read the page. The two seeded cities are
+       * written by the agency from public knowledge — accurate to the best of
+       * our reading, but not yet the client's own words about places they sell.
+       * Logged in docs/CLIENT_REVIEW_SHEET.md §16.
+       */
+      provisional: z.boolean().default(true),
+
       order: z.number().int().default(99),
       seo: seoSchema,
     }),
@@ -319,25 +491,77 @@ const testimonials = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/testimonials' }),
   schema: ({ image }) =>
     z.object({
-      name: z.string().min(1),
+      /**
+       * PLACEHOLDER SLOTS (design round 3, word control).
+       * ---------------------------------------------------------------------
+       * A placeholder entry reserves the slot in the carousel so the layout is
+       * reviewable, and carries NO words attributed to anybody. It used to
+       * carry a paragraph of internal explanation in the `quote` field, which
+       * rendered at full size in the card as though a guest had said it — and
+       * an invented guest name above it. Both are now structurally impossible:
+       * when `placeholder` is true, `name`, `origin` and `quote` must be
+       * ABSENT, and the card renders one quiet line instead.
+       */
+      placeholder: z.boolean().default(false),
+      name: z.string().min(1).optional(),
       /** City or country — foreign and Indian mix matters for the personas. */
-      origin: z.string().min(1),
+      origin: z.string().min(1).optional(),
       tripRef: reference('journeys').optional(),
+      /** Real on placeholders too: the journey exists, only the guest does not. */
       tripLabel: z.string().min(1),
-      quote: z.string().min(1),
+      quote: z.string().min(1).optional(),
       photo: image().optional(),
       /**
-       * MUST be true to render. Never publish a testimonial without recorded
-       * consent — the component filters on this and the schema refuses false,
-       * so an un-consented entry fails the build rather than leaking.
+       * MUST be true on a real testimonial. Never publish one without recorded
+       * consent — the pages filter on this and the schema refuses a real entry
+       * whose consent is not recorded, so it fails the build rather than
+       * leaking. A placeholder has nobody to consent, so it must be false.
        */
-      consentConfirmed: z.boolean().refine((v) => v === true, {
-        message:
-          'consentConfirmed must be true. A testimonial without recorded consent must never be published — get written consent or delete the entry.',
-      }),
+      consentConfirmed: z.boolean().default(false),
       category: z.enum(['india', 'international', 'trains', 'corporate']),
       featured: z.boolean().default(false),
-    }),
+      /** JSON carries no comments; placeholder slots say so here instead. */
+      _dummyDataFlags: z.array(z.string()).default([]),
+    })
+      .superRefine((data, ctx) => {
+        if (data.placeholder) {
+          for (const field of ['name', 'origin', 'quote', 'photo'] as const) {
+            if (data[field] !== undefined) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: [field],
+                message: `A placeholder testimonial must carry no ${field}. Invented guest words and invented guest names are the thing this flag exists to prevent — remove the field, or drop \`placeholder\` and supply a real, consented review.`,
+              });
+            }
+          }
+          if (data.consentConfirmed) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['consentConfirmed'],
+              message: 'A placeholder testimonial has nobody to give consent. Set consentConfirmed to false.',
+            });
+          }
+          return;
+        }
+
+        for (const field of ['name', 'origin', 'quote'] as const) {
+          if (!data[field]) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: [field],
+              message: `A real testimonial needs a ${field}. Mark the entry \`placeholder: true\` if the review has not arrived yet.`,
+            });
+          }
+        }
+        if (!data.consentConfirmed) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['consentConfirmed'],
+            message:
+              'consentConfirmed must be true. A testimonial without recorded consent must never be published — get written consent or delete the entry.',
+          });
+        }
+      }),
 });
 
 /* --------------------------------------------------------- siteSettings -- */
@@ -350,48 +574,119 @@ const testimonials = defineCollection({
  */
 const siteSettings = defineCollection({
   loader: file('./src/content/siteSettings/settings.json'),
-  schema: z.object({
-    siteName: z.string().min(1),
-    tagline: z.string().min(1),
+  schema: ({ image }) =>
+      z.object({
+      siteName: z.string().min(1),
+      tagline: z.string().min(1),
 
-    phone: z.string().min(1),
-    phoneHref: z.string().startsWith('tel:'),
-    whatsappNumber: z.string().min(1),
-    whatsappDefaultMessage: z.string().min(1),
-    email: z.string().email(),
-    address: z.string().min(1),
+      phone: z.string().min(1),
+      phoneHref: z.string().startsWith('tel:'),
+      whatsappNumber: z.string().min(1),
+      whatsappDefaultMessage: z.string().min(1),
+      email: z.string().email(),
+      address: z.string().min(1),
 
-    socials: z.object({
-      instagram: z.string().url().nullable(),
-      facebook: z.string().url().nullable(),
-      youtube: z.string().url().nullable(),
-      linkedin: z.string().url().nullable(),
-    }),
+      socials: z.object({
+        instagram: z.string().url().nullable(),
+        facebook: z.string().url().nullable(),
+        youtube: z.string().url().nullable(),
+        linkedin: z.string().url().nullable(),
+      }),
 
-    gtmContainerId: z.string().regex(/^GTM-[A-Z0-9]+$/).nullable(),
-    metaPixelId: z.string().regex(/^\d+$/).nullable(),
+      gtmContainerId: z.string().regex(/^GTM-[A-Z0-9]+$/).nullable(),
+      metaPixelId: z.string().regex(/^\d+$/).nullable(),
 
-    foundingYear: z.number().int().min(1900).max(2100).nullable(),
-    travellerCount: z.number().int().positive().nullable(),
-    destinationCount: z.number().int().positive().nullable(),
-    aggregateRating: z.number().min(1).max(5).nullable(),
-    yearsExperience: z.number().int().positive(),
-    supportPromise: z.string().min(1),
+      foundingYear: z.number().int().min(1900).max(2100).nullable(),
+      travellerCount: z.number().int().positive().nullable(),
+      destinationCount: z.number().int().positive().nullable(),
+      aggregateRating: z.number().min(1).max(5).nullable(),
+      yearsExperience: z.number().int().positive(),
+      supportPromise: z.string().min(1),
 
-    /** Global gate for every priceFrom on the site. Default off. */
-    showPrices: z.boolean(),
+      /**
+       * Homepage hero (PAGE_TEMPLATES T1 §1, PRD v1.5) — full-screen, with a
+       * background video behind the copy.
+       *
+       * The POSTER is required and the video is not, and that asymmetry is the
+       * whole LCP-safety story in one schema rule: the poster is the largest
+       * contentful paint on the homepage and always renders, while the video
+       * is a flourish that arrives after `window.load` and is never fetched at
+       * all for `prefers-reduced-motion` or `Save-Data` visitors. A hero with
+       * no video is a working hero; a hero with no poster is a blank screen.
+       *
+       * Both formats are nullable and both may be null — that is the
+       * poster-only state, which is exactly what the page should render before
+       * the client uploads anything.
+       */
+      homeHero: z.object({
+        poster: image(),
+        posterAlt: z.string().min(1),
+        /** WebM first where present: smaller at equal quality. */
+        videoWebm: uploadPath('webm').nullable(),
+        videoMp4: uploadPath('mp4').nullable(),
+      }),
 
-    responseSla: z.string().nullable(),
+      /**
+       * FIXED-PAGE HEROES (design round 3, image control).
+       * -----------------------------------------------------------------
+       * Every image on the site must be a field an editor can change from
+       * the dashboard. Collection pages get theirs from their own entry;
+       * the handful of fixed pages that carry a photographic hero have
+       * nowhere to put one, so they put it here. /luxury-trains/ was
+       * importing its hero straight out of `src/assets/` — invisible to the
+       * CMS and unswappable without a code change, which is exactly what
+       * `npm run check:cms-images` now fails the build for.
+       *
+       * Only pages that actually have a photographic hero belong in here.
+       * The rest open on type, and a decorative slot nobody asked for is
+       * how a page ends up with a stock photograph on it.
+       */
+      pageHeroes: z.object({
+        luxuryTrains: z.object({
+          image: image(),
+          alt: z.string().min(1),
+        }),
+      }),
 
-    /**
-     * Greppable inventory of fields still holding placeholder values.
-     * JSON cannot carry comments, so this array is where the `DUMMY DATA`
-     * flags live — `grep -rn "DUMMY DATA" src/content/` finds them, and
-     * `npm run audit:hardcoded` fails the launch check while it is non-empty.
-     * Empty this array only when every listed field holds a real value.
-     */
-    _dummyDataFlags: z.array(z.string()).default([]),
+      /** Global gate for every priceFrom on the site. Default off. */
+      showPrices: z.boolean(),
+
+      responseSla: z.string().nullable(),
+
+      /**
+       * The homepage's "Meet your travel consultant" section (PAGE_TEMPLATES
+       * T1 v2 §6) — the trust centrepiece of the page, and therefore the part
+       * that must never contain anything invented.
+       *
+       * `name` is NULLABLE and null until the client supplies it: presenting a
+       * made-up name for a real consultancy's founder would be a fabrication,
+       * not a placeholder. The section renders without the name line rather than
+       * with a guess. `portrait` is likewise null until a real photograph
+       * arrives, falling back to the neutral grey portrait slot — a stock
+       * photograph of a stranger is not an option here for the same reason.
+       *
+       * `quote` is agency-drafted and PROVISIONAL until approved; it is logged
+       * in docs/CLIENT_REVIEW_SHEET.md.
+       */
+      founder: z.object({
+        name: z.string().min(1).nullable(),
+        role: z.string().min(1),
+        quote: z.string().min(1),
+        /** A real asset reference, not a path string — so dropping the client's
+         *  photograph in is a content edit with no code change. */
+        portrait: image().nullable(),
+        portraitAlt: z.string().min(1),
+      }),
+
+      /**
+       * Greppable inventory of fields still holding placeholder values.
+       * JSON cannot carry comments, so this array is where the `DUMMY DATA`
+       * flags live — `grep -rn "DUMMY DATA" src/content/` finds them, and
+       * `npm run audit:hardcoded` fails the launch check while it is non-empty.
+       * Empty this array only when every listed field holds a real value.
+       */
+      _dummyDataFlags: z.array(z.string()).default([]),
   }),
-});
+  });
 
-export const collections = { journeys, destinations, posts, testimonials, siteSettings };
+export const collections = { journeys, destinations, cities, posts, testimonials, siteSettings };

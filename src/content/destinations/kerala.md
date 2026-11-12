@@ -5,8 +5,36 @@ tagline: Hill tea, tiger country and a network of canals that sets its own pace.
 region: india
 order: 2
 
-heroImage: ../../assets/placeholders/destination-hero.jpg
-heroImageAlt: PLACEHOLDER-IMAGE awaiting the client photo archive — Kerala backwaters
+# T2 v2 §2 — two or three sentences. The long version is the body below.
+intro: >-
+  Kerala is narrow, green and stacked from the Arabian Sea up into the Western
+  Ghats, which means a twelve-day journey here covers a spice port, a
+  mile-high tea plantation, a tiger reserve and a night afloat without a
+  single long drive. It is the most unhurried state in India, and the
+  itineraries we build here are shaped around that rather than against it.
+
+# TEMP-PHOTO — temporary Unsplash image for design review only (replaced in M5)
+heroImage: ../../assets/temp-photos/TEMP-PHOTO-dest-kerala.jpg
+heroImageAlt: A traditional houseboat moored on a palm-lined backwater channel near Alappuzha
+
+# T2 v2 §4 — supplied at M4 to prove the treatment. TEMP-PHOTO throughout.
+experiences:
+  - name: The backwaters
+    text: Six hundred miles of canal, lake and river, best met from the deck of a converted rice barge.
+    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
+    imageAlt: Coconut palms lining a backwater channel in Kerala
+  - name: Tea country
+    text: The Kannan Devan Hills above Munnar, where the plantations start at three thousand feet and keep climbing.
+    image: ../../assets/temp-photos/TEMP-PHOTO-article-tea-gardens.jpg
+    imageAlt: Rolling tea gardens on the hills above Munnar
+  - name: Fort Kochi
+    text: Six centuries of arrivals — Arab, Chinese, Portuguese, Dutch, British — and almost none of it erased.
+    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
+    imageAlt: Chinese fishing nets standing over the water at Fort Kochi
+  - name: The spice trail
+    text: Pepper, cardamom and ginger still move through Mattancherry's warehouses, as they have since the Romans.
+    image: ../../assets/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
+    imageAlt: A sack of dried red chillies at a Kerala spice market
 
 practicalNotes:
   - icon: calendar

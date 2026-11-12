@@ -1,0 +1,285 @@
+---
+/**
+ * Destinations index — PAGE_TEMPLATES T2a.
+ * ---------------------------------------------------------------------------
+ * Added to the locked URL list in M4 revision 2. The homepage strip shows all
+ * nine tiles; this page is where they have room to say something.
+ *
+ * NO FILTERS AND NO MAP, per T2a, and the reason is worth keeping written
+ * down: nine items do not need either. A filter over nine cards is furniture
+ * that makes a page look sophisticated and makes it slower to use, and a map
+ * is a Phase-2 build for a page whose whole job is to be a clear index.
+ *
+ * Grouped India / Beyond India because that is how travellers ask for it, and
+ * because "beyond India" is the part of the catalogue people do not know
+ * exists — a Bhutan or Vietnam trip from a consultancy called India Visit is
+ * a surprise worth giving its own heading.
+ *
+ * The journey count on each card is COUNTED, never claimed — the same rule the
+ * trust bar follows. A destination with no journeys yet says so by omission
+ * rather than by rendering "0 journeys".
+ */
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ConvertBand from '../../components/ConvertBand.astro';
+import StickyMobileBar from '../../components/StickyMobileBar.astro';
+import JsonLd from '../../components/JsonLd.astro';
+
+import { breadcrumbSchema } from '../../lib/schema';
+import { DESTINATIONS } from '../../lib/destinations-strip';
+
+const entries = await getCollection('destinations');
+
+/* Locked order comes from lib/destinations-strip.ts, which is the same list
+   the homepage strip reads — one source for the information architecture. */
+const cards = await Promise.all(
+  DESTINATIONS.map(async (locked) => {
+    const entry = entries.find((item) => item.id === locked.slug);
+    if (!entry) return null;
+
+    const journeys = (
+      await Promise.all(entry.data.relatedJourneys.map((ref) => getEntry('journeys', ref.id)))
+    ).filter((journey) => journey !== undefined && !journey.data.draft);
+
+    return {
+      slug: entry.id,
+      name: entry.data.name,
+      shortLabel: entry.data.shortLabel,
+      tagline: entry.data.tagline,
+      image: entry.data.heroImage,
+      imageAlt: entry.data.heroImageAlt,
+      region: entry.data.region,
+      order: entry.data.order,
+      journeyCount: journeys.length,
+    };
+  }),
+);
+
+const present = cards.filter((card) => card !== null);
+
+const GROUPS = [
+  {
+    key: 'india',
+    heading: 'India',
+    line: 'From the Thar desert to the backwaters, plus the wildlife reserves that cut across all of it.',
+  },
+  {
+    key: 'beyond-india',
+    heading: 'Beyond India',
+    line: 'Three neighbours we plan as carefully as we plan home.',
+  },
+] as const;
+
+const crumbs = breadcrumbSchema([
+  { name: 'Home', url: new URL('/', Astro.site).href },
+  { name: 'Destinations', url: new URL('/destinations/', Astro.site).href },
+]);
+---
+
+<Base
+  title="Where We Go — Destinations | India Visit"
+  description="Every region we plan journeys through — Rajasthan, Kerala, Ladakh, the North East, South and West India, wildlife reserves, and beyond India to Bhutan, Bali and Vietnam."
+>
+  <Fragment slot="head">
+    <JsonLd schema={crumbs} />
+  </Fragment>
+
+  <Header slot="header" />
+
+  <!-- 1 · Compact hero — a band, not a photograph ----------------------- -->
+  <section class="band band-tight intro">
+    <div class="container-content">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Destinations</span>
+      </nav>
+      <h1 class="intro__title">Where we go</h1>
+      <p class="intro__lede prose-measure">
+        Nine regions we have been arranging journeys through for twenty years —
+        six across India, three beyond it. Every one of them is planned by
+        someone who has been there.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 + 3 + 4 · Grouped cards ----------------------------------------- -->
+  {
+    GROUPS.map((group) => {
+      const groupCards = present
+        .filter((card) => card!.region === group.key)
+        .sort((a, b) => a!.order - b!.order);
+      if (groupCards.length === 0) return null;
+
+      return (
+        <section class="band band-tight" aria-labelledby={`group-${group.key}`}>
+          <div class="container-content">
+            <p class="eyebrow">{groupCards.length} destinations</p>
+            <h2 id={`group-${group.key}`}>{group.heading}</h2>
+            <p class="group__line prose-measure">{group.line}</p>
+
+            <ul class="grid fade-up-stagger">
+              {groupCards.map((card) => (
+                <li class="card">
+                  <a class="card__link" href={`/destinations/${card!.slug}/`}>
+                    <span class="card__frame">
+                      <Image
+                        src={card!.image}
+                        alt={card!.imageAlt}
+                        widths={[320, 480, 720]}
+                        sizes="(min-width: 64rem) 24rem, (min-width: 40rem) 45vw, 90vw"
+                        loading="lazy"
+                        decoding="async"
+                        quality={58}
+                        class="card__img"
+                      />
+                    </span>
+                    <span class="card__body">
+                      <span class="card__head">
+                        <h3 class="card__name">{card!.name}</h3>
+                        {/* Counted, never claimed. A destination with nothing
+                            in the catalogue yet shows no count at all rather
+                            than "0 journeys" — which would read as a gap
+                            rather than as a page still being written. */}
+                        {card!.journeyCount > 0 && (
+                          <span class="card__count">
+                            {card!.journeyCount}{' '}
+                            {card!.journeyCount === 1 ? 'journey' : 'journeys'}
+                          </span>
+                        )}
+                      </span>
+                      <span class="card__tagline">{card!.tagline}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <!-- 5 · Convert -------------------------------------------------------- -->
+  <ConvertBand
+    heading="Somewhere else in mind?"
+    body="These are the regions we know best, not the limits of what we will plan. If you have somewhere else in mind, tell us and we will be honest about whether we are the right people for it."
+    leadType="general"
+    waContext="Destinations index"
+  />
+
+  <Footer slot="footer" />
+  <StickyMobileBar slot="after-footer" />
+</Base>
+
+<style>
+  .intro {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a {
+    color: var(--color-ink-muted);
+  }
+
+  .crumbs a:hover {
+    color: var(--color-crimson);
+  }
+
+  .intro__title {
+    font-size: var(--text-h1);
+  }
+
+  .intro__lede {
+    margin-top: 1rem;
+    font-size: var(--text-xl);
+    color: var(--color-ink-muted);
+  }
+
+  .group__line {
+    margin-top: 0.75rem;
+    color: var(--color-ink-muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
+    gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
+    margin: 2.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card__frame {
+    display: block;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    background-color: var(--color-offwhite);
+  }
+
+  .card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__body {
+    display: block;
+    padding-top: 1rem;
+  }
+
+  .card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .card__name {
+    font-size: var(--text-2xl);
+  }
+
+  .card__count {
+    flex: none;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-crimson);
+    white-space: nowrap;
+  }
+
+  .card__tagline {
+    display: block;
+    margin-top: 0.4rem;
+    color: var(--color-ink-muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card__img {
+      transition: transform var(--duration-slow) var(--ease-brand);
+    }
+
+    .card__link:hover .card__img {
+      transform: scale(1.03);
+    }
+  }
+</style>

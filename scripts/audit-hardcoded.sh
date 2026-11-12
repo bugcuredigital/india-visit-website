@@ -65,6 +65,9 @@ try:
     print(len(d['settings'].get('_dummyDataFlags',[])))
 except Exception: print('?')
 " 2>/dev/null)"
+echo "TEMP-PHOTO refs:   $(grep -rn "TEMP-PHOTO" src 2>/dev/null | wc -l | tr -d ' ') reference(s) across $(grep -rl "TEMP-PHOTO" src 2>/dev/null | wc -l | tr -d ' ') file(s)"
+echo "                   temporary Unsplash imagery for design review; the client archive replaces every one in M5"
+echo "TEMP-PHOTO files:  $(ls src/assets/temp-photos/TEMP-PHOTO-*.jpg 2>/dev/null | wc -l | tr -d ' ') image(s) — provenance in docs/brand/processed/TEMP-PHOTO-PROVENANCE.md"
 echo "TEMP-ASSET flags:  $(grep -rl "TEMP-ASSET" src public 2>/dev/null | wc -l | tr -d ' ') file(s)"
 grep -rn "TEMP-ASSET" src public 2>/dev/null | sed 's/^/    /' | head -20
 echo "DUMMY DATA flags:  $(grep -rn "DUMMY DATA" src astro.config.mjs 2>/dev/null | wc -l | tr -d ' ') occurrence(s)"

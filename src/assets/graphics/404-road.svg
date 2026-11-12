@@ -1,22 +1,29 @@
 <!-- Branded 404 graphic — palette only, no photography required.
-     Consumed by the /404 page built in M4 (PAGE_TEMPLATES T13). -->
+     Consumed by the /404 page (PAGE_TEMPLATES T13), inlined rather than
+     referenced as an <img src>: it is decorative brand furniture, like the
+     lotus, not a content image an editor would ever want to swap (design
+     round 3, image control).
+
+     Recoloured in round 3: the sky ran plum -> burgundy -> crimson, which put
+     the demoted colour at the top of the frame where the eye lands. It now
+     runs burgundy -> crimson through a warm ink horizon. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" role="img"
      aria-label="An empty road running to the horizon">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#452B5E"/>
-      <stop offset="70%" stop-color="#741238"/>
+    <linearGradient id="sky-404" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D0A1E"/>
+      <stop offset="62%" stop-color="#741238"/>
       <stop offset="100%" stop-color="#C3163A"/>
     </linearGradient>
-    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3A2450"/>
-      <stop offset="100%" stop-color="#241733"/>
+    <linearGradient id="ground-404" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A1520"/>
+      <stop offset="100%" stop-color="#1A1523"/>
     </linearGradient>
   </defs>
-  <rect width="1440" height="720" fill="url(#sky)"/>
+  <rect width="1440" height="720" fill="url(#sky-404)"/>
   <circle cx="720" cy="430" r="118" fill="#E5C745" opacity="0.22"/>
-  <rect y="430" width="1440" height="290" fill="url(#ground)"/>
-  <path d="M640 720 L706 430 L734 430 L800 720 Z" fill="#452B5E" opacity="0.75"/>
+  <rect y="430" width="1440" height="290" fill="url(#ground-404)"/>
+  <path d="M640 720 L706 430 L734 430 L800 720 Z" fill="#741238" opacity="0.75"/>
   <g fill="#F7F5F6" opacity="0.55">
     <rect x="716" y="446" width="8" height="20" rx="2"/>
     <rect x="714" y="490" width="12" height="30" rx="2"/>

@@ -5,6 +5,16 @@
  * capture is not evidence either way. This measures scrollWidth vs the layout
  * viewport over CDP instead.
  *
+ * TWO checks, because scrollWidth alone is not enough:
+ *   1. document scrollWidth vs the layout viewport — the page-level scrollbar
+ *   2. CLIPPED overflow — content wider than the viewport inside an
+ *      `overflow: clip/hidden` ancestor. This produces NO document scrollbar,
+ *      so check 1 passes while the content is genuinely cut off. It is how the
+ *      hero's grid blowout (a 775px content box inside a 390px hero, headline
+ *      and both CTAs sliced off) got as far as a screenshot in M4. Any element
+ *      wider than the viewport is reported, whether or not it scrolls the page.
+ *      Deliberate internal scrollers opt out with `data-allow-clip`.
+ *
  * Usage: node scripts/check-responsive.mjs [url] [...widths]
  * Requires a preview server already running. No npm dependencies (uses the
  * Node built-in WebSocket, Node 22+).
@@ -77,7 +87,7 @@ await send('Runtime.enable', {}, sessionId);
 let failed = false;
 console.log(`\nHorizontal-overflow check — ${URL_TO_TEST}\n`);
 console.log('  width   scrollWidth   status   widest offending element');
-console.log('  ' + '-'.repeat(68));
+console.log('  ' + '-'.repeat(74));
 
 for (const width of WIDTHS) {
   await send('Emulation.setDeviceMetricsOverride', {
@@ -91,37 +101,80 @@ for (const width of WIDTHS) {
     expression: `(() => {
       const vw = document.documentElement.clientWidth;
       const sw = document.documentElement.scrollWidth;
+      const label = (el) => ({
+        tag: el.tagName.toLowerCase(),
+        // SVG's .className is an SVGAnimatedString, not a string.
+        cls: (el.getAttribute('class') || '').slice(0, 40),
+      });
+
+      /* SVG internals are not layout boxes: a <path> routinely extends past
+         its <svg> viewBox, and the clipping is intrinsic to SVG rather than a
+         responsive bug. The root <svg> itself IS measured. */
+      const isSvgInternal = (el) => el.parentElement instanceof SVGElement;
+
       let worst = null;
-      if (sw > vw) {
-        for (const el of document.querySelectorAll('*')) {
-          const r = el.getBoundingClientRect();
-          if (r.right > vw + 1) {
-            const over = Math.round(r.right - vw);
-            if (!worst || over > worst.over) {
-              worst = { over, tag: el.tagName.toLowerCase(),
-                        cls: (el.className || '').toString().slice(0, 40) };
-            }
+      const consider = (el, over) => {
+        if (!worst || over > worst.over) worst = { over, ...label(el) };
+      };
+
+      // 1. anything sticking out past the viewport, scrollbar or not
+      for (const el of document.querySelectorAll('body *')) {
+        if (el.closest('[data-allow-clip]') || isSvgInternal(el)) continue;
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) continue;
+        const over = Math.max(r.right - vw, r.width - vw);
+        if (over > 1) consider(el, Math.round(over));
+      }
+
+      // 2. content clipped inside an overflow:clip/hidden box. This is the
+      //    case check 1 cannot see: no page scrollbar, content just gone.
+      //    The opt-out is honoured on EITHER side — the clipping box or the
+      //    overflowing child — because "scrolls/clips on purpose" is a fact
+      //    about that pair, and marking the child is the natural place for
+      //    something like the Ken Burns wrapper.
+      let clipped = null;
+      for (const el of document.querySelectorAll('body *')) {
+        if (el.closest('[data-allow-clip]') || el instanceof SVGElement) continue;
+        const cs = getComputedStyle(el);
+        if (cs.overflowX !== 'clip' && cs.overflowX !== 'hidden') continue;
+        for (const child of el.children) {
+          if (child.hasAttribute('data-allow-clip')) continue;
+          const over = Math.round(child.getBoundingClientRect().width - el.clientWidth);
+          if (over > 1 && (!clipped || over > clipped.over)) {
+            clipped = { over, ...label(el), child: label(child) };
           }
         }
       }
-      return { vw, sw, worst };
+
+      return { vw, sw, worst, clipped };
     })()`,
   }, sessionId);
 
-  const { vw, sw, worst } = result.value;
-  const overflows = sw > vw + 1;
-  if (overflows) failed = true;
-  const detail = worst ? `<${worst.tag} class="${worst.cls}"> +${worst.over}px` : '—';
+  const { vw, sw, worst, clipped } = result.value;
+  const scrolls = sw > vw + 1;
+  const bad = scrolls || Boolean(worst) || Boolean(clipped);
+  if (bad) failed = true;
+
+  const status = scrolls ? 'OVERFLOW' : clipped || worst ? 'CLIPPED' : 'ok';
+  const hit = worst ?? clipped;
+  const detail = hit ? `<${hit.tag} class="${hit.cls}"> +${hit.over}px` : '—';
   console.log(
     `  ${String(width).padStart(5)}   ${String(sw).padStart(11)}   ` +
-    `${(overflows ? 'OVERFLOW' : 'ok').padEnd(8)} ${detail}`
+    `${status.padEnd(8)} ${detail}`
   );
+  if (clipped) {
+    console.log(
+      `          └─ clipped inside <${clipped.tag} class="${clipped.cls}">: ` +
+      `child <${clipped.child.tag} class="${clipped.child.cls}"> is ` +
+      `${clipped.over}px wider — no page scrollbar, content simply cut off`
+    );
+  }
 }
 
 console.log();
 console.log(failed
-  ? 'FAIL: horizontal overflow found — the page must never scroll sideways.'
-  : 'PASS: no horizontal overflow from 360px to 1440px.');
+  ? 'FAIL: horizontal overflow or clipped content found — the page must never\n      scroll sideways, and must never hide content behind an overflow box.'
+  : 'PASS: no horizontal overflow and no clipped content, 360px to 1440px.');
 
 ws.close();
 cleanup();

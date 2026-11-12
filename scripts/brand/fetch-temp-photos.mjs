@@ -1,0 +1,561 @@
+/**
+ * TEMPORARY design-review photography.
+ * ---------------------------------------------------------------------------
+ * These are NOT the client's photographs. They exist because a
+ * photography-led design cannot be judged through placeholder blocks, and the
+ * client's archive is still outstanding. Every output file is named
+ * `TEMP-PHOTO-*.jpg` so that `grep -rn "TEMP-PHOTO"` finds every reference
+ * across content and code, and `npm run audit:hardcoded` counts them. They are
+ * all replaced by the client's own archive in M5.
+ *
+ * Source: Unsplash. The Unsplash Licence permits commercial use with no
+ * attribution required — but attribution is recorded anyway in
+ * `docs/brand/processed/TEMP-PHOTO-PROVENANCE.md`, because knowing where an
+ * asset came from is the difference between replacing it confidently and
+ * guessing later.
+ *
+ * Only `images.unsplash.com/photo-*` URLs are used. `plus.unsplash.com/
+ * premium_photo-*` is Unsplash+ (paid) and is deliberately excluded — a
+ * licence we do not hold is worse than no photograph.
+ *
+ * The grade is one shared curve for the whole set: a warm shift with colour
+ * pulled slightly DOWN. Consistency is the point — a set of individually
+ * lovely photographs with mismatched colour temperature looks like a stock
+ * grid, not a brand, and lifting saturation makes that worse rather than
+ * better.
+ *
+ * Usage: node scripts/brand/fetch-temp-photos.mjs
+ */
+import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import sharp from 'sharp';
+
+const OUT_DIR = 'src/assets/temp-photos';
+const PROVENANCE = 'docs/brand/processed/TEMP-PHOTO-PROVENANCE.md';
+
+/**
+ * One curve for the whole set. Note the saturation is BELOW 1: the first pass
+ * lifted it to 1.06, which amplified how differently these photographs were
+ * lit — the turquoise ones read tropical and the sandstone ones read desert,
+ * and the strip looked like a stock grid. Pulling colour down while pushing
+ * the warm bias up is what makes an unrelated set feel like one collection.
+ */
+const WARM_GRADE = { multipliers: [1.06, 1.0, 0.93], saturation: 0.93 };
+
+/**
+ * Heroes are cropped to a predictable 3:2 master rather than shipped at the
+ * source aspect. Two reasons: composition stops being luck (a portrait
+ * photograph cover-cropped into a wide hero loses its subject), and a portrait
+ * master wastes real bytes on the LCP image — we were sending 1280px of height
+ * to fill a 470px band.
+ */
+const HERO_ASPECT = 1.5;
+
+/**
+ * Non-hero crops, and they exist for the same reason heroes have one.
+ *
+ * The city-page tiles first shipped uncropped, straight from the source
+ * aspect — and several of those sources are portrait. A 1400x2490 photograph
+ * rendered into a 4:3 frame means the browser downloads 1.3 megapixels in
+ * order to throw two thirds of them away: the Amer Fort tile came to 147KB for
+ * a frame 336 CSS pixels wide, and three of those competing with the hero on a
+ * simulated 4G connection pushed the page's LCP to 2.4s.
+ *
+ * Cropping to the frame's own ratio at source fixes the bytes AND the
+ * composition, which was previously whatever `object-fit: cover` happened to
+ * centre on.
+ */
+const TILE_ASPECT = 4 / 3;
+const DAY_ASPECT = 1.5;
+
+/**
+ * `width` is the source width to request and the max output width. Heroes need
+ * the full 2400 because they are full-bleed; tiles and cards are rendered at a
+ * few hundred CSS pixels, so a 1200px master is already generous at 2x.
+ */
+const PHOTOS = [
+  // ---- heroes ------------------------------------------------------------
+  {
+    name: 'home-hero-udaipur',
+    id: 'photo-1695956353120-54ce5e91632b',
+    width: 2400,
+    hero: true,
+    credit: 'Maitree Patel',
+    subject: 'Udaipur City Palace on Lake Pichola at golden hour',
+    usedFor: 'SPARE since PRD v1.5 — the homepage hero became a video, and its poster is the TEMP-VIDEO frame. Kept as a graded warm hero master for M5.',
+  },
+  {
+    name: 'journey-kerala-houseboat',
+    id: 'photo-1602216056096-3b40cc0c9944',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A boat on open backwater beside a green treeline',
+    usedFor: 'journey hero — Kerala with Houseboat (Variant A seed)',
+  },
+  {
+    name: 'journey-luxury-train',
+    id: 'photo-1633084071043-7fb96fe530b1',
+    width: 2400,
+    hero: true,
+    credit: 'Florian Marette',
+    subject: 'Wood-panelled vintage train carriage interior',
+    usedFor: 'journey hero — Palace on Wheels (Variant B seed) + homepage luxury-rail banner',
+  },
+
+  {
+    name: 'journey-golden-triangle',
+    id: 'photo-1587135941948-670b381f08ce',
+    width: 2400,
+    hero: true,
+    credit: 'Rowan Heuvel',
+    subject: 'The Taj Mahal at Agra under a golden-hour sky',
+    usedFor: 'journey hero — Golden Triangle 5N/6D',
+  },
+  {
+    name: 'journey-bali',
+    id: 'photo-1558005530-a7958896ec60',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A figure walking through bright green rice terraces below a misty ridge at dawn',
+    usedFor: 'journey hero — Bali 5N/6D',
+  },
+  {
+    name: 'journey-north-east',
+    id: 'photo-1689089526066-c7e6e95ee265',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A lush green valley in the Khasi Hills with a distant waterfall',
+    usedFor: 'journey hero — North East India 6N/7D',
+  },
+  {
+    name: 'journey-western-southern',
+    id: 'photo-1559318246-114068fc532e',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'A stone temple on a hilltop above a wide valley',
+    usedFor: 'journey hero — Western & Southern India 12N/13D',
+  },
+
+  // ---- the nine locked destinations --------------------------------------
+  {
+    name: 'dest-rajasthan',
+    id: 'photo-1710347454810-e3d493dcc538',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Jaisalmer rooftops and fort from a high vantage',
+    usedFor: 'destination tile — rajasthan-golden-triangle',
+  },
+  {
+    name: 'dest-kerala',
+    id: 'photo-1593693411515-c20261bcad6e',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Traditional houseboat on palm-lined Alappuzha backwaters',
+    usedFor: 'destination tile — kerala',
+  },
+  {
+    name: 'dest-south-west',
+    id: 'photo-1722934804353-0d9f6a55ab5e',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Hampi temple ruins across open ground',
+    usedFor: 'destination tile — south-west-india',
+  },
+  {
+    name: 'dest-ladakh',
+    id: 'photo-1600356033695-a003690a6351',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Turquoise high-altitude lake below bare Himalayan peaks',
+    usedFor: 'destination tile — ladakh',
+  },
+  {
+    name: 'dest-north-east',
+    id: 'photo-1625826415128-3fbae9b3022c',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Green Meghalaya hills under cloud',
+    usedFor: 'destination tile — north-east-india',
+  },
+  {
+    name: 'dest-wildlife',
+    id: 'photo-1615474286632-e31ac3633d58',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Tiger in warm light on dry grass',
+    usedFor: 'destination tile — wildlife',
+  },
+  {
+    name: 'dest-bhutan',
+    id: 'photo-1665731235408-130bf915c424',
+    width: 1400,
+    credit: 'Truly Bhutan',
+    subject: "Taktsang (Tiger's Nest) monastery on the cliff face",
+    usedFor: 'destination tile — bhutan',
+  },
+  {
+    name: 'dest-bali',
+    id: 'photo-1555400038-63f5ba517a47',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Tegallalang rice terraces with palms',
+    usedFor: 'destination tile — bali',
+  },
+  {
+    name: 'dest-vietnam',
+    id: 'photo-1643029891412-92f9a81a8c16',
+    width: 1400,
+    credit: 'Marina Lobato',
+    subject: 'Boats among the limestone karsts of Ha Long Bay',
+    usedFor: 'destination tile — vietnam',
+  },
+
+  // ---- travel-guide cards -------------------------------------------------
+  {
+    name: 'article-kerala-houseboat',
+    id: 'photo-1609828913552-f9138ed9e42d',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Wooden boat moored beside backwater palms',
+    usedFor: 'article hero — Kerala houseboat guide',
+  },
+  {
+    name: 'article-tea-gardens',
+    id: 'photo-1719831738921-972e0ec76337',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Rolling Munnar tea gardens against a hill',
+    usedFor: 'spare article hero (M5)',
+  },
+  {
+    name: 'article-fort',
+    id: 'photo-1544616751-eea58efccec4',
+    width: 1400,
+    credit: 'Unsplash contributor',
+    subject: 'Sandstone fort walls from below',
+    usedFor: 'spare article hero (M5)',
+  },
+
+  // ---- itinerary day images (PRD v1.5, dayImages[]) ----------------------
+  // Rendered small, inside an expanded day, behind a lazy load. 1200 is
+  // generous at 2x for a frame that is never wider than half the prose
+  // measure.
+  {
+    name: 'day-gt-delhi-humayun',
+    id: 'photo-1597040663342-45b6af3d91a5',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: "Humayun's Tomb in Delhi, white dome above palms",
+    usedFor: 'Golden Triangle — day 1 (Delhi)',
+  },
+  {
+    name: 'day-gt-agra-taj-trees',
+    id: 'photo-1585135497273-1a86b09fe70e',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Taj Mahal framed by a dark tree in the foreground',
+    usedFor: 'Golden Triangle — day 5 (Agra)',
+  },
+  {
+    name: 'day-gt-agra-taj-reflection',
+    id: 'photo-1576487248805-cf45f6bcc67f',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Taj Mahal reflected in the watercourse',
+    usedFor: 'Golden Triangle — day 5 (Agra)',
+  },
+  {
+    name: 'day-gt-jaipur-amber',
+    id: 'photo-1590517862150-8203e97e463f',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Amer Fort on the hillside above Jaipur',
+    usedFor: 'Golden Triangle — day 3 (Jaipur)',
+  },
+  {
+    name: 'day-gt-jaipur-hawa-mahal',
+    id: 'photo-1524229321985-1e1989075d9b',
+    width: 1200,
+    aspect: DAY_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Hawa Mahal facade in Jaipur',
+    usedFor: 'Golden Triangle — day 3 (Jaipur)',
+  },
+
+  // ---- city pages (PRD v1.5, PAGE_TEMPLATES T15) -------------------------
+  {
+    /**
+     * Swapped after the first Jaipur build came in at LCP 2.1s against a 2.0s
+     * target. The original was a Hawa Mahal facade — 953 windows of fine
+     * repeating detail, which is the pathological case for AVIF: 59KB where
+     * every other hero on the site lands at 25–35KB. Kochi, on the same
+     * template and a heavier page overall, was 1.7s.
+     *
+     * This one is Amer Fort above Maota Lake: the same subject matter at
+     * golden hour, but most of the frame is sky, water and hillside — large
+     * smooth areas that a modern codec compresses almost for free. A hero
+     * photograph's encoded size is a property of its CONTENT, not only of its
+     * dimensions or quality setting, and the fix for a heavy hero is usually a
+     * different photograph rather than a lower quality number.
+     */
+    name: 'city-jaipur-hero',
+    id: 'photo-1709883252686-fe847b56c90b',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'Amer Fort on the hillside above Maota Lake',
+    usedFor: 'city hero — Jaipur',
+  },
+  {
+    name: 'city-jaipur-amber-fort',
+    id: 'photo-1599661046289-e31897846e41',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Visitors on the zigzag ramps of Amer Fort',
+    usedFor: 'city experience tile — Jaipur, Amer Fort',
+  },
+  {
+    name: 'city-jaipur-city-palace',
+    id: 'photo-1682321136734-8cc95d0912be',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A columned palace doorway',
+    usedFor: 'city experience tile — Jaipur, City Palace',
+  },
+  {
+    name: 'city-jaipur-hawa-mahal',
+    id: 'photo-1524230507669-5ff97982bb5e',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'The Hawa Mahal in daylight',
+    usedFor: 'city experience tile — Jaipur, Hawa Mahal',
+  },
+  {
+    name: 'city-jaipur-bazaar',
+    id: 'photo-1783067727360-33aacf486424',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Bowls of coloured powders at an outdoor market',
+    usedFor: 'city experience tile — Jaipur, the bazaars',
+  },
+  {
+    name: 'city-jaipur-strip-1',
+    id: 'photo-1602339752474-f77aa7bcaecd',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Jaipur sandstone architecture',
+    usedFor: 'city photo strip — Jaipur',
+  },
+  {
+    name: 'city-jaipur-strip-2',
+    id: 'photo-1589000865526-e0db02c3d7ad',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A walkway beside water below the fort',
+    usedFor: 'city photo strip — Jaipur',
+  },
+  {
+    name: 'city-jaipur-strip-3',
+    id: 'photo-1524309784716-6a4be8299c7f',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Fort structure under a clear sky',
+    usedFor: 'city photo strip — Jaipur',
+  },
+  {
+    name: 'city-kochi-hero',
+    id: 'photo-1645680149311-5a00ae5a2b2a',
+    width: 2400,
+    hero: true,
+    credit: 'Unsplash contributor',
+    subject: 'Chinese fishing nets standing over the water at Fort Kochi',
+    usedFor: 'city hero — Kochi',
+  },
+  {
+    name: 'city-kochi-kathakali',
+    id: 'photo-1741387793505-b4383d221324',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A Kathakali dancer in full costume and makeup',
+    usedFor: 'city experience tile — Kochi, Kathakali',
+  },
+  {
+    name: 'city-kochi-backwaters',
+    id: 'photo-1625721838087-c46e51c89558',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Coconut palms along a backwater channel',
+    usedFor: 'city experience tile — Kochi, the backwaters',
+  },
+  {
+    name: 'city-kochi-harbour',
+    id: 'photo-1590050752117-238cb0fb12b1',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A wooden boat on the water at sunset',
+    usedFor: 'city experience tile — Kochi, the harbour',
+  },
+  {
+    name: 'city-kochi-spice',
+    id: 'photo-1723155182094-af2f63472d0b',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A sack of dried red chillies at a spice market',
+    usedFor: 'city experience tile — Kochi, the spice trade',
+  },
+  {
+    name: 'city-kochi-strip-1',
+    id: 'photo-1605955794720-651b9ae7f5e7',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Boats on the water below a headland at sunset',
+    usedFor: 'city photo strip — Kochi',
+  },
+  {
+    name: 'city-kochi-strip-2',
+    id: 'photo-1582537683185-922141f18eaa',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'A wooded island surrounded by water',
+    usedFor: 'city photo strip — Kochi',
+  },
+  {
+    name: 'city-kochi-strip-3',
+    id: 'photo-1599328431991-365a583f09f5',
+    width: 1000,
+    aspect: TILE_ASPECT,
+    credit: 'Unsplash contributor',
+    subject: 'Palms against the sea under a clear sky',
+    usedFor: 'city photo strip — Kochi',
+  },
+];
+
+mkdirSync(OUT_DIR, { recursive: true });
+mkdirSync('docs/brand/processed', { recursive: true });
+
+/**
+ * `node scripts/brand/fetch-temp-photos.mjs city-jaipur` re-fetches only the
+ * entries whose name contains that string. Iterating on one photograph should
+ * not mean re-downloading forty — but note the provenance file is only
+ * rewritten on a FULL run, because a partial run does not know about the rest.
+ */
+const filter = process.argv[2];
+const selected = filter ? PHOTOS.filter((p) => p.name.includes(filter)) : PHOTOS;
+if (filter) console.log(`  filter "${filter}" -> ${selected.length} of ${PHOTOS.length} photos\n`);
+
+const results = [];
+
+for (const photo of selected) {
+  const url = `https://images.unsplash.com/${photo.id}?w=${photo.width}&q=85&fm=jpg&fit=max`;
+  const outPath = join(OUT_DIR, `TEMP-PHOTO-${photo.name}.jpg`);
+
+  const response = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
+  if (!response.ok) {
+    console.error(`  FAILED ${photo.name} — HTTP ${response.status}`);
+    results.push({ ...photo, ok: false });
+    continue;
+  }
+  const source = Buffer.from(await response.arrayBuffer());
+
+  const aspect = photo.hero ? HERO_ASPECT : photo.aspect;
+  const resize = aspect
+    ? {
+        width: photo.width,
+        height: Math.round(photo.width / aspect),
+        fit: 'cover',
+        position: 'centre',
+        withoutEnlargement: true,
+      }
+    : { width: photo.width, withoutEnlargement: true };
+
+  const graded = await sharp(source)
+    .resize(resize)
+    .modulate({ saturation: WARM_GRADE.saturation })
+    .linear(WARM_GRADE.multipliers, [0, 0, 0])
+    .jpeg({ quality: 82, mozjpeg: true })
+    .toBuffer();
+
+  writeFileSync(outPath, graded);
+  const meta = await sharp(graded).metadata();
+  console.log(
+    `  ${String(Math.round(graded.length / 1024)).padStart(5)} KB  ` +
+    `${String(meta.width).padStart(4)}x${String(meta.height).padEnd(4)}  ${outPath}`,
+  );
+  results.push({ ...photo, ok: true, url, bytes: graded.length, w: meta.width, h: meta.height });
+}
+
+const ok = results.filter((r) => r.ok);
+
+if (filter) {
+  console.log(`\n  ${ok.length}/${results.length} fetched. Provenance NOT rewritten — run without a filter for that.`);
+  process.exit(ok.length === results.length ? 0 : 1);
+}
+const rows = ok
+  .map((r) => `| \`TEMP-PHOTO-${r.name}.jpg\` | ${r.subject} | ${r.credit} | [source](https://unsplash.com/photos/${r.id.replace(/^photo-/, '')}) | ${r.w}×${r.h} | ${r.usedFor} |`)
+  .join('\n');
+
+writeFileSync(
+  PROVENANCE,
+  `# TEMP-PHOTO provenance
+
+**These are not the client's photographs.** They are temporary images sourced
+for design review only, because a photography-led design cannot be judged
+through placeholder blocks. **Every one is replaced by the client's own archive
+in M5.**
+
+Regenerate with \`npm run temp:photos\`. Find every reference with
+\`grep -rn "TEMP-PHOTO" src/\`.
+
+## Licence
+
+All files come from Unsplash under the [Unsplash
+Licence](https://unsplash.com/license), which permits commercial use and does
+not require attribution. Attribution is recorded here regardless, so that
+replacing a file later is a lookup rather than a guess.
+
+Unsplash+ (\`plus.unsplash.com/premium_photo-*\`) images are **deliberately
+excluded** — that is a paid licence this project does not hold.
+
+## The grade
+
+One shared curve across the whole set, so it reads as a coherent collection
+rather than a stock grid: channel multipliers \`${JSON.stringify(WARM_GRADE.multipliers)}\`
+(red up, blue down — a warm shift) and saturation \`${WARM_GRADE.saturation}\`
+(deliberately below 1, so an unrelated set reads as one collection instead of
+a stock grid). Heroes are cropped to a ${HERO_ASPECT}:1 master.
+Encoded as mozjpeg quality 82.
+
+## The set
+
+| File | Subject | Photographer | Source | Master size | Used for |
+|---|---|---|---|---|---|
+${rows}
+
+${ok.length} of ${results.length} fetched successfully.
+`,
+);
+
+console.log(`\n  ${ok.length}/${results.length} photos written to ${OUT_DIR}`);
+console.log(`  provenance → ${PROVENANCE}`);
+if (ok.length !== results.length) process.exit(1);

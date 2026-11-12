@@ -5,8 +5,9 @@ excerpt: What a night aboard a kettuvallam is actually like, which stretch of ba
 publishDate: 2026-09-09
 author: India Visit
 
-heroImage: ../../assets/placeholders/article-hero.jpg
-heroImageAlt: PLACEHOLDER-IMAGE awaiting the client photo archive — Kerala houseboat
+# TEMP-PHOTO — temporary Unsplash image for design review only (replaced in M5)
+heroImage: ../../assets/temp-photos/TEMP-PHOTO-article-kerala-houseboat.jpg
+heroImageAlt: A wooden boat moored beside the palms of a Kerala backwater channel
 
 embeddedJourneys:
   - kerala-with-houseboat-11n-12d
