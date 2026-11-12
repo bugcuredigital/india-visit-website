@@ -1,21 +1,31 @@
 /**
- * Lead capture is not live until M6.
+ * Which forms are live.
  * ---------------------------------------------------------------------------
- * Every form on the site posts to `/api/lead`, the Cloudflare Pages Function
- * that M6 builds. Until it exists that POST answers 405, so a submit would
- * navigate to an error page. While `FORMS_LIVE` is false every submit button
- * renders disabled and says why — the client's instruction for the 2026-11-12
- * demo: a dead form click is worse than no form.
+ * Every form posts to `/api/lead` (functions/api/lead.ts). A form whose switch
+ * is off renders its submit button disabled, labelled "Launching shortly" — the
+ * client's instruction for the 2026-11-12 demo: a dead form click is worse
+ * than no form. A "we'll call you" message over a form that sends nothing was
+ * the other option and was not used: it would promise a call to a real
+ * visitor that never comes.
  *
- * The other option offered, a "we'll call you" success state, is deliberately
- * not used: with nothing behind the form it would promise a call to a real
- * visitor that never comes, and the production URL is public.
- *
- * M6 flips this to true in the same commit that adds `functions/api/lead.ts`.
- * Read by EnquiryForm.astro, plan-my-trip.astro and travel-guide/index.astro —
- * every <form> on the site.
+ * LEADS_LIVE flips to true only after an end-to-end test email has landed in
+ * the inbox (client rule, 2026-11-12) — never on the strength of a deploy.
  */
-export const FORMS_LIVE = false;
+
+/** The enquiry forms (every EnquiryForm layout except the PDF gate) and Plan-My-Trip. */
+export const LEADS_LIVE = false;
+
+/** The itinerary-PDF gate: waits for the PDF release (runbook M6 step 2a). */
+export const PDF_GATE_LIVE = false;
+
+/** The Travel Guide newsletter: waits for a list to send it from. */
+export const NEWSLETTER_LIVE = false;
 
 /** The disabled button's label — the client's own words. */
 export const FORMS_PENDING_LABEL = 'Launching shortly';
+
+/** Shown in place of the form once the lead function confirms — the client's own words. */
+export const LEAD_SUCCESS = "Thank you — we'll reply personally within a day.";
+
+/** Shown under the button if sending fails. Agency draft (COPY_REGISTER §R). */
+export const LEAD_ERROR = 'Sorry, that did not go through. Please call or WhatsApp us.';

@@ -273,3 +273,11 @@ The prose over-used em dashes and read AI-flavoured. Every page template, the sh
 | Q3 | `/plan-my-trip/` | "…a price. Not a brochure, and not a quote with three options." | DRAFT |
 
 House rule from here on (CLAUDE.md invariant #7): at most one em dash per screen.
+
+## R. Live forms (M6-minimal, 2026-11-12)
+
+| # | Where | Copy | Status |
+|---|---|---|---|
+| R1 | In place of an enquiry / Plan-My-Trip form after it sends | "Thank you — we'll reply personally within a day." | **APPROVED** (client's words) |
+| R2 | Under the button if sending fails | "Sorry, that did not go through. Please call or WhatsApp us." | **DRAFT** |
+| R3 | The button while sending | "Sending…" | **DRAFT** |
