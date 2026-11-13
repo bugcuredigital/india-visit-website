@@ -182,7 +182,7 @@ const reviewSchemas = realReviews.map((review) =>
   <StickyMobileBar slot="after-footer" waContext="Reviews" />
 </Base>
 
-<script is:inline>
+<script is:inline data-astro-rerun>
   (() => {
     const wall = document.querySelector('[data-review-wall]');
     const buttons = document.querySelectorAll('[data-filter]');
