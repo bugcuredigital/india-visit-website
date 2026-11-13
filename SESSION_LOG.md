@@ -1530,3 +1530,105 @@ was applied there.
    and on the sender-address audit rule.
 3. After the demo: batch review of the 54 medium and 14 low audit items.
    Then the Tina Cloud index check and the parked image-save test (M7 4a).
+
+## 2026-11-13 (evening, 18:25–19:30) — After the demo: `/booking-terms/` published, `audit:hardcoded` green, Best Practices traced (PR #23, PR #24)
+
+**Instruction.**
+- The demo went ahead this morning on the frozen build, so before the round-5
+  fixes went live at 16:08. The client's remarks arrive as a triaged round-5
+  list, together with the batch approvals for the 54 medium and 14 low audit
+  items.
+- The 18:52 test-email line arrived as an unfilled template again
+  ("[landed / did not land]"). Nothing was assumed either way; the 12 Nov
+  question stays open.
+- The freeze is lifted until further notice. Until the round-5 message,
+  nothing merges except items 1 and 4.
+- Rulings on the three open items, and two more:
+  1. `/booking-terms/`: its text is approved and it is operational, not one of
+     the three legal drafts. Remove the notice and lift the noindex. The gate
+     on privacy, terms and cancellation stays until the client signs off.
+  2. Reduced motion, two crimson actions on the phone's first screen: real but
+     low. Queue it for round 5; fix it by demoting one of the two, with no new
+     pattern.
+  3. "Your details go only to India Visit" against the final privacy policy:
+     a launch-gate line item beside §19, reconciled when the real policy
+     lands. No action now.
+  4. `audit:hardcoded`, red on the sender address since PR #16, is check rot:
+     "a check that's always red teaches us to ignore red." Whitelist that one
+     address, with a comment pointing at the ruling.
+  5. Best Practices 81: identify exactly which third party and which warning,
+     and report. Fix or accept knowingly in round 5. GTM is not wired yet.
+
+**PR #23, merged 19:16, live 19:21 IST (`3c593ad`): item 1.**
+`booking-terms.astro` passes `provisional={false}` to `Policy.astro`, whose
+default stays `true`. The page was already in the sitemap, which no longer
+contradicts it.
+On production: `/booking-terms/` answers 200 with no notice, no robots meta
+and no `X-Robots-Tag`, and keeps its canonical and its sitemap entry.
+`/privacy/`, `/terms/` and `/cancellation/` keep the notice and
+`noindex, nofollow`. robots.txt is Cloudflare's managed content-signals
+preamble, comments only, with no rules. Lighthouse on production
+`/booking-terms/` (mobile): Performance 99, Accessibility 100, SEO 100,
+Best Practices 81 (item 5), LCP 1.3s, CLS 0.
+
+**PR #24 (item 4, plus these docs), merged without a build.**
+`scripts/audit-hardcoded.sh` has an ALLOWED list of `file|exact value`
+entries. It holds one, `functions/api/lead.ts|enquiries@india-visit.com`, with
+a comment citing the 12 Nov instruction (PR #16) and this ruling.
+- The value is ignored in that file only. A line still fails if anything else
+  on it looks like a contact detail.
+- The allowed lines print under the PASS, so the exception stays visible.
+- Tested: the repo passes. The address in another file, a second address on
+  the same line, and a phone number in the lead function each still fail.
+
+**Item 5: Best Practices 81, traced.** Production, Lighthouse 13.6.0, Chrome
+157, mobile: `/`, Golden Triangle and `/plan-my-trip/` give the same result.
+- One audit fails: "Uses deprecated APIs", weight 5 of 26, so 21/26 = 81.
+  It carries one warning: "Fenced Frame API is deprecated and scheduled for
+  removal." (chromestatus feature 6366274495053824, in effect from Chrome 156).
+- Its source is `/~partytown/partytown-sandbox-sw.html`, line 1, column 11829.
+  That is Partytown 0.13.2 (QwikDev, MIT): self-hosted, and installed by
+  `@astrojs/partytown` 2.1.7 for GTM.
+- The column is Partytown's interface reader (`i=t[r]`). To build the proxy
+  it hands its web worker, the hidden sandbox reads every property of
+  `window`, plus one element per HTML tag. A CDP probe in the same Chrome
+  showed that a single read of `window.fence` raises this exact deprecation,
+  and so does creating a `<fencedframe>` element.
+- Nothing third-party loads: all 25 homepage requests go to the site's own
+  origin. GTM is not emitted: `gtmContainerId` is null, and Base.astro guards
+  the tag on it.
+- The integration injects the Partytown snippet on every page regardless. It
+  registers the service worker, opens the hidden sandbox iframe and starts a
+  web worker, with nothing to run.
+- Upstream: Partytown 1.0 (1.0.0 on 10 Oct 2026, 1.0.5 on 7 Nov) skips a named
+  list of Privacy Sandbox APIs while reading, `fence` and
+  `HTMLFencedFrameElement` among them. 0.13.2 has no such list.
+  `@astrojs/partytown` 2.1.9 depends on `@qwik.dev/partytown` ^1.0.1. This
+  was read from the published package, not installed or tested.
+- A Lighthouse run with `/~partytown/*` blocked still showed the warning.
+  Partytown's service worker serves the sandbox document, and page-level URL
+  blocking does not reach it, so the source location is the evidence.
+- Options for round 5:
+  - (a) Upgrade `@astrojs/partytown` to 2.1.9, which brings Partytown 1.0.
+    This fix survives GTM.
+  - (b) Load Partytown only when a GTM container ID is set. That gives 100
+    until GTM, then 81 again at M6 unless (a) is also done.
+  - (c) Accept it: visitors see no effect, and Best Practices is not in the
+    definition of done.
+
+**Logged, no action (rulings 2 and 3).**
+- The reduced-motion sticky bar: queued in the status section of
+  `docs/UNSLOP_AUDIT.md` and in SITE_STATUS.
+- S2: a paragraph in review sheet §19, the S2 row of COPY_REGISTER, and
+  SITE_STATUS blocking item 4.
+
+### Exact next action
+
+1. Idle until the client's round-5 message: the triaged demo remarks and the
+   medium and low approvals. When it lands, first mark the remarks that PR #21
+   already answers (the demo ran on the build before it), then work the list.
+2. Client: did the 12 Nov 18:52 test lead arrive?
+3. Now that the demo is done, with the client: the Tina Cloud index check (the
+   schema gained `inSentence`) and the Tadoba test save (M7 4a).
+4. Round-5 decisions waiting: Best Practices (a, b or c above). The
+   reduced-motion sticky bar is approved and queued.

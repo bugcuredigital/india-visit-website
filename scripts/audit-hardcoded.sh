@@ -15,17 +15,47 @@ fail=0
 SCAN_DIRS=(src functions)
 # siteSettings is the ONE legitimate home for contact details.
 SETTINGS_FILE="src/lib/site-settings.ts"
+CONTACT_PATTERN="(\+91[[:space:]-]*[0-9]{5})|(tel:\+?[0-9]{6,})|(wa\.me/[0-9]+)|([a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,})"
+# Ruled exceptions, one "file|exact value" each. An entry is one deliberate
+# decision, never a pattern: the value is ignored in that file only, and a
+# line still fails if anything else on it looks like a contact detail.
+#   enquiries@india-visit.com is the address the lead function sends FROM
+#   (LEAD_FROM overrides it; its domain must be verified in Resend), not a
+#   contact detail a visitor sees. Client instruction of 12 Nov 2026 (PR #16);
+#   allowed here by the client's ruling of 13 Nov 2026 (SESSION_LOG.md, the
+#   13 Nov evening entry): a check that is always red teaches us to ignore red.
+ALLOWED=(
+  "functions/api/lead.ts|enquiries@india-visit.com"
+)
 
 echo "── 1. Hardcoded contact details (invariant #1) ──────────────────────"
-hits=$(grep -rn -E "(\+91[[:space:]-]*[0-9]{5})|(tel:\+?[0-9]{6,})|(wa\.me/[0-9]+)|([a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,})" \
+raw=$(grep -rn -E "$CONTACT_PATTERN" \
   --include="*.astro" --include="*.ts" --include="*.tsx" --include="*.js" \
   "${SCAN_DIRS[@]}" 2>/dev/null | grep -v "^${SETTINGS_FILE}:" || true)
+hits=""
+allowed=""
+while IFS= read -r line; do
+  [ -z "$line" ] && continue
+  rest=$line
+  for entry in ${ALLOWED[@]+"${ALLOWED[@]}"}; do
+    [[ $rest == "${entry%%|*}:"* ]] && rest=${rest//"${entry#*|}"/}
+  done
+  if printf '%s\n' "$rest" | grep -qE "$CONTACT_PATTERN"; then
+    hits+="$line"$'\n'
+  else
+    allowed+="$line"$'\n'
+  fi
+done <<< "$raw"
 if [ -n "$hits" ]; then
-  echo "$hits"
+  printf '%s' "$hits"
   echo "FAIL: contact details must live in ${SETTINGS_FILE} only."
   fail=1
 else
   echo "PASS: no contact details outside ${SETTINGS_FILE}."
+fi
+if [ -n "$allowed" ]; then
+  echo "  Allowed by ruling (the ALLOWED list in this script):"
+  printf '%s' "$allowed" | sed 's/^/    /'
 fi
 
 echo
