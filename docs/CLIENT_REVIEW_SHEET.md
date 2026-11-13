@@ -338,7 +338,16 @@ travellers, under the GDPR. Agency drafting is not legal advice.
 the operator disclosures and cancellation policies already in the Palace on
 Wheels content, pulled live from the journey entry rather than retyped — so an
 operator whose terms change is edited in one place and both pages follow.
-Every luxury-train page links here, as invariant #6 requires.
+Every luxury-train page links here, as invariant #6 requires. Since 13
+November it carries no notice and is open to search engines: your ruling was
+that its text is approved and it is operational, not one of the three drafts.
+
+**One line to settle at the same sign-off.** The reassurance under the Plan My
+Trip form reads "Your details go only to India Visit." (copy register S2).
+When the real privacy policy lands, that line is re-strengthened or adjusted
+to say exactly what the policy says: the outline names your suppliers and the
+services that run the site's forms and email. It is a launch-gate item, and
+nothing changes before then.
 
 **What we need from you:** the approved text for the three, plus the
 cancellation slab table for journeys you arrange yourself (the train slabs are

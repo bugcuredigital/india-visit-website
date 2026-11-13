@@ -1,9 +1,14 @@
-# DEMO_PATH.md — the client walkthrough, 13 November 2026 (time to be confirmed)
+# DEMO_PATH.md — the client walkthrough
 
-**Site:** https://india-visit-website.pages.dev (production, `main` at `74a9ddf`,
-the round-5 fixes, live since 16:08 IST). **Freeze:** from two hours before
-the demo, nothing merges (your rule, 13 Nov). The demo time arrived as a blank
-in the instruction, so the freeze hour is set when you confirm it.
+**The 13 November demo has taken place.** It went ahead that morning on the
+frozen build (your message, 13 Nov evening), before this route was refreshed
+for the round-5 fixes. The route below describes production as it now stands
+and is kept for the next walkthrough.
+
+**Site:** https://india-visit-website.pages.dev (production `3c593ad`: the
+round-5 fixes, live since 16:08 IST, and `/booking-terms/` published, live
+since 19:21 IST). **Freeze:** lifted until further notice (your message,
+13 Nov evening).
 Open it on a laptop first, then repeat the homepage on a phone: the phone is
 where most of the client's visitors will be.
 
@@ -51,10 +56,6 @@ to get the form back.
   still to do. Today's only schema change is one new optional destination
   field ("Name inside a sentence"); the editor shows it once Tina Cloud has
   reindexed `main`.
-- **Do not click "Full booking terms" on a train page.** `/booking-terms/` still
-  shows the "This page is not final" notice and is kept out of search engines,
-  although its text is approved. Found today and reported; it waits for your
-  ruling.
 - **Avoid the Deccan Odyssey page**: its eight days are provisional until the
   operator's programme arrives (review sheet §22).
 - **Avoid `/reviews/`**: two "Guest review coming soon" slots, by design until
@@ -77,9 +78,10 @@ to get the form back.
 
 ## Live state at hand-off
 
-- **Production:** `74a9ddf` (PR #21, the 26 high items of the round-5 audit),
-  deployed 16:08 IST. Before it: `03a1607` (PR #20, the sticky bar and
-  Expand all after a tapped link, live 10:59 IST).
+- **Production:** `3c593ad` (PR #23, `/booking-terms/` without the notice
+  and indexed), deployed 19:21 IST. Before it: `74a9ddf` (PR #21, the 26 high
+  items of the round-5 audit), deployed 16:08 IST, and `03a1607` (PR #20, the
+  sticky bar and Expand all after a tapped link, live 10:59 IST).
 - **Checks on this build:** hero contrast in each run's own colour (33 pages,
   317 runs, 0 failures), keyboard, responsive 360–1440, no-JS, hero video,
   links, CMS images, template spec, transport labels. Lighthouse on the preview:
