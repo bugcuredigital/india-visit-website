@@ -1335,3 +1335,198 @@ Milestones: M6-minimal live (the M6 gate proper has not run); M7 open on step
    upload in `public/uploads/`, a green build) and rule on `/admin`.
 2. Client: §27 photo rights.
 3. After the demo: M6 proper (Turnstile, Sheet webhook, PDF release, GTM).
+
+## 2026-11-12 (evening, 18:30–18:55) — Emergency hotfix: consent and the mobile menu (PR #19)
+
+Two production bugs reported before the 20:00 demo; the client lifted the
+freeze for these two fixes only.
+
+**One root cause.** Astro's ClientRouter swaps the page on every navigation,
+evaluates a bundled module once per visit, and never re-runs an inline script
+identical to one it has already run.
+- **Forms.** `lead-form.ts` bound each form at load, so a form reached through
+  a link had no handler and the router posted it as a page navigation,
+  unvalidated (`novalidate`). That is how the client's Plan My Trip went through
+  with consent unticked. The function answers "thank you" without an email on
+  one path only, a filled honeypot, so the old honeypot ("companyWebsite",
+  label "Company website", checked before consent) was almost certainly filled
+  by AutoFill and the lead silently dropped. Not provable from logs: there are
+  no Cloudflare credentials on this machine. The function now logs one line
+  per outcome (`sent`, `refused: invalid [fields]`, `dropped: honeypot`, …).
+- **Menu.** The header's inline script never re-ran after a link, so the
+  burger had no handler on any page reached by navigation.
+
+**Fix** (PR #19, `a5a57de`, live 18:50:30): one capture-phase submit listener
+on the document (ahead of the router's); every refusal written under the
+button ("Please tick the consent box so we can reply."); the server's reasons
+shown the same way, its no-JS page shows reasons, never the thank-you;
+`data-astro-reload` on the lead forms; honeypot renamed `leaveEmpty`
+(AutoFill-proof); header binds on load and every `astro:page-load`, guarded.
+COPY_REGISTER R4 (DRAFT). Desktop nav (native `<details>`) untouched.
+
+**Verified on production** (390px, real touch taps; keyboard): burger opens
+fresh and after a link; Enter opens, Escape closes and returns focus;
+`check:keyboard` passes on `/` (70 stops) and `/plan-my-trip/` (47). Every live
+form variant with consent unticked refuses in words with zero requests (home
+full and footer forms fresh; journey forms after a link). Honeypot-filled taps
+reach the real function and show the in-page thank-you. The bundled function
+passed nine outcome cases with Resend mocked.
+
+**One live test lead**, 18:52:36 IST, through Plan My Trip reached by the
+header link, consent ticked: `/api/lead` 200 (Resend accepted). Client to
+confirm it in Gmail ("New enquiry: Website test after the fix (please ignore)").
+
+**Same root cause, NOT fixed tonight** (client scope: two fixes only), all
+verified on production: on a page reached by a link the phone's sticky bar
+(WhatsApp · Call · Enquire, and the floating WhatsApp button) never slides in;
+"Expand all" is dead on the second journey page in a row; the journeys,
+reviews and travel-guide filters and the counters behave the same way. Fix
+prepared and tested locally (`data-astro-rerun` on those six inline scripts:
+sticky bar and Expand all work across links), NOT committed: awaiting the
+client's GO.
+
+**Re-frozen** from 18:53 until after the demo.
+
+### Exact next action
+
+1. Client: confirm the 18:52 test lead landed; say GO or not on the third fix.
+2. After the demo: commit this entry and the DEMO_PATH notes; the third fix
+   through a normal PR if not done tonight.
+3. 13 Nov: Tina Cloud index check and the Tadoba test save (M7 4a).
+
+## 2026-11-12 (evening, 19:20–20:05) — Unslop audit, audit only (`docs/UNSLOP_AUDIT.md`)
+
+The client asked for a full-site unslop audit once the hotfix was verified and
+reported: audit only, no edits, the locked CLAUDE.md system overriding the
+skill's own direction phase. Five read-only auditors split the 49 sitemap
+routes plus the three policy pages and the 404 by template, at 1280 and 390,
+and captured or measured every finding on production. The editor then
+re-checked the demo-path and most consequential claims on production,
+de-duplicated the sitewide findings and calibrated severities (noted in the doc).
+
+**94 findings: 26 high, 54 med, 14 low.** Two documentation conflicts to
+settle in CLAUDE.md: the H1/H2 scale (the M4-rev-2 step-down was never
+recorded) and `font-display` (`optional` is deliberate, a CLS fix, but
+CLAUDE.md says `swap`). Two findings with reach beyond design: the fonts are
+served `max-age=0, must-revalidate`, so `optional` misses on most views and
+headings render in the Arial fallback; and `check:hero-contrast` scores text
+against white, so it passes hero breadcrumbs that fail AA (3.0–3.9:1).
+
+No site changes; the document is local and uncommitted (freeze).
+
+### Exact next action
+
+The client approves or strikes the 94 items one by one; approved items become
+design-round-5 remarks after the demo.
+
+## 2026-11-13 (10:45–17:20) — Round 5: the sticky-bar fix and the 26 high items (PR #20, PR #21)
+
+**Instruction.** The demo was postponed to 13 November. The time arrived blank
+in the instruction, so the freeze hour (two hours before the demo) is unset.
+The 18:52 test-lead result was also blank: the 12 Nov question is still open.
+The client gave GO on the prepared sticky-bar and Expand-all fix and approved
+all 26 high items of `docs/UNSLOP_AUDIT.md`, with rulings on #2, #3, #9, #23,
+#45, #47, #50 and #53. The client's #23, #45, #47, #50 and #53 are audit items
+#30, #51, #58, #78 and #89, matched by their descriptions. The 54 medium and
+14 low items wait for a batch review after the demo.
+
+**PR #20, merged 10:53, live 10:59 IST (`03a1607`).** `data-astro-rerun` on the six inline
+scripts. Verified on the preview and on production: after client-side links
+the sticky bar slides in and Expand all works on consecutive journeys
+(3→6 of 6, 3→7 of 7), with no errors.
+
+**PR #21, merged 16:02, live 16:08 IST (`74a9ddf`): the 26 high items** (42 files). The
+commit message lists them one per line. The client's rulings:
+- **#2** `public/_headers` serves `/_astro/*` as
+  `public, max-age=31536000, immutable`. The display face was already
+  preloaded. CLAUDE.md now records `optional` with its rationale, and the M4
+  type scale.
+- **#3** The header pill stays the one crimson action from 48rem. A hero's
+  primary steps down to the on-dark outline there, and its second action is an
+  on-dark ghost.
+- **#9** COPY_REGISTER §S, 63 rows. A read-only sweep covered 338 strings and
+  found 72 unregistered.
+- **#30** A sitewide pass over all 99 transport details, plus
+  `check:transport-labels` inside `npm run build`.
+- **#44** The new optional destination field `inSentence`. `tina-lock.json`
+  was regenerated through `tinacms dev`; its only change is that field.
+- **#78** The corporate brief layout, and the lead function's company check.
+- **#89** The client's wording.
+
+**check:hero-contrast** now scores every run of text in its own colour. It
+also fails a hero breadcrumb that renders but is not measured. Its first
+honest run found seven live failures that the white-only scoring had hidden:
+- journey H1s in `#F7F5F6` (2.90 and 3.00:1 at 390);
+- breadcrumbs in on-dark (4.25:1 on Ladakh at 390);
+- the yellow city state label on the photograph (3.55 and 3.85:1).
+
+All are fixed: the H1s and breadcrumbs are white, and the state label sits on
+a burgundy ground. The full run then passed: 33 pages, 317 runs, 116
+breadcrumb runs, 0 failures. The browser probe also caught a second instance
+of the #42 cause. ArticleCard's frame took the photograph's ratio, so every
+article card rendered 3:2 and the featured 21:9 never applied. The same fix
+was applied there.
+
+**Verification.**
+- Local build: transport labels (105), image paths, CMS images, links, the
+  template spec, hero contrast, keyboard (70 stops), responsive (360–1440),
+  no-JS and hero video all pass.
+- The corporate lead paths, unit-tested with Resend mocked.
+- On the PR #21 preview:
+  - a 36-point browser probe of the fixes: 36/36;
+  - `/_astro/` fonts served immutable, HTML still revalidated;
+  - the live function refuses a brief without a company, and a honeypot
+    submission answers success and sends nothing.
+- Lighthouse on the preview (mobile, simulated): Performance 99–100 and
+  Accessibility 100 on `/`, `/travel-guide/`, Golden Triangle,
+  `/plan-my-trip/` and `/corporate/`, LCP 0.9–2.0s, CLS 0.
+  - Best Practices is 81 on every page, and also on production before this
+    round: Partytown's sandbox triggers Chrome's "Fenced Frame API is
+    deprecated" warning. It is not from this round.
+  - `/travel-guide/` LCP is 2.0s, at the working target: the featured
+    photograph is now a properly sized file.
+
+**Production (`74a9ddf`, live 16:08 IST).**
+- Confirmed live: the Golden Triangle line, `/_astro/` fonts served immutable,
+  and the live function refusing a corporate brief without a company.
+- Lighthouse on `/travel-guide/`: Performance 94, Accessibility 100, SEO 100,
+  LCP 2.0s, CLS 0. The 12 Nov figure was 100 and 1.5s; the difference is the
+  correctly sized featured photograph (#68).
+- 16 fresh captures of the route: `reports/demo-2026-11-13/`.
+- **Display face on a first visit.** On a first-ever visit the homepage at
+  desktop can still draw the fallback face, because its large poster is
+  preloaded ahead of the fonts (deliberate, for LCP). Every later view has the
+  face from the immutable cache. The homepage captures are therefore taken as
+  a returning visitor sees the page. The client's ruling expected "almost
+  always"; first visits on desktop are the remaining gap.
+- **Reduced motion.** The phone's sticky bar is visible from load for
+  visitors who prefer reduced motion, because its hidden-until-scroll
+  transform lives inside the motion query. For them the first homepage screen
+  has two crimson actions. Not fixed; noted for round 5.
+
+**Found, not fixed (outside the 26; reported for a ruling).**
+- `/booking-terms/` renders the "This page is not final" notice and is
+  noindexed, although its body is APPROVED (K3).
+- `audit:hardcoded` fails on the lead function's sender address
+  (`enquiries@india-visit.com`, the client's 12 Nov instruction). Production
+  has failed it the same way since PR #16.
+- S2's "Your details go only to India Visit" should be reconciled with the
+  final privacy policy at launch, as ruled. The privacy outline names
+  suppliers and the form and email services.
+
+**Tooling notes.**
+- This Mac sleeps after one idle minute (`pmset sleep 1`). Headless-Chrome
+  checks crawled or stalled until `caffeinate -i` was held, plus `-d` for
+  rendering.
+- `check:hero-contrast`'s reused profile (`/tmp/iv-contrast-profile`, 188MB)
+  slowed every page. A page-by-page run with a fresh profile was used.
+- A preview server from 12 Nov was still holding port 4321. It was replaced.
+
+### Exact next action
+
+1. Client: confirm the demo time, which sets the freeze at two hours before.
+   Also confirm whether the 18:52 test lead of 12 Nov arrived.
+2. Client: rule on `/booking-terms/` (`provisional={false}` is a one-line fix)
+   and on the sender-address audit rule.
+3. After the demo: batch review of the 54 medium and 14 low audit items.
+   Then the Tina Cloud index check and the parked image-save test (M7 4a).
