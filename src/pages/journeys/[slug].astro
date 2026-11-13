@@ -254,7 +254,7 @@ const crumbs = breadcrumbSchema([
       </Button>
       <Button
         href={whatsappLink(settings, waContext)}
-        variant="on-dark"
+        variant="ghost"
         size="lg"
         external={true}
         data-analytics="wa_click"
@@ -267,7 +267,7 @@ const crumbs = breadcrumbSchema([
            released by the lead function in M6; the direct path is never
            printed in the hero. */
         journey.pdfFile && (
-          <Button href="#download" variant="on-dark" size="lg" data-analytics="pdf_gate_open">
+          <Button href="#download" variant="ghost" size="lg" data-analytics="pdf_gate_open">
             Download the itinerary
           </Button>
         )
@@ -439,7 +439,6 @@ const crumbs = breadcrumbSchema([
       <PoliciesAccordion
         policies={journey.policies}
         operatorDisclosure={journey.operatorDisclosure}
-        operatorName={journey.operatorName}
         bookingTermsUrl={journey.bookingTermsUrl}
       />
     )
@@ -496,7 +495,10 @@ const crumbs = breadcrumbSchema([
     font-weight: 700;
     font-size: var(--text-hero);
     line-height: var(--leading-display);
-    color: var(--color-on-dark);
+    /* White, as on the destination, city and train heroes. In on-dark
+       (#F7F5F6) two phone heroes measured 2.90 and 3.00:1 once the contrast
+       check scored text in its own colour (round 5). */
+    color: var(--color-white);
     max-width: 22ch;
     text-wrap: balance;
   }

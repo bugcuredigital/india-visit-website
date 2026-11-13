@@ -2,7 +2,7 @@
 variant: B
 title: "Golden Chariot: Jewels of the South"
 tripTypeTag: Luxury Train · Fixed Departures
-signatureFeature: Mysore to the Backwaters in Six Days
+signatureFeature: Mysuru to the Backwaters in Six Days
 
 # TEMP-PHOTO — temporary Unsplash image for design review only. The client's
 # own archive replaces this; see docs/brand/processed/TEMP-PHOTO-PROVENANCE.md
@@ -271,12 +271,12 @@ featured: false
 
 seo:
   metaTitle: "Golden Chariot: Jewels of the South, 5 Nights / 6 Days"
-  metaDescription: The Golden Chariot, five nights from Bengaluru through Mysore, Mahabalipuram, Thanjavur, Chettinad and Kochi to the backwaters.
+  metaDescription: The Golden Chariot, five nights from Bengaluru through Mysuru, Mahabalipuram, Thanjavur, Chettinad and Kochi to the backwaters.
 ---
 
 The Golden Chariot is South India's luxury train, and Jewels of the South is
 its loop through two states and three thousand years of building: the Wadiyar
-palace at Mysore, the Pallava shore temples at Mahabalipuram, the Chola summit
+palace at Mysuru, the Pallava shore temples at Mahabalipuram, the Chola summit
 at Thanjavur, the merchant mansions of Chettinad, and then over the Ghats to
 Kochi and the backwaters. Six days, one unpacking, and the distances covered
 while you sleep.

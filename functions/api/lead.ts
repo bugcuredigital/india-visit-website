@@ -34,7 +34,11 @@ const DEFAULT_FROM = 'India Visit website <enquiries@india-visit.com>';
 /** The honeypot (src/lib/forms.ts says why its name must mean nothing to AutoFill). */
 const HONEYPOTS = [HONEYPOT_FIELD];
 
-const LIMITS: Record<string, number> = { name: 120, phone: 40, email: 160, message: 3000, notes: 3000 };
+const LIMITS: Record<string, number> = {
+  name: 120, phone: 40, email: 160, message: 3000, notes: 3000,
+  // the corporate brief (round 5, #78)
+  company: 160, groupSize: 40, travelDates: 120, budget: 40,
+};
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -96,6 +100,11 @@ export const onRequestPost = async ({ request, env }: Context): Promise<Response
   if (phone.replace(/\D/g, '').length < 7) errors.phone = FIELD_MESSAGES.phone;
   if (email && !EMAIL.test(email)) errors.email = FIELD_MESSAGES.email;
   if (!form.get('consent')) errors.consent = FIELD_MESSAGES.consent;
+  // The corporate brief asks for the company first; the browser enforces it
+  // too, this covers a visitor without JavaScript.
+  const corporate = get('leadType') === 'corporate';
+  const company = get('company');
+  if (corporate && !company) errors.company = FIELD_MESSAGES.company;
   for (const [key, max] of Object.entries(LIMITS)) if (get(key).length > max) errors[key] = FIELD_MESSAGES.tooLong;
   if (Object.keys(errors).length) {
     log('refused: invalid', { fields: Object.keys(errors) });
@@ -116,7 +125,7 @@ export const onRequestPost = async ({ request, env }: Context): Promise<Response
     if (values.length) lines.push(`${key}: ${values.join(', ')}`);
   }
   const journey = get('journeyTitle');
-  const subject = `New enquiry: ${name}${journey ? ` · ${journey}` : ''}`;
+  const subject = `${corporate ? 'New corporate brief' : 'New enquiry'}: ${name}${company ? ` · ${company}` : ''}${journey ? ` · ${journey}` : ''}`;
 
   const sent = await fetch('https://api.resend.com/emails', {
     method: 'POST',

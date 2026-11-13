@@ -12,7 +12,7 @@
  *   · Turnstile mounts into the marked container in M6
  */
 import Button from './Button.astro';
-import { LEADS_LIVE, PDF_GATE_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD } from '../lib/forms';
+import { LEADS_LIVE, PDF_GATE_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD, BUDGET_BANDS } from '../lib/forms';
 
 interface Props {
   /** Tags the lead so corporate enquiries route separately. */
@@ -33,13 +33,17 @@ interface Props {
    *             The file path is never in the markup: the lead function (M6)
    *             derives it from `journeySlug` and releases it after a valid
    *             submit, which is what makes the gate a gate.
+   *   corporate — the corporate brief (PAGE_TEMPLATES T5 §6, round 5 #78):
+   *             company, name, phone, email, group size, dates, budget band,
+   *             requirements. Company is required; the lead arrives tagged
+   *             `corporate` through `leadType`.
    *
    * Every layout shares the same honeypot, the same hidden context fields and
    * the same required consent checkbox. That machinery is the reason the
    * footer form is a mode of this component rather than a second form: a
    * second form is a second place for the consent checkbox to go missing.
    */
-  layout?: 'full' | 'compact' | 'footer' | 'pdf';
+  layout?: 'full' | 'compact' | 'footer' | 'pdf' | 'corporate';
   onDark?: boolean;
 }
 
@@ -55,6 +59,7 @@ const {
 const isCompact = layout === 'compact';
 const isFooter = layout === 'footer';
 const isPdf = layout === 'pdf';
+const isCorporate = layout === 'corporate';
 const live = isPdf ? PDF_GATE_LIVE : LEADS_LIVE;
 
 const uid = Math.random().toString(36).slice(2, 8);
@@ -95,6 +100,13 @@ const MONTHS = [
   </div>
 
   <div class="form__grid">
+    {isCorporate && (
+      <p class="form__field form__field--wide">
+        <label class="form__label" for={id('company')}>Company</label>
+        <input class="form__input" type="text" id={id('company')} name="company" autocomplete="organization" required />
+      </p>
+    )}
+
     <p class="form__field">
       <label class="form__label" for={id('name')}>Your name</label>
       <input class="form__input" type="text" id={id('name')} name="name" autocomplete="name" required />
@@ -105,14 +117,35 @@ const MONTHS = [
       <input class="form__input" type="tel" id={id('phone')} name="phone" autocomplete="tel" inputmode="tel" required />
     </p>
 
-    {(layout === 'full' || isPdf) && (
+    {(layout === 'full' || isPdf || isCorporate) && (
       <p class="form__field">
         <label class="form__label" for={id('email')}>Email</label>
         <input class="form__input" type="email" id={id('email')} name="email" autocomplete="email" required={isPdf} />
       </p>
     )}
 
-    {!isFooter && !isPdf && (
+    {isCorporate && (
+      <>
+        <p class="form__field">
+          <label class="form__label" for={id('group')}>Group size</label>
+          <input class="form__input" type="text" id={id('group')} name="groupSize" inputmode="numeric" autocomplete="off" />
+        </p>
+        <p class="form__field">
+          <label class="form__label" for={id('dates')}>Dates</label>
+          <input class="form__input" type="text" id={id('dates')} name="travelDates" autocomplete="off" />
+        </p>
+        <p class="form__field">
+          <label class="form__label" for={id('budget')}>
+            Budget band <span class="form__optional">(optional)</span>
+          </label>
+          <select class="form__input" id={id('budget')} name="budget">
+            {BUDGET_BANDS.map((band) => <option value={band}>{band}</option>)}
+          </select>
+        </p>
+      </>
+    )}
+
+    {!isFooter && !isPdf && !isCorporate && (
       <p class="form__field">
         <label class="form__label" for={id('month')}>Travel month</label>
         <select class="form__input" id={id('month')} name="travelMonth">
@@ -124,7 +157,9 @@ const MONTHS = [
     {!isCompact && !isPdf && (
       <p class="form__field form__field--wide">
         <label class="form__label" for={id('message')}>
-          {isFooter ? 'Where would you like to go?' : (
+          {isFooter ? 'Where would you like to go?' : isCorporate ? (
+            <>Requirements <span class="form__optional">(optional)</span></>
+          ) : (
             <>Anything you'd like us to know? <span class="form__optional">(optional)</span></>
           )}
         </label>
@@ -145,7 +180,7 @@ const MONTHS = [
   <div data-turnstile></div>
 
   <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block disabled={!live}>
-    {!live ? FORMS_PENDING_LABEL : isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : 'Start planning'}
+    {!live ? FORMS_PENDING_LABEL : isFooter ? 'Send enquiry' : isPdf ? 'Send me the itinerary' : isCorporate ? 'Send the brief' : 'Start planning'}
   </Button>
 
   {live && <p class="form__status" data-lead-status role="status" aria-live="polite"></p>}
@@ -288,9 +323,12 @@ const MONTHS = [
     color: var(--color-on-dark);
   }
 
+  /* The border is the field's edge on a dark ground, so it needs 3:1
+     (WCAG 1.4.11). At 28% it measured 2.0:1 on burgundy and 2.4:1 on the ink
+     footer; at 50% it is 3.5:1 and 4.9:1 (round 5, #7). */
   .form--on-dark .form__input {
     background-color: rgb(255 255 255 / 0.08);
-    border-color: rgb(247 245 246 / 0.28);
+    border-color: color-mix(in srgb, var(--color-on-dark) 50%, transparent);
     color: var(--color-on-dark);
   }
 

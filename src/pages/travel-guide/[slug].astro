@@ -162,7 +162,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
 
     <!-- 2 + 3 · TOC and body --------------------------------------------- -->
     <div class="band band-tight">
-      <div class="container-content body">
+      <div class:list={['container-content', 'body', { 'body--toc': showToc }]}>
         {
           showToc && (
             <nav class="toc" aria-labelledby="toc-heading">
@@ -212,10 +212,13 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
             <Lotus size={22} tone="crimson" class="author__mark" />
             <div>
               <p class="author__name">{settings.siteName}</p>
+              <!-- Neutral attribution until the client confirms an authorship
+                   claim: "written by the person who plans them" was struck
+                   (round 5, #58), and "India and its neighbours" was untrue
+                   of Bali and Vietnam. -->
               <p class="author__bio">
-                {settings.yearsExperience} years arranging private journeys across
-                India and its neighbours. Every itinerary on this site was written
-                by the person who plans them, not by a content team.
+                From the {settings.siteName} travel desk: {settings.yearsExperience}
+                years arranging private journeys across India and beyond.
               </p>
             </div>
           </aside>
@@ -340,8 +343,11 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
     gap: 2rem;
   }
 
+  /* Two columns only when there is a table of contents to fill the first.
+     Without one, the body fell into the 16rem TOC column, ~28 characters a
+     line beside an empty one (round 5, #57). */
   @media (min-width: 64rem) {
-    .body {
+    .body--toc {
       grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
       gap: 4rem;
       align-items: start;

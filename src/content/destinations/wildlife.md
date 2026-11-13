@@ -4,6 +4,7 @@
 # TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: Wildlife Journeys
 shortLabel: Wildlife
+inSentence: India's wildlife reserves
 tagline: Tiger, leopard and rhino, in reserves chosen for the animals rather than the numbers.
 region: india
 order: 6

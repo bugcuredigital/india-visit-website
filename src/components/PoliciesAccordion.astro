@@ -8,11 +8,14 @@
  * The operator disclosure sits in the section header, not buried in a panel:
  * the client's own document limits liability to that of booking agent, so the
  * site has to say so plainly.
+ *
+ * Once. The disclosure already names the operator ("Operated by RTDC, …"), so
+ * the separate "Operated by {operatorName}." line printed the same attribution
+ * twice in a row (round 5, #36).
  */
 interface Props {
   policies: Array<{ heading: string; body: string }>;
   operatorDisclosure?: string;
-  operatorName?: string;
   bookingTermsUrl?: string;
   heading?: string;
 }
@@ -20,7 +23,6 @@ interface Props {
 const {
   policies,
   operatorDisclosure,
-  operatorName,
   bookingTermsUrl = '/booking-terms/',
   heading = 'Policies & cancellation',
 } = Astro.props;
@@ -32,9 +34,7 @@ const {
 
     {operatorDisclosure && (
       <p class="policies__disclosure">
-        {operatorDisclosure}
-        {operatorName && <><br /><span class="policies__operator">Operated by {operatorName}.</span></>}
-        {' '}
+        {operatorDisclosure}{' '}
         <a href={bookingTermsUrl}>Full booking terms</a>
       </p>
     )}
@@ -65,11 +65,6 @@ const {
     margin-top: 1.25rem;
     font-size: var(--text-sm);
     color: var(--color-ink-muted);
-  }
-
-  .policies__operator {
-    color: var(--color-ink);
-    font-weight: 500;
   }
 
   .policies {

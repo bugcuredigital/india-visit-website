@@ -212,20 +212,23 @@ const crumbs = breadcrumbSchema([
 </Base>
 
 <style>
+  /* White: over the photograph the muted pink measured 3.0-3.9:1 against the
+     lightest ground pixel, and even on-dark (#F7F5F6) 4.25:1 on Ladakh at 390
+     (round 5, #6; check:hero-contrast now scores each run in its own colour). */
   .crumbs {
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
     font-size: var(--text-sm);
-    color: var(--color-on-dark-muted);
+    color: var(--color-white);
   }
 
   .crumbs a {
-    color: var(--color-on-dark-muted);
+    color: var(--color-white);
   }
 
   .crumbs a:hover {
-    color: var(--color-white);
+    text-decoration-thickness: 2px;
   }
 
   .trains__title {

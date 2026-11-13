@@ -20,6 +20,8 @@ interface Props {
   external?: boolean;
   class?: string;
   'aria-label'?: string;
+  /** Marks a link to the page you are on (the header pill on Plan My Trip). */
+  'aria-current'?: 'page';
   id?: string;
   disabled?: boolean;
   'data-analytics'?: string;
@@ -119,6 +121,21 @@ const tagProps = href
 
   .btn--ghost:hover:not(:disabled) {
     color: var(--color-burgundy);
+  }
+
+  /* A ghost on a dark ground (a hero's second action): on-dark text, since
+     crimson text lacks contrast there, underlined so it still reads as a
+     link without a box around it. */
+  :global(.on-dark) .btn--ghost {
+    color: var(--color-on-dark);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+
+  :global(.on-dark) .btn--ghost:hover:not(:disabled) {
+    color: var(--color-on-dark);
+    text-decoration-thickness: 2px;
   }
 
   /* On a dark band: white outline, since crimson lacks contrast there. */

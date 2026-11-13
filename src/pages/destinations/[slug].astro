@@ -44,6 +44,9 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const destination = entry.data;
+// The region inside a sentence ("Journeys in the North East"); the short label
+// stays for label-shaped places such as the breadcrumb (round 5, #44).
+const inSentence = destination.inSentence ?? destination.shortLabel;
 const { Content } = await render(entry);
 
 const heroLink = await heroPreload(destination.heroImage);
@@ -133,7 +136,7 @@ const faq = faqSchema(destination.faq);
       -->
       <details class="more">
         <summary class="more__summary">
-          <span class="more__label">More about {destination.shortLabel}</span>
+          <span class="more__label">More about {inSentence}</span>
           <svg class="more__chevron" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
             <path
               d="M1 1.5 6 6.5l5-5"
@@ -160,7 +163,7 @@ const faq = faqSchema(destination.faq);
           <div class="sectionhead">
             <div>
               <p class="eyebrow">Journeys</p>
-              <h2 id="journeys-heading">Journeys in {destination.shortLabel}</h2>
+              <h2 id="journeys-heading">Journeys in {inSentence}</h2>
             </div>
             <a class="pill tap-target" href="/journeys/">
               All journeys
@@ -201,7 +204,7 @@ const faq = faqSchema(destination.faq);
       <section class="band band-tight" aria-labelledby="defines-heading">
         <div class="container-content">
           <p class="eyebrow">What defines it</p>
-          <h2 id="defines-heading">What defines {destination.shortLabel}</h2>
+          <h2 id="defines-heading">What defines {inSentence}</h2>
 
           <ul class="tiles fade-up-stagger">
             {destination.experiences.map((experience) => (
@@ -270,8 +273,14 @@ const faq = faqSchema(destination.faq);
     posts.length > 0 && (
       <section class="band band-tight" aria-labelledby="reading-heading">
         <div class="container-content">
-          <p class="eyebrow">Travel guide</p>
-          <h2 id="reading-heading">Reading before you go</h2>
+          <!-- The shared section head: without it the H2 sat flush on the
+               photographs, 0px, descenders touching (round 5, #43). -->
+          <div class="sectionhead">
+            <div>
+              <p class="eyebrow">Travel guide</p>
+              <h2 id="reading-heading">Reading before you go</h2>
+            </div>
+          </div>
           <div class="cards fade-up-stagger">
             {posts.map((post) => (
               <ArticleCard
@@ -294,8 +303,8 @@ const faq = faqSchema(destination.faq);
   <!-- 9 · Convert ------------------------------------------------------------ -->
   <div id="enquire">
     <ConvertBand
-      heading={`Shall we plan ${destination.shortLabel}?`}
-      body={`Tell us roughly when you would like to travel and how long you have, and we will come back with a day-by-day plan for ${destination.shortLabel} and a price.`}
+      heading={`Shall we plan a trip to ${inSentence}?`}
+      body={`Tell us roughly when you would like to travel and how long you have, and we will come back with a day-by-day plan for ${inSentence} and a price.`}
       leadType="general"
       waContext={destination.shortLabel}
     />
@@ -307,21 +316,24 @@ const faq = faqSchema(destination.faq);
 
 <style>
   /* ---- hero copy -------------------------------------------------------- */
+  /* White: over the photograph the muted pink measured 3.0-3.9:1 against the
+     lightest ground pixel, and even on-dark (#F7F5F6) 4.25:1 on Ladakh at 390
+     (round 5, #6; check:hero-contrast now scores each run in its own colour). */
   .crumbs {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
     font-size: var(--text-sm);
-    color: var(--color-on-dark-muted);
+    color: var(--color-white);
   }
 
   .crumbs a {
-    color: var(--color-on-dark-muted);
+    color: var(--color-white);
   }
 
   .crumbs a:hover {
-    color: var(--color-white);
+    text-decoration-thickness: 2px;
   }
 
   .dest__title {

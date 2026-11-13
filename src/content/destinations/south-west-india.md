@@ -4,6 +4,7 @@
 # TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: South & West India Heritage
 shortLabel: South & West
+inSentence: South & West India
 tagline: Cave temples, Deccan sultanates and the coast that traded with Rome.
 region: india
 order: 3

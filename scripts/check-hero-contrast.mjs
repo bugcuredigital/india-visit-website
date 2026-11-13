@@ -12,10 +12,16 @@
  * gradient, plus a video frame nobody has seen.
  *
  * So this measures it the only way that is actually true: render the page,
- * record where each piece of hero text sits, hide the text, photograph what
- * was behind it, and take the LIGHTEST ground pixel in each box — the worst
- * case for white type, not the average, because a headline is unreadable if
- * one word of it lands on a bright cloud.
+ * record where each piece of hero text sits AND what colour it is, hide the
+ * text, photograph what was behind it, and score every ground pixel in each
+ * box against that colour, keeping the WORST: not the average, because a
+ * headline is unreadable if one word of it lands on a bright cloud.
+ *
+ * In the run's OWN colour (round 5). Until 13 Nov 2026 every run was scored
+ * as if it were white, which is right for the H1 and wrong for anything
+ * lighter-than-ink-but-not-white: the breadcrumbs in on-dark-muted (#E0CBD4)
+ * measured 3.0-3.9:1 on eleven heroes and the check passed them all. A
+ * breadcrumb in the hero that this check cannot find now fails it too.
  *
  * Thresholds are WCAG AA: 4.5:1 for normal text, 3:1 for large text (>=24px
  * bold, or >=18.66px bold / >=24px regular per the spec).
@@ -150,9 +156,22 @@ const linear = (channel) => {
   return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
 };
 
-/** WCAG relative luminance, then contrast against pure white. */
-const contrastWithWhite = (r, g, b) =>
-  1.05 / (0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b) + 0.05);
+const luminance = ([r, g, b]) => 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+
+/** "rgb(a, b, c)" / "rgba(a, b, c, d)" → [r, g, b, alpha]. */
+const parseColour = (value) => {
+  const parts = (value.match(/[\d.]+/g) || []).map(Number);
+  return [parts[0] ?? 255, parts[1] ?? 255, parts[2] ?? 255, parts.length >= 4 ? parts[3] : 1];
+};
+
+/** WCAG contrast of a text colour on one ground pixel. A translucent text
+ *  colour is composited over that pixel first, as the browser draws it. */
+const contrastOn = ([tr, tg, tb, ta], ground) => {
+  const text = [tr, tg, tb].map((c, i) => ta * c + (1 - ta) * ground[i]);
+  const a = luminance(text);
+  const b = luminance(ground);
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+};
 
 const failures = [];
 const rows = [];
@@ -227,13 +246,16 @@ for (const url of urls) {
         const large = size >= 24 || (size >= 18.66 && weight >= 700);
         out.push({
           text: text.slice(0, 44),
+          colour: style.color,
+          crumb: Boolean(node.closest('nav[aria-label="Breadcrumb"], .crumbs')),
           large,
           size: Math.round(size),
           x: Math.round(rect.left), y: Math.round(rect.top),
           w: Math.round(rect.width), h: Math.round(rect.height),
         });
       }
-      return { out, hero: { h: Math.round(heroBox.height) } };
+      const crumbs = hero.querySelectorAll('.hero__content :is(nav[aria-label="Breadcrumb"], .crumbs)').length;
+      return { out, crumbs, hero: { h: Math.round(heroBox.height) } };
     })()`);
 
     if (!boxes) {
@@ -259,7 +281,14 @@ for (const url of urls) {
     const png = Buffer.from(data, 'base64');
     const { data: raw, info } = await sharp(png).raw().toBuffer({ resolveWithObject: true });
 
+    // Coverage, stated rather than assumed: a hero that renders a breadcrumb
+    // must yield at least one measured breadcrumb run.
+    if (boxes.crumbs && !boxes.out.some((box) => box.crumb)) {
+      failures.push(`${url} [${viewport.label}] has a hero breadcrumb but no breadcrumb text was measured`);
+    }
+
     for (const box of boxes.out) {
+      const colour = parseColour(box.colour);
       let worst = Infinity;
       let worstPixel = null;
       const x0 = Math.max(0, box.x);
@@ -269,7 +298,7 @@ for (const url of urls) {
       for (let y = y0; y < y1; y++) {
         for (let x = x0; x < x1; x++) {
           const i = (y * info.width + x) * info.channels;
-          const value = contrastWithWhite(raw[i], raw[i + 1], raw[i + 2]);
+          const value = contrastOn(colour, [raw[i], raw[i + 1], raw[i + 2]]);
           if (value < worst) {
             worst = value;
             worstPixel = [raw[i], raw[i + 1], raw[i + 2]];
@@ -284,6 +313,8 @@ for (const url of urls) {
         url,
         viewport: viewport.label,
         text: box.text,
+        colour: box.colour,
+        crumb: box.crumb,
         size: box.size,
         large: box.large,
         worst,
@@ -294,7 +325,7 @@ for (const url of urls) {
       if (!ok) {
         failures.push(
           `${url} [${viewport.label}] "${box.text}" — ${worst.toFixed(2)}:1 ` +
-            `on rgb(${worstPixel}) needs ${required}:1 (${box.size}px${box.large ? ', large' : ''})`,
+            `(${box.colour} on rgb(${worstPixel})) needs ${required}:1 (${box.size}px${box.large ? ', large' : ''})`,
         );
       }
     }
@@ -303,14 +334,16 @@ for (const url of urls) {
   }
 }
 
-console.log('\nHero contrast — lightest ground pixel behind each run of white text\n');
+console.log('\nHero contrast — worst ground pixel behind each run, scored in the run\'s own colour\n');
 for (const row of rows) {
   console.log(
     `  ${row.ok ? 'ok  ' : 'FAIL'}  ${row.worst.toFixed(2).padStart(5)}:1 ` +
       `(needs ${String(row.required).padEnd(3)})  ${row.viewport.padEnd(7)} ` +
-      `${row.size}px${row.large ? ' L' : '  '}  "${row.text}"`,
+      `${row.size}px${row.large ? ' L' : '  '}${row.crumb ? ' crumb' : '      '}  "${row.text}"  ${row.colour}`,
   );
 }
+const crumbRows = rows.filter((row) => row.crumb);
+console.log(`\n  Breadcrumb runs measured: ${crumbRows.length} (${crumbRows.filter((row) => !row.ok).length} failing)`);
 
 if (failures.length) {
   console.error(`\n  ${failures.length} contrast FAILURE(S):`);

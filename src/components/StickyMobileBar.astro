@@ -52,6 +52,10 @@ const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquir
 
 <div id="bar-sentinel" aria-hidden="true"></div>
 
+<!-- Holds the bar's height at the end of the page (round 5, #8): without it,
+     at full scroll the bar sat on the footer's last line. -->
+<div class="bar__spacer" aria-hidden="true"></div>
+
 <div class="bar" data-sticky-bar>
   <nav class="bar__inner" aria-label="Contact us">
     {actions.map((action) => (
@@ -105,6 +109,20 @@ const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquir
     height: 60vh;
     width: 1px;
     pointer-events: none;
+  }
+
+  /* ---- Spacer ------------------------------------------------------------
+     The bar's own height: a 1px rule plus 52px actions plus the safe-area
+     inset. Ink, so it reads as the footer running on behind the bar. */
+  .bar__spacer {
+    height: calc(53px + env(safe-area-inset-bottom));
+    background-color: var(--color-ink);
+  }
+
+  @media (min-width: 48rem) {
+    .bar__spacer {
+      display: none;
+    }
   }
 
   /* ---- Mobile bar ------------------------------------------------------ */

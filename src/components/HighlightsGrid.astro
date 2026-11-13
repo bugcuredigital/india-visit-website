@@ -62,6 +62,9 @@ const { highlights, heading = 'Journey Highlights' } = Astro.props;
     /* Optical alignment with the first line of text. */
     margin-top: 0.28em;
     color: var(--color-crimson);
+    /* A flex item may shrink: beside a wrapping line the 20px lotus fell to
+       5-12px at 390 (round 5, #29). The mark keeps its size. */
+    flex: none;
   }
 
   /* A step up from the 16px body floor: the highlights are the section

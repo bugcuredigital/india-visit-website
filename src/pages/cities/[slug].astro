@@ -256,28 +256,40 @@ const QUICK_FACTS = [
 
 <style>
   /* ---- hero copy ------------------------------------------------------- */
+  /* White: over the photograph the muted pink measured 3.0-3.9:1 against the
+     lightest ground pixel, and even on-dark (#F7F5F6) 4.25:1 on Ladakh at 390
+     (round 5, #6; check:hero-contrast now scores each run in its own colour). */
   .crumbs {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
     font-size: var(--text-sm);
-    color: var(--color-on-dark-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-on-dark-muted);
-  }
-
-  .crumbs a:hover {
     color: var(--color-white);
   }
 
+  .crumbs a {
+    color: var(--color-white);
+  }
+
+  .crumbs a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Its own burgundy ground, the journey trip-type tag's pattern: yellow
+     straight on the photograph measured 3.55:1 (Jaipur) and 3.85:1 (Kochi) at
+     1280, and an opaque ground makes the contrast a property of the design,
+     not of the photograph (CLAUDE.md, hero gradients; round 5). */
   .city__state {
+    display: inline-block;
+    margin: 0;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-burgundy);
     font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-yellow);
   }
