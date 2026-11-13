@@ -52,15 +52,14 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 3. **Deccan Odyssey day-by-day**: eight provisional days until the operator's
    programme arrives (`CLIENT_REVIEW_SHEET.md` §22). Do not launch it as-is.
 4. **Legal copy** for `/privacy/`, `/terms/`, `/cancellation/`: structure only,
-   `noindex`, needs the client's adviser (§19).
+   `noindex`, needs the client's adviser (§19). `/booking-terms/` is not one of
+   them: its text is APPROVED (K3), and since the client's ruling of 13 Nov it
+   carries no notice and is indexed.
 5. **PDF gating is not real until the M6 PDF release**: the files are public,
    and the PDF form reads "Launching shortly".
 6. **Copy approval**: drafted strings stay `DRAFT` in `docs/COPY_REGISTER.md`
    (§A–§S) until struck or approved. §S (13 Nov) registers every string the
    round-5 sweep found unregistered; its ⚑ rows are claims for the client.
-7. **`/booking-terms/`** shows the "This page is not final" notice and is
-   noindexed although its text is APPROVED (K3). Found 13 Nov; a one-line fix
-   waits for the client's ruling.
 
 ## Provisional (renders, flagged, reversible)
 
