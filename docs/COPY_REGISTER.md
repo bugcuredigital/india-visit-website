@@ -350,7 +350,7 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 | S47 | Lead function, the page shown without JavaScript | "Back to the page" | **DRAFT** | |
 | S48 | Cabin cards, train pages | "Top tier" flag | **DRAFT** | Template Spec S9 asks for the top tier to be "visually flagged" but gives no label. On Golden Chariot it marks the only cabin (audit 38, med). |
 | S49 | Destination and city pages, journeys eyebrow | "Journeys" | **DRAFT** | Counted as the A13 nav word by the sweep and as unregistered by the audit; listed so it is settled. |
-| S50 | Policy pages, provisional notice | K2 text | — | **Also renders on `/booking-terms/`**, whose body is APPROVED (K3), and keeps that page out of search engines. Found by this sweep; reported to the client, not changed this round. |
+| S50 | Policy pages, provisional notice | K2 text | — | Renders on the three K2 pages only. Until 13 Nov it also rendered on `/booking-terms/`, whose body is APPROVED (K3), and kept that page out of search engines. Removed there by the client's ruling of 13 Nov: the page is operational, not one of the three legal drafts. |
 
 ### Not rendering today, registered so they never go live unregistered
 

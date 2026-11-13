@@ -9,6 +9,11 @@
  * than retyped, which means this page cannot drift from the train pages that
  * point at it — and an operator whose terms change is edited in one place.
  *
+ * Published, not provisional: its body is APPROVED (COPY_REGISTER K3) and it
+ * is operational copy, not one of the three legal drafts, so it carries no
+ * "not final" notice and is indexed (client ruling, 13 Nov 2026). The other
+ * three keep both until the client's adviser signs them off (review sheet §19).
+ *
  * NO TARIFFS, here or anywhere. The source documents carry published USD
  * slabs expressed as percentages of fare; the percentages are the part that
  * matters to a traveller and the only part reproduced.
@@ -34,6 +39,7 @@ const trains = (await getCollection('journeys', ({ data }) => !data.draft))
   heading="Booking terms: luxury trains"
   description="How luxury-train bookings work through India Visit: the operator's role, the confirmation process, and cancellation terms."
   path="/booking-terms/"
+  provisional={false}
 >
   <h2 id="our-role">Our role</h2>
   <p>
