@@ -337,6 +337,13 @@ const destinations = defineCollection({
       heroImageAlt: z.string().min(1),
       /** Short label for the homepage tile strip (all nine since T1 v2). */
       shortLabel: z.string().min(1),
+      /**
+       * The region as it reads INSIDE a sentence: "Journeys in …", "More about
+       * …", "Shall we plan a trip to …?". Optional; empty falls back to
+       * `shortLabel`, which reads correctly for most places but gave "Journeys
+       * in Wildlife" and "Shall we plan North East?" (round 5, #44).
+       */
+      inSentence: z.string().min(1).optional(),
       region: z.enum(['india', 'beyond-india']),
 
       /**

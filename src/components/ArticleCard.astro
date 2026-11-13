@@ -21,9 +21,14 @@ interface Props {
   imageAlt: string;
   publishDate: Date;
   updatedDate?: Date;
+  /** The Travel Guide index's lead article (T8 §2): a 21:9 frame across the
+   *  container, files sized for that width, an H2-scale title. Until round 5
+   *  (#68) the index styled a class this card does not have, so the lead
+   *  rendered 4:3 from a 352px file stretched ~3.4×. */
+  featured?: boolean;
 }
 
-const { slug, title, category, excerpt, image, imageAlt, publishDate, updatedDate } =
+const { slug, title, category, excerpt, image, imageAlt, publishDate, updatedDate, featured = false } =
   Astro.props;
 
 const shown = updatedDate ?? publishDate;
@@ -33,14 +38,15 @@ const dateLabel = shown.toLocaleDateString('en-GB', {
 });
 ---
 
-<article class="post">
+<article class:list={['post', { 'post--featured': featured }]}>
   <div class="post__frame">
     <Image
       src={image}
       alt={imageAlt}
-      widths={[320, 480, 720]}
-      sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 92vw"
-      loading="lazy"
+      widths={featured ? [640, 960, 1280, 1600] : [320, 480, 720]}
+      sizes={featured ? '(min-width: 80rem) 76rem, 92vw' : '(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 92vw'}
+      loading={featured ? 'eager' : 'lazy'}
+      fetchpriority={featured ? 'high' : undefined}
       class="post__image"
     />
   </div>
@@ -66,7 +72,15 @@ const dateLabel = shown.toLocaleDateString('en-GB', {
     flex-direction: column;
   }
 
+  /* The frame's shape is the template's, whatever the file is. In the card's
+     flex column the frame's automatic minimum height was the photograph's own
+     height, so every card rendered at its file's ratio (3:2), and the
+     featured card's 21:9 never applied (round 5, #68; the journey card's #42
+     had the same cause). The image fills the frame absolutely. */
   .post__frame {
+    position: relative;
+    flex: none;
+    min-height: 0;
     overflow: clip;
     border-radius: var(--radius-md);
     background-color: var(--color-offwhite);
@@ -74,9 +88,22 @@ const dateLabel = shown.toLocaleDateString('en-GB', {
   }
 
   .post__image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* 21:9 from 40rem; on a phone that would be a 160px strip, so it stays 4:3. */
+  @media (min-width: 40rem) {
+    .post--featured .post__frame {
+      aspect-ratio: 21 / 9;
+    }
+  }
+
+  .post--featured .post__title {
+    font-size: var(--text-h2);
   }
 
   .post__meta {

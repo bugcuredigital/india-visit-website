@@ -84,7 +84,7 @@ itineraryDays:
     overnight: Overnight in Kochi
   - dayNo: 3
     title: "Into the Hills: Kochi to Munnar"
-    transport: { mode: drive, detail: Drive 172 km }
+    transport: { mode: drive, detail: Drive — 172 km }
     narrative: >-
       Climb from Kochi into Munnar, Kerala's largest tea-growing region, set
       across the Kannan Devan Hills. Mist clings to the peaks as the road rises
@@ -105,7 +105,7 @@ itineraryDays:
     overnight: Overnight in Munnar
   - dayNo: 5
     title: "Munnar to Thekkady: Into Tiger Country"
-    transport: { mode: drive, detail: Drive 159 km }
+    transport: { mode: drive, detail: Drive — 159 km }
     narrative: >-
       Continue by road to Thekkady, home of the Periyar Tiger and Elephant
       Reserve. Watch for Indian elephants, Bengal tigers, wild boar, sambar,
@@ -127,7 +127,7 @@ itineraryDays:
     overnight: Overnight in Thekkady
   - dayNo: 7
     title: "Alappuzha: Venice of the East"
-    transport: { mode: drive, detail: Drive 109 km }
+    transport: { mode: drive, detail: Drive — 109 km }
     narrative: >-
       Drive to Alappuzha, once known as Alleppey and fondly nicknamed the
       Venice of the East for its maze of canals, backwaters, lagoons and
@@ -149,7 +149,7 @@ itineraryDays:
     overnight: Overnight aboard the houseboat
   - dayNo: 9
     title: "Mararikulam: To the Coast"
-    transport: { mode: drive, detail: Drive 11 km }
+    transport: { mode: drive, detail: Drive — 11 km }
     narrative: >-
       Drive to Mararikulam, a quiet beach village a short distance from
       Alappuzha. Mararikulam Beach was rated by National Geographic among the

@@ -37,6 +37,11 @@ const destinations = (await getCollection('destinations'))
   .map((entry) => ({ label: entry.data.name, href: `/destinations/${entry.id}/` }));
 
 const isCurrent = (href: string) => currentPath === href || currentPath.startsWith(href);
+
+// On Plan My Trip the pill would be a crimson link to the page you are on,
+// competing with the form's own Next for the page's one crimson action
+// (round 5, #87). There it becomes a quiet outline and says it is current.
+const onPlanPage = currentPath.startsWith('/plan-my-trip/');
 ---
 
 {overlay && <div id="header-sentinel" aria-hidden="true"></div>}
@@ -124,7 +129,15 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
           <path d="M7.2 7.1c.3-.6 1-.5 1.2-.1l.5 1c.1.3 0 .5-.2.7l-.3.3c.4.8 1 1.4 1.8 1.8l.3-.3c.2-.2.4-.3.7-.2l1 .5c.4.2.5.9-.1 1.2-1.2.6-2.6-.1-3.6-1.1S6.6 8.3 7.2 7.1Z" fill="currentColor"/>
         </svg>
       </a>
-      <Button href="/plan-my-trip/" size="sm" class="header__cta">Plan My Trip</Button>
+      <Button
+        href="/plan-my-trip/"
+        size="sm"
+        variant={onPlanPage ? 'secondary' : 'primary'}
+        class="header__cta"
+        aria-current={onPlanPage ? 'page' : undefined}
+      >
+        Plan My Trip
+      </Button>
 
       <button
         type="button"
@@ -241,10 +254,25 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
       color-mix(in srgb, var(--color-ink) 20%, transparent) 68%,
       transparent 100%
     );
+    /* The image is sized to the padding box and would otherwise repeat into
+       the 1px transparent border below it: its 58% top edge drew a dark seam
+       across every hero at y=72 (round 5, #1). */
+    background-repeat: no-repeat;
   }
 
   .header--overlay :is(.header__link, .header__icon, .header__summary) {
     color: var(--color-white);
+  }
+
+  /* Over the photograph the crimson ring measured 1.75:1; yellow is legal on
+     the ink wash and clears 6:1 (round 5, #5). The white dropdown panel keeps
+     the light-ground ring, and a solid header goes back to crimson. */
+  .header--overlay:not(.is-solid) .header__inner :focus-visible {
+    outline-color: var(--color-yellow);
+  }
+
+  .header--overlay:not(.is-solid) .menu__panel :focus-visible {
+    outline-color: var(--color-crimson);
   }
 
   .header--overlay.is-solid {
@@ -418,12 +446,16 @@ const isCurrent = (href: string) => currentPath === href || currentPath.startsWi
     color: var(--color-crimson);
   }
 
-  .header__cta {
+  /* Two classes, not one: Button's own `.btn { display: inline-flex }` has the
+     same specificity as a lone `.header__cta` and comes later in the bundle, so
+     the phone pill was never hidden and wrapped onto two lines beside the
+     sticky bar's Enquire (round 5, #4). */
+  .header__actions .header__cta {
     display: none;
   }
 
   @media (min-width: 48rem) {
-    .header__cta {
+    .header__actions .header__cta {
       display: inline-flex;
       margin-left: 0.5rem;
     }

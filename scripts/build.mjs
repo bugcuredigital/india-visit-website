@@ -38,3 +38,7 @@ if (hasCloud) {
   console.log('\n[build] No Tina Cloud credentials (TINA_PUBLIC_CLIENT_ID / TINA_TOKEN) — skipping the /admin build. The site builds as usual.\n');
 }
 run('npx', ['astro', 'build']);
+
+// After Astro, on what visitors will actually see: a transport chip that names
+// its mode twice ("Drive · Drive 172 km") fails the deploy (round 5, #30).
+run('node', ['scripts/check-transport-labels.mjs']);

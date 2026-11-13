@@ -32,7 +32,7 @@ import JsonLd from '../components/JsonLd.astro';
 import { getSiteSettings, whatsappLink } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
 import { DESTINATIONS } from '../lib/destinations-strip';
-import { LEADS_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD } from '../lib/forms';
+import { LEADS_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD, BUDGET_BANDS } from '../lib/forms';
 
 const settings = await getSiteSettings();
 
@@ -43,7 +43,7 @@ const MONTHS = [
 
 const DURATIONS = ['Under a week', '7–10 days', '11–14 days', 'Over two weeks', 'Not sure yet'];
 const PARTIES = ['A couple', 'A family', 'Friends', 'Solo', 'A company'];
-const BUDGETS = ['Rather not say', 'Comfortable', 'Premium', 'No ceiling'];
+const BUDGETS = BUDGET_BANDS;
 const CONTACT = ['WhatsApp', 'Phone call', 'Email'];
 
 const STEPS = [
@@ -104,8 +104,12 @@ const crumbs = breadcrumbSchema([
 
   <section class="band band-tight plan">
     <div class="container-content plan__grid">
-      <!-- ---- reassurance column ---------------------------------------- -->
-      <aside class="side">
+      <!-- ---- intro: the page's first screen -------------------------------
+           The reassurance column used to come first in the markup, so on a
+           phone the form started ~1,030px down an 844px screen (round 5, #88).
+           Now: intro, form, reassurance. From 64rem the intro and the
+           reassurance share the left column and the form spans both rows. -->
+      <div class="plan__intro">
         <nav class="crumbs" aria-label="Breadcrumb">
           <a href="/">Home</a>
           <span aria-hidden="true">/</span>
@@ -117,49 +121,7 @@ const crumbs = breadcrumbSchema([
           Four short questions. We will come back with a day-by-day plan and a
           price. If we are not the right people for the trip, we will say so.
         </p>
-
-        <h2 class="side__heading">What happens next</h2>
-        <ol class="next">
-          {
-            NEXT.map((item, index) => (
-              <li class="next__item">
-                <span class="next__no">{String(index + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3 class="next__title">{item.title}</h3>
-                  <p class="next__detail">{item.detail}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
-
-        <p class="side__sla">
-          <Lotus size={16} tone="crimson" class="side__mark" />
-          <span>
-            {
-              settings.responseSla
-                ? `We reply within ${settings.responseSla}.`
-                : 'We reply personally, and quickly: never a call centre and never a bot.'
-            }
-          </span>
-        </p>
-
-        <div class="side__direct">
-          <p class="side__label">Or reach us directly</p>
-          <a class="side__phone" href={settings.phoneHref} data-analytics="call_click">
-            {settings.phone}
-          </a>
-          <a
-            class="side__wa"
-            href={whatsappLink(settings, 'Plan My Trip')}
-            rel="noopener"
-            target="_blank"
-            data-analytics="wa_click"
-          >
-            WhatsApp us
-          </a>
-        </div>
-      </aside>
+      </div>
 
       <!-- ---- the form -------------------------------------------------- -->
       <div class="formwrap">
@@ -347,10 +309,55 @@ const crumbs = breadcrumbSchema([
           </div>
 
           <p class="form__reassure">
-            No obligation, no call centre, and we never pass your details on.
+            No obligation, no call centre. Your details go only to India Visit.
           </p>
         </form>
       </div>
+
+      <!-- ---- reassurance column ---------------------------------------- -->
+      <aside class="side" aria-labelledby="next-heading">
+        <h2 class="side__heading" id="next-heading">What happens next</h2>
+        <ol class="next">
+          {
+            NEXT.map((item, index) => (
+              <li class="next__item">
+                <span class="next__no">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="next__title">{item.title}</h3>
+                  <p class="next__detail">{item.detail}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        <p class="side__sla">
+          <Lotus size={16} tone="crimson" class="side__mark" />
+          <span>
+            {
+              settings.responseSla
+                ? `We reply within ${settings.responseSla}.`
+                : 'We reply personally, and quickly: never a call centre and never a bot.'
+            }
+          </span>
+        </p>
+
+        <div class="side__direct">
+          <p class="side__label">Or reach us directly</p>
+          <a class="side__phone" href={settings.phoneHref} data-analytics="call_click">
+            {settings.phone}
+          </a>
+          <a
+            class="side__wa"
+            href={whatsappLink(settings, 'Plan My Trip')}
+            rel="noopener"
+            target="_blank"
+            data-analytics="wa_click"
+          >
+            WhatsApp us
+          </a>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -448,11 +455,28 @@ const crumbs = breadcrumbSchema([
   @media (min-width: 64rem) {
     .plan__grid {
       grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
-      gap: 4rem;
+      /* The form spans both rows; the second row takes the spare height, so
+         the intro keeps its own size and the reassurance can stay in view
+         while the form is filled in. */
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        'intro form'
+        'side form';
+      column-gap: 4rem;
+      row-gap: 0;
       align-items: start;
     }
 
+    .plan__intro {
+      grid-area: intro;
+    }
+
+    .formwrap {
+      grid-area: form;
+    }
+
     .side {
+      grid-area: side;
       position: sticky;
       top: 6rem;
     }
@@ -548,6 +572,8 @@ const crumbs = breadcrumbSchema([
     color: var(--color-ink-muted);
   }
 
+  /* Ink, not crimson: on this page the one crimson action is the form's own
+     Next / Send (round 5, #87). Hover keeps the global burgundy. */
   .side__phone {
     display: block;
     margin-top: 0.6rem;
@@ -555,6 +581,7 @@ const crumbs = breadcrumbSchema([
     font-size: var(--text-2xl);
     font-weight: 700;
     text-decoration: none;
+    color: var(--color-ink);
   }
 
   .side__wa {
@@ -562,6 +589,7 @@ const crumbs = breadcrumbSchema([
     margin-top: 0.4rem;
     font-size: var(--text-sm);
     font-weight: 600;
+    color: var(--color-ink);
   }
 
   /* ---- form -------------------------------------------------------------- */
@@ -766,15 +794,24 @@ const crumbs = breadcrumbSchema([
     cursor: pointer;
   }
 
+  /* Next is the page's crimson primary, the same treatment as Send it over.
+     It used to be solid ink: the same fill, shape and height as a selected
+     chip, while the crimson sat on the header pill and the aside (round 5,
+     #87). Back stays the ink outline and fills ink on hover. */
   .nav__next {
-    background-color: var(--color-ink);
+    border-color: var(--color-crimson);
+    background-color: var(--color-crimson);
     color: var(--color-white);
   }
 
-  .nav__back:hover,
   .nav__next:hover {
-    border-color: var(--color-crimson);
-    background-color: var(--color-crimson);
+    border-color: var(--color-burgundy);
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+  }
+
+  .nav__back:hover {
+    background-color: var(--color-ink);
     color: var(--color-white);
   }
 

@@ -39,8 +39,11 @@ const SELF_LABEL: Record<Props['mode'], string[]> = {
   boat: ['Boat', 'Cruise', 'Ferry'],
   walk: ['On foot', 'Walk', 'Hike', 'Trek'],
 };
+// The separator is optional: "Drive 172 km" and "Fly to Paro" name their
+// own mode too, and without one they rendered "Drive · Drive 172 km" (round
+// 5, #30). `npm run check:transport-labels` fails the build on any survivor.
 const own = SELF_LABEL[mode]
-  .map((word) => new RegExp(`^(${word})\\s*[—:·]\\s+`, 'i').exec(detail))
+  .map((word) => new RegExp(`^(${word})(?:\\s*[—:·]\\s+|\\s+)`, 'i').exec(detail))
   .find(Boolean);
 const label = own ? own[1] : MODE_LABEL[mode];
 const rest = own ? detail.slice(own[0].length) : detail;

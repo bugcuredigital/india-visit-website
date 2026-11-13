@@ -41,10 +41,17 @@ export const FIELD_MESSAGES: Record<string, string> = {
   name: 'Please tell us your name.',
   phone: 'Please give a phone or WhatsApp number.',
   email: 'Please check your email address.',
+  company: 'Please tell us the company name.',
   consent: 'Please tick the consent box so we can reply.',
   tooLong: 'That is longer than we can take.',
   fallback: 'Please check the form and try again.',
 };
+
+/**
+ * Budget bands, deliberately without figures. One list for the Plan My Trip
+ * stepper and the corporate brief (round 5, #78), so the two never disagree.
+ */
+export const BUDGET_BANDS = ['Rather not say', 'Comfortable', 'Premium', 'No ceiling'];
 
 /**
  * The spam honeypot's field name. It must mean nothing to browser AutoFill:

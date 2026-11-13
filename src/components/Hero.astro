@@ -128,7 +128,9 @@ const HERO_VIDEO_JS = `
 `;
 ---
 
-<section class:list={['hero', `hero--${height}`]}>
+<!-- on-dark: the ink wash is a dark ground, so focus rings turn yellow here
+     (the crimson ring measured 3.02:1 on the photograph, round 5 #5). -->
+<section class:list={['hero', `hero--${height}`, 'on-dark']}>
   <!-- data-allow-clip: Ken Burns scales the image past the hero on purpose. -->
   <div data-allow-clip class:list={['hero__media', { 'hero__media--kenburns': kenBurns }]}>
     <!-- AVIF first, WebP fallback (invariant #3). The head preload targets the
@@ -428,24 +430,31 @@ const HERO_VIDEO_JS = `
     height: 12px;
   }
 
+  /* A still chevron. It used to bob forever (2.4s, infinite), the one loop on
+     the site outside the Ken Burns exemption (round 5, #21). */
   @media (prefers-reduced-motion: no-preference) {
     .hero__cue {
       transition: opacity var(--duration-base) var(--ease-brand);
     }
-
-    .hero__cue svg {
-      animation: hero-cue 2.4s var(--ease-brand) infinite;
-    }
   }
 
-  @keyframes hero-cue {
-    0%,
-    70%,
-    100% {
-      transform: translateY(0);
+  /* ---- hero actions: one crimson action per viewport (round 5, #3) -------
+     From 48rem the header's crimson Plan My Trip pill is on every screen, so
+     a hero's own primary steps down to the on-dark outline there and the pill
+     stays the one crimson action. Below 48rem the pill is hidden and the
+     sticky bar waits for the first scroll, so the hero keeps its crimson. A
+     hero's second action is a ghost (on-dark text, Button.astro). */
+  @media (min-width: 48rem) {
+    .hero__content :global(.btn--primary) {
+      background-color: transparent;
+      border-color: var(--color-on-dark);
+      color: var(--color-on-dark);
     }
-    35% {
-      transform: translateY(4px);
+
+    .hero__content :global(.btn--primary:hover:not(:disabled)) {
+      background-color: var(--color-on-dark);
+      border-color: var(--color-on-dark);
+      color: var(--color-burgundy);
     }
   }
 

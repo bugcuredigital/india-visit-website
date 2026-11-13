@@ -106,7 +106,7 @@ itineraryDays:
     overnight: Overnight in Shillong
   - dayNo: 5
     title: "Majuli: Across the Brahmaputra"
-    transport: { mode: boat, detail: Ferry from Nimati Ghat }
+    transport: { mode: boat, detail: Ferry — from Nimati Ghat }
     narrative: >-
       Travel onward to Majuli, the largest river island in the world, cradled
       by the Brahmaputra and home to centuries-old Assamese Vaishnavite
@@ -117,7 +117,7 @@ itineraryDays:
     overnight: Overnight in Majuli
   - dayNo: 6
     title: "Majuli: Island Rhythms"
-    transport: { mode: boat, detail: Boat ride on the Brahmaputra }
+    transport: { mode: boat, detail: Boat — on the Brahmaputra }
     narrative: >-
       A full day given over to island rhythms: river, craft, and quiet
       conversation with the people who call Majuli home. A boat on the

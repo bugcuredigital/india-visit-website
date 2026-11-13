@@ -4,6 +4,7 @@
 # TEMP-PHOTO (Unsplash) until the client's archive arrives.
 name: North East India
 shortLabel: North East
+inSentence: the North East
 tagline: Living root bridges, the wettest villages on earth, and the quietest corner of the country.
 region: india
 order: 5

@@ -128,13 +128,23 @@ const href = comingSoon ? '/plan-my-trip/' : `/journeys/${slug}/`;
     text-decoration: none;
   }
 
+  /* The frame is 4:3 whatever the file is. In the card's flex column the
+     box's automatic minimum height was the photograph's own height, so a
+     portrait upload (Tadoba, 1400×1750) grew the card to 347px tall and the
+     whole row with it (round 5, #42). The image now fills the frame
+     absolutely and contributes no size of its own. */
   .card__media {
     position: relative;
+    flex: none;
+    min-height: 0;
     aspect-ratio: 4 / 3;
+    overflow: hidden;
     background-color: var(--color-offwhite);
   }
 
   .card__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;

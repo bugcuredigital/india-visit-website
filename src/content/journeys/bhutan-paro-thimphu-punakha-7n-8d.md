@@ -61,7 +61,7 @@ glanceRows:
 itineraryDays:
   - dayNo: 1
     title: "Paro: Arrival in the Valley"
-    transport: { mode: flight, detail: "Fly to Paro, or by road via Phuntsholing" }
+    transport: { mode: flight, detail: "Fly — to Paro, or by road via Phuntsholing" }
     narrative: >-
       By air, fly directly into Paro on one of the world's most scenic
       approaches, weaving between Himalayan peaks before touching down in the

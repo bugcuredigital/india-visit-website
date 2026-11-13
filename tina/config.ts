@@ -402,6 +402,12 @@ const destinations: Collection = {
     imageField('heroImage', 'Hero image'),
     { type: 'string', name: 'heroImageAlt', label: 'Hero image alt text', required: true },
     { type: 'string', name: 'shortLabel', label: 'Short label (homepage tile)', required: true },
+    {
+      type: 'string',
+      name: 'inSentence',
+      label: 'Name inside a sentence',
+      description: 'How the region reads mid-sentence, e.g. "the North East" or "India\'s wildlife reserves". Used in "Journeys in …", "More about …" and "Shall we plan a trip to …?". Leave empty to use the short label.',
+    },
     { type: 'string', name: 'region', label: 'Region', required: true, options: ['india', 'beyond-india'] },
     {
       type: 'string',

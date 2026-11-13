@@ -234,7 +234,7 @@ const crumbs = breadcrumbSchema([
       </div>
 
       <div class="brief__form">
-        <EnquiryForm leadType="corporate" />
+        <EnquiryForm leadType="corporate" layout="corporate" />
       </div>
     </div>
   </section>
@@ -253,6 +253,13 @@ const crumbs = breadcrumbSchema([
      label-ish thing that is crimson elsewhere is burgundy here. */
   .eyebrow {
     color: var(--color-burgundy);
+  }
+
+  /* ...on light grounds. Scoped, the rule above outranked the global
+     `.on-dark .eyebrow` and set "How we work with companies" burgundy on the
+     burgundy band, 1.00:1 (round 5, #77). On a dark band it is yellow again. */
+  .on-dark .eyebrow {
+    color: var(--color-yellow);
   }
 
   .crumbs {

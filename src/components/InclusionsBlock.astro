@@ -90,6 +90,8 @@ const { inclusions, exclusions, standardisedCaveat = false } = Astro.props;
   .incl__glyph {
     margin-top: 0.3em;
     color: var(--color-crimson);
+    /* Never shrinks beside a wrapping line (round 5, #29). */
+    flex: none;
   }
 
   .incl__item-plain {

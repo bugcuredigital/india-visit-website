@@ -84,6 +84,7 @@ const crumbs = breadcrumbSchema([
               imageAlt={featured.data.heroImageAlt}
               publishDate={featured.data.publishDate}
               updatedDate={featured.data.updatedDate}
+              featured
             />
           </div>
         </div>
@@ -251,12 +252,6 @@ const crumbs = breadcrumbSchema([
     margin-top: 1rem;
     font-size: var(--text-xl);
     color: var(--color-ink-muted);
-  }
-
-  /* The featured card gets the full container width and a wider image; the
-     grid below it does not. One article is the offer, the rest are the shelf. */
-  .featured :global(.card__media) {
-    aspect-ratio: 21 / 9;
   }
 
   .filter {
