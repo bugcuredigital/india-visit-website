@@ -555,6 +555,12 @@ when your archive lands; regenerating all twenty is one command.
 
 ## 26. The editor — what we need from you for the M7 gate (added M7)
 
+**Status, 14 November: the editor is fully open.** A live save on 14 November
+(a title and a picture on the Tadoba journey) came through clean: only those
+two things changed, the picture kept its proper address, and the site rebuilt
+without a fault. The test values have been put back. Your own walkthrough of
+the four actions below is now the hand-over session rather than a gate.
+
 The CMS is wired and every collection edits through `/admin`. The gate is
 **your own session**: on a screen-share, you edit a line of text, swap an
 image, change the phone number and publish a draft article, without touching

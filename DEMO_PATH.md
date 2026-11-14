@@ -52,10 +52,6 @@ to get the form back.
 
 ## Do not
 
-- **Do not open `/admin`.** The editor's image-save check, parked on 12 Nov, is
-  still to do. Today's only schema change is one new optional destination
-  field ("Name inside a sentence"); the editor shows it once Tina Cloud has
-  reindexed `main`.
 - **Avoid the Deccan Odyssey page**: its eight days are provisional until the
   operator's programme arrives (review sheet §22).
 - **Avoid `/reviews/`**: two "Guest review coming soon" slots, by design until
@@ -72,7 +68,7 @@ to get the form back.
 | "Why do two forms still say Launching shortly?" | The itinerary-PDF download and the newsletter. The PDF form switches on with the PDF release (the 20 PDFs themselves are printed); the newsletter needs a mailing list to send from. Both are in the next round. |
 | "Why is there only one red button?" | Your own rule: crimson marks exactly one action per screen. Everything else is white, ink or a text link. |
 | "Who writes the articles?" | The line under each article says "From the India Visit travel desk". A stronger authorship claim goes in when you confirm it (copy register S1). |
-| "Can we edit it ourselves?" | Yes, at `/admin`, signed in with GitHub: text, images, numbers, new articles. A save that breaks a rule is refused by the build, and the live site stays as it was. The last check on image saves is still to do; after that, it is fully open. |
+| "Can we edit it ourselves?" | Yes, at `/admin`, signed in with GitHub: text, images, numbers, new articles. A save that breaks a rule is refused by the build, and the live site stays as it was. Fully open since 14 Nov, when a live text-and-image save came through clean. |
 | "Where are the prices?" | Deliberately off (`showPrices`), and train fares are never published. |
 | "Who wrote the founder's words?" | We did, as a draft (copy register B11). The founder's own words replace it. |
 
