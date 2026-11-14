@@ -40,7 +40,7 @@
     "cms:build": "tinacms build"
   },
   "dependencies": {
-    "@astrojs/partytown": "^2.1.4",
+    "@astrojs/partytown": "^2.1.9",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^5.13.0"
   },
