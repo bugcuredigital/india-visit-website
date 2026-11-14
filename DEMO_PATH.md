@@ -5,10 +5,10 @@ frozen build (your message, 13 Nov evening), before this route was refreshed
 for the round-5 fixes. The route below describes production as it now stands
 and is kept for the next walkthrough.
 
-**Site:** https://india-visit-website.pages.dev (production `3c593ad`: the
-round-5 fixes, live since 16:08 IST, and `/booking-terms/` published, live
-since 19:21 IST). **Freeze:** lifted until further notice (your message,
-13 Nov evening).
+**Site:** https://india-visit-website.pages.dev (production `8bdd8ad`, PR #27,
+14 Nov: the round-5 fixes, `/booking-terms/` published, Partytown 1.0.5 and
+the reduced-motion hero). **Freeze:** on since 14 Nov for agency merges, until
+the round-5 list; the client's own `/admin` edits stay open.
 Open it on a laptop first, then repeat the homepage on a phone: the phone is
 where most of the client's visitors will be.
 
@@ -74,15 +74,17 @@ to get the form back.
 
 ## Live state at hand-off
 
-- **Production:** `3c593ad` (PR #23, `/booking-terms/` without the notice
-  and indexed), deployed 19:21 IST. Before it: `74a9ddf` (PR #21, the 26 high
-  items of the round-5 audit), deployed 16:08 IST, and `03a1607` (PR #20, the
-  sticky bar and Expand all after a tapped link, live 10:59 IST).
-- **Checks on this build:** hero contrast in each run's own colour (33 pages,
-  317 runs, 0 failures), keyboard, responsive 360–1440, no-JS, hero video,
-  links, CMS images, template spec, transport labels. Lighthouse on the preview:
-  Performance 99–100 and Accessibility 100 on the five pages measured, LCP
-  0.9–2.0s, CLS 0.
+- **Production:** `8bdd8ad` (PR #27, the reduced-motion hero), deployed 14 Nov.
+  On 14 Nov also: PR #26 (Partytown 1.0.5) and PR #25 (`/admin` open, Tadoba
+  restored after the test save). On 13 Nov: PR #23 (`/booking-terms/`
+  published), PR #21 (the 26 high items of the round-5 audit) and PR #20 (the
+  sticky bar and Expand all after a tapped link).
+- **Checks:** hero contrast in each run's own colour, now also on phones with
+  reduced motion (33 pages, 483 runs, 0 failures), keyboard, responsive
+  360–1440, no-JS, hero video, links, CMS images, template spec, transport
+  labels. Lighthouse on production after Partytown 1.0.5, six pages:
+  Performance 99–100, Accessibility, Best Practices and SEO 100, LCP 0.9–2.0s,
+  CLS 0.
 - **Captures** of every route page, desktop and phone, taken from production:
   `reports/demo-2026-11-13/`.
 - Line-by-line status: `SITE_STATUS.md`. What changed: the session log entries

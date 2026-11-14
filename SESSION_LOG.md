@@ -1632,3 +1632,124 @@ a comment citing the 12 Nov instruction (PR #16) and this ruling.
    schema gained `inSentence`) and the Tadoba test save (M7 4a).
 4. Round-5 decisions waiting: Best Practices (a, b or c above). The
    reduced-motion sticky bar is approved and queued.
+
+## 2026-11-14 (13:25–14:15) — `/admin` fully open (M7 gate passed), Partytown 1.0.5, the reduced-motion hero; re-frozen (PR #25–#28)
+
+**Instruction.**
+- **Email pipeline confirmed; question closed.** The 18:52 post-fix test
+  ("Website test after the fix", 12 Nov) landed in Gmail complete, with the
+  right reply-to. So did a 19:12 Plan My Trip submission ("BugCure") from the
+  client's own pre-demo testing. Plan My Trip is verified end to end, before
+  and after the consent fix.
+- **The Tadoba test save** was made through production `/admin` (one word, one
+  image via the media manager) after `main` was confirmed indexed in Tina
+  Cloud. Read the diff and rule. If image saves are clean (paths in
+  `/uploads/` form, build green), declare `/admin` fully open and mark the M7
+  gate passed. If not, fix the root cause first.
+- **Pre-approved while idle:** (a) Partytown through `@astrojs/partytown`
+  2.1.9, with Lighthouse and proof that Partytown still initialises for GTM;
+  (b) the reduced-motion double crimson, demoting one of the two. Then
+  re-freeze and idle. The round-5 list is incoming. Its first step is marking
+  the remarks the 26 high fixes already cover, because the client saw the
+  build from before 16:08.
+
+**The `/admin` ruling: clean. PR #25, merged 13:40, live 13:45 IST (`e9c5257`).**
+- Tina's commit `e1eadea` (13:23) changed exactly two values: `title` gained
+  "Test Text", and `heroImage` went from the tiger TEMP-PHOTO to the Kerala
+  houseboat TEMP-PHOTO, an existing library file picked in the media manager.
+  - Both versions were parsed and compared field by field. Every other
+    frontmatter value is identical.
+  - The rest of the diff is Tina's expected rewrite: comments dropped,
+    strings requoted, folded text flattened.
+- The image path stayed `/uploads/temp-photos/…`, the build went green (13:28),
+  and production served the swapped hero preloaded, as AVIF/WebP from
+  `/_astro/`.
+- `/admin` is fully open, and the M7 gate is passed by ruling (runbook updated).
+  The client's own screen-share of the four gate actions stays as the
+  hand-over walkthrough.
+- **Not exercised:** a new upload. No file was added. Tina commits uploads to
+  `/public/uploads/` (`media.tina` in `tina/config.ts`), and the local M7 smoke
+  test proved upload → `image()` → optimised.
+- **A Tina quirk.** `parseFile` keeps the newline after the closing `---` in
+  the body, and `stringifyFile` writes `"\n" + body`. So every save adds one
+  blank line above the body: the 12 Nov Leh–Ladakh save also went from 1 to 2.
+  Markdown ignores it (CLAUDE.md now says so).
+- **The test values were live.** "Test Text" showed on the journey,
+  `/journeys/` and `/destinations/wildlife/`, and the tiger journey had a
+  houseboat hero under a tiger alt text. PR #25 restored both values on top
+  of Tina's formatting, so the next CMS diff stays small. The restored data
+  equals the pre-test data exactly. Verified on the preview and on
+  production.
+
+**PR #26, merged 13:53, live 13:58 IST (`93820e0`): Partytown 1.0.5.**
+- `@astrojs/partytown` 2.1.7 → 2.1.9 and `@qwik.dev/partytown` 0.13.2 → 1.0.5.
+  Nothing else moves except `dotenv`, now dev-only.
+- The release notes name the warning: 1.0.1 stopped creating `<fencedframe>`
+  (#788), and 1.0.5 stopped reading `window.fence` (#801), which is the read
+  that fired on our pages. No breaking changes are listed between 0.13.2 and
+  1.0.5.
+- The GTM-relevant fixes on the way: `dataLayer` forwarding (0.14.2, 1.0.1),
+  the gtm.js fallback (0.14.3), and gtag's `CSS.escape` and `HTMLCollection`
+  (0.15.0, 0.14.5).
+- The config is unchanged. The inline snippet grows from 2,651 to 3,942 bytes,
+  +516 bytes gzipped on the homepage.
+- **Initialisation, local build, Chrome 157:**
+  - the service worker registers at `/~partytown/` and the sandbox iframe
+    starts;
+  - a `text/partytown` probe script ran in the worker and wrote to the page;
+  - `dataLayer.push` reached the worker for events pushed before Partytown
+    loaded and 4s after;
+  - no deprecation, and no console errors on `/` and Golden Triangle. The
+    probe page's one 404 was its own missing `/favicon.ico`.
+- **Lighthouse on the preview:** Best Practices 100 on `/`, Golden Triangle
+  and `/plan-my-trip/` (was 81), with Performance 100, Accessibility 100 and
+  LCP 1.1–1.4s. SEO 69 is the preview's noindex header.
+- **Lighthouse on production:** Best Practices 100 on `/`, Golden Triangle,
+  `/plan-my-trip/`, `/travel-guide/`, `/corporate/` and `/booking-terms/`, with
+  Performance 99–100, Accessibility and SEO 100, LCP 0.9–2.0s and CLS 0; "Uses
+  deprecated APIs" passes. On production the service worker, the sandbox and
+  a Partytown worker start on `/`, Golden Triangle and `/plan-my-trip/`, with
+  the `dataLayer.push` forwarding stub in place, no console errors and no
+  deprecation.
+
+**PR #27, merged 14:03, live 14:07 IST (`8bdd8ad`): the reduced-motion hero.**
+- With reduced motion, the phone's sticky bar is on screen from load, so the
+  homepage and all 20 journey pages showed two crimson actions in the first
+  screen: the hero's primary and the bar's Enquire.
+- The bar's Enquire is the persistent action, as the header pill is from
+  48rem. So the hero's primary takes the same on-dark outline it already
+  takes there: the round-5 #3 rule's media query gains
+  `(prefers-reduced-motion: reduce)`. Every page with a `<Hero>` also has the
+  bar.
+- **Crimson-filled actions in the first screen, every sitemap page plus Plan
+  My Trip, `/privacy/` and a 404 (51):**
+  - **Phone, reduced motion:** exactly one on 49 (was 28). `/booking-terms/`
+    and `/privacy/` have none by design (T12: no conversion furniture, no
+    bar).
+  - **Phone, motion:** unchanged. One where the hero has a primary. Elsewhere
+    none until the bar slides in on the first scroll (PRD §9.4).
+  - **Desktop, reduced motion:** exactly one on 50. The 404 has two (header
+    pill and "Back to the homepage"). That is audit #92 (medium), awaiting
+    the batch review.
+- `check:hero-contrast` gains a third pass, mobile with reduced motion. It is
+  the only state in which a phone hero's primary is an outline over the
+  photograph, and it has no Ken Burns. Full run on the local
+  build: 33 pages × 3 passes, 483 runs (166 in the new pass), all pass AA. The
+  outline CTA measures 7.18:1 at worst across the 21 affected pages; 174
+  breadcrumb runs, none failing.
+- On the preview and then production: exactly one crimson action on 7 of 7
+  sample pages with reduced motion, phone and desktop; motion unchanged. A
+  phone capture of the preview homepage shows the outline "Plan My Trip"
+  above the bar's crimson Enquire.
+- The rest of the suite passed on today's build: links, CMS images, template
+  spec, keyboard, no-JS, responsive 360–1440 and hero video (15 checks).
+
+**Re-frozen** after PR #28 (these docs). Nothing merges until the round-5 list.
+
+### Exact next action
+
+1. Idle until the round-5 list. When it lands, first mark the remarks the 26
+   high fixes (PR #21) already answer; the demo ran on the build before them.
+   Then work the list.
+2. `/admin` is open. The first new photo the client uploads through it is
+   worth a look at its commit.
