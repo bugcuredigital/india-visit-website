@@ -1,9 +1,9 @@
 ---
 variant: A
-title: Tadoba Tiger Trails Test Text
+title: Tadoba Tiger Trails
 tripTypeTag: Custom Journey
 signatureFeature: Three Safaris in Central India's Tiger Country
-heroImage: /uploads/temp-photos/TEMP-PHOTO-article-kerala-houseboat.jpg
+heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-wildlife.jpg
 heroImageAlt: A tiger resting in warm light on dry grass
 gallery: []
 nights: 2
