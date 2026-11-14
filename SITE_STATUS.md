@@ -1,11 +1,12 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
-**Updated:** 2026-11-14, after the `/admin` ruling · **Production:** `main`
-at PR #25 (the Tadoba entry restored after the `/admin` test save),
+**Updated:** 2026-11-14 afternoon · **Production:** `main` at PR #27 (the
+reduced-motion hero; `main` then moves only by docs), live 14:07 IST,
 https://india-visit-website.pages.dev · **Demo:** held on the morning of
 13 Nov, on the build before the round-5 fixes; the client's remarks follow as
-the round-5 list · **Freeze:** lifted; until the round-5 list only Partytown
-2.1.9 and the reduced-motion fix merge, then the site re-freezes
+the round-5 list · **Freeze:** **ON** since 14 Nov, after PR #28: no agency
+merges until the round-5 list (the client's own edits through `/admin` stay
+open)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
@@ -21,7 +22,7 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 | M5 Content migration | **Merged** | evidence in `reports/m5-gate-summary.json`; two ⚑ items below |
 | **M7 Tina CMS** *(pulled forward)* | **GATE PASSED** (2026-11-14, by ruling) · `/admin` **fully open** | The first production save (12 Nov) corrupted an image path and broke the build; root cause fixed, and `check:image-paths` guards every build. The live round trip on Tina Cloud (runbook M7 step 4a) passed on 14 Nov: a title and an image swapped on Tadoba changed exactly those two values, the image path stayed `/uploads/…`, the build went green and the swapped hero was served as AVIF/WebP. The test values were restored (PR #25) |
 | M6 Forms, lead function, GTM *(runs after M7)* | **M6-minimal LIVE** (2026-11-12, 18:04 IST) | Enquiry forms and Plan My Trip post to `functions/api/lead.ts` (validation, honeypot, Resend), sent from `enquiries@india-visit.com` to `info@india-visit.com` with the visitor as reply-to. Every test lead landed complete in the inbox: 14:33 on 12 Nov, then the 18:52 post-fix test and a 19:12 Plan My Trip submission that evening, so Plan My Trip is verified end to end before and after the consent fix. The PDF gate and the newsletter still read "Launching shortly". Turnstile, the Sheet webhook, the PDF release and GTM follow after the demo |
-| **Design round 5** (the unslop audit) | **26 high items fixed** (PR #21, 13 Nov) | `docs/UNSLOP_AUDIT.md`. The 54 medium and 14 low items await the client's batch approvals, which arrive with the demo remarks as the round-5 list. Queued by ruling (13 Nov evening): with reduced motion the phone's first screen has two crimson actions (demote one). Best Practices 81 is traced to Partytown; fixing or accepting it is a round-5 decision |
+| **Design round 5** (the unslop audit) | **26 high items fixed** (PR #21, 13 Nov) | `docs/UNSLOP_AUDIT.md`. The 54 medium and 14 low items await the client's batch approvals, which arrive with the demo remarks as the round-5 list. Done ahead of it (pre-approved 14 Nov): Best Practices **100**, through Partytown 1.0.5 (PR #26), and with reduced motion a phone hero's primary steps down beside the sticky bar's crimson Enquire (PR #27) |
 | M8 SEO, analytics, hardening · M9 Launch | not started | PRD §16 checklist |
 
 ## What is on the site
@@ -75,14 +76,12 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 
 1. **Client:** the round-5 list (the triaged demo remarks, with the batch
    approvals for the 54 medium and 14 low audit items). The agency is idle
-   until then. The first round-5 step is marking the remarks that the 26 high
-   fixes already answer: the demo ran on the build before them.
-2. **Agency, pre-approved on 14 Nov:** Partytown 2.1.9 (Best Practices 81,
-   option a) and the reduced-motion sticky bar (demote one of the two crimson
-   actions). Then the site re-freezes.
-3. **Client:** photo rights, §27. `/admin` is open for everyday edits; the
+   and the site frozen until then. The first round-5 step is marking the
+   remarks that the 26 high fixes already answer: the demo ran on the build
+   before them.
+2. **Client:** photo rights, §27. `/admin` is open for everyday edits; the
    first new photo uploaded through it is worth a look at its commit.
-4. **Agency, after round 5:** M6 proper (Turnstile, Sheet webhook, PDF release,
+3. **Agency, after round 5:** M6 proper (Turnstile, Sheet webhook, PDF release,
    GTM), then M8. Generalise `check:hero-contrast` to banners below the fold
    (the homepage trains banner was measured by hand on 12 Nov). The 390px
    header pill wrap is fixed (round 5, #4: it was a cascade bug).

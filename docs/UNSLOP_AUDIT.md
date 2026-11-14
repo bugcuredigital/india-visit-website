@@ -32,11 +32,14 @@ CLAUDE.md #5 and PAGE_TEMPLATES.
 - **Rulings after the demo (13 Nov evening) on what the fixes surfaced:**
   - `/booking-terms/` (body APPROVED, K3) is published without the
     provisional notice and is indexed (PR #23).
-  - **Queued for round 5:** with reduced motion, the phone's sticky bar shows
-    from load, so the homepage's first screen has two crimson actions. Fix by
-    demoting one of the two under the one-action rule; no new pattern for it.
-  - Best Practices 81 is traced to Partytown (SESSION_LOG, 13 Nov evening).
-    Fix or accept is a round-5 decision.
+  - **Fixed 14 Nov (pre-approved), PR #27:** with reduced motion, the phone's
+    sticky bar shows from load, so the homepage and all 20 journey pages had
+    two crimson actions in the first screen. The hero's primary now steps down
+    to the on-dark outline in that state, the same demotion it takes beside
+    the header pill from 48rem.
+  - **Fixed 14 Nov (pre-approved), PR #26:** Best Practices 81 came from
+    Partytown 0.13.2 reading `window.fence` (SESSION_LOG, 13 Nov evening).
+    Partytown 1.0.5 skips it, and Best Practices is 100.
 - **The 54 medium and 14 low items are not fixed.** The client's batch
   approvals arrive with the demo remarks as the round-5 list.
 
