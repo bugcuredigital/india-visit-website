@@ -442,9 +442,13 @@ const HERO_VIDEO_JS = `
      From 48rem the header's crimson Plan My Trip pill is on every screen, so
      a hero's own primary steps down to the on-dark outline there and the pill
      stays the one crimson action. Below 48rem the pill is hidden and the
-     sticky bar waits for the first scroll, so the hero keeps its crimson. A
-     hero's second action is a ghost (on-dark text, Button.astro). */
-  @media (min-width: 48rem) {
+     sticky bar waits for the first scroll, so the hero keeps its crimson.
+     With reduced motion the bar has no slide to wait for and is on screen
+     from load, so its crimson Enquire is the persistent action and the hero
+     steps down exactly as it does beside the pill (client ruling, 13 Nov).
+     Every page with a <Hero> also has the bar. A hero's second action is a
+     ghost (on-dark text, Button.astro). */
+  @media (min-width: 48rem), (prefers-reduced-motion: reduce) {
     .hero__content :global(.btn--primary) {
       background-color: transparent;
       border-color: var(--color-on-dark);

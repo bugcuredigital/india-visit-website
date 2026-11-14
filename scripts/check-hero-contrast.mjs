@@ -50,6 +50,11 @@ import sharp from 'sharp';
  * at both breakpoints. A new template that uses <Hero> joins the audit the
  * moment it is built, with no edit here.
  *
+ * And on mobile a second time with prefers-reduced-motion (14 Nov 2026): that
+ * is the only state in which a phone hero's primary is an outline over the
+ * photograph rather than solid crimson (Hero.astro, one crimson action per
+ * viewport), and it has no Ken Burns, so its ground differs too.
+ *
  * Pass URLs explicitly to audit a subset; with no arguments the contract is
  * the whole site.
  */
@@ -95,6 +100,7 @@ const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9447;
 const VIEWPORTS = [
   { label: 'mobile', width: 390, height: 844 },
+  { label: 'mobile-rm', width: 390, height: 844, reducedMotion: true },
   { label: 'desktop', width: 1440, height: 900 },
 ];
 
@@ -192,6 +198,13 @@ for (const url of urls) {
       },
       sessionId,
     );
+    if (viewport.reducedMotion) {
+      await send(
+        'Emulation.setEmulatedMedia',
+        { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] },
+        sessionId,
+      );
+    }
     await send('Page.navigate', { url }, sessionId);
     await sleep(2200);
 
@@ -338,7 +351,7 @@ console.log('\nHero contrast — worst ground pixel behind each run, scored in t
 for (const row of rows) {
   console.log(
     `  ${row.ok ? 'ok  ' : 'FAIL'}  ${row.worst.toFixed(2).padStart(5)}:1 ` +
-      `(needs ${String(row.required).padEnd(3)})  ${row.viewport.padEnd(7)} ` +
+      `(needs ${String(row.required).padEnd(3)})  ${row.viewport.padEnd(9)} ` +
       `${row.size}px${row.large ? ' L' : '  '}${row.crumb ? ' crumb' : '      '}  "${row.text}"  ${row.colour}`,
   );
 }
