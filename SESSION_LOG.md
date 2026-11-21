@@ -1753,3 +1753,127 @@ a comment citing the 12 Nov instruction (PR #16) and this ruling.
    Then work the list.
 2. `/admin` is open. The first new photo the client uploads through it is
    worth a look at its commit.
+
+## 2026-11-21 (13:00–13:40) — The client's About Us: `/about/` rebuilt from her copy, founder Sheena Sewal, her portrait (PR #29, #30)
+
+**Instruction.**
+- The client's About Us arrived as `docs/client/India_Visit_About_Us.docx`:
+  her copy, and her portrait embedded as `word/media/image1.png`
+  (1086×1448). It is approved source material. The freeze was lifted for
+  this round.
+- **Facts it settles:** founder Sheena Sewal, Founder & Managing Director;
+  `foundingYear` 2005; India Visit is the travel brand of India TajMahal
+  Tour Operators. The entity goes on `/about/` and in the policy pages'
+  identity lines, with a review-sheet question about the footer ©.
+- **`/about/` rebuilt from her copy:** her six sections, edited only for web
+  length and house style. Strike the inferred history; her copy is APPROVED
+  (client source).
+- **Homepage founder section:** her portrait (4:5, AVIF/WebP), name and role,
+  and 2–3 lines strictly from her sentences in place of the B11 draft. First
+  person only where verbatim.
+- **Log, don't fix:** she names Nepal and Sri Lanka (no pages), not Bali or
+  Vietnam.
+- **Note how the first real client image behaves in the pipeline**, closing
+  the open question from the Tadoba round.
+- Then: checks, captures of the homepage and `/about/`, deploy, re-freeze.
+- PRs #25–#28 acknowledged, the Tadoba restore included.
+
+**PR #29, merged 13:23, live 13:26 IST (`ea78aef`).**
+- **Settings.**
+  - Founder name and role from her document; `foundingYear` 2005.
+  - A new required setting, `legalEntity`: in `content.config.ts` and
+    `tina/config.ts`, with `tina-lock.json` regenerated through
+    `tinacms dev`. The lock's only changes are that field and the founder
+    lines' label and description.
+  - Four `_dummyDataFlags` entries closed: `foundingYear` and
+    `founder.name`, `quote` and `portrait`.
+- **`/about/`.**
+  - Her sections run in her order on T6's skeleton: the hero (her tagline
+    as eyebrow, "Travel that feels personal" as H1, her opening two
+    paragraphs, her portrait with name and role), the story, the timeline,
+    and "Our belief" in the philosophy slot. The trust stats, testimonial
+    spotlight and ConvertBand are unchanged.
+  - **Checked mechanically against the document:** 20 of 25 text blocks are
+    verbatim. The other five are the portrait caption and the two-stop
+    timeline ("2005 to today": founded in India by Sheena Sewal; today, over
+    two decades…), registered as assembled from her sentences (T4, T11).
+  - Her section headings sat beside the prose at first and wrapped to four
+    lines at the H2 size. They now stack over it at every width.
+- **Homepage.**
+  - The portrait is a `<Picture>` (AVIF and WebP), with name and role above
+    the lines.
+  - The lines are three of her sentences, third person, set as a paragraph,
+    not a `<blockquote>`: her document has no first-person sentence of hers
+    to quote. They read: "Sheena remains closely involved in the business
+    and in understanding what each client needs. Life in an Army family
+    gave her a first-hand feel for India's diversity, its people and its
+    regional cultures. Your journey is shaped by someone who knows the
+    ground personally, not by a call centre."
+- **Identity line.**
+  - The `Policy` layout renders "India Visit is the travel brand of India
+    TajMahal Tour Operators." under the H1 of all four policy pages.
+  - JSON-LD `TravelAgency` gains `legalName` and `foundingDate` "2005".
+- **Records.**
+  - COPY_REGISTER: a new §T, her copy, APPROVED (client source).
+  - Struck rows, with a new STRUCK status: G1–G4, B11, S32 and S57. S51 and
+    S63 are updated.
+  - Review sheet: §7 (2005, "20+ Years" verified), §14 (done, with three
+    questions: the footer ©, Nepal and Sri Lanka, timeline milestones) and
+    §18.
+
+**The first real client image, end to end (the Tadoba round's open question).**
+- **Source.** The portrait came inside a Word document, so it went in
+  through git: it had to be extracted and cropped before any upload could
+  take it.
+- **Path.** `word/media/image1.png` (1086×1448 PNG, 2.0 MB):
+  1. sharp crops it to 4:5 from the bottom, to keep her headroom: 1086×1358
+     JPEG, q88 mozjpeg, 192 KB, sRGB, metadata stripped.
+  2. It goes into `/public/uploads/sheena-sewal-portrait.jpg`, exactly where
+     a Tina upload lands (`media.tina`: `public` / `uploads`).
+  3. The settings field stores `/uploads/sheena-sewal-portrait.jpg`, the
+     form Tina writes.
+  4. `check:image-paths` passes, including its replay of Tina Cloud's
+     open→save mapping.
+  5. Zod's `cmsImage` maps it to `public/uploads` for `astro:assets`, which
+     emits eight AVIF and eight WebP variants plus the original.
+  6. On production the variants are served from `/_astro/` as `public, max-age=31536000,
+     immutable` (checked: AVIF, 200, `image/avif`). The original stays public at
+     `/uploads/sheena-sewal-portrait.jpg`, like every upload.
+- **What this closes.** A real client photograph stored as a Tina-native
+  path builds, optimises and serves like the TEMP set. Selecting it in the
+  media manager is the same swap the Tadoba save proved clean.
+- **What stays open.** Tina's own upload commit, a new file sent through the
+  media manager, is still unexercised: this file came through git. The first
+  photo the client uploads closes that last half.
+
+**Checks** (local build, before the merge):
+- build (54 pages), image paths, CMS images, links, template spec,
+  `audit:hardcoded`;
+- hero contrast: 33 pages × 3 passes, 483 runs, all AA, 174 breadcrumb runs.
+  No hero changed; the About page opens on type and the founder section sits
+  on white;
+- keyboard (also on `/about/`: 45 stops), no-JS, hero video (15 checks);
+- responsive 360–1440 on `/`, `/about/`, `/privacy/` and `/booking-terms/`.
+
+On the preview and then production:
+- the About title and sections, and the homepage lines, with none of the
+  B11 claims left;
+- AVIF and WebP portrait sources, and the identity line on the policy pages;
+- Lighthouse on production (mobile): `/` 99/100/100/100 with LCP 1.0s,
+  `/about/` 99/100/100/100 with LCP 0.9s, `/booking-terms/` 100 across with
+  LCP 1.1s, CLS 0 throughout.
+
+**Captures** from production, desktop 1280 and phone 390, full page:
+`reports/client-about-2026-11-21/`. The project's `screenshot.mjs` pins the
+sticky bar into the first screen by design, which on the phone captures lands
+over whatever sits at 844px.
+
+**Re-frozen** after PR #30 (these docs). No agency merges until the round-5
+list; the client's own `/admin` edits stay open.
+
+### Exact next action
+
+1. Client: the round-5 list, and the three §14 questions (footer ©, Nepal and
+   Sri Lanka, timeline milestones).
+2. The first photo the client uploads through `/admin`: read its commit to
+   close the upload half of the image path.

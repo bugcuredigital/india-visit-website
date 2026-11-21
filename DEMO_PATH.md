@@ -70,7 +70,7 @@ to get the form back.
 | "Who writes the articles?" | The line under each article says "From the India Visit travel desk". A stronger authorship claim goes in when you confirm it (copy register S1). |
 | "Can we edit it ourselves?" | Yes, at `/admin`, signed in with GitHub: text, images, numbers, new articles. A save that breaks a rule is refused by the build, and the live site stays as it was. Fully open since 14 Nov, when a live text-and-image save came through clean. |
 | "Where are the prices?" | Deliberately off (`showPrices`), and train fares are never published. |
-| "Who wrote the founder's words?" | We did, as a draft (copy register B11). The founder's own words replace it. |
+| "Who wrote the founder's words?" | Sheena did. Since 21 Nov the homepage lines and the whole About page come from her own About Us (copy register §T). Our earlier draft is struck. |
 
 ## Live state at hand-off
 

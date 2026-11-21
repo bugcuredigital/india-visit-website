@@ -1,12 +1,12 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
 **Updated:** 2026-11-21, the client's About Us round · **Production:** `main`
-at PR #29 (About rebuilt from her copy, her portrait and founder details),
-https://india-visit-website.pages.dev · **Demo:** held on the morning of
+at PR #29 (About rebuilt from her copy, her portrait and founder details), live
+13:26 IST; `main` then moves only by docs, https://india-visit-website.pages.dev · **Demo:** held on the morning of
 13 Nov, on the build before the round-5 fixes; the client's remarks follow as
-the round-5 list · **Freeze:** lifted for the About Us round only (21 Nov), and
-back on when it closes: no agency merges until the round-5 list (the client's
-own edits through `/admin` stay open)
+the round-5 list · **Freeze:** **ON** again since 21 Nov, after PR #30 (it was
+lifted for the About Us round only): no agency merges until the round-5 list
+(the client's own edits through `/admin` stay open)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
