@@ -17,6 +17,7 @@ about **words**.
 | **APPROVED** | Traceable to a source you own: the PRD, `PAGE_TEMPLATES.md`, the Itinerary Page Template Specification, your itinerary documents, or a ruling you gave in a review round. Not up for discussion unless you changed your mind. |
 | **DRAFT** | Written by the agency. Plausible, in voice, and **not yet approved by you**. This is the column to read. |
 | **PLACEHOLDER** | Deliberately neutral, visibly provisional, and replaced before launch. Listed for completeness, not for approval. |
+| **STRUCK** | No longer on the site. Kept in the table so the history of what was replaced, and by what, stays readable. |
 
 Where a whole section of copy is already being reviewed elsewhere — the Palace
 on Wheels day narratives, the founder quote — this file points at the
@@ -65,7 +66,7 @@ and then appear on every page.
 | B8 | How-it-works steps | "Tell us your dream" · "We craft your itinerary" · "Travel fully supported" | **APPROVED** | PAGE_TEMPLATES T1 §4 names these three steps. |
 | B9 | How-it-works step bodies | Three short paragraphs, incl. *"Not a call centre."* | **DRAFT** | ⚑ "Not a call centre" is a **promise** about how you answer the phone. |
 | B10 | Consultant eyebrow + H2 | "Meet your travel consultant" / "Someone plans your trip. Not something." | **DRAFT** | Section itself is CLIENT_REVIEW_SHEET §14. |
-| B11 | Consultant quote | The founder's paragraph | **DRAFT** | Already in CLIENT_REVIEW_SHEET §14 — agency draft, awaiting your words. |
+| B11 | Consultant quote | The founder's paragraph ("…I still write every itinerary myself… two in the morning…") | **STRUCK** | Replaced on 21 Nov by T10, built from your About Us. Its claims were stronger than your document supports ("remains closely involved"). |
 | B12 | Why-us eyebrow + H2 | "Why India Visit" / "The difference is who plans it" | **DRAFT** | |
 | B13 | Why-us item 1 | "Twenty years of it" — *"…long enough to know which hill station is worth the drive in July."* | **DRAFT** | |
 | B14 | Why-us item 2 | "Curated, not catalogued" — *"Every itinerary is written for the people travelling it. Nothing is picked off a shelf."* | **DRAFT** | |
@@ -136,10 +137,10 @@ and then appear on every page.
 
 | # | Where | String | Status | Note |
 |---|---|---|---|---|
-| G1 | H1 + lede | "Every trip on this site was planned by a person" / "…not one itinerary written by somebody who had not been there." | **DRAFT** | ⚑ **Strong claim**, stated absolutely. |
-| G2 | "The story" — three paragraphs | "India Visit began the way most good consultancies do…" | **DRAFT** | ⚑ This is **your history, written by us from inference**. It contains no dates (the founding year is still unverified) but it does assert how the business started. Read it closely or strike it. |
-| G3 | Philosophy H2 + three items | "What that actually means"; "Luxury where it changes the day" · "Value where it does not" · "Nothing bought off a shelf" | **DRAFT** | |
-| G4 | Philosophy body, Value | "…we will tell you when an upgrade is not worth what it costs." | **DRAFT** | ⚑ A **promise** about how you advise. |
+| G1 | H1 + lede | "Every trip on this site was planned by a person" / "…not one itinerary written by somebody who had not been there." | **STRUCK** | Replaced on 21 Nov by your own opening (T1, T2). |
+| G2 | "The story" — three paragraphs | "India Visit began the way most good consultancies do…" | **STRUCK** | Our history from inference, replaced on 21 Nov by your About Us in full (§T). |
+| G3 | Philosophy H2 + three items | "What that actually means"; "Luxury where it changes the day" · "Value where it does not" · "Nothing bought off a shelf" | **STRUCK** | Replaced on 21 Nov by your "Our belief" (T8). |
+| G4 | Philosophy body, Value | "…we will tell you when an upgrade is not worth what it costs." | **STRUCK** | As G3. |
 | G5 | Closing | "Start a conversation" + "Not a booking form — a conversation." | **DRAFT** | |
 
 ---
@@ -332,7 +333,7 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 | S29 | `/luxury-trains/` ConvertBand body | "Tell us roughly when you would like to travel and how many of you there are, and we will come back with live cabin availability and the current fare in writing." | **DRAFT** ⚑ | A promise. |
 | S30 | `/corporate/` | Hero "or send us a brief" · eyebrows "What we run", "Where groups work", "Send us a brief" · H2 "Three steps, one point of contact" | **DRAFT** | The H2 repeats the one-point-of-contact point a fourth time (audit 79, med). |
 | S31 | `/corporate/` how-we-work eyebrow | "How we work with companies" | **DRAFT** | T5 §3 says "How we work for companies". Restore the template's wording, or approve this one. |
-| S32 | `/about/` philosophy eyebrow | "Affordable luxury, honestly" | **DRAFT** | |
+| S32 | `/about/` philosophy eyebrow | "Affordable luxury, honestly" | **STRUCK** | Replaced on 21 Nov by your "Our belief" (T8). |
 | S33 | `/travel-guide/` | Grid H2 "More reading" · newsletter label "Your email" | **DRAFT** | The newsletter is disabled. |
 | S34 | Article pages | "{n} min read" · "On this page" · "Travel this" · "The journey behind the writing" · "Questions this raises" · "More from the guide" | **DRAFT** | |
 | S35 | Article ConvertBand | "Planning this trip?" / "If this is the journey you have in mind, tell us your dates and we will draft it properly, day by day, with a price." | **DRAFT** ⚑ | The heading follows PRD §7.8, where it belongs to the inline journey card. The body promises a priced draft. |
@@ -356,7 +357,7 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 
 | # | Where | Strings | Status |
 |---|---|---|---|
-| S51 | States that switch on with a setting or a launch | "Send me the itinerary" · "Subscribe" · "Members and affiliations" · "Rated {x} across {n} reviews" · "We reply within {sla}." · "Read more reviews" · "{year} to today" · "Milestones arrive with the verified founding year." · "The route" (and the route-map alt text) · "Coming soon" / "Enquire for details" · "Travellers Hosted" · "From ₹{n}" · "Last updated {date}" | **DRAFT** |
+| S51 | States that switch on with a setting or a launch | "Send me the itinerary" · "Subscribe" · "Members and affiliations" · "Rated {x} across {n} reviews" · "We reply within {sla}." · "Read more reviews" · "The route" (and the route-map alt text) · "Coming soon" / "Enquire for details" · "Travellers Hosted" · "From ₹{n}" · "Last updated {date}" | **DRAFT** | Since 21 Nov "{year} to today" renders (the founding year is yours: T4), and "Milestones arrive with the verified founding year." is gone. |
 
 ### Titles and meta descriptions of the fixed pages
 
@@ -369,7 +370,7 @@ Only Q2 was registered. Journey, destination, city and article titles and descri
 | S54 | `/destinations/` | "Where We Go: Destinations \| India Visit" · "Every region we plan journeys through: Rajasthan, Kerala, Ladakh, the North East, South and West India, wildlife reserves, and beyond India to Bhutan, Bali and Vietnam." | **DRAFT** |
 | S55 | `/luxury-trains/` | "India's Luxury Trains: Palace on Wheels & More \| India Visit" · "India's legendary luxury trains: Palace on Wheels, the Golden Chariot and the Deccan Odyssey. Routes, cabins and how booking works." | **DRAFT** |
 | S56 | `/corporate/` | "Corporate Travel, Offsites & Incentive Trips \| India Visit" · "Company offsites, incentive travel, conferences and group logistics across India and beyond: GST invoicing, one vendor, one point of contact." | **DRAFT** ⚑ (GST invoicing) |
-| S57 | `/about/` | description "A travel consultancy of twenty years. Who plans your trip, how we work, and what affordable luxury means when somebody actually has to deliver it." | **DRAFT** |
+| S57 | `/about/` | description "A travel consultancy of twenty years. Who plans your trip, how we work, and what affordable luxury means when somebody actually has to deliver it." | **STRUCK** | Replaced on 21 Nov, with the page title, by T9. |
 | S58 | `/plan-my-trip/` | "Plan My Trip \| India Visit" · "Tell us the shape of the journey you have in mind and we will come back with a day-by-day plan and a price. No obligation, no call centre." | **DRAFT** ⚑ |
 | S59 | `/travel-guide/` | "Travel Guide: Planning India \| India Visit" · "Practical writing on planning a journey through India: visas and timing, the best months to travel, and guides to the regions we know best." | **DRAFT** |
 | S60 | `/404/` | "Page not found \| India Visit" · "That page has moved or never existed. Here is the way back." | **DRAFT** |
@@ -382,4 +383,29 @@ Labels a screen reader announces and a sighted visitor never sees. They are func
 | # | Strings | Status | Note |
 |---|---|---|---|
 | S62 | "Main" · "Call us on {phone}" · "Message us on WhatsApp (opens in a new tab)" · "Open menu" / "Close menu" · "India Visit — home" · "(opens in a new tab)" · "Scroll to content" · "Contact us" · "Breadcrumb" · "Route" · "Journey at a glance" · "{city} at a glance" · glance-table caption "Day-by-day summary. Each row links to that day's full description." · carousel "Previous testimonial", "Next testimonial", "Traveller testimonials, use arrow keys to scroll", "Testimonial", "Testimonial {n} of {total}" · filters "Filter journeys by type", "Filter reviews", "Filter articles by category", "Showing {n} journeys.", "Showing {n} reviews.", "Showing {n} articles." · hidden H2 "Latest article" · "Operator disclosure" | **DRAFT** | |
-| S63 | Homepage founder-portrait placeholder, alt text | "Placeholder for the founder portrait, awaiting the client photo archive" | **PLACEHOLDER** | A screen reader reads this internal note aloud. Replace it with the portrait's real alt text in M5. |
+| S63 | Homepage founder-portrait placeholder, alt text | "Placeholder for the founder portrait, awaiting the client photo archive" | **PLACEHOLDER** | Dormant since 21 Nov: your portrait is in, with its own alt text (T11). It renders again only if the portrait field is emptied. |
+
+## T. Your About Us (client source, 21 November 2026)
+
+Everything in this section is **yours**: the About Us document you supplied
+(`docs/client/India_Visit_About_Us.docx`). It is APPROVED because it is your own
+text. We changed nothing but house style (straight apostrophes; your bold belief
+line set in the display face) and, where a row says so, assembled a short label
+or title from your own phrases. No claim here goes beyond your document. The
+brand name, the legal entity, the founding year and your name and role are read
+from Site settings, so every page that shows them says the same thing.
+
+| # | Where | String | Status | Note |
+|---|---|---|---|---|
+| T1 | `/about/` eyebrow | "Curating soulful journeys" | **APPROVED** | Your tagline. |
+| T2 | `/about/` H1 and opening | "Travel that feels personal" · "The best journeys are rarely remembered for the monuments alone…" · "That is the idea behind {siteName}, the travel brand of {legalEntity}. Founded in India in {foundingYear}, we have spent over two decades…" | **APPROVED** | Your first section, verbatim. |
+| T3 | `/about/` "From the heart of India to the wider world" | Both paragraphs, verbatim | **APPROVED** | ⚑ Names Nepal and Sri Lanka, which have no pages yet, and not Bali or Vietnam, which do (covered by your "selected destinations across Asia and beyond"). Question in the review sheet, §14. |
+| T4 | `/about/` timeline | "{foundingYear} to today" · "{foundingYear}: Founded in India by {name}" · "Today: Over two decades designing journeys for travellers from across India and around the world" | **APPROVED** | Assembled from your sentences ("Founded in India in 2005", "Since founding the company in 2005", "over two decades designing journeys…"). Two stops because your document dates only the founding. |
+| T5 | `/about/` "Thoughtful planning, reliable support" | The opening sentence, your seven-item list and "Clear communication… Well considered, never over-planned." | **APPROVED** | Verbatim; the list carries the lotus bullets. |
+| T6 | `/about/` "A life lived across India: meet {name}" | All three paragraphs, verbatim | **APPROVED** | |
+| T7 | `/about/` "Who we work with" | The paragraph, verbatim | **APPROVED** | |
+| T8 | `/about/` "Our belief" | "Move slowly. Immerse yourself. Stay curious." · "Meet people, embrace the unexpected, and let each place reveal itself. We'll take care of the details." | **APPROVED** | Verbatim. Replaces our "Affordable luxury, honestly" section (G3, G4, S32). |
+| T9 | `/about/` title and description | "About {siteName}: Curating Soulful Journeys Since {foundingYear}" · "Founded in India in {foundingYear}, {siteName} is the travel brand of {legalEntity}. Meet founder {name}, and see how every journey is planned." | **APPROVED** | Assembled from your phrases for search results. Replaces S57. |
+| T10 | Homepage, "Meet your travel consultant", the lines under your name | "Sheena remains closely involved in the business and in understanding what each client needs. Life in an Army family gave her a first-hand feel for India's diversity, its people and its regional cultures. Your journey is shaped by someone who knows the ground personally, not by a call centre." | **APPROVED** | Three of your sentences. The first is yours with your title and surname dropped, since they sit just above it ("Founder and Managing Director Sheena Sewal remains…"); the middle one joins your two Army-life sentences into one; the last is verbatim. Third person throughout, because your document has no first-person sentence of yours to quote, so they are no longer set as a quotation. Replaces B11. |
+| T11 | Your name, role and portrait alt text (homepage, `/about/`) | "Sheena Sewal" · "Founder & Managing Director" · alt "Sheena Sewal, Founder and Managing Director of India Visit" | **APPROVED** | From your document. The portrait is the one embedded in it. |
+| T12 | All four policy pages, under the heading | "{siteName} is the travel brand of {legalEntity}." | **APPROVED** | Your wording. Whether the footer's © line should carry the entity too is a question for you (review sheet §14). |

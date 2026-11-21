@@ -621,6 +621,7 @@ const siteSettings: Collection = {
       fields: [
         { type: 'string', name: 'siteName', label: 'Site name', required: true },
         { type: 'string', name: 'tagline', label: 'Tagline', required: true },
+        { type: 'string', name: 'legalEntity', label: 'Legal entity', required: true, description: 'The company India Visit is the travel brand of. Shown on the About page and on every policy page.' },
         { type: 'string', name: 'phone', label: 'Phone (with country code)', required: true },
         { type: 'string', name: 'phoneHref', label: 'Phone link', required: true, description: 'tel:+91… — digits only after "tel:", and it must match the phone above.' },
         { type: 'string', name: 'whatsappNumber', label: 'WhatsApp number', required: true },
@@ -683,7 +684,7 @@ const siteSettings: Collection = {
           fields: [
             { type: 'string', name: 'name', label: 'Name', description: 'Leave empty and the section renders without a name — never a guess.' },
             { type: 'string', name: 'role', label: 'Role', required: true },
-            { type: 'string', name: 'quote', label: 'Quote', required: true, ui: { component: 'textarea' } },
+            { type: 'string', name: 'quote', label: 'Homepage lines', required: true, description: 'Two or three sentences under the name on the homepage. Third person, written from your own About text; first person only for words that are yours verbatim.', ui: { component: 'textarea' } },
             imageField('portrait', 'Portrait (4:5)', 'Leave empty for the neutral placeholder.', false),
             { type: 'string', name: 'portraitAlt', label: 'Portrait alt text', required: true },
           ],

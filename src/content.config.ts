@@ -619,6 +619,11 @@ const siteSettings = defineCollection({
       z.object({
       siteName: z.string().min(1),
       tagline: z.string().min(1),
+      /** The company the brand trades under ("India Visit is the travel brand
+       *  of …", the client's About Us, 21 Nov 2026). Shown on /about/ and in the
+       *  identity line of every policy page, and emitted as the JSON-LD
+       *  `legalName`. */
+      legalEntity: z.string().min(1),
 
       phone: z.string().min(1),
       phoneHref: z.string().startsWith('tel:'),
@@ -699,15 +704,16 @@ const siteSettings = defineCollection({
        * T1 v2 §6) — the trust centrepiece of the page, and therefore the part
        * that must never contain anything invented.
        *
-       * `name` is NULLABLE and null until the client supplies it: presenting a
-       * made-up name for a real consultancy's founder would be a fabrication,
-       * not a placeholder. The section renders without the name line rather than
-       * with a guess. `portrait` is likewise null until a real photograph
-       * arrives, falling back to the neutral grey portrait slot — a stock
-       * photograph of a stranger is not an option here for the same reason.
+       * `name` is NULLABLE: presenting a made-up name for a real consultancy's
+       * founder would be a fabrication, not a placeholder, so the section
+       * renders without the name line rather than with a guess. `portrait` is
+       * likewise nullable and falls back to the neutral grey portrait slot.
+       * Both now hold the client's own (About Us, 21 Nov 2026).
        *
-       * `quote` is agency-drafted and PROVISIONAL until approved; it is logged
-       * in docs/CLIENT_REVIEW_SHEET.md.
+       * `quote` keeps its key but is no longer a quotation: it holds the
+       * section's 2–3 lines, built strictly from the client's About Us and
+       * written in the third person, because her document has no first-person
+       * sentence of the founder's to quote (COPY_REGISTER B11).
        */
       founder: z.object({
         name: z.string().min(1).nullable(),

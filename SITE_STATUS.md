@@ -1,12 +1,12 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
-**Updated:** 2026-11-14 afternoon · **Production:** `main` at PR #27 (the
-reduced-motion hero; `main` then moves only by docs), live 14:07 IST,
+**Updated:** 2026-11-21, the client's About Us round · **Production:** `main`
+at PR #29 (About rebuilt from her copy, her portrait and founder details),
 https://india-visit-website.pages.dev · **Demo:** held on the morning of
 13 Nov, on the build before the round-5 fixes; the client's remarks follow as
-the round-5 list · **Freeze:** **ON** since 14 Nov, after PR #28: no agency
-merges until the round-5 list (the client's own edits through `/admin` stay
-open)
+the round-5 list · **Freeze:** lifted for the About Us round only (21 Nov), and
+back on when it closes: no agency merges until the round-5 list (the client's
+own edits through `/admin` stay open)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
@@ -37,7 +37,7 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 | Branded PDFs | **20 of 20** | reprinted 2026-11-12 (real contact line, today's copy); still public at `/downloads/` |
 | Lead forms | **102 live**, 21 not yet | live on every page (enquiry forms, Plan My Trip, and since 13 Nov the corporate brief: company, group size, dates, budget band); the 20 PDF download forms and the newsletter read "Launching shortly" |
 | Contact details | **real** | +91 98102 41121 (call and WhatsApp), info@india-visit.com (Cloudflare Email Routing to Gmail; Resend only sends, its "receiving" stays off). The address is still dummy and flagged |
-| Photography | 0 client, **51 TEMP-PHOTO** + 1 TEMP-VIDEO | all under `/public/uploads/` in the form Tina writes. The client's Drive folder is inventoried but **blocked on rights** (below) |
+| Photography | **1 client** (the founder portrait, from her About Us, 21 Nov), **51 TEMP-PHOTO** + 1 TEMP-VIDEO | all under `/public/uploads/` in the form Tina writes. The client's Drive folder is inventoried but **blocked on rights** (below) |
 | Visible em dashes | **0** (was 1,101) | house rule: at most one per screen (CLAUDE.md #7) |
 
 ## ⚑ Blocking or needs the client
@@ -62,6 +62,11 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 5. **Copy approval**: drafted strings stay `DRAFT` in `docs/COPY_REGISTER.md`
    (§A–§S) until struck or approved. §S (13 Nov) registers every string the
    round-5 sweep found unregistered; its ⚑ rows are claims for the client.
+6. **Three questions from the client's About Us** (`CLIENT_REVIEW_SHEET.md`
+   §14): whether the footer's © line should carry India TajMahal Tour
+   Operators; whether Nepal and Sri Lanka, which her text names, become
+   destination pages (none created); and any dated milestones for the
+   two-stop About timeline.
 
 ## Provisional (renders, flagged, reversible)
 
@@ -69,8 +74,10 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 - Train operator names and advance percentages on the two newer trains (§22)
 - Four visa/entry articles' regulatory facts (§24)
 - Items omitted from the client's documents in the port (§23)
-- Founder name and portrait, trust figures, association logos, aggregate
-  rating, response SLA: all null and unrendered. The founder quote is our draft (B11)
+- Trust figures (travellers, destinations), association logos, aggregate
+  rating, response SLA: all null and unrendered. The founder's name, role,
+  portrait and lines, the founding year (2005) and the legal entity are the
+  client's own since 21 Nov (her About Us; COPY_REGISTER §T)
 
 ## Next action
 

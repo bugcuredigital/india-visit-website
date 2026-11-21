@@ -2,6 +2,7 @@
   "settings": {
     "siteName": "India Visit",
     "tagline": "Curated journeys across India and beyond",
+    "legalEntity": "India TajMahal Tour Operators",
     "phone": "+91 98102 41121",
     "phoneHref": "tel:+919810241121",
     "whatsappNumber": "+91 98102 41121",
@@ -16,7 +17,7 @@
     },
     "gtmContainerId": null,
     "metaPixelId": null,
-    "foundingYear": null,
+    "foundingYear": 2005,
     "travellerCount": null,
     "destinationCount": null,
     "aggregateRating": null,
@@ -37,11 +38,11 @@
     "showPrices": false,
     "responseSla": null,
     "founder": {
-      "name": null,
-      "role": "Founder & Travel Consultant",
-      "quote": "Twenty years ago I started planning trips for friends of friends, and I have never really stopped. I still write every itinerary myself, and I still pick up the phone when you are standing in an airport at two in the morning wondering where your driver is.",
-      "portrait": null,
-      "portraitAlt": "Portrait of the founder of India Visit"
+      "name": "Sheena Sewal",
+      "role": "Founder & Managing Director",
+      "quote": "Sheena remains closely involved in the business and in understanding what each client needs. Life in an Army family gave her a first-hand feel for India's diversity, its people and its regional cultures. Your journey is shaped by someone who knows the ground personally, not by a call centre.",
+      "portrait": "/uploads/sheena-sewal-portrait.jpg",
+      "portraitAlt": "Sheena Sewal, Founder and Managing Director of India Visit"
     },
     "_dummyDataFlags": [
       "whatsappDefaultMessage — DUMMY DATA, client to approve wording",
@@ -49,16 +50,12 @@
       "socials.* — DUMMY DATA, handles pending (PRD Open Question #7)",
       "gtmContainerId — DUMMY DATA, container ID pending; null emits no GTM",
       "metaPixelId — DUMMY DATA, pixel is managed inside GTM, not in code",
-      "foundingYear — BLOCKED on PRD Open Question #2, never guess the year",
       "travellerCount — BLOCKED on PRD Open Question #2",
       "destinationCount — BLOCKED on PRD Open Question #2",
       "aggregateRating — BLOCKED on PRD Open Question #3",
       "responseSla — BLOCKED on PRD Open Question #12",
       "homeHero.poster / homeHero.videoMp4 — TEMP-VIDEO stand-in from Pexels, replaced by the client's own footage (CLIENT_REVIEW_SHEET.md §15)",
-      "pageHeroes.luxuryTrains.image — TEMP-PHOTO stand-in, replaced by the client's own archive in M5",
-      "founder.name — BLOCKED, client to supply; never invent a person's name",
-      "founder.quote — PROVISIONAL agency draft, awaiting client approval (CLIENT_REVIEW_SHEET.md)",
-      "founder.portrait — BLOCKED on the client photo archive; renders the neutral grey portrait slot until then"
+      "pageHeroes.luxuryTrains.image — TEMP-PHOTO stand-in, replaced by the client's own archive in M5"
     ]
   }
 }
