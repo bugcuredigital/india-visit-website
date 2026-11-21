@@ -43,6 +43,7 @@ export function travelAgencySchema(settings: SiteSettings, siteUrl: string): Jso
     '@type': 'TravelAgency',
     '@id': `${siteUrl}#organisation`,
     name: settings.siteName,
+    legalName: settings.legalEntity,
     description: settings.tagline,
     url: siteUrl,
     telephone: isPlaceholder(settings, 'phone') ? null : settings.phone,

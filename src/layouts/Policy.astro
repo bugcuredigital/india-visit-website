@@ -20,6 +20,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import JsonLd from '../components/JsonLd.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import { getSiteSettings } from '../lib/site-settings';
 
 interface Props {
   title: string;
@@ -32,6 +33,7 @@ interface Props {
 }
 
 const { title, heading, description, path, provisional = true, updated } = Astro.props;
+const settings = await getSiteSettings();
 
 const crumbs = breadcrumbSchema([
   { name: 'Home', url: new URL('/', Astro.site).href },
@@ -55,6 +57,9 @@ const crumbs = breadcrumbSchema([
         <span aria-current="page">{heading}</span>
       </nav>
       <h1>{heading}</h1>
+      {/* Who stands behind the page: the client's own wording (About Us,
+          21 Nov 2026), on all four policy pages, legal drafts included. */}
+      <p class="identity">{settings.siteName} is the travel brand of {settings.legalEntity}.</p>
       {updated && <p class="updated">Last updated {updated}</p>}
     </div>
   </section>
@@ -100,6 +105,12 @@ const crumbs = breadcrumbSchema([
 
   .crumbs a:hover {
     color: var(--color-white);
+  }
+
+  .identity {
+    margin-top: 0.75rem;
+    font-size: var(--text-sm);
+    color: var(--color-on-dark-muted);
   }
 
   .updated {

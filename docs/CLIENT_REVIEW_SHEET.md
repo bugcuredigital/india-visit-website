@@ -94,7 +94,7 @@ publish an unverified number.
 
 | Field | Status |
 |---|---|
-| `foundingYear` | null — needed for "Curating journeys since ____" |
+| `foundingYear` | **2005**, from your About Us (21 Nov). It also verifies "20+ Years" ("over two decades"), and it turns on the About page timeline. |
 | `travellerCount` | null — needed for the travellers stat |
 | `destinationCount` | null — needed for the destinations stat |
 | `aggregateRating` | null — no rating line on /reviews/ until supplied |
@@ -158,29 +158,40 @@ timeframe may we commit to publicly?
 ## 14. Homepage — "Meet your travel consultant" (added M4 revision 2)
 
 PAGE_TEMPLATES T1 v2 adds a founder section to the homepage — the trust
-centrepiece of the page. Three things there need you, and **none of them have
-been invented in the meantime**:
+centrepiece of the page.
 
-| Field | Status | What we need |
-|---|---|---|
-| `founder.name` | **BLANK** — deliberately | Your name as you want it published. The section renders without a name line rather than with a guess, because putting a made-up name on a real consultancy's founder is a fabrication, not a placeholder. |
-| `founder.role` | Provisional: *"Founder & Travel Consultant"* | Confirm or replace. |
-| `founder.quote` | **PROVISIONAL agency draft** — see below | Approve, edit, or replace entirely. It is written in the first person and should sound like you, not like us. |
-| `founder.portrait` | **BLANK** — renders the neutral grey slot | A warm environment portrait, 4:5, ideally at your desk or somewhere that reads as "where the planning happens". Not a studio headshot. |
+**Status, 21 November: done, from your About Us.** Everything in the section
+is now yours, and the About page is rebuilt from the same document (copy
+register §T).
 
-**The provisional quote, as currently published on the preview:**
+| Field | Now |
+|---|---|
+| `founder.name` | **Sheena Sewal** |
+| `founder.role` | **Founder & Managing Director** |
+| `founder.quote` (the lines under your name) | Three of your sentences: *"Sheena remains closely involved in the business and in understanding what each client needs. Life in an Army family gave her a first-hand feel for India's diversity, its people and its regional cultures. Your journey is shaped by someone who knows the ground personally, not by a call centre."* They are in the third person, because your document has no first-person sentence of yours to quote, so they are no longer set as a quotation. |
+| `founder.portrait` | The portrait embedded in your document, cropped to the 4:5 slot (a little taken from the bottom, so the space above your head stays generous) |
 
-> Twenty years ago I started planning trips for friends of friends, and I have
-> never really stopped. I still write every itinerary myself, and I still pick
-> up the phone when you are standing in an airport at two in the morning
-> wondering where your driver is.
+Our earlier draft quote is struck. Its two claims, that you write every
+itinerary yourself and answer the phone at two in the morning, went further
+than your document, which says you "remain closely involved".
 
-Two claims in it are yours to confirm or strike: that you **still write every
-itinerary personally**, and that you **answer the phone during a trip
-yourself**. Both are strong trust signals and both are checkable by a customer,
-so we would rather cut them than overstate them.
+All four values live in Site settings and are editable in `/admin`.
 
-All four values live in `siteSettings` and are editable without touching code.
+**Three questions your document raised:**
+
+1. **The legal entity in the footer.** Your About page and every policy page now
+   say that India Visit is the travel brand of India TajMahal Tour Operators.
+   The footer's last line still reads "© 2026 India Visit. All rights
+   reserved." Should it carry the entity too, for example "© 2026 India
+   TajMahal Tour Operators"?
+2. **Nepal and Sri Lanka.** Your About text names Nepal, Bhutan and Sri Lanka,
+   and "selected destinations across Asia and beyond". The site has pages for
+   Bhutan, Bali and Vietnam, but none for Nepal or Sri Lanka. Your text is
+   published as written. Should Nepal and Sri Lanka become destination pages
+   later? None has been created.
+3. **The timeline.** It now runs from 2005 to today with two stops, because
+   your document dates only the founding. The template allows four to six: send
+   any dated milestones you would like on it.
 
 ---
 
@@ -312,7 +323,7 @@ supply a fact.
 
 | Page | What is missing | What turns it on |
 |---|---|---|
-| About | **The timeline.** T6 specifies "2006 → today", and a timeline is nothing but dates. `foundingYear` is null. | Your founding year (Open Question #2). |
+| About | ~~**The timeline.**~~ **Renders since 21 Nov**: "2005 to today", from your About Us. | Done. More dated milestones are welcome (§14). |
 | About | Certifications and memberships logo row. | Which bodies apply (Open Question #4). |
 | Corporate | **The "proposal in 48 hours" promise.** The template names it as your key differentiator; we have written the step *without* the number, because a response-time promise is something somebody has to keep on a Friday afternoon. | Your actual commitment (Open Question #12). |
 | Corporate | Client logos / case snippets. | Whatever you are permitted to show (Open Question #5). |

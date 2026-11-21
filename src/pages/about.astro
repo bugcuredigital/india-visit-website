@@ -1,21 +1,33 @@
 ---
 /**
- * About — PAGE_TEMPLATES T6.
+ * About — PAGE_TEMPLATES T6, rebuilt on 21 Nov 2026 from the client's own
+ * About Us (docs/client/India_Visit_About_Us.docx).
  * ---------------------------------------------------------------------------
- * TWO SECTIONS OF THIS TEMPLATE DO NOT RENDER, and both absences are correct
- * rather than unfinished:
+ * EVERY SENTENCE ON THIS PAGE IS HERS (COPY_REGISTER §T, APPROVED, client
+ * source), edited only for house style: straight apostrophes, her bold belief
+ * line set in the display face. Nothing is added that her text does not say.
+ * The agency's inferred history, its "Affordable luxury, honestly" philosophy
+ * and the absolute H1 claim it opened with are struck (COPY_REGISTER G1–G4).
  *
- *   · the TIMELINE (T6 §3) is specified as "2006 → today". `foundingYear` is
- *     null and stays null until the client verifies it (PRD Open Question #2),
- *     and a timeline is nothing but dates — there is no honest way to draw one
- *     without the year. It renders when the year exists, and not before.
- *   · CERTIFICATIONS (T6 §5) wait on Open Question #4. No logos, no section.
+ * Her six sections, in her order, on T6's skeleton:
+ *   1 Hero (T6 §1, portrait-led): her tagline, her first heading as the H1,
+ *     her opening two paragraphs, her portrait with name and role.
+ *   2 The story (T6 §2): "From the heart of India to the wider world".
+ *   3 Timeline (T6 §3): renders now that `foundingYear` is verified. Two
+ *     stops, not T6's 4–6, because her document dates only the founding;
+ *     more arrive when she sends dated milestones (review sheet §14).
+ *   · "Thoughtful planning, reliable support", "A life lived across India:
+ *     meet Sheena Sewal" and "Who we work with" follow in her order.
+ *   4 Philosophy (T6 §4): her "Our belief".
+ *   5 Certifications (T6 §5) still wait on Open Question #4: no section.
+ *   6–8 CounterStat, the testimonial spotlight (real reviews only) and the
+ *     ConvertBand, unchanged.
  *
- * The portrait is the neutral grey 4:5 slot for the same reason it is on the
- * homepage: a stock photograph of a stranger presented as this consultancy's
- * founder would be a fabrication, not a placeholder.
+ * The brand name, the legal entity, the founding year and the founder's name
+ * and role come from siteSettings, so they match every other page that shows
+ * them (the homepage section, the policy pages' identity line, JSON-LD).
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 import Base from '../layouts/Base.astro';
@@ -49,23 +61,27 @@ const testimonial = (await getCollection('testimonials', ({ data }) => data.cons
   .filter((entry) => !entry.data.placeholder)
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured))[0];
 
-const PHILOSOPHY = [
-  {
-    title: 'Luxury where it changes the day',
-    detail:
-      'A heritage property you would have chosen yourself, a guide who knows the building rather than the script, a car that turns up. These are the things people remember.',
-  },
-  {
-    title: 'Value where it does not',
-    detail:
-      'An internal flight is an internal flight. We do not add a business-class leg to make an itinerary look expensive, and we will tell you when an upgrade is not worth what it costs.',
-  },
-  {
-    title: 'Nothing bought off a shelf',
-    detail:
-      'Every itinerary on this site was written for a particular set of travellers before it was written down. They are starting points, not packages.',
-  },
+const { siteName, legalEntity, foundingYear, founder } = settings;
+
+/* "Thoughtful planning, reliable support": her list, verbatim. */
+const CARE = [
+  'Personalised itineraries and practical advice',
+  'Airport meet-and-greet and arrival assistance',
+  'Comfortable, well-maintained vehicles with experienced drivers',
+  'Hotels selected with care',
+  'Knowledgeable local guides',
+  'Local experiences that bring places to life',
+  'Responsive support throughout your journey',
 ];
+
+const title = foundingYear
+  ? `About ${siteName}: Curating Soulful Journeys Since ${foundingYear}`
+  : `About ${siteName}: Curating Soulful Journeys`;
+const description = [
+  foundingYear ? `Founded in India in ${foundingYear}, ${siteName}` : siteName,
+  `is the travel brand of ${legalEntity}.`,
+  founder.name ? `Meet founder ${founder.name}, and see how every journey is planned.` : '',
+].join(' ').trim();
 
 const crumbs = breadcrumbSchema([
   { name: 'Home', url: new URL('/', Astro.site).href },
@@ -73,17 +89,14 @@ const crumbs = breadcrumbSchema([
 ]);
 ---
 
-<Base
-  title={`About ${settings.siteName}: ${settings.yearsExperience} Years Planning India`}
-  description="A travel consultancy of twenty years. Who plans your trip, how we work, and what affordable luxury means when somebody actually has to deliver it."
->
+<Base title={title} description={description}>
   <Fragment slot="head">
     <JsonLd schema={crumbs} />
   </Fragment>
 
   <Header slot="header" />
 
-  <!-- 1 · Hero — portrait-led, not a stock handshake ---------------------- -->
+  <!-- 1 · Hero — portrait-led, her opening -------------------------------- -->
   <section class="band band-tight intro">
     <div class="container-content intro__grid">
       <div>
@@ -92,28 +105,41 @@ const crumbs = breadcrumbSchema([
           <span aria-hidden="true">/</span>
           <span aria-current="page">About</span>
         </nav>
-        <h1 class="intro__title">Every trip on this site was planned by a person</h1>
+        <p class="eyebrow">Curating soulful journeys</p>
+        <h1 class="intro__title">Travel that feels personal</h1>
         <p class="intro__lede">
-          {settings.yearsExperience} years of arranging private journeys across India
-          and its neighbours, and in all that time not one itinerary written by
-          somebody who had not been there.
+          The best journeys are rarely remembered for the monuments alone. They
+          are remembered for the people you met, the stories you were told, and
+          the small details someone quietly took care of so you could simply
+          enjoy it all.
+        </p>
+        <p class="intro__body">
+          That is the idea behind {siteName}, the travel brand of {legalEntity}.
+          {foundingYear ? `Founded in India in ${foundingYear}, we` : 'We'} have
+          spent over two decades designing journeys for travellers from across
+          India and around the world, bringing together local knowledge, trusted
+          relationships and hands-on care to make travel rewarding, comfortable
+          and seamless.
         </p>
       </div>
 
       <figure class="intro__figure">
-        <Image
-          src={settings.founder.portrait ?? portraitPlaceholder}
-          alt={settings.founder.portrait ? settings.founder.portraitAlt : ''}
+        <Picture
+          src={founder.portrait ?? portraitPlaceholder}
+          alt={founder.portrait ? founder.portraitAlt : ''}
           widths={[320, 500, 720]}
           sizes="(min-width: 64rem) 22rem, 60vw"
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
           loading="eager"
+          fetchpriority="high"
           quality={60}
           class="intro__portrait"
         />
         {
-          settings.founder.name && (
+          founder.name && (
             <figcaption class="intro__caption">
-              {settings.founder.name} · {settings.founder.role}
+              {founder.name} · {founder.role}
             </figcaption>
           )
         }
@@ -121,25 +147,23 @@ const crumbs = breadcrumbSchema([
     </div>
   </section>
 
-  <!-- 2 · The story -------------------------------------------------------- -->
+  <!-- 2 · The story: from the heart of India ------------------------------ -->
   <section class="band band-tight" aria-labelledby="story-heading">
-    <div class="container-content story">
-      <h2 id="story-heading" class="story__label">The story</h2>
-      <div class="story__body prose-measure">
-        <p class="story__lead">{settings.founder.quote}</p>
+    <div class="container-content split">
+      <h2 id="story-heading" class="split__heading">From the heart of India to the wider world</h2>
+      <div class="split__body prose-measure">
         <p>
-          India Visit began the way most good consultancies do, with more
-          requests than could reasonably be turned down. What started as
-          planning trips for friends of friends became a business built on the
-          same principle it started with: that somebody who has walked the route
-          should be the one writing it.
+          India is where we are most at home, from its celebrated landmarks and
+          historic cities to its quieter corners, varied landscapes and living
+          traditions. We also plan journeys across Nepal, Bhutan and Sri Lanka,
+          and to selected destinations across Asia and beyond.
         </p>
         <p>
-          Two decades on, the shape of the work has not changed much. We write
-          the itinerary, we choose the properties and the guides, we book the
-          trains, and then we stay reachable for the whole trip. The part that
-          has changed is how many places we can do it in: nine regions now,
-          three of them outside India.
+          Whether it is your first visit or a return to go deeper, we begin by
+          asking what matters to you: culture and heritage, food, wildlife,
+          wellness, a family holiday, a celebration, or simply the freedom to
+          travel at your own pace. Then we build the journey around you, never
+          the other way round.
         </p>
       </div>
     </div>
@@ -147,32 +171,119 @@ const crumbs = breadcrumbSchema([
 
   <!-- 3 · Timeline — renders only once the founding year is verified ------- -->
   {
-    settings.foundingYear && (
+    foundingYear && (
       <section class="band band-tight band-offwhite" aria-labelledby="timeline-heading">
         <div class="container-content">
-          <h2 id="timeline-heading">{settings.foundingYear} to today</h2>
-          <p class="prose-measure">Milestones arrive with the verified founding year.</p>
+          <h2 id="timeline-heading">{foundingYear} to today</h2>
+          <ol class="timeline">
+            <li class="timeline__stop">
+              <span class="timeline__when">{foundingYear}</span>
+              <span class="timeline__what">
+                Founded in India{founder.name ? ` by ${founder.name}` : ''}
+              </span>
+            </li>
+            <li class="timeline__stop">
+              <span class="timeline__when">Today</span>
+              <span class="timeline__what">
+                Over two decades designing journeys for travellers from across
+                India and around the world
+              </span>
+            </li>
+          </ol>
         </div>
       </section>
     )
   }
 
-  <!-- 4 · Philosophy -------------------------------------------------------- -->
-  <section class="band band-tight band-offwhite" aria-labelledby="philosophy-heading">
-    <div class="container-content">
-      <p class="eyebrow">Affordable luxury, honestly</p>
-      <h2 id="philosophy-heading">What that actually means</h2>
-      <ul class="philosophy fade-up-stagger">
-        {
-          PHILOSOPHY.map((item) => (
-            <li class="philosophy__item">
-              <Lotus size={18} tone="crimson" class="philosophy__mark" />
-              <h3 class="philosophy__title">{item.title}</h3>
-              <p class="philosophy__detail">{item.detail}</p>
-            </li>
-          ))
-        }
-      </ul>
+  <!-- Thoughtful planning, reliable support ---------------------------------- -->
+  <section class="band band-tight" aria-labelledby="care-heading">
+    <div class="container-content split">
+      <h2 id="care-heading" class="split__heading">Thoughtful planning, reliable support</h2>
+      <div class="split__body prose-measure">
+        <p>
+          Great travel is shaped as much by what happens behind the scenes as by
+          what you experience along the way. Our on-ground network and carefully
+          chosen partners take care of every important detail, including:
+        </p>
+        <ul class="care">
+          {
+            CARE.map((item) => (
+              <li class="care__item">
+                <Lotus size={16} tone="crimson" class="care__mark" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p>
+          Clear communication, dependable arrangements, and the reassurance that
+          someone is always there when you need them. Well considered, never
+          over-planned.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- A life lived across India: meet the founder -------------------------- -->
+  <section class="band band-tight band-offwhite" aria-labelledby="founder-heading">
+    <div class="container-content split">
+      <h2 id="founder-heading" class="split__heading">
+        A life lived across India{founder.name ? `: meet ${founder.name}` : ''}
+      </h2>
+      <div class="split__body prose-measure">
+        <p>
+          {siteName} is built on personal relationships. Founder and Managing
+          Director {founder.name} remains closely involved in the business and in
+          understanding what each client needs. Since founding the
+          company{foundingYear ? ` in ${foundingYear}` : ''}, she has built a wide network of local contacts,
+          long-standing friendships and first-hand destination knowledge across
+          the country. Your journey is shaped by someone who knows the ground
+          personally, not by a call centre.
+        </p>
+        <p>
+          Army life is part of that story. Life in an Army family meant frequent
+          moves, new communities, and making a home in different corners of the
+          country. It gave Sheena a first-hand feel for India's diversity, its
+          people and its regional cultures, and it taught her how to travel:
+          adapting to new places, building relationships, and navigating the
+          unfamiliar with curiosity, flexibility and an eye for the little
+          details that make all the difference.
+        </p>
+        <p>
+          That personal perspective, combined with years of professional
+          experience, shapes how {siteName} plans every journey: with care,
+          practical understanding and a genuine interest in the people and
+          places that make travel meaningful.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who we work with -------------------------------------------------------- -->
+  <section class="band band-tight" aria-labelledby="who-heading">
+    <div class="container-content split">
+      <h2 id="who-heading" class="split__heading">Who we work with</h2>
+      <div class="split__body prose-measure">
+        <p>
+          We work with individual travellers, families, groups and corporate
+          clients, as well as travel partners who need dependable destination
+          support in India and the region. Whatever the journey, the care and
+          attention to detail stay the same.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Philosophy: her belief ---------------------------------------------- -->
+  <section class="band band-offwhite" aria-labelledby="belief-heading">
+    <div class="container-content belief">
+      <Lotus size={22} tone="crimson" class="belief__mark" />
+      <h2 id="belief-heading" class="belief__label">Our belief</h2>
+      <p class="belief__line">Move slowly. Immerse yourself. Stay curious.</p>
+      <p class="belief__body">
+        Meet people, embrace the unexpected, and let each place reveal itself.
+        We'll take care of the details.
+      </p>
     </div>
   </section>
 
@@ -252,6 +363,7 @@ const crumbs = breadcrumbSchema([
   }
 
   .intro__title {
+    margin-top: 0.4rem;
     font-size: var(--text-h1);
     line-height: var(--leading-display);
   }
@@ -260,6 +372,12 @@ const crumbs = breadcrumbSchema([
     margin-top: 1.25rem;
     max-width: 46ch;
     font-size: var(--text-xl);
+    color: var(--color-ink);
+  }
+
+  .intro__body {
+    margin-top: 1rem;
+    max-width: 60ch;
     color: var(--color-ink-muted);
   }
 
@@ -280,55 +398,118 @@ const crumbs = breadcrumbSchema([
     color: var(--color-ink-muted);
   }
 
-  /* ---- story ------------------------------------------------------------- */
-  .story {
+  /* ---- heading over prose ---------------------------------------------------
+     At every width. A heading column beside the prose put her longer headings
+     ("A life lived across India: meet Sheena Sewal") on four lines at the H2
+     size; stacked, they take one or two and keep the sitewide H2 scale. */
+  .split {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
-  @media (min-width: 64rem) {
-    .story {
-      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
-      gap: 4rem;
-      align-items: start;
-    }
+  .split__heading {
+    max-width: 28ch;
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    text-wrap: balance;
   }
 
-  .story__label {
-    font-family: var(--font-body);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-crimson);
-  }
-
-  .story__lead {
-    font-size: var(--text-xl);
-  }
-
-  .story__body > p + p {
+  .split__body > * + * {
     margin-top: 1.1rem;
+  }
+
+  .split__body p {
     color: var(--color-ink-muted);
   }
 
-  /* ---- philosophy --------------------------------------------------------- */
-  .philosophy {
+  /* ---- timeline ------------------------------------------------------------ */
+  .timeline {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
-    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
-    margin: 2.25rem 0 0;
+    gap: 1.5rem;
+    margin: 2rem 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .philosophy__title {
-    margin-top: 0.75rem;
-    font-size: var(--text-2xl);
+  @media (min-width: 48rem) {
+    .timeline {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3rem;
+    }
   }
 
-  .philosophy__detail {
-    margin-top: 0.6rem;
+  .timeline__stop {
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-burgundy);
+  }
+
+  .timeline__when {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .timeline__what {
+    display: block;
+    margin-top: 0.4rem;
+    max-width: 34ch;
+    color: var(--color-ink-muted);
+  }
+
+  /* ---- planning list ------------------------------------------------------- */
+  .care {
+    display: grid;
+    gap: 0.6rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .care__item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    color: var(--color-ink);
+  }
+
+  .care__item :global(.care__mark) {
+    flex: none;
+    transform: translateY(0.15em);
+  }
+
+  /* ---- belief -------------------------------------------------------------- */
+  .belief {
+    max-width: 44rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .belief :global(.belief__mark) {
+    margin-inline: auto;
+  }
+
+  .belief__label {
+    margin-top: 1rem;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink-muted);
+  }
+
+  .belief__line {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: 700;
+    line-height: var(--leading-heading);
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  .belief__body {
+    margin-top: 1rem;
     color: var(--color-ink-muted);
   }
 
