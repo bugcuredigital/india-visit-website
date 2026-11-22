@@ -1,14 +1,15 @@
 # Phosphor icon provenance
 
-The site uses **6** icons, all from [Phosphor
-Icons](https://github.com/phosphor-icons/core) at the **thin** weight. Regenerate with
+The site uses **8** icons, all from [Phosphor
+Icons](https://github.com/phosphor-icons/core), at the **thin** weight except where the
+table says otherwise. Regenerate with
 `npm run brand:icons`.
 
 ## Why these are copied, not installed
 
 There is no `@phosphor-icons/*` dependency in `package.json` and there should
 never be one. That package is a React component library; this is a static Astro
-site with no React runtime, and importing a 1,500-icon set to draw 6 glyphs
+site with no React runtime, and importing a 1,500-icon set to draw 8 glyphs
 would ship a framework to solve a copy-paste problem. The path data below is
 copied into `src/lib/phosphor-icons.ts`, so each icon costs one inline
 `<svg>` and nothing at runtime.
@@ -39,3 +40,5 @@ typeface.
 | `chat-circle` | trust bar — 24/7 on-trip support | [thin](https://raw.githubusercontent.com/phosphor-icons/core/main/assets/thin/chat-circle-thin.svg) |
 | `users` | trust bar — travellers hosted (used once the client verifies the figure) | [thin](https://raw.githubusercontent.com/phosphor-icons/core/main/assets/thin/users-thin.svg) |
 | `map-pin` | trust bar — destinations (used once the client verifies the figure) | [thin](https://raw.githubusercontent.com/phosphor-icons/core/main/assets/thin/map-pin-thin.svg) |
+| `instagram-logo` | footer — Instagram profile link | [regular](https://raw.githubusercontent.com/phosphor-icons/core/main/assets/regular/instagram-logo.svg) |
+| `facebook-logo` | footer — Facebook profile link | [regular](https://raw.githubusercontent.com/phosphor-icons/core/main/assets/regular/facebook-logo.svg) |

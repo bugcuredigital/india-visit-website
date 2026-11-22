@@ -27,11 +27,11 @@ experiences:
     text: Best at first light, before the heat and the crowds, when the marble takes colour from the sky.
     image: /uploads/temp-photos/TEMP-PHOTO-day-gt-agra-taj-trees.jpg
     imageAlt: The Taj Mahal framed by a dark tree in the foreground
-  - name: City palaces
+  - name: City Palaces
     text: Seven storeys of Mughal, Rajput and European ideas, still part-occupied by the families that built them.
     image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-city-palace.jpg
     imageAlt: A columned palace doorway in Jaipur
-  - name: The bazaars
+  - name: The Bazaars
     text: Jewellery, block-printed cloth, brass and blue pottery, sold in the same lanes for three centuries.
     image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-bazaar.jpg
     imageAlt: Bowls of brightly coloured powders on a Rajasthani market stall

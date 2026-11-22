@@ -5,13 +5,16 @@
     "legalEntity": "India TajMahal Tour Operators",
     "phone": "+91 98102 41121",
     "phoneHref": "tel:+919810241121",
+    "phone2": "+91 98102 24108",
     "whatsappNumber": "+91 98102 41121",
     "whatsappDefaultMessage": "Hello India Visit, I'd like help planning a trip.",
     "email": "info@india-visit.com",
-    "address": "Dummy Address, New Delhi",
+    "address": "B-33 Geetanjali Enclave, IInd Floor, New Delhi 110017",
+    "gstNumber": "07ARPPS6165A1ZJ",
+    "tripadvisorUrl": "https://www.tripadvisor.in/Attraction_Review-g304551-d17763227-Reviews-India_TajMahalTour_operators_-New_Delhi_National_Capital_Territory_of_Delhi.html",
     "socials": {
-      "instagram": null,
-      "facebook": null,
+      "instagram": "https://www.instagram.com/sheena_sewal/",
+      "facebook": "https://www.facebook.com/Sheena.sewal",
       "youtube": null,
       "linkedin": null
     },
@@ -35,6 +38,7 @@
         "alt": "The panelled interior of a vintage Indian luxury train carriage"
       }
     },
+    "reels": [],
     "showPrices": false,
     "responseSla": null,
     "founder": {
@@ -46,8 +50,6 @@
     },
     "_dummyDataFlags": [
       "whatsappDefaultMessage — DUMMY DATA, client to approve wording",
-      "address — DUMMY DATA, real address due in M5",
-      "socials.* — DUMMY DATA, handles pending (PRD Open Question #7)",
       "gtmContainerId — DUMMY DATA, container ID pending; null emits no GTM",
       "metaPixelId — DUMMY DATA, pixel is managed inside GTM, not in code",
       "travellerCount — BLOCKED on PRD Open Question #2",

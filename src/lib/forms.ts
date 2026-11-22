@@ -2,7 +2,7 @@
  * Which forms are live.
  * ---------------------------------------------------------------------------
  * Every form posts to `/api/lead` (functions/api/lead.ts). A form whose switch
- * is off renders its submit button disabled, labelled "Launching shortly" — the
+ * is off renders its submit button disabled, labelled "Launching Shortly" — the
  * client's instruction for the 2026-11-12 demo: a dead form click is worse
  * than no form. A "we'll call you" message over a form that sends nothing was
  * the other option and was not used: it would promise a call to a real
@@ -24,7 +24,7 @@ export const PDF_GATE_LIVE = false;
 export const NEWSLETTER_LIVE = false;
 
 /** The disabled button's label — the client's own words. */
-export const FORMS_PENDING_LABEL = 'Launching shortly';
+export const FORMS_PENDING_LABEL = 'Launching Shortly';
 
 /** Shown in place of the form once the lead function confirms — the client's own words. */
 export const LEAD_SUCCESS = "Thank you — we'll reply personally within a day.";

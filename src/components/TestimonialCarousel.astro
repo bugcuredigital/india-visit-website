@@ -34,9 +34,15 @@ export interface TestimonialItem {
 interface Props {
   testimonials: TestimonialItem[];
   heading?: string;
+  /**
+   * A quiet link out under the cards (round 5: the homepage's TripAdvisor
+   * link). Text, not a button: the section's job is the quotes, and an
+   * external link must not outrank the page's one crimson action.
+   */
+  moreLink?: { href: string; label: string; external?: boolean };
 }
 
-const { testimonials, heading = 'What travellers say' } = Astro.props;
+const { testimonials, heading = 'What travellers say', moreLink } = Astro.props;
 
 /** "James & Clare W." -> "JC". Never more than two characters. */
 const initialsOf = (name: string) =>
@@ -141,6 +147,20 @@ const showNav = testimonials.length > 1;
           ))}
         </div>
       )}
+
+      {moreLink && (
+        <p class="quotes__more">
+          <a
+            href={moreLink.href}
+            {...(moreLink.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            data-analytics="tripadvisor_click"
+          >
+            {moreLink.label}
+            {moreLink.external && <span class="visually-hidden"> (opens in a new tab)</span>}
+            <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M4 2h6v6M10 2 2.5 9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </p>
+      )}
     </div>
   </section>
 )}
@@ -203,6 +223,34 @@ const showNav = testimonials.length > 1;
   .quotes__heading {
     margin-top: 0.6rem;
     font-size: var(--text-h2);
+  }
+
+  .quotes__more {
+    margin: 2rem 0 0;
+    font-size: var(--text-sm);
+  }
+
+  .quotes__more a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-hairline);
+    text-underline-offset: 0.25em;
+  }
+
+  .quotes__more a:hover {
+    color: var(--color-crimson);
+    text-decoration-color: currentColor;
+  }
+
+  .quotes__more svg {
+    width: 12px;
+    height: 12px;
+    flex: none;
   }
 
   .quotes__nav {

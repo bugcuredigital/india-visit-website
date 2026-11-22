@@ -13,12 +13,15 @@
  */
 import { defineCollection, reference, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
+import { DESTINATIONS } from './lib/destinations-strip';
 
 /* ---------------------------------------------------------------- shared -- */
 
 const PACE = ['relaxed', 'moderate', 'active'] as const;
 const IDEAL_FOR = ['couples', 'families', 'seniors', 'first-timers', 'solo', 'groups'] as const;
 const TRANSPORT = ['flight', 'overnight-train', 'train', 'drive', 'boat', 'walk'] as const;
+/** The nine locked destination slugs, from the one list that defines them. */
+const DESTINATION_SLUGS = DESTINATIONS.map((tile) => tile.slug) as [string, ...string[]];
 
 /** Per-day transfer chip. The Western & Southern India doc mixes flights and
  *  overnight trains mid-trip, so this is per-day, never per-trip. */
@@ -122,8 +125,38 @@ const journeyBase = (image: () => z.ZodTypeAny) => ({
   /** Editorial fields the client assigns per trip (PRD Open Question #14).
    *  Required — they drive the Quick Facts bar, which is a required section. */
   pace: z.enum(PACE),
-  idealFor: z.array(z.enum(IDEAL_FOR)).min(1),
+  /**
+   * The audience tags. May be empty ONLY when `bestFor` carries the client's
+   * own line instead (the refinement below says so loudly): the short-break
+   * documents of round 5 name audiences the tag list has no word for
+   * ("culture lovers, photographers and spiritual travellers").
+   */
+  idealFor: z.array(z.enum(IDEAL_FOR)).default([]),
+  /**
+   * The client's own "Best for" line, verbatim (the round-5 short breaks).
+   * When present, Quick Facts shows it in place of the tags: her words beat
+   * our nearest enum value.
+   */
+  bestFor: z.string().min(1).optional(),
   bestSeason: z.string().min(1),
+
+  /**
+   * Destination pages this journey belongs on — the "auto by tag" half of
+   * CLAUDE.md's "auto by tag + manual override". A destination lists its own
+   * `relatedJourneys` first (the ordering override), then every journey that
+   * names it here. Values are the nine locked slugs and nothing else, so a
+   * typo fails the build instead of quietly dropping a trip from a page.
+   */
+  destinations: z.array(z.enum(DESTINATION_SLUGS)).default([]),
+
+  /**
+   * Listed in the "Short programmes" strip on /corporate/ (round 5). The
+   * client sent the eight short programmes as "Corporate itineraries" while
+   * each one's Best-for line is leisure; until she says where they belong
+   * (CLIENT_REVIEW_SHEET.md), they show on both pages, and her answer is this
+   * checkbox rather than a code change.
+   */
+  showOnCorporate: z.boolean().default(false),
 
   /** S4 — verb-led highlight, rendered with the lotus glyph. */
   highlights: z
@@ -311,6 +344,14 @@ const journeys = defineCollection({
             path: ['priceFrom'],
             message:
               'Operator tariffs are never published (CLAUDE.md invariant #6). Remove priceFrom from this luxury-train page — cabin cards render "Enquire for pricing".',
+          });
+        }
+        if (data.idealFor.length === 0 && !data.bestFor) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['idealFor'],
+            message:
+              'Quick Facts needs an audience: pick at least one "Ideal for" tag, or fill "Best for" with your own line.',
           });
         }
         if (data.glanceRows.length !== data.itineraryDays.length) {
@@ -627,10 +668,32 @@ const siteSettings = defineCollection({
 
       phone: z.string().min(1),
       phoneHref: z.string().startsWith('tel:'),
+      /** A second line (round 5). Shown beside the primary wherever the site
+       *  prints its numbers; every call and WhatsApp BUTTON stays on the
+       *  primary, so one action never offers a choice of two. Its own tel:
+       *  link is derived from the digits (`telHref` in lib/site-settings). */
+      phone2: z.string().regex(/^\+[\d\s-]{8,}$/, 'A phone number starting with its country code, "+91" for India.').nullable(),
       whatsappNumber: z.string().min(1),
       whatsappDefaultMessage: z.string().min(1),
       email: z.string().email(),
       address: z.string().min(1),
+
+      /** GST registration (GSTIN). Shown on /corporate/, where it backs the
+       *  "GST invoicing" line, and on /booking-terms/. The pattern is the
+       *  GSTIN format: state code, PAN, entity number, "Z", check character. */
+      gstNumber: z
+        .string()
+        .regex(/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/, 'A GSTIN is 15 characters, e.g. 07ABCDE1234F1Z5.')
+        .nullable(),
+
+      /** The TripAdvisor listing. We link out to it and NEVER reproduce its
+       *  review text or ratings on the site (round 5 ruling): the reviews live
+       *  there, under TripAdvisor's terms. */
+      tripadvisorUrl: z
+        .string()
+        .url()
+        .regex(/^https:\/\/www\.tripadvisor\.[a-z.]+\//, 'Paste the full TripAdvisor page address, starting https://www.tripadvisor.')
+        .nullable(),
 
       socials: z.object({
         instagram: z.string().url().nullable(),
@@ -693,6 +756,37 @@ const siteSettings = defineCollection({
           alt: z.string().min(1),
         }),
       }),
+
+      /**
+       * "Follow along on Instagram" (homepage, round 5): static tiles that
+       * LINK OUT to the reels. Deliberately not Instagram's embed — its script
+       * is a third-party script in the visitor path, which invariants #3 and
+       * #4 bar. An empty list renders no section at all, the same rule as
+       * the association logos: omitting beats a row of grey boxes. Three to
+       * six when present, so the row never reads as half-built. Empty, not
+       * null: Tina cannot hold null on a list field, and a `reels: null`
+       * stopped the CMS indexing Site settings at all (22 Nov 2026).
+       */
+      reels: z
+        .array(
+          z.object({
+            thumbnail: cmsImage(image),
+            thumbnailAlt: z.string().min(1),
+            url: z
+              .string()
+              .regex(
+                /^https:\/\/(www\.)?instagram\.com\/(reel|p)\/[A-Za-z0-9_-]+\/?$/,
+                'Paste the reel\'s own address, e.g. https://www.instagram.com/reel/AbC123/',
+              ),
+            /** One line under the tile. */
+            caption: z.string().min(1).max(90),
+          }),
+        )
+        .max(6)
+        .default([])
+        .refine((reels) => reels.length === 0 || reels.length >= 3, {
+          message: 'Add three to six reels, or none: a row of one or two reads as unfinished.',
+        }),
 
       /** Global gate for every priceFrom on the site. Default off. */
       showPrices: z.boolean(),

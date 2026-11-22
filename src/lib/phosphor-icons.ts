@@ -1,6 +1,7 @@
 /* GENERATED FILE — do not edit by hand. Regenerate with `npm run brand:icons`.
  * ---------------------------------------------------------------------------
- * Path data copied verbatim from Phosphor Icons (thin weight),
+ * Path data copied verbatim from Phosphor Icons (thin weight unless an
+ * entry says otherwise),
  * https://github.com/phosphor-icons/core, MIT licence:
  *
  *   Copyright (c) 2023 Phosphor Icons
@@ -66,6 +67,20 @@ export const PHOSPHOR_ICONS = {
     viewBox: '0 0 256 256',
     paths: [
       'M128,68a36,36,0,1,0,36,36A36,36,0,0,0,128,68Zm0,64a28,28,0,1,1,28-28A28,28,0,0,1,128,132Zm0-112a84.09,84.09,0,0,0-84,84c0,30.42,14.17,62.79,41,93.62a250,250,0,0,0,40.73,37.66,4,4,0,0,0,4.58,0A250,250,0,0,0,171,197.62c26.81-30.83,41-63.2,41-93.62A84.09,84.09,0,0,0,128,20Zm37.1,172.23A254.62,254.62,0,0,1,128,227a254.62,254.62,0,0,1-37.1-34.81C73.15,171.8,52,139.9,52,104a76,76,0,0,1,152,0C204,139.9,182.85,171.8,165.1,192.23Z',
+    ],
+  },
+  /** footer — Instagram profile link (regular weight). */
+  'instagram-logo': {
+    viewBox: '0 0 256 256',
+    paths: [
+      'M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z',
+    ],
+  },
+  /** footer — Facebook profile link (regular weight). */
+  'facebook-logo': {
+    viewBox: '0 0 256 256',
+    paths: [
+      'M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,191.63V152h24a8,8,0,0,0,0-16H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,0-16H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0,0,16h24v63.63a88,88,0,1,1,16,0Z',
     ],
   },
 } as const satisfies Record<string, PhosphorIcon>;

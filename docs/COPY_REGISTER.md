@@ -19,6 +19,10 @@ about **words**.
 | **PLACEHOLDER** | Deliberately neutral, visibly provisional, and replaced before launch. Listed for completeness, not for approval. |
 | **STRUCK** | No longer on the site. Kept in the table so the history of what was replaced, and by what, stays readable. |
 
+**Casing (round 5, 22 November 2026).** By your ruling, card and tile headings
+and button labels are Title Case (CLAUDE.md, copy voice). The rows below show
+the current casing; U1 lists every string the sweep changed, before and after.
+
 Where a whole section of copy is already being reviewed elsewhere — the Palace
 on Wheels day narratives, the founder quote — this file points at the
 `CLIENT_REVIEW_SHEET.md` section rather than repeating it.
@@ -42,8 +46,8 @@ and then appear on every page.
 | A4 | Footer legal | "© {year} India Visit. All rights reserved." | **APPROVED** | Standard. |
 | A5 | ConvertBand eyebrow | "Speak to a person, not a portal" | **DRAFT** | Appears at the foot of nearly every page. High-leverage line — worth reading twice. |
 | A6 | ConvertBand default heading | "Shall we start planning?" | **DRAFT** | Fallback when a page does not set its own. |
-| A7 | ConvertBand buttons | "WhatsApp us" · the phone number | **APPROVED** | PRD §8 conversion paths. |
-| A8 | Enquiry form submit | "Start planning" (page forms) · "Send enquiry" (footer) | **DRAFT** | |
+| A7 | ConvertBand buttons | "WhatsApp Us" · the phone number | **APPROVED** | PRD §8 conversion paths. |
+| A8 | Enquiry form submit | "Start Planning" (page forms) · "Send Enquiry" (footer) | **DRAFT** | |
 | A9 | Enquiry form note | "We reply personally — no call centre, no spam." | **DRAFT** | ⚑ This is a **promise**. It commits you to a human reply. |
 | A10 | Enquiry form consent | "I agree to India Visit contacting me about this enquiry, per the Privacy Policy." | **DRAFT** | ⚑ Consent wording is a **legal** string — see §19 of the review sheet. |
 | A11 | Form labels | "Your name" · "Phone or WhatsApp" · "Email" · "Travel month" · "Anything you'd like us to know?" · "Where would you like to go?" | **DRAFT** | |
@@ -63,20 +67,20 @@ and then appear on every page.
 | B5 | Destinations eyebrow + H2 | "Nine regions" / "Where do you want to go?" | **DRAFT** | |
 | B6 | Journeys eyebrow + H2 | "Signature journeys" / "Trips we would take ourselves" | **DRAFT** | ⚑ First person. Reads as the founder speaking — confirm you are comfortable with that voice. |
 | B7 | How-it-works H2 | "Three steps, one person looking after them" | **DRAFT** | |
-| B8 | How-it-works steps | "Tell us your dream" · "We craft your itinerary" · "Travel fully supported" | **APPROVED** | PAGE_TEMPLATES T1 §4 names these three steps. |
+| B8 | How-it-works steps | "Tell Us Your Dream" · "We Craft Your Itinerary" · "Travel Fully Supported" | **APPROVED** | PAGE_TEMPLATES T1 §4 names these three steps. |
 | B9 | How-it-works step bodies | Three short paragraphs, incl. *"Not a call centre."* | **DRAFT** | ⚑ "Not a call centre" is a **promise** about how you answer the phone. |
 | B10 | Consultant eyebrow + H2 | "Meet your travel consultant" / "Someone plans your trip. Not something." | **DRAFT** | Section itself is CLIENT_REVIEW_SHEET §14. |
 | B11 | Consultant quote | The founder's paragraph ("…I still write every itinerary myself… two in the morning…") | **STRUCK** | Replaced on 21 Nov by T10, built from your About Us. Its claims were stronger than your document supports ("remains closely involved"). |
 | B12 | Why-us eyebrow + H2 | "Why India Visit" / "The difference is who plans it" | **DRAFT** | |
-| B13 | Why-us item 1 | "Twenty years of it" — *"…long enough to know which hill station is worth the drive in July."* | **DRAFT** | |
-| B14 | Why-us item 2 | "Curated, not catalogued" — *"Every itinerary is written for the people travelling it. Nothing is picked off a shelf."* | **DRAFT** | |
-| B15 | Why-us item 3 | "Affordable luxury" — *"Heritage properties, private guides and unhurried days — arranged at the price of a package tour."* | **DRAFT** | ⚑ **Price claim.** "At the price of a package tour" is a comparative pricing statement. |
-| B16 | Why-us item 4 | "With you the whole way" — `supportPromise` | **APPROVED** | |
+| B13 | Why-us item 1 | "Twenty Years of It" — *"…long enough to know which hill station is worth the drive in July."* | **DRAFT** | |
+| B14 | Why-us item 2 | "Curated, Not Catalogued" — *"Every itinerary is written for the people travelling it. Nothing is picked off a shelf."* | **DRAFT** | |
+| B15 | Why-us item 3 | "Affordable Luxury" — *"Heritage properties, private guides and unhurried days — arranged at the price of a package tour."* | **DRAFT** | ⚑ **Price claim.** "At the price of a package tour" is a comparative pricing statement. |
+| B16 | Why-us item 4 | "With You the Whole Way" — `supportPromise` | **APPROVED** | |
 | B17 | Trains eyebrow + H2 | "Luxury rail" / "India's legendary luxury trains" | **DRAFT** | |
 | B18 | Trains body | "…booked through authorised agents, with the operator's terms set out plainly before you commit." | **APPROVED** | Required disclosure framing, CLAUDE.md invariant #6. |
 | B19 | Testimonials eyebrow + H2 | "In their words" / "What travellers say" | **DRAFT** | |
-| B20 | Corporate band | "Corporate travel" / "Offsites, incentives and conferences" / one sentence + CTA | **DRAFT** | New in round 3 (item 7). |
-| B21 | Travel-guide band | "Travel guide" / "Reading before you go" / "All articles" | **DRAFT** | |
+| B20 | Corporate band | "Corporate travel" / "Offsites, incentives and conferences" / one sentence + CTA "Corporate Travel →" | **DRAFT** | New in round 3 (item 7). |
+| B21 | Travel-guide band | "Travel guide" / "Reading before you go" / "All Articles" | **DRAFT** | |
 | B22 | Closing ConvertBand | "Tell us where you'd like to go" + body ending *"No obligation, and no call centre."* | **DRAFT** | ⚑ Another "no call centre" promise. |
 
 ---
@@ -114,7 +118,7 @@ and then appear on every page.
 |---|---|---|---|---|
 | E1 | H1 + lede | "India's legendary luxury trains" / "Authorised booking agents — Palace on Wheels, the Golden Chariot and the Deccan Odyssey" | **APPROVED** | The disclosure half is required (invariant #6). |
 | E2 | "Why by train" H2 | "Seven cities, one unpacking" | **DRAFT** | |
-| E3 | Three reasons | "A heritage hotel on wheels" · "Unpack once" · "Almost everything is included" + bodies | **DRAFT** | ⚑ "Almost everything is included" is an **inclusions claim**; it must match the operator's actual inclusions. |
+| E3 | Three reasons | "A Heritage Hotel on Wheels" · "Unpack Once" · "Almost Everything Is Included" + bodies | **DRAFT** | ⚑ "Almost everything is included" is an **inclusions claim**; it must match the operator's actual inclusions. |
 | E4 | "Booking a luxury train" | Section copy | **APPROVED** | Derived from the operator documents. |
 | E5 | Closing | "Check availability for your dates" | **DRAFT** | |
 
@@ -125,9 +129,9 @@ and then appear on every page.
 | # | Where | String | Status | Note |
 |---|---|---|---|---|
 | F1 | H1 + lede | "Corporate travel & offsites" / "One vendor, GST invoicing, and a single person who answers the phone for the whole trip. 20 years of doing this for companies that cannot afford the trip to go wrong." | **DRAFT** | ⚑ **GST invoicing** is a factual claim about your business. |
-| F2 | Capabilities H2 + four items | "Four kinds of trip"; Offsites · Incentive trips (MICE) · Conferences · Group logistics, each with a body | **APPROVED** *(names)* / **DRAFT** *(bodies)* | The four categories are PAGE_TEMPLATES T5 §2. |
+| F2 | Capabilities H2 + four items | "Four kinds of trip"; Offsites · Incentive Trips (MICE) · Conferences · Group Logistics, each with a body | **APPROVED** *(names)* / **DRAFT** *(bodies)* | The four categories are PAGE_TEMPLATES T5 §2. |
 | F3 | Capability body, Offsites | "Twenty to two hundred people…" | **DRAFT** | ⚑ **Capacity claim.** Confirm the range. |
-| F4 | Three steps | "Brief us" · "We come back with a proposal" · "We run the whole trip" + bodies | **DRAFT** | Written **without** a response-time number on purpose — T5 §3's "Proposal in 48h" is not published until you confirm it (CLIENT_REVIEW_SHEET §13). |
+| F4 | Three steps | "Brief Us" · "We Come Back with a Proposal" · "We Run the Whole Trip" + bodies | **DRAFT** | Written **without** a response-time number on purpose — T5 §3's "Proposal in 48h" is not published until you confirm it (CLIENT_REVIEW_SHEET §13). |
 | F5 | Team destinations H2 | "Destinations that suit a group" | **DRAFT** | |
 | F6 | Brief form | "Tell us what the trip is for" + body | **DRAFT** | |
 
@@ -173,7 +177,7 @@ and then appear on every page.
 | # | Where | String | Status | Note |
 |---|---|---|---|---|
 | J1 | H1 | "Tell us the shape of it" | **DRAFT** | |
-| J2 | "What happens next" | "We read it properly" · "We come back with a draft" · "We change it until it fits" | **DRAFT** | ⚑ Three **process promises**, and the one the enquiry form is judged against. |
+| J2 | "What happens next" | "We Read It Properly" · "We Come Back with a Draft" · "We Change It Until It Fits" | **DRAFT** | ⚑ Three **process promises**, and the one the enquiry form is judged against. |
 | J3 | "Before you send it" | Section copy | **DRAFT** | |
 
 ---
@@ -236,7 +240,7 @@ one without them" on acclimatisation days.
 
 | # | Where | Copy | Status | Note |
 |---|---|---|---|---|
-| O1 | Every form's submit button, until M6 makes the forms live | "Launching shortly" | **APPROVED** | Your own words, from the demo-polish instruction. Replaced by the normal button labels when `FORMS_LIVE` flips in M6 |
+| O1 | Every form's submit button, until M6 makes the forms live | "Launching Shortly" | **APPROVED** | Your own words, from the demo-polish instruction, in Title Case since 22 Nov (U1). Replaced by the normal button labels when `FORMS_LIVE` flips in M6 |
 
 ## What to do with this file
 
@@ -302,7 +306,7 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 | S3 | `/destinations/`, Beyond India group line | "Three destinations outside India, planned as carefully as we plan home." | **DRAFT** | Replaces "Three neighbours we plan as carefully as we plan home." Vietnam and Bali do not border India (audit 51). |
 | S4 | Destination pages, sentence frames | "Journeys in {inSentence}" · "What defines {inSentence}" · "More about {inSentence}" · "Shall we plan a trip to {inSentence}?" · ConvertBand body "Tell us roughly when you would like to travel and how long you have, and we will come back with a day-by-day plan for {inSentence} and a price." | **DRAFT** ⚑ (the body promises a priced plan) | **Supersedes the "Journeys in {short}" and "What defines {short}" frames in D4, and D5.** The short label made "Journeys in Wildlife" and "Shall we plan North East?" (audit 44). |
 | S5 | Destination CMS field **"Name inside a sentence"** (`inSentence`; empty means the short label) | Wildlife: "India's wildlife reserves" · North East: "the North East" · South & West: "South & West India" | **DRAFT** | The other six read correctly as their short label. |
-| S6 | `/corporate/` brief form (T5 §6) | Labels "Company" · "Group size" · "Dates" · "Budget band (optional)" · "Requirements (optional)"; button "Send the brief"; refusal "Please tell us the company name." | Labels **APPROVED** (T5 §6 field names, verbatim) · button and refusal **DRAFT** | The form used to be the leisure form unchanged (audit 78). The budget options are the Plan My Trip bands (S45). The refusal line extends R4. |
+| S6 | `/corporate/` brief form (T5 §6) | Labels "Company" · "Group size" · "Dates" · "Budget band (optional)" · "Requirements (optional)"; button "Send the Brief"; refusal "Please tell us the company name." | Labels **APPROVED** (T5 §6 field names, verbatim) · button and refusal **DRAFT** | The form used to be the leisure form unchanged (audit 78). The budget options are the Plan My Trip bands (S45). The refusal line extends R4. |
 | S7 | Golden Triangle signature line (M2) | "The Taj Mahal at First Light" | **DRAFT** | Replaces "Delhi · Agra · Jaipur in Six Unhurried Days", which repeated the route strip and the duration pill (audit 31). Taken from the itinerary's own Day 5 and highlights. |
 | S8 | Golden Chariot signature line (M2), meta description, intro | "Mysuru to the Backwaters in Six Days"; "through Mysuru"; "the Wadiyar palace at Mysuru" | **DRAFT** | One spelling per page: the city is Mysuru, as in the route strip and the day titles. "Mysore Palace" and "the Kingdom of Mysore" keep their names. |
 
@@ -311,16 +315,16 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 | # | Where | String | Status | Note |
 |---|---|---|---|---|
 | S9 | Every WhatsApp link: the prefill in the visitor's compose box | "{whatsappDefaultMessage} ({context})". Contexts typed per page: "From a 404 page", "Plan My Trip", "{title} ({n}N/{n}D)", "Journeys index", "Destinations index", "Luxury trains", "Corporate", "About", "Reviews", "Travel guide" | **DRAFT** | The default message itself is a siteSettings field. |
-| S10 | Homepage trains banner button | "See the trains" | **DRAFT** | |
-| S11 | Journey hero button, all 20 | "Download the itinerary" | **DRAFT** | Goes to the PDF gate, still "Launching shortly". |
+| S10 | Homepage trains banner button | "See the Trains" | **DRAFT** | |
+| S11 | Journey hero button, all 28 | "Download the Itinerary" | **DRAFT** | Goes to the PDF gate, still "Launching Shortly". |
 | S12 | Journey Quick Facts, 13 loop trips | "{startCity} return" | **DRAFT** | |
-| S13 | Journey intro expander · Day by Day toggle · city link inside a day | "Show less" · "Collapse all" · "Explore {city} →" | **DRAFT** | |
+| S13 | Journey intro expander · Day by Day toggle · city link inside a day | "Show less" · "Expand All" / "Collapse All" · "Explore {city} →" | **DRAFT** | |
 | S14 | Palace on Wheels and Deccan Odyssey, Day by Day | "Some day descriptions are drafted from the published route and are awaiting the operator's confirmed copy." | **DRAFT** ⚑ | Says where the copy came from, and implies the operator will supply text. |
 | S15 | Transport chips | "Train" · "On foot" | **DRAFT** | Template Spec S6 names Flight, Overnight train, Drive and Boat only. |
 | S16 | Inclusions caveat, 4 Variant A trips | "Typical inclusions for a journey of this shape. The final list is confirmed in your custom quote." | **DRAFT** ⚑ | A promise about the quote. |
 | S17 | PDF gate, all 20 (disabled, "Launching shortly") | Eyebrow "Take it with you" · H2 "Download this itinerary" · body "The full day-by-day as a branded PDF: the same itinerary as this page, section for section. Leave a name, an email and a phone number and it is sent to you straight away." · form note "The PDF is the same itinerary as this page, section for section. We may follow up once. No list, no spam." | **DRAFT** ⚑ | **Untrue until the gate goes live**: today the button is disabled and the lead function refuses PDF requests. The note is a promise about how the data is used. The repetition ("section for section" twice) is audit "Parked" item 1. |
 | S18 | Train pages, Policies | "Full booking terms" (link) | **DRAFT** | |
-| S19 | Train pages, "Trips like this" | "All luxury trains" (link) | **DRAFT** | |
+| S19 | Journey pages, "Trips like this" | "All Luxury Trains" (train pages) · "All Journeys" (the rest): outline pills | **DRAFT** | |
 | S20 | `/journeys/` ConvertBand body | "We build from scratch far more often than we run these as written. Tell us the shape of it (where, when, how long, who with) and we will draft the rest." | **DRAFT** ⚑ | A claim about the business. |
 | S21 | Destination pages, experiences eyebrow (Kerala, Rajasthan) | "What defines it" | **DRAFT** | |
 | S22 | `/destinations/` group eyebrow and card count | "{n} destinations" · "{n} journeys" / "1 journey" | **DRAFT** | |
@@ -345,9 +349,9 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 | S41 | `/plan-my-trip/` step 1 hint | "Pick as many as you like, or tell us you are not sure yet." | **DRAFT** | |
 | S42 | `/plan-my-trip/` step 2 | Label "When, and for how long?" · "Roughly how long" · chips "Under a week" · "7–10 days" · "11–14 days" · "Over two weeks" | **DRAFT** | PRD §8.1 has "When & how long?". |
 | S43 | `/plan-my-trip/` step 3 | "How many of you" · chip "A company" | **DRAFT** | PRD §8.1 says "corporate". |
-| S44 | `/plan-my-trip/` step 4 | Legend "How do we reach you?" · "Preferred way to be contacted" · "Anything else we should know (optional)" · button "Send it over" | **DRAFT** | |
+| S44 | `/plan-my-trip/` step 4 | Legend "How do we reach you?" · "Preferred way to be contacted" · "Anything else we should know (optional)" · button "Send It Over" | **DRAFT** | |
 | S45 | Budget bands, Plan My Trip step 3 and the corporate brief | "Rather not say" · "Comfortable" · "Premium" · "No ceiling" | **DRAFT** | One list since round 5 (`src/lib/forms.ts`). Deliberately without figures. |
-| S46 | `/404/` button | "Back to the homepage" | **DRAFT** | T13 says "Home". |
+| S46 | `/404/` buttons | "Back to the Homepage" · "All Journeys" · "WhatsApp Us" | **DRAFT** | T13 says "Home". |
 | S47 | Lead function, the page shown without JavaScript | "Back to the page" | **DRAFT** | |
 | S48 | Cabin cards, train pages | "Top tier" flag | **DRAFT** | Template Spec S9 asks for the top tier to be "visually flagged" but gives no label. On Golden Chariot it marks the only cabin (audit 38, med). |
 | S49 | Destination and city pages, journeys eyebrow | "Journeys" | **DRAFT** | Counted as the A13 nav word by the sweep and as unregistered by the audit; listed so it is settled. |
@@ -357,7 +361,7 @@ All of them are below. ⚑ marks a claim about the business that the client shou
 
 | # | Where | Strings | Status |
 |---|---|---|---|
-| S51 | States that switch on with a setting or a launch | "Send me the itinerary" · "Subscribe" · "Members and affiliations" · "Rated {x} across {n} reviews" · "We reply within {sla}." · "Read more reviews" · "The route" (and the route-map alt text) · "Coming soon" / "Enquire for details" · "Travellers Hosted" · "From ₹{n}" · "Last updated {date}" | **DRAFT** | Since 21 Nov "{year} to today" renders (the founding year is yours: T4), and "Milestones arrive with the verified founding year." is gone. |
+| S51 | States that switch on with a setting or a launch | "Send Me the Itinerary" · "Subscribe" · "Members and affiliations" · "Rated {x} across {n} reviews" · "We reply within {sla}." · "Read More Reviews" · "The route" (and the route-map alt text) · "Coming soon" / "Enquire for details" · "Travellers Hosted" · "From ₹{n}" · "Last updated {date}" | **DRAFT** | Since 21 Nov "{year} to today" renders (the founding year is yours: T4), and "Milestones arrive with the verified founding year." is gone. |
 
 ### Titles and meta descriptions of the fixed pages
 
@@ -409,3 +413,28 @@ from Site settings, so every page that shows them says the same thing.
 | T10 | Homepage, "Meet your travel consultant", the lines under your name | "Sheena remains closely involved in the business and in understanding what each client needs. Life in an Army family gave her a first-hand feel for India's diversity, its people and its regional cultures. Your journey is shaped by someone who knows the ground personally, not by a call centre." | **APPROVED** | Three of your sentences. The first is yours with your title and surname dropped, since they sit just above it ("Founder and Managing Director Sheena Sewal remains…"); the middle one joins your two Army-life sentences into one; the last is verbatim. Third person throughout, because your document has no first-person sentence of yours to quote, so they are no longer set as a quotation. Replaces B11. |
 | T11 | Your name, role and portrait alt text (homepage, `/about/`) | "Sheena Sewal" · "Founder & Managing Director" · alt "Sheena Sewal, Founder and Managing Director of India Visit" | **APPROVED** | From your document. The portrait is the one embedded in it. |
 | T12 | All four policy pages, under the heading | "{siteName} is the travel brand of {legalEntity}." | **APPROVED** | Your wording. Whether the footer's © line should carry the entity too is a question for you (review sheet §14). |
+
+## U. Round 5: your remarks and the short programmes (22 November 2026)
+
+Two kinds of row. **Yours**: details and wording you supplied, APPROVED as they
+stand. **Assembled**: a label, title or line built only from your own sentences
+to fit a template slot (a day title, a highlight, a note label). Those are
+APPROVED on the precedent of T4, because they add no claim your documents do
+not make; strike any you would rather word yourself. Strings that are ours
+and not yours are DRAFT, as always.
+
+| # | Where | String | Status | Note |
+|---|---|---|---|---|
+| U1 | The capitalisation sweep, sitewide | **Tiles:** "City palaces" → "City Palaces" (Rajasthan & the Golden Triangle, where it rendered; `/cities/jaipur/` reads "The City Palace") · "The bazaars" → "The Bazaars" (Rajasthan, Jaipur) · "The backwaters" → "The Backwaters" · "Tea country" → "Tea Country" · "The spice trail" → "The Spice Trail" (Kerala) · "The Chinese fishing nets" → "The Chinese Fishing Nets" · "The spice quarter" → "The Spice Quarter" · "The backwaters, from here" → "The Backwaters, from Here" (Kochi). **Step and option cards:** B8, B13–B16, E3, F2, F4, J2, and the six booking steps on the three train pages ("Select and Finalise the Journey" … "Arrival Assistance"). **Buttons and pills:** A7, A8, B20, B21, O1, S6, S10, S11, S13, S19, S44, S46, S51, plus "Start a Conversation →" (homepage consultant), "View All Destinations" and "All Journeys" (homepage, destination and city pages) and "View All Journeys" (related-journeys default) | **APPROVED** | Your ruling. Casing only: no word changed. Kept in sentence case on purpose: section headings, eyebrows, body copy, text links inside sentences ("send us a brief", "WhatsApp us" beside the Plan My Trip phone number), form labels and the Plan My Trip choice chips, and label/value pairs (Quick Facts, practical notes). |
+| U2 | Footer and contact lines (`/corporate/` brief, `/plan-my-trip/`, the PDF brand line) | Second number "+91 98102 24108", under the main number | **APPROVED** | Yours. Grouped like the main number for reading; same digits. Call and WhatsApp buttons stay on the main number. |
+| U3 | Footer | Address "B-33 Geetanjali Enclave, IInd Floor, New Delhi 110017" | **APPROVED** | Yours, verbatim. Also the search-engine address (street, New Delhi, 110017, India). |
+| U4 | Footer | Instagram and Facebook icons; screen readers hear "Instagram (opens in a new tab)" · "Facebook (opens in a new tab)" | **APPROVED** | Your handles: sheena_sewal and Sheena.sewal. Also listed to search engines as your profiles. |
+| U5 | `/corporate/` under the opening, and `/booking-terms/` under the brand line | "GSTIN 07ARPPS6165A1ZJ" | **APPROVED** | Your number. "GSTIN" is the standard label. Whether it also goes in the footer legal line is review sheet §28. |
+| U6 | `/reviews/` main button · homepage, under "What travellers say" (quiet link) | "Read Our TripAdvisor Reviews" | **APPROVED** | Your wording. Links out only: no review text, rating or badge from TripAdvisor is copied onto the site. |
+| U7 | Homepage, between the testimonials and the corporate band (renders only once you add reels) | H2 "Follow along on Instagram" · the handle "@sheena_sewal" as the profile link · screen readers: "(opens Instagram in a new tab)" · each tile's caption is yours, typed in Site settings | **APPROVED** | Your section name. |
+| U8 | `/journeys/` group headings and lines | "Custom Journeys" · "Short Breaks" · "Luxury Trains" · "{n} journeys · {min}–{max} days" | **APPROVED** (names) · **DRAFT** (the count line) | "Short Breaks" is your name for the group; the other two are the filter labels already live. The count line is counted, never typed. |
+| U9 | `/corporate/` short programmes strip | Eyebrow "{min}–{max} days" · H2 "Short programmes" · line "Itineraries start from any city in India. We arrange flights, transfers and hotels from your home city and tailor the programme to your dates and group." · rows "{title}" · "{n} Nights · {n} Days" | **APPROVED** | H2 from your instruction; the line is the closing note of each of your eight documents. The strip shows journeys ticked "List under Short programmes" in /admin. |
+| U10 | The eight short programmes: overview, every day's narrative, "Best for" (in Quick Facts as "Ideal for"), best season, the "Good to know" notes and the closing note (as the enquiry band's text) | Verbatim from `docs/itineraries/short-breaks/*.docx` | **APPROVED** | Yours. House style only (straight apostrophes). |
+| U11 | The eight short programmes: hero badge | Your tagline in Title Case, e.g. "Sunrise from Tiger Hill and a Walk Through the Tea Gardens". Kabini's is shortened to its first half for the badge: "Boat and Jeep Safaris on the Kabini Backwaters" | **APPROVED** (assembled) | |
+| U12 | The eight short programmes: day titles, highlights (five or six each), at-a-glance rows, practical-note labels, page titles and search descriptions | e.g. "Bagdogra to Darjeeling: Up Through the Hills" · "Watch sunrise over the Himalaya from Tiger Hill, where on a clear morning the first light on Kanchenjunga is hard to forget." · "Best time to visit" | **APPROVED** (assembled) | Built only from your sentences: the template needs a "Place: phrase" title on every day and five to eight verb-led highlights, and your documents have neither as such. Darjeeling's "Getting there" note restates your Day 1 (Bagdogra, via Delhi or Kolkata, three to four hours) with your hill-roads line. |
+| U13 | The eight short programmes: pace | Relaxed (Periyar) · Moderate (Darjeeling, Kabini, Khajuraho, Ranthambore, Taj and Agra) · Active (Golden Triangle short, Jaisalmer) | **PROVISIONAL** | Your documents do not give a pace, and the template needs one. Ours, from the length of each day, like the pace on the other twenty (review sheet §5). |

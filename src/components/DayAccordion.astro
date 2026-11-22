@@ -8,7 +8,7 @@
  *
  * Per the Template Spec: first three days expanded by default, days 8+ stay
  * collapsed so a 13-day trip does not become an endless page, and an
- * "Expand all" control is available.
+ * "Expand All" control is available.
  *
  * IDs are `day-{n}` to match the anchors GlanceTable emits.
  *
@@ -51,7 +51,7 @@ const hasProvisional = days.some((day) => day.provisional);
     <div class="days__head">
       <h2>{heading}</h2>
       <button type="button" class="days__toggle tap-target" data-expand-all>
-        Expand all
+        Expand All
       </button>
     </div>
 
@@ -156,7 +156,7 @@ const hasProvisional = days.some((day) => day.provisional);
           panel.open = shouldOpen;
         });
         button.dataset.state = shouldOpen ? 'open' : 'closed';
-        button.textContent = shouldOpen ? 'Collapse all' : 'Expand all';
+        button.textContent = shouldOpen ? 'Collapse All' : 'Expand All';
       });
     });
   })();

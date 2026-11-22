@@ -47,12 +47,20 @@ const ICONS = [
   { name: 'chat-circle', usedFor: 'trust bar — 24/7 on-trip support' },
   { name: 'users', usedFor: 'trust bar — travellers hosted (used once the client verifies the figure)' },
   { name: 'map-pin', usedFor: 'trust bar — destinations (used once the client verifies the figure)' },
+  /* The footer's social links (round 5). REGULAR weight, not thin: these sit
+     at about 22px with no numeral beside them, where a thin line is under a
+     pixel wide and reads as a smudge. */
+  { name: 'instagram-logo', weight: 'regular', usedFor: 'footer — Instagram profile link' },
+  { name: 'facebook-logo', weight: 'regular', usedFor: 'footer — Facebook profile link' },
 ];
 
 const results = [];
 
 for (const icon of ICONS) {
-  const url = `https://raw.githubusercontent.com/${REPO}/${REF}/assets/${WEIGHT}/${icon.name}-${WEIGHT}.svg`;
+  const weight = icon.weight ?? WEIGHT;
+  /* Phosphor names the regular weight's files without a suffix. */
+  const file = weight === 'regular' ? `${icon.name}.svg` : `${icon.name}-${weight}.svg`;
+  const url = `https://raw.githubusercontent.com/${REPO}/${REF}/assets/${weight}/${file}`;
   const response = await fetch(url);
   if (!response.ok) {
     console.error(`  FAILED ${icon.name} — HTTP ${response.status}`);
@@ -80,7 +88,7 @@ for (const icon of ICONS) {
     console.warn(`  NOTE ${icon.name} — source carries a stroke attribute; check the render`);
   }
 
-  results.push({ ...icon, viewBox, paths, bytes: svg.length, url });
+  results.push({ ...icon, weight, viewBox, paths, bytes: svg.length, url });
   console.log(`  ${icon.name.padEnd(14)} ${paths.length} path(s)  viewBox="${viewBox}"`);
 }
 
@@ -91,7 +99,7 @@ if (results.length !== ICONS.length) {
 
 const entries = results
   .map(
-    (r) => `  /** ${r.usedFor}. */
+    (r) => `  /** ${r.usedFor}${r.weight === WEIGHT ? '' : ` (${r.weight} weight)`}. */
   '${r.name}': {
     viewBox: '${r.viewBox}',
     paths: [\n${r.paths.map((d) => `      '${d}',`).join('\n')}\n    ],
@@ -103,7 +111,8 @@ writeFileSync(
   OUT,
   `/* GENERATED FILE — do not edit by hand. Regenerate with \`npm run brand:icons\`.
  * ---------------------------------------------------------------------------
- * Path data copied verbatim from Phosphor Icons (${WEIGHT} weight),
+ * Path data copied verbatim from Phosphor Icons (${WEIGHT} weight unless an
+ * entry says otherwise),
  * https://github.com/${REPO}, MIT licence:
  *
  *   Copyright (c) 2023 Phosphor Icons
@@ -142,7 +151,8 @@ writeFileSync(
   `# Phosphor icon provenance
 
 The site uses **${results.length}** icons, all from [Phosphor
-Icons](https://github.com/${REPO}) at the **${WEIGHT}** weight. Regenerate with
+Icons](https://github.com/${REPO}), at the **${WEIGHT}** weight except where the
+table says otherwise. Regenerate with
 \`npm run brand:icons\`.
 
 ## Why these are copied, not installed
@@ -174,7 +184,7 @@ typeface.
 
 | Icon | Used for | Source |
 |---|---|---|
-${results.map((r) => `| \`${r.name}\` | ${r.usedFor} | [${WEIGHT}](${r.url}) |`).join('\n')}
+${results.map((r) => `| \`${r.name}\` | ${r.usedFor} | [${r.weight}](${r.url}) |`).join('\n')}
 `,
 );
 

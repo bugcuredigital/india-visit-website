@@ -30,9 +30,11 @@ interface Props {
   /** Set false only once the client's approved legal copy is in place. */
   provisional?: boolean;
   updated?: string;
+  /** Adds the GSTIN to the identity line (round 5: /booking-terms/ only). */
+  showGstin?: boolean;
 }
 
-const { title, heading, description, path, provisional = true, updated } = Astro.props;
+const { title, heading, description, path, provisional = true, updated, showGstin = false } = Astro.props;
 const settings = await getSiteSettings();
 
 const crumbs = breadcrumbSchema([
@@ -59,7 +61,10 @@ const crumbs = breadcrumbSchema([
       <h1>{heading}</h1>
       {/* Who stands behind the page: the client's own wording (About Us,
           21 Nov 2026), on all four policy pages, legal drafts included. */}
-      <p class="identity">{settings.siteName} is the travel brand of {settings.legalEntity}.</p>
+      <p class="identity">
+        {settings.siteName} is the travel brand of {settings.legalEntity}.
+        {showGstin && settings.gstNumber && <span class="identity__gst">GSTIN {settings.gstNumber}</span>}
+      </p>
       {updated && <p class="updated">Last updated {updated}</p>}
     </div>
   </section>
@@ -111,6 +116,13 @@ const crumbs = breadcrumbSchema([
     margin-top: 0.75rem;
     font-size: var(--text-sm);
     color: var(--color-on-dark-muted);
+  }
+
+  /* Its own line, so the number never breaks across two. */
+  .identity__gst {
+    display: block;
+    margin-top: 0.25rem;
+    letter-spacing: 0.02em;
   }
 
   .updated {

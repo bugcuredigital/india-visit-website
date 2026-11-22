@@ -14,23 +14,28 @@
  */
 import BandWatermark from './BandWatermark.astro';
 import EnquiryForm from './EnquiryForm.astro';
+import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import Lotus from './Lotus.astro';
 import { NAV_ITEMS, POLICY_ITEMS } from '../lib/nav';
-import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+import type { PhosphorIconName } from '../lib/phosphor-icons';
+import { getSiteSettings, telHref, whatsappLink } from '../lib/site-settings';
 
 const settings = await getSiteSettings();
 const year = new Date().getFullYear();
 
-const socialEntries: Array<[string, string | null]> = [
-  ['Instagram', settings.socials.instagram],
-  ['Facebook', settings.socials.facebook],
-  ['YouTube', settings.socials.youtube],
-  ['LinkedIn', settings.socials.linkedin],
+/* Icons for the profiles the client has (round 5: Instagram and Facebook).
+   YouTube and LinkedIn have no glyph yet because they have no handle; a
+   supplied handle without a glyph falls back to its name as text. */
+const socialEntries: Array<[string, string | null, PhosphorIconName | null]> = [
+  ['Instagram', settings.socials.instagram, 'instagram-logo'],
+  ['Facebook', settings.socials.facebook, 'facebook-logo'],
+  ['YouTube', settings.socials.youtube, null],
+  ['LinkedIn', settings.socials.linkedin, null],
 ];
 /** Unsupplied handles leave no empty icon behind. */
 const socials = socialEntries.filter(
-  (entry): entry is [string, string] => entry[1] !== null,
+  (entry): entry is [string, string, PhosphorIconName | null] => entry[1] !== null,
 );
 ---
 
@@ -48,11 +53,17 @@ const socials = socialEntries.filter(
       <!-- The phone number, in full and with its country code, is the loudest
            thing in the footer. Half this site's audience is dialling from
            outside India, and a number without +91 is a number they cannot use.
-           It is `settings.phone` like everywhere else (invariant #1) and is
-           still DUMMY DATA until M5. -->
+           It is `settings.phone` like everywhere else (invariant #1). The
+           second line (round 5) sits under it, smaller: both are real, the
+           first is the one every call button uses. -->
       <p class="footer__phone">
         <a href={settings.phoneHref} data-analytics="call_click">{settings.phone}</a>
       </p>
+      {settings.phone2 && (
+        <p class="footer__phone footer__phone--alt">
+          <a href={telHref(settings.phone2)} data-analytics="call_click">{settings.phone2}</a>
+        </p>
+      )}
 
       <ul class="footer__list footer__list--contact">
         <li>
@@ -72,11 +83,18 @@ const socials = socialEntries.filter(
 
       {socials.length > 0 && (
         <ul class="footer__socials" aria-label="Social profiles">
-          {socials.map(([label, url]) => (
+          {socials.map(([label, url, icon]) => (
             <li>
-              <a href={url} class="footer__link" target="_blank" rel="noopener noreferrer">
-                {label}
-              </a>
+              {icon ? (
+                <a href={url} class="footer__social tap-target" target="_blank" rel="noopener noreferrer">
+                  <Icon name={icon} size={22} />
+                  <span class="visually-hidden">{label} (opens in a new tab)</span>
+                </a>
+              ) : (
+                <a href={url} class="footer__link" target="_blank" rel="noopener noreferrer">
+                  {label}
+                </a>
+              )}
             </li>
           ))}
         </ul>
@@ -179,6 +197,11 @@ const socials = socialEntries.filter(
     color: var(--color-yellow);
   }
 
+  .footer__phone--alt {
+    margin-top: 0.35rem;
+    font-size: var(--text-lg);
+  }
+
   .footer__heading {
     font-family: var(--font-display);
     font-size: var(--text-sm);
@@ -220,10 +243,28 @@ const socials = socialEntries.filter(
   .footer__socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1.25rem 0 0;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
     padding: 0;
     list-style: none;
+  }
+
+  /* 44px square tap target round a 22px glyph; the ring is the hover. */
+  .footer__social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgb(247 245 246 / 0.22);
+    border-radius: var(--radius-pill);
+    color: var(--color-on-dark);
+  }
+
+  .footer__social:hover {
+    border-color: var(--color-yellow);
+    color: var(--color-yellow);
   }
 
   .footer__enquiry :global(.form) {

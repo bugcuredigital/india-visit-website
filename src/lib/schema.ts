@@ -37,6 +37,22 @@ function isPlaceholder(settings: SiteSettings, field: string): boolean {
   return settings._dummyDataFlags.some((flag) => flag.startsWith(`${field} `));
 }
 
+/**
+ * "B-33 Geetanjali Enclave, IInd Floor, New Delhi 110017" → street, locality
+ * and PIN as separate properties, which is what local search reads. An address
+ * that does not end "<City> <six-digit PIN>" is emitted whole as the street.
+ */
+function postalAddress(address: string): Json {
+  const parts = /^(.*),\s*([^,]+?)\s+(\d{6})$/.exec(address.trim());
+  return compact({
+    '@type': 'PostalAddress',
+    streetAddress: parts ? parts[1] : address,
+    addressLocality: parts?.[2] ?? null,
+    postalCode: parts?.[3] ?? null,
+    addressCountry: 'IN',
+  });
+}
+
 export function travelAgencySchema(settings: SiteSettings, siteUrl: string): Json {
   return compact({
     '@context': 'https://schema.org',
@@ -48,9 +64,7 @@ export function travelAgencySchema(settings: SiteSettings, siteUrl: string): Jso
     url: siteUrl,
     telephone: isPlaceholder(settings, 'phone') ? null : settings.phone,
     email: isPlaceholder(settings, 'email') ? null : settings.email,
-    address: isPlaceholder(settings, 'address')
-      ? null
-      : { '@type': 'PostalAddress', streetAddress: settings.address },
+    address: isPlaceholder(settings, 'address') ? null : postalAddress(settings.address),
     foundingDate: settings.foundingYear ? String(settings.foundingYear) : null,
     sameAs: Object.values(settings.socials).filter((url): url is string => url !== null),
     aggregateRating: settings.aggregateRating

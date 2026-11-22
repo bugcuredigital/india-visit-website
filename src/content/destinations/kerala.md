@@ -19,11 +19,11 @@ heroImageAlt: A traditional houseboat moored on a palm-lined backwater channel n
 
 # T2 v2 §4 — supplied at M4 to prove the treatment. TEMP-PHOTO throughout.
 experiences:
-  - name: The backwaters
+  - name: The Backwaters
     text: Six hundred miles of canal, lake and river, best met from the deck of a converted rice barge.
     image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-backwaters.jpg
     imageAlt: Coconut palms lining a backwater channel in Kerala
-  - name: Tea country
+  - name: Tea Country
     text: The Kannan Devan Hills above Munnar, where the plantations start at three thousand feet and keep climbing.
     image: /uploads/temp-photos/TEMP-PHOTO-article-tea-gardens.jpg
     imageAlt: Rolling tea gardens on the hills above Munnar
@@ -31,7 +31,7 @@ experiences:
     text: Six centuries of arrivals (Arab, Chinese, Portuguese, Dutch, British) and almost none of it erased.
     image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-hero.jpg
     imageAlt: Chinese fishing nets standing over the water at Fort Kochi
-  - name: The spice trail
+  - name: The Spice Trail
     text: Pepper, cardamom and ginger still move through Mattancherry's warehouses, as they have since the Romans.
     image: /uploads/temp-photos/TEMP-PHOTO-city-kochi-spice.jpg
     imageAlt: A sack of dried red chillies at a Kerala spice market

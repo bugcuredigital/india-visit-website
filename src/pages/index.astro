@@ -45,12 +45,13 @@ import CounterStat from '../components/CounterStat.astro';
 import JourneyCard from '../components/JourneyCard.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import TestimonialCarousel from '../components/TestimonialCarousel.astro';
+import InstagramReels from '../components/InstagramReels.astro';
 import ConvertBand from '../components/ConvertBand.astro';
 import StickyMobileBar from '../components/StickyMobileBar.astro';
 import Button from '../components/Button.astro';
 import Lotus from '../components/Lotus.astro';
 
-import { getSiteSettings, verifiedTrustStats } from '../lib/site-settings';
+import { getSiteSettings, instagramHandle, verifiedTrustStats } from '../lib/site-settings';
 import { heroPreload } from '../lib/hero-image';
 import { DESTINATIONS, REGION_COUNT } from '../lib/destinations-strip';
 
@@ -159,17 +160,17 @@ const trainJourney = journeys.find((entry) => entry.data.variant === 'B');
 /* T1 §4 — three steps. The plum band is one of only two on the page. */
 const HOW_IT_WORKS = [
   {
-    title: 'Tell us your dream',
+    title: 'Tell Us Your Dream',
     detail:
       'A conversation, not a form-filling exercise. Where you want to go, how long you have, what kind of days you enjoy.',
   },
   {
-    title: 'We craft your itinerary',
+    title: 'We Craft Your Itinerary',
     detail:
       'A day-by-day plan built around your pace, with every hotel, transfer and guide chosen for a reason, and revised until it reads right.',
   },
   {
-    title: 'Travel fully supported',
+    title: 'Travel Fully Supported',
     detail:
       'Your itinerary, your contacts and a person on the end of a phone for the whole trip. Not a call centre.',
     lotus: true,
@@ -179,19 +180,19 @@ const HOW_IT_WORKS = [
 /* T1 §6 — four reasons, lotus-marked, one or two lines each. */
 const WHY_US = [
   {
-    title: 'Twenty years of it',
+    title: 'Twenty Years of It',
     detail: `${settings.yearsExperience} years arranging journeys across India, long enough to know which hill station is worth the drive in July.`,
   },
   {
-    title: 'Curated, not catalogued',
+    title: 'Curated, Not Catalogued',
     detail: 'Every itinerary is written for the people travelling it. Nothing is picked off a shelf.',
   },
   {
-    title: 'Affordable luxury',
+    title: 'Affordable Luxury',
     detail: 'Heritage properties, private guides and unhurried days, arranged at the price of a package tour.',
   },
   {
-    title: 'With you the whole way',
+    title: 'With You the Whole Way',
     detail: settings.supportPromise,
   },
 ];
@@ -271,7 +272,7 @@ const WHY_US = [
           <h2 id="dest-heading">Where do you want to go?</h2>
         </div>
         <a class="pill tap-target" href="/destinations/">
-          View all destinations
+          View All Destinations
           <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
             <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -311,7 +312,7 @@ const WHY_US = [
           <h2 id="featured-heading">Trips we would take ourselves</h2>
         </div>
         <a class="pill tap-target" href="/journeys/">
-          All journeys
+          All Journeys
           <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
             <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
@@ -402,7 +403,7 @@ const WHY_US = [
         <p class="consultant__lines">{settings.founder.quote}</p>
 
         <p class="consultant__action">
-          <Button href="/plan-my-trip/" variant="ghost">Start a conversation →</Button>
+          <Button href="/plan-my-trip/" variant="ghost">Start a Conversation →</Button>
         </p>
       </div>
     </div>
@@ -457,7 +458,7 @@ const WHY_US = [
                 Each train is run by its operator, and the operator's terms are
                 set out plainly before you commit.
               </p>
-              <Button href="/luxury-trains/" variant="on-dark">See the trains</Button>
+              <Button href="/luxury-trains/" variant="on-dark">See the Trains</Button>
             </div>
           </div>
         </div>
@@ -466,7 +467,28 @@ const WHY_US = [
   }
 
   <!-- 9 · Testimonials --------------------------------------------------- -->
-  {testimonials.length > 0 && <TestimonialCarousel testimonials={testimonials} />}
+  {
+    testimonials.length > 0 && (
+      <TestimonialCarousel
+        testimonials={testimonials}
+        moreLink={
+          settings.tripadvisorUrl
+            ? { href: settings.tripadvisorUrl, label: 'Read Our TripAdvisor Reviews', external: true }
+            : undefined
+        }
+      />
+    )
+  }
+
+  <!-- 9a · Follow along on Instagram (round 5) -----------------------------
+       CMS-fed tiles that link out; never Instagram's embed script (invariants
+       #3/#4). `reels` is null until the client supplies thumbnails, and the
+       component then renders nothing at all. -->
+  <InstagramReels
+    reels={settings.reels}
+    profileUrl={settings.socials.instagram}
+    handle={instagramHandle(settings)}
+  />
 
   <!-- 10 · Corporate — its own band ---------------------------------------
        Round 3 un-condenses this. It shared a slim off-white strip with the
@@ -486,7 +508,7 @@ const WHY_US = [
         </p>
       </div>
       <p class="corp__action">
-        <Button href="/corporate/" variant="on-dark">Corporate travel →</Button>
+        <Button href="/corporate/" variant="on-dark">Corporate Travel →</Button>
       </p>
     </div>
   </section>
@@ -506,7 +528,7 @@ const WHY_US = [
               <h2 id="guide-heading">Reading before you go</h2>
             </div>
             <a class="pill tap-target" href="/travel-guide/">
-              All articles
+              All Articles
               <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
                 <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
