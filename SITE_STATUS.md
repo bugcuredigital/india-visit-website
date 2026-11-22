@@ -1,12 +1,10 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
-**Updated:** 2026-11-21, the client's About Us round · **Production:** `main`
-at PR #29 (About rebuilt from her copy, her portrait and founder details), live
-13:26 IST; `main` then moves only by docs, https://india-visit-website.pages.dev · **Demo:** held on the morning of
-13 Nov, on the build before the round-5 fixes; the client's remarks follow as
-the round-5 list · **Freeze:** **ON** again since 21 Nov, after PR #30 (it was
-lifted for the About Us round only): no agency merges until the round-5 list
-(the client's own edits through `/admin` stay open)
+**Updated:** 2026-11-22, round 5 (the client's remarks and eight short
+programmes) · **Production:** `main` at PR #31, live 14:09 IST; `main` then
+moves only by docs, https://india-visit-website.pages.dev · **Freeze:** **ON**
+again since 22 Nov, after PR #32 (lifted for round 5 only): no agency merges
+until the next round (the client's own edits through `/admin` stay open)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
@@ -29,15 +27,15 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 
 | | Count | Notes |
 |---|---|---|
-| Pages built | **54** | + sitemap; `/dev/components/` and the three provisional policy pages are excluded from it |
-| Journeys | **20 of 20** | 17 Variant A · 3 Variant B. All 20 pass Template Spec §6 |
+| Pages built | **62** | + sitemap; `/dev/components/` and the three provisional policy pages are excluded from it |
+| Journeys | **28** | 25 Variant A · 3 Variant B. All 28 pass Template Spec §6. The eight short programmes (22 Nov) are the client's own documents; `/journeys/` groups them as Short Breaks (every trip of four days or fewer, with Tadoba), and `/corporate/` lists them too until she rules (review sheet §28.1) |
 | Destinations | 9 of 9 | |
 | City pages | 2 | Jaipur, Kochi |
 | Travel Guide articles | **8 of 8** | the PRD §7.8 launch set |
-| Branded PDFs | **20 of 20** | reprinted 2026-11-12 (real contact line, today's copy); still public at `/downloads/` |
-| Lead forms | **102 live**, 21 not yet | live on every page (enquiry forms, Plan My Trip, and since 13 Nov the corporate brief: company, group size, dates, budget band); the 20 PDF download forms and the newsletter read "Launching shortly" |
-| Contact details | **real** | +91 98102 41121 (call and WhatsApp), info@india-visit.com (Cloudflare Email Routing to Gmail; Resend only sends, its "receiving" stays off). The address is still dummy and flagged |
-| Photography | **1 client** (the founder portrait, from her About Us, 21 Nov), **51 TEMP-PHOTO** + 1 TEMP-VIDEO | all under `/public/uploads/` in the form Tina writes. The client's Drive folder is inventoried but **blocked on rights** (below) |
+| Branded PDFs | **28 of 28** | all reprinted 2026-11-22 (Title Case steps, both numbers on the brand line); still public at `/downloads/` |
+| Lead forms | **115 live**, 29 not yet (counted in `dist/`, 22 Nov) | live on every page (enquiry forms, Plan My Trip, and since 13 Nov the corporate brief: company, group size, dates, budget band); the 28 PDF download forms and the newsletter read "Launching Shortly" |
+| Contact details | **all real** | +91 98102 41121 (call and WhatsApp; every call button), second line +91 98102 24108 (shown under it), info@india-visit.com (Cloudflare Email Routing to Gmail; Resend only sends, its "receiving" stays off), B-33 Geetanjali Enclave, IInd Floor, New Delhi 110017, Instagram and Facebook (footer icons, JSON-LD `sameAs`), GSTIN on `/corporate/` and `/booking-terms/`. Only the WhatsApp prefill wording awaits approval |
+| Photography | **1 client** (the founder portrait, from her About Us, 21 Nov), **59 TEMP-PHOTO** (eight new heroes for the short programmes, 22 Nov) + 1 TEMP-VIDEO | all under `/public/uploads/` in the form Tina writes. The client's Drive folder is inventoried but **blocked on rights** (below) |
 | Visible em dashes | **0** (was 1,101) | house rule: at most one per screen (CLAUDE.md #7) |
 
 ## ⚑ Blocking or needs the client
@@ -58,7 +56,7 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
    reconciled with the final privacy policy (client ruling, 13 Nov evening; no
    action before then).
 4. **PDF gating is not real until the M6 PDF release**: the files are public,
-   and the PDF form reads "Launching shortly".
+   and the PDF form reads "Launching Shortly".
 5. **Copy approval**: drafted strings stay `DRAFT` in `docs/COPY_REGISTER.md`
    (§A–§S) until struck or approved. §S (13 Nov) registers every string the
    round-5 sweep found unregistered; its ⚑ rows are claims for the client.
@@ -67,10 +65,17 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
    Operators; whether Nepal and Sri Lanka, which her text names, become
    destination pages (none created); and any dated milestones for the
    two-stop About timeline.
+7. **Five questions from round 5** (`CLIENT_REVIEW_SHEET.md` §28): where the
+   eight short programmes belong (both pages until she says), the GSTIN in
+   the footer, Darjeeling and Khajuraho's nearest-fit destination pages, her
+   Instagram reels (the homepage section is built and absent until three
+   exist), and any of her own photographs for the eight new pages.
 
 ## Provisional (renders, flagged, reversible)
 
-- Pace / "ideal for" tags on all 20 journeys (Open Q#14)
+- Pace / "ideal for" tags on the original 20 journeys, and the pace on the
+  eight short programmes, whose "Ideal for" is the client's own line (Open
+  Q#14)
 - Train operator names and advance percentages on the two newer trains (§22)
 - Four visa/entry articles' regulatory facts (§24)
 - Items omitted from the client's documents in the port (§23)
@@ -81,11 +86,11 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 
 ## Next action
 
-1. **Client:** the round-5 list (the triaged demo remarks, with the batch
-   approvals for the 54 medium and 14 low audit items). The agency is idle
-   and the site frozen until then. The first round-5 step is marking the
-   remarks that the 26 high fixes already answer: the demo ran on the build
-   before them.
+1. **Client:** review sheet §28 (round 5) and §14; the batch approvals for
+   the 54 medium and 14 low audit items, which round 5 did not carry (none of
+   her round-5 remarks was already answered by the 26 high fixes; audit #28
+   is half answered by her casing ruling). The agency is idle and the site
+   frozen until the next round.
 2. **Client:** photo rights, §27. `/admin` is open for everyday edits; the
    first new photo uploaded through it is worth a look at its commit.
 3. **Agency, after round 5:** M6 proper (Turnstile, Sheet webhook, PDF release,
