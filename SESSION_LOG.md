@@ -1877,3 +1877,181 @@ list; the client's own `/admin` edits stay open.
    Sri Lanka, timeline milestones).
 2. The first photo the client uploads through `/admin`: read its commit to
    close the upload half of the image path.
+
+## 2026-11-22 (13:00–14:25) — Round 5: the client's remarks and eight short programmes (PR #31, #32)
+
+**Instruction.** Round 5: the client's remarks plus a content drop, freeze
+lifted. Every detail she supplied is approved source. In priority order:
+1. **Capitalisation ruling.** "City palaces" becomes "City Palaces". A
+   standing rule in CLAUDE.md: card and tile headings are Title Case, and
+   buttons follow the Plan My Trip pattern. Sweep sitewide and update the
+   register in the same commit.
+2. **The last dummies replaced:** address, a second phone, Instagram and
+   Facebook, and the GSTIN (on `/corporate/` and `/booking-terms/`, with a
+   review-sheet question about the footer).
+3. **TripAdvisor:** a "Read Our TripAdvisor Reviews" button on `/reviews/` and
+   a quiet link under the homepage testimonials. Link out only.
+4. **Eight short programmes** (`docs/itineraries/short-breaks/`, committed) as
+   Variant A pages, grouped as Short Breaks on `/journeys/`, tagged for the
+   destination pages, and also listed on `/corporate/` until she says where
+   they belong. TEMP-PHOTO stand-ins, Template Spec §6, PDFs, tariff grep.
+5. **"Follow along on Instagram"** on the homepage: CMS-fed static tiles,
+   never the embed script, absent until she supplies thumbnails.
+6. Full checks, Lighthouse on five pages, captures, deploy, re-freeze.
+
+**PR #31, merged 14:01, live 14:09 IST (`b3adefd`).**
+
+- **Title Case.**
+  - Swept: experience tiles (nine names across Rajasthan, Kerala, Jaipur and
+    Kochi), step and option cards (How It Works, Why India Visit, the
+    corporate capabilities and steps, Plan My Trip's next steps, the
+    luxury-train reasons, eighteen booking-step titles on the three train
+    pages), and every button and outline pill (WhatsApp Us, Send Enquiry,
+    Start Planning, Send Me the Itinerary, Send the Brief, Send It Over,
+    Launching Shortly, Download the Itinerary, See the Trains, Corporate
+    Travel →, Start a Conversation →, View All Destinations, All Journeys,
+    All Articles, All Luxury Trains, Expand All / Collapse All, Back to the
+    Homepage, Read More Reviews).
+  - Casing only; no word changed. Journey, article and destination titles
+    already conformed.
+  - Kept sentence case on purpose: section headings, eyebrows, body, text
+    links inside sentences, form labels and choice chips, label/value pairs.
+  - "City palaces" rendered on `/destinations/rajasthan-golden-triangle/`,
+    not on `/cities/jaipur/` (which reads "The City Palace"). Fixed where
+    it was.
+  - CLAUDE.md, invariant #7, carries the rule and the house definition of
+    Title Case (four-letter-or-shorter prepositions stay lowercase).
+- **Business details.**
+  - `phone2`, `gstNumber`, `tripadvisorUrl` and `reels` are new settings,
+    mirrored in Tina.
+  - The second number shows under the main one in the footer, the corporate
+    brief, the Plan My Trip side panel and the PDF brand line. Its tel: link
+    is derived from its digits. Every call and WhatsApp button stays on the
+    primary.
+  - The footer shows Instagram and Facebook as icons: two Phosphor glyphs
+    added through the existing extractor, regular weight, MIT, provenance
+    updated.
+  - JSON-LD gains `sameAs` (both profiles) and a structured address.
+  - The address and socials dummy flags are cleared. `audit:hardcoded` now
+    names each contact field and reports all seven resolved.
+  - The audit also caught my own slip: the schema's error message quoted the
+    real second number as its example. Fixed before commit.
+- **TripAdvisor.**
+  - The `/reviews/` main action is an outline button, not crimson. The
+    header pill (or, on a phone, the sticky bar's Enquire) stays the
+    screen's one crimson action.
+  - A quiet text link sits under the homepage testimonials.
+  - Both are `target=_blank rel="noopener noreferrer"`, the site's external
+    link convention, which includes noopener.
+  - Nothing from TripAdvisor is copied or loaded.
+- **The eight short programmes.**
+  - Pages: Darjeeling Tea Plantations, Golden Triangle with the Taj Mahal,
+    Jaisalmer Sand Dunes, Kabini Wildlife Weekend, Khajuraho Temples and the
+    Ganges, Periyar and the Backwaters, Ranthambore Tiger Reserve, Taj and
+    Agra. The catalogue goes from 20 to 28, and the counted trust stat
+    follows by itself.
+  - Verbatim from her documents: overview, every narrative, Best-for, season,
+    Good-to-know and the closing note (as the enquiry band text).
+  - Assembled from her sentences into the template's slots, with no claim
+    beyond them: day titles, highlights, glance rows, note labels, the
+    tagline as the hero badge, and the meta.
+  - The pace is ours and provisional (Open Q#14).
+  - New journey fields:
+    - `bestFor`: her line, shown verbatim in Quick Facts. `idealFor` may then
+      be empty, because Khajuraho's audience has no tag.
+    - `destinations`: the "auto by tag" half of destination listings,
+      finally built in `lib/destination-journeys.ts` and shared by the pages
+      and the index counts.
+    - `showOnCorporate`.
+  - `/journeys/` is three headed groups with a chip each: Custom Journeys 16,
+    Short Breaks 9 (computed, four days or fewer, so Tadoba joins), Luxury
+    Trains 3.
+  - `/corporate/` gains a ruled "Short programmes" list with her closing line.
+  - Destination pages:
+    - Rajasthan & the Golden Triangle goes from 8 to 13.
+    - Wildlife goes from 4 to 6.
+    - Kerala goes from 4 to 5.
+    - North East goes from 2 to 3.
+    - Darjeeling and Khajuraho are nearest-fit and flagged (§28.3).
+  - Eight new TEMP-PHOTO heroes, sourced by a scouting pass. All are
+    Unsplash-licence and none is Unsplash+. Every preview and corner was
+    checked for marks. Kabini's is honest generic wild elephants, and a
+    tempting lake-edge elephant was rejected for its leg chain.
+  - PDFs reprinted for all 28: the step titles and the brand line changed on
+    every page.
+- **Instagram.**
+  - `reels` is 3–6 tiles (thumbnail, reel URL, caption) linking out.
+  - Below 64rem it is a swipeable row, so there are no orphan tiles; above
+    that, one row.
+  - It is empty, so the section is absent.
+  - Rendered locally with labelled test data for the shot, never committed.
+  - A `reels: null` stopped Tina indexing Site settings at all ("Unable to
+    seed settings.json"), so the empty state is an empty list. That is the
+    same rule, in the form a list field can hold.
+- **Records.**
+  - COPY_REGISTER: the casing note, the updated rows, and §U (U1–U13).
+  - Review sheet: §5 (pace for the eight), §9 (contact details done but the
+    WhatsApp wording), and new §28 with five questions: the placement of the
+    short programmes, the GSTIN in the footer, the Darjeeling and Khajuraho
+    placement, the reels, and photos for the eight.
+
+**Two bugs the checks caught before merge.**
+- **"1 Nights · 2 Days".** Taj and Agra is the catalogue's first one-night
+  trip, and its printed PDF showed the plural in the hero badge and Quick
+  Facts. One helper (`lib/duration.ts`) now writes the label for the badge,
+  Quick Facts and the corporate list, and the PDF was reprinted.
+- **The reels row widened the page.** With four test reels the homepage
+  scrolled sideways below 1024px (scrollWidth 791 at 390). Each tile's
+  visually-hidden "(opens Instagram…)" span is absolutely positioned. With no
+  positioned ancestor inside the row, it escaped the row's clipping and the
+  last one sat at x=791. `position: relative` on the tile fixed it, and the
+  responsive check passes 360–1440 with reels present.
+
+**Checks** (local build of 62 pages):
+- Build; image paths; CMS images (5 exempt, 0 outside); links; Template
+  Spec §6 on all 28 journeys; transport labels (127); `audit:hardcoded`;
+  tariff grep (her eight documents and the eight pages, none).
+- Hero contrast: 41 hero pages × 3 passes (desktop, phone, phone with
+  reduced motion), 571 text runs, all AA; the eight new heroes included.
+- Keyboard: home, `/journeys/`, `/corporate/`, `/reviews/`, Kabini.
+- No-JS and hero video (15 checks).
+- Responsive 360–1440 on nine pages, plus the homepage with four test reels.
+- `astro check`: no new errors. There are eight earlier ones, in files this
+  round did not touch (`functions/api/lead.ts`, `src/scripts/lead-form.ts`,
+  `src/pages/dev/components.astro`).
+- Preview `https://79888faa.india-visit-website.pages.dev` verified. Previews
+  never carry `/admin` (PR #29's did not either): the Tina credentials are
+  production-only.
+- Production verified: the singular badge, `sameAs`, the address, the
+  GSTIN, the AVIF heroes served `immutable`, `/admin` 200.
+
+**Lighthouse, production, mobile** (13.6.0, simulated throttling): every
+page 100 for Performance, Accessibility, Best Practices and SEO, with CLS 0.
+
+| Page | LCP | TBT |
+|---|---|---|
+| `/` (with the new testimonial link) | 1.2s | 40ms |
+| `/journeys/` (28 cards, three groups) | 1.4s | 0ms |
+| `/journeys/taj-and-agra-1n-2d/` | 1.6s | 30ms |
+| `/reviews/` | 1.0s | 30ms |
+| `/corporate/` | 1.1s | 0ms |
+
+Every budget holds: the homepage's is 2.2s, the rest 2.0s.
+
+**Captures** from production, desktop 1280 and phone 390:
+`reports/round5-2026-11-22/`: the homepage, `/journeys/`, Taj and Agra,
+`/reviews/`, `/corporate/` and the Rajasthan destination page, plus
+`reels-section-TEST-DATA-*.jpg`. That pair is the Instagram section rendered
+from a scratch build with four labelled test reels, because production has
+none to show. As before, `screenshot.mjs` pins the sticky bar into the phone
+captures' first screen.
+
+**Re-frozen** after PR #32 (these docs). No agency merges until the next
+round; the client's own `/admin` edits stay open.
+
+### Exact next action
+
+1. Client: review sheet §28 (five questions), plus the open §14 questions
+   (footer ©, Nepal and Sri Lanka, timeline milestones).
+2. The first photo the client uploads through `/admin`: read its commit to
+   close the upload half of the image path.

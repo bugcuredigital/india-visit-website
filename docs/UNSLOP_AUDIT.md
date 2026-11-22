@@ -42,6 +42,14 @@ CLAUDE.md #5 and PAGE_TEMPLATES.
     Partytown 1.0.5 skips it, and Best Practices is 100.
 - **The 54 medium and 14 low items are not fixed.** The client's batch
   approvals arrive with the demo remarks as the round-5 list.
+- **22 Nov (round 5).** The client's remarks arrived with a content drop and
+  no batch approvals, so the medium and low items still wait. Checked first,
+  as planned: none of her remarks was already answered by the 26 high fixes.
+  One audit item is now half answered by her capitalisation ruling: **#28**
+  (low) found the homepage CTAs mixing Title Case and sentence case, and every
+  button is Title Case since PR #31. Its other half, the three arrow
+  treatments (a text →, an SVG, none), is untouched and stays in the low
+  batch.
 
 ## How to read this
 
