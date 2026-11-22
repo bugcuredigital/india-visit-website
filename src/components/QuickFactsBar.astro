@@ -7,6 +7,8 @@
  * Pace and "Ideal for" are editorial fields the client assigns; they help
  * Personas 2 and 3 self-select, which is why they sit this high on the page.
  */
+import { durationLabel } from '../lib/duration';
+
 interface Props {
   nights: number;
   days: number;
@@ -15,19 +17,21 @@ interface Props {
   pace: string;
   bestSeason: string;
   idealFor: string[];
+  /** The client's own "Best for" line; shown verbatim in place of the tags. */
+  bestFor?: string;
 }
 
-const { nights, days, startCity, endCity, pace, bestSeason, idealFor } = Astro.props;
+const { nights, days, startCity, endCity, pace, bestSeason, idealFor, bestFor } = Astro.props;
 
 const titleCase = (value: string) =>
   value.replace(/(^|[\s-])([a-z])/g, (_, sep, chr) => sep + chr.toUpperCase());
 
 const facts = [
-  { label: 'Duration', value: `${nights} Nights · ${days} Days` },
+  { label: 'Duration', value: durationLabel(nights, days) },
   { label: 'Route', value: startCity === endCity ? `${startCity} return` : `${startCity} → ${endCity}` },
   { label: 'Pace', value: titleCase(pace) },
   { label: 'Best season', value: bestSeason },
-  { label: 'Ideal for', value: idealFor.map(titleCase).join(', ') },
+  { label: 'Ideal for', value: bestFor ?? idealFor.map(titleCase).join(', ') },
 ];
 ---
 

@@ -56,6 +56,21 @@ export function whatsappLink(settings: SiteSettings, context?: string): string {
 }
 
 /**
+ * A tel: link for a displayed number — used for the SECOND line, whose link is
+ * derived rather than stored, so the number and its link cannot drift apart.
+ * The primary keeps its stored `phoneHref`: every call button uses that one.
+ */
+export function telHref(number: string): string {
+  return `tel:+${number.replace(/\D/g, '')}`;
+}
+
+/** "@sheena_sewal" from the Instagram profile URL, or null without one. */
+export function instagramHandle(settings: SiteSettings): string | null {
+  const match = settings.socials.instagram?.match(/instagram\.com\/([A-Za-z0-9._]+)/);
+  return match ? `@${match[1]}` : null;
+}
+
+/**
  * The four trust stats for the bar.
  * ---------------------------------------------------------------------------
  * Always exactly four, so the bar never changes shape as open questions close.

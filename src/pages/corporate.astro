@@ -48,10 +48,27 @@ import StickyMobileBar from '../components/StickyMobileBar.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Lotus from '../components/Lotus.astro';
 
-import { getSiteSettings } from '../lib/site-settings';
+import { getSiteSettings, telHref } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
+import { durationLabel } from '../lib/duration';
 
 const settings = await getSiteSettings();
+
+/* "Short programmes" (round 5). The client sent eight short itineraries
+   labelled "Corporate itineraries", while every one's Best-for line is
+   leisure. Until she says where they belong (CLIENT_REVIEW_SHEET.md), they
+   show both here and on /journeys/ as Short Breaks. Membership is the
+   journey's own `showOnCorporate` checkbox, so her answer is a content edit;
+   with none ticked the strip is not rendered at all. */
+const programmes = (
+  await getCollection('journeys', ({ data }) => !data.draft && data.showOnCorporate)
+).sort((a, b) => a.data.days - b.data.days || a.data.title.localeCompare(b.data.title));
+/* "2–4 days", counted from what is ticked rather than typed. */
+const programmeDays = programmes.map((entry) => entry.data.days);
+const programmeSpan =
+  Math.min(...programmeDays) === Math.max(...programmeDays)
+    ? `${programmeDays[0]}`
+    : `${Math.min(...programmeDays)}–${Math.max(...programmeDays)}`;
 
 /* Team-suited regions: short flights, group-capable properties, and enough to
    do that a mixed group of forty is not standing around. */
@@ -67,7 +84,7 @@ const CAPABILITIES = [
       'Twenty to two hundred people, somewhere with the meeting rooms and the evenings both handled. We book the whole property where the numbers justify it.',
   },
   {
-    title: 'Incentive trips (MICE)',
+    title: 'Incentive Trips (MICE)',
     detail:
       'The trip people actually compete for. Built around one or two things nobody can book for themselves, rather than around a longer hotel list.',
   },
@@ -77,7 +94,7 @@ const CAPABILITIES = [
       'Venue, room blocks, AV, transfers and the arrivals desk. One point of contact who answers the phone on the morning it matters.',
   },
   {
-    title: 'Group logistics',
+    title: 'Group Logistics',
     detail:
       'Forty people, six flights and one coach that has to be in the right place. This is the unglamorous half, and it is the half that decides how the trip is remembered.',
   },
@@ -85,17 +102,17 @@ const CAPABILITIES = [
 
 const STEPS = [
   {
-    title: 'Brief us',
+    title: 'Brief Us',
     detail:
       'Numbers, dates, budget band and what the trip is actually for. Fifteen minutes on a call saves a fortnight of revised proposals.',
   },
   {
-    title: 'We come back with a proposal',
+    title: 'We Come Back with a Proposal',
     detail:
       'A costed plan with properties named, not a brochure, and a named person to take your questions about it.',
   },
   {
-    title: 'We run the whole trip',
+    title: 'We Run the Whole Trip',
     detail:
       'Including the parts you would otherwise be doing at midnight: the manifest, the rooming list, the transfers, the one delegate whose flight moved.',
     lotus: true,
@@ -140,6 +157,8 @@ const crumbs = breadcrumbSchema([
         <span class="intro__or">or</span>
         <a class="intro__jump" href="#brief">send us a brief</a>
       </p>
+      {/* The registration behind "GST invoicing" in the line above (round 5). */}
+      {settings.gstNumber && <p class="intro__gst">GSTIN {settings.gstNumber}</p>}
     </div>
   </section>
 
@@ -217,6 +236,39 @@ const crumbs = breadcrumbSchema([
     )
   }
 
+  <!-- 5 · Short programmes (round 5) -----------------------------------------
+       A ruled list, not a card grid: the corporate register compares things
+       in rows, and eight photographs would turn a modest strip into the
+       page's largest section. The sub-line is the client's own closing line
+       from each programme document. -->
+  {
+    programmes.length > 0 && (
+      <section class="band band-tight" aria-labelledby="progs-heading">
+        <div class="container-content">
+          <p class="eyebrow">{programmeSpan} days</p>
+          <h2 id="progs-heading">Short programmes</h2>
+          <p class="progs__lede prose-measure">
+            Itineraries start from any city in India. We arrange flights,
+            transfers and hotels from your home city and tailor the programme
+            to your dates and group.
+          </p>
+          <ul class="progs fade-up-stagger">
+            {programmes.map((entry) => (
+              <li>
+                <a class="progs__row" href={`/journeys/${entry.id}/`}>
+                  <span class="progs__title">{entry.data.title}</span>
+                  <span class="progs__meta">
+                    {durationLabel(entry.data.nights, entry.data.days)}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
   <!-- 6 · Corporate form ------------------------------------------------------ -->
   <section class="band band-tight band-offwhite" id="brief" aria-labelledby="brief-heading">
     <div class="container-content brief">
@@ -231,6 +283,11 @@ const crumbs = breadcrumbSchema([
         <p class="brief__call">
           <a href={settings.phoneHref} data-analytics="call_click">{settings.phone}</a>
         </p>
+        {settings.phone2 && (
+          <p class="brief__call brief__call--alt">
+            <a href={telHref(settings.phone2)} data-analytics="call_click">{settings.phone2}</a>
+          </p>
+        )}
       </div>
 
       <div class="brief__form">
@@ -320,6 +377,66 @@ const crumbs = breadcrumbSchema([
   .intro__jump {
     font-size: var(--text-sm);
     font-weight: 600;
+  }
+
+  .intro__gst {
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    letter-spacing: 0.02em;
+    color: var(--color-on-dark-muted);
+  }
+
+  /* ---- short programmes ---------------------------------------------------- */
+  .progs__lede {
+    margin-top: 0.75rem;
+    color: var(--color-ink-muted);
+  }
+
+  .progs {
+    display: grid;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-burgundy-hairline);
+  }
+
+  @media (min-width: 52rem) {
+    .progs {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 3rem;
+    }
+  }
+
+  .progs li {
+    border-bottom: 1px solid var(--color-burgundy-hairline);
+  }
+
+  .progs__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    min-height: 44px;
+    padding-block: 0.9rem;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .progs__title {
+    font-weight: 600;
+  }
+
+  .progs__row:hover .progs__title {
+    color: var(--color-burgundy);
+    text-decoration: underline;
+  }
+
+  .progs__meta {
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink-muted);
+    white-space: nowrap;
   }
 
   .caps,
@@ -477,5 +594,10 @@ const crumbs = breadcrumbSchema([
 
   .brief__call a {
     text-decoration: none;
+  }
+
+  .brief__call--alt {
+    margin-top: 0.35rem;
+    font-size: var(--text-lg);
   }
 </style>

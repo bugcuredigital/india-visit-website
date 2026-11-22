@@ -191,22 +191,22 @@ departureInfo: >-
 # own (CLIENT_REVIEW_SHEET.md §22).
 bookingSteps:
   - step: 1
-    title: Select and finalise the journey
+    title: Select and Finalise the Journey
     detail: We confirm your departure and cabin category, then share the booking form together with the cancellation terms. Passport copies are needed to record each traveller's name, nationality and passport number.
   - step: 2
-    title: Pay the advance
+    title: Pay the Advance
     detail: An advance of 30% against the invoice secures the booking. If your international flights are already arranged, share the details at this stage.
   - step: 3
-    title: Receive written confirmation
+    title: Receive Written Confirmation
     detail: Once the advance is received you get a confirmation email and letter, along with a breakdown of the amount received and the balance due.
   - step: 4
-    title: Adjust the details
+    title: Adjust the Details
     detail: Tell us about anything you would like added or changed and we will check what is possible with the operator. Some changes cannot be accommodated on a fixed-departure train.
   - step: 5
-    title: Clear the balance 95 days before arrival
+    title: Clear the Balance 95 Days Before Arrival
     detail: The balance must be cleared at least 95 days before arrival in India. We send a receipt once it is in.
   - step: 6
-    title: Arrival assistance
+    title: Arrival Assistance
     detail: "About a week before departure we share your arrival assistance details: who will meet you at the airport and the name of your assigned guest relations manager."
 
 policies:

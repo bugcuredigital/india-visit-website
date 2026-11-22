@@ -29,6 +29,7 @@ import ConvertBand from '../components/ConvertBand.astro';
 import StickyMobileBar from '../components/StickyMobileBar.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Lotus from '../components/Lotus.astro';
+import Button from '../components/Button.astro';
 
 import { getSiteSettings } from '../lib/site-settings';
 import { breadcrumbSchema, reviewSchema } from '../lib/schema';
@@ -105,6 +106,21 @@ const reviewSchemas = realReviews.map((review) =>
             Published in the traveller's own words, and only with their written
             permission. We would rather show you a handful we can stand behind
             than a wall of them we cannot.
+          </p>
+        )
+      }
+      {
+        /* The page's main action since round 5: our guests' reviews on
+           TripAdvisor. A LINK OUT only. Nothing from TripAdvisor (review
+           text, ratings, badges or widgets) is copied or loaded here. An
+           outline, not crimson: the header's Plan My Trip pill (or, on a
+           phone, the sticky bar's Enquire) is this screen's one crimson
+           action, and sending a visitor off-site is not the conversion. */
+        settings.tripadvisorUrl && (
+          <p class="intro__actions">
+            <Button href={settings.tripadvisorUrl} variant="secondary" size="lg" external data-analytics="tripadvisor_click">
+              Read Our TripAdvisor Reviews
+            </Button>
           </p>
         )
       }
@@ -239,6 +255,10 @@ const reviewSchemas = realReviews.map((review) =>
     margin-top: 1rem;
     font-size: var(--text-xl);
     color: var(--color-ink-muted);
+  }
+
+  .intro__actions {
+    margin-top: 1.75rem;
   }
 
   .filter {

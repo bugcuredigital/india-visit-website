@@ -14,8 +14,15 @@
  * journey page itself.
  *
  * The type toggle is a ~25-line vanilla island, not a filter framework. Full
- * filter/search is explicitly Phase 2 (T3), and three buttons over a static
+ * filter/search is explicitly Phase 2 (T3), and four buttons over a static
  * grid need no more than this.
+ *
+ * GROUPS (round 5). The catalogue is three visible groups, each under its own
+ * heading: Custom Journeys, Short Breaks, Luxury Trains. Short Breaks is
+ * DURATION-based, every custom journey of four days or fewer, so it is
+ * computed rather than tagged: a new two-night trip files itself, and Tadoba
+ * (3 days) sits there beside the client's eight short programmes. Without
+ * JavaScript all three groups show; the toggle only hides the others.
  */
 import { getCollection } from 'astro:content';
 
@@ -29,23 +36,38 @@ import JsonLd from '../../components/JsonLd.astro';
 
 import { breadcrumbSchema } from '../../lib/schema';
 
-const journeys = (await getCollection('journeys', ({ data }) => !data.draft)).sort((a, b) => {
-  /* Custom journeys first, trains last — the trains are the upsell, and the
-     toggle exists for anyone who came specifically for them. Within a group,
-     longest trips first: they read as the flagship product. */
-  const byVariant = Number(a.data.variant === 'B') - Number(b.data.variant === 'B');
-  if (byVariant !== 0) return byVariant;
-  return b.data.nights - a.data.nights;
-});
+/** Four days or fewer is a short break (round 5, client instruction). */
+const SHORT_BREAK_MAX_DAYS = 4;
 
-const customCount = journeys.filter((entry) => entry.data.variant === 'A').length;
-const trainCount = journeys.length - customCount;
+/* Within a group, longest trips first: they read as the flagship product. */
+const journeys = (await getCollection('journeys', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.nights - a.data.nights || a.data.title.localeCompare(b.data.title),
+);
+
+const groupOf = (entry: (typeof journeys)[number]) =>
+  entry.data.variant === 'B' ? 'trains' : entry.data.days <= SHORT_BREAK_MAX_DAYS ? 'short' : 'custom';
+
+/* Custom journeys first, trains last: the trains are the upsell, and the
+   toggle exists for anyone who came specifically for them. */
+const GROUPS = [
+  { key: 'custom', label: 'Custom Journeys' },
+  { key: 'short', label: 'Short Breaks' },
+  { key: 'trains', label: 'Luxury Trains' },
+]
+  .map((group) => ({ ...group, items: journeys.filter((entry) => groupOf(entry) === group.key) }))
+  .filter((group) => group.items.length > 0);
+
+/** "2–4 days", counted from the group rather than typed. */
+const spanOf = (items: typeof journeys) => {
+  const days = items.map((entry) => entry.data.days);
+  const [min, max] = [Math.min(...days), Math.max(...days)];
+  return min === max ? `${min} days` : `${min}–${max} days`;
+};
 
 const FILTERS = [
   { key: 'all', label: 'All', count: journeys.length },
-  { key: 'A', label: 'Custom Journeys', count: customCount },
-  { key: 'B', label: 'Luxury Trains', count: trainCount },
-] as const;
+  ...GROUPS.map((group) => ({ key: group.key, label: group.label, count: group.items.length })),
+];
 
 const crumbs = breadcrumbSchema([
   { name: 'Home', url: new URL('/', Astro.site).href },
@@ -79,9 +101,8 @@ const crumbs = breadcrumbSchema([
   </section>
 
   <!-- 2 · Type toggle + 3 · Card grid ----------------------------------- -->
-  <section class="band band-tight" aria-labelledby="grid-heading">
+  <section class="band band-tight" aria-label="Journeys">
     <div class="container-content">
-      <h2 id="grid-heading" class="visually-hidden">Journeys</h2>
 
       <!--
         Hidden without JavaScript (scoped to html.js in the stylesheet): a
@@ -108,23 +129,33 @@ const crumbs = breadcrumbSchema([
 
       <p class="filter__status visually-hidden" role="status" aria-live="polite"></p>
 
-      <ul class="grid" data-journey-grid>
-        {
-          journeys.map((entry) => (
-            <li class="grid__item" data-variant={entry.data.variant}>
-              <JourneyCard
-                slug={entry.id}
-                title={entry.data.title}
-                image={entry.data.heroImage}
-                imageAlt={entry.data.heroImageAlt}
-                nights={entry.data.nights}
-                days={entry.data.days}
-                variant={entry.data.variant}
-              />
-            </li>
-          ))
-        }
-      </ul>
+      {
+        GROUPS.map((group) => (
+          <section class="group" data-group={group.key} aria-labelledby={`group-${group.key}`}>
+            <div class="group__head">
+              <h2 id={`group-${group.key}`} class="group__title">{group.label}</h2>
+              <p class="group__meta">
+                {group.items.length} {group.items.length === 1 ? 'journey' : 'journeys'} · {spanOf(group.items)}
+              </p>
+            </div>
+            <ul class="grid">
+              {group.items.map((entry) => (
+                <li class="grid__item">
+                  <JourneyCard
+                    slug={entry.id}
+                    title={entry.data.title}
+                    image={entry.data.heroImage}
+                    imageAlt={entry.data.heroImageAlt}
+                    nights={entry.data.nights}
+                    days={entry.data.days}
+                    variant={entry.data.variant}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
     </div>
   </section>
 
@@ -142,21 +173,19 @@ const crumbs = breadcrumbSchema([
 
 <script is:inline data-astro-rerun>
   (() => {
-    const grid = document.querySelector('[data-journey-grid]');
+    const groups = Array.from(document.querySelectorAll('[data-group]'));
     const buttons = document.querySelectorAll('[data-filter]');
     const status = document.querySelector('.filter__status');
-    if (!grid || !buttons.length) return;
-
-    const items = Array.from(grid.children);
+    if (!groups.length || !buttons.length) return;
 
     const apply = (key) => {
       let shown = 0;
-      for (const item of items) {
-        const match = key === 'all' || item.dataset.variant === key;
-        // `hidden` rather than a display rule, so the item leaves the
+      for (const group of groups) {
+        const match = key === 'all' || group.dataset.group === key;
+        // `hidden` rather than a display rule, so the group leaves the
         // accessibility tree as well as the layout.
-        item.hidden = !match;
-        if (match) shown += 1;
+        group.hidden = !match;
+        if (match) shown += group.querySelectorAll('.grid__item').length;
       }
       for (const button of buttons) {
         button.setAttribute('aria-pressed', String(button.dataset.filter === key));
@@ -250,6 +279,33 @@ const crumbs = breadcrumbSchema([
     font-variant-numeric: tabular-nums;
     font-weight: 500;
     opacity: 0.65;
+  }
+
+  /* ---- groups ---------------------------------------------------------- */
+  .group + .group {
+    margin-top: clamp(3rem, 2rem + 3vw, 4.5rem);
+  }
+
+  .group__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .group__title {
+    font-size: var(--text-2xl);
+  }
+
+  .group__meta {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-ink-muted);
   }
 
   /* ---- grid ------------------------------------------------------------ */

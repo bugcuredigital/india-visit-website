@@ -18,7 +18,7 @@
  * — the same rule the association-logos row and the corporate proof section
  * follow.
  */
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 
 import Base from '../../layouts/Base.astro';
@@ -35,6 +35,7 @@ import JsonLd from '../../components/JsonLd.astro';
 import Lotus from '../../components/Lotus.astro';
 
 import { heroPreload } from '../../lib/hero-image';
+import { journeysForDestination } from '../../lib/destination-journeys';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 
 export async function getStaticPaths() {
@@ -52,18 +53,12 @@ const { Content } = await render(entry);
 const heroLink = await heroPreload(destination.heroImage);
 
 /**
- * Journeys come from the entry's own `relatedJourneys` and nowhere else.
- *
- * CLAUDE.md describes this as "auto by tag + manual override", and the
- * automatic half is deliberately NOT implemented yet: journeys carry no
- * destination reference, so the only automatic basis available would be
- * fuzzy-matching a region name against a title or a route. That would file
- * trips wrongly and do it silently, which is worse on a conversion section
- * than showing fewer cards. The tag arrives in M5 with the other 17 journeys.
+ * Journeys: the entry's own `relatedJourneys` first (the manual override),
+ * then every journey tagged with this destination in its `destinations` field
+ * (the automatic half, round 5). See lib/destination-journeys.ts. The tag is
+ * an explicit list of locked slugs, never a fuzzy match on a title or route.
  */
-const journeys = (
-  await Promise.all(destination.relatedJourneys.map((ref) => getEntry('journeys', ref.id)))
-).filter((journey) => journey !== undefined && !journey.data.draft);
+const journeys = await journeysForDestination(entry);
 
 /* One destination-specific testimonial, and only with recorded consent.
    `beyond-india` destinations take an international voice. */
@@ -166,7 +161,7 @@ const faq = faqSchema(destination.faq);
               <h2 id="journeys-heading">Journeys in {inSentence}</h2>
             </div>
             <a class="pill tap-target" href="/journeys/">
-              All journeys
+              All Journeys
               <svg viewBox="0 0 16 10" aria-hidden="true" focusable="false">
                 <path
                   d="M1 5h13M10 1l4 4-4 4"

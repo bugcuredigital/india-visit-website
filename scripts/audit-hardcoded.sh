@@ -95,6 +95,21 @@ try:
     print(len(d['settings'].get('_dummyDataFlags',[])))
 except Exception: print('?')
 " 2>/dev/null)"
+# Each contact field by name, so "resolved" is said out loud rather than
+# inferred from a shorter list (round 5: the address was the last dummy).
+python3 - <<'PY' 2>/dev/null || echo "Contact details:   ?"
+import json
+s = json.load(open('src/content/siteSettings/settings.json'))['settings']
+flags = s.get('_dummyDataFlags', [])
+for field, label in [('phone', 'phone'), ('phone2', 'second phone'), ('whatsappNumber', 'WhatsApp number'),
+                     ('email', 'email'), ('address', 'address'), ('socials', 'socials'), ('gstNumber', 'GSTIN')]:
+    flagged = any(f.split(' ')[0].split('.')[0] == field for f in flags)
+    value = s.get(field)
+    if isinstance(value, dict):
+        value = ', '.join(k for k, v in value.items() if v) or None
+    state = 'DUMMY (flagged)' if flagged else ('resolved' if value else 'empty (not rendered)')
+    print(f"Contact details:   {label:<16} {state}")
+PY
 echo "TEMP-PHOTO refs:   $(grep -rn "TEMP-PHOTO" src 2>/dev/null | wc -l | tr -d ' ') reference(s) across $(grep -rl "TEMP-PHOTO" src 2>/dev/null | wc -l | tr -d ' ') file(s)"
 echo "                   temporary Unsplash imagery for design review; the client archive replaces every one in M5"
 echo "TEMP-PHOTO files:  $(ls public/uploads/temp-photos/TEMP-PHOTO-*.jpg 2>/dev/null | wc -l | tr -d ' ') image(s) — provenance in docs/brand/processed/TEMP-PHOTO-PROVENANCE.md"

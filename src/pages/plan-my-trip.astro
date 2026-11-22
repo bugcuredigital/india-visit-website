@@ -29,7 +29,7 @@ import Button from '../components/Button.astro';
 import Lotus from '../components/Lotus.astro';
 import JsonLd from '../components/JsonLd.astro';
 
-import { getSiteSettings, whatsappLink } from '../lib/site-settings';
+import { getSiteSettings, telHref, whatsappLink } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
 import { DESTINATIONS } from '../lib/destinations-strip';
 import { LEADS_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD, BUDGET_BANDS } from '../lib/forms';
@@ -55,15 +55,15 @@ const STEPS = [
 
 const NEXT = [
   {
-    title: 'We read it properly',
+    title: 'We Read It Properly',
     detail: 'A person, not an autoresponder. If something in it needs a question, we ask before we plan.',
   },
   {
-    title: 'We come back with a draft',
+    title: 'We Come Back with a Draft',
     detail: 'A day-by-day itinerary with properties named and a price. Not a brochure, and not a quote with three options.',
   },
   {
-    title: 'We change it until it fits',
+    title: 'We Change It Until It Fits',
     detail: 'Most itineraries go through two or three revisions. That is the job, not an inconvenience.',
   },
 ];
@@ -302,7 +302,7 @@ const crumbs = breadcrumbSchema([
             <button type="button" class="nav__next tap-target" data-next hidden>Next</button>
             <span class="nav__submit" data-submit>
               <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit" disabled={!LEADS_LIVE}>
-                {LEADS_LIVE ? 'Send it over' : FORMS_PENDING_LABEL}
+                {LEADS_LIVE ? 'Send It Over' : FORMS_PENDING_LABEL}
               </Button>
             </span>
             {LEADS_LIVE && <p class="form__status" data-lead-status role="status" aria-live="polite"></p>}
@@ -347,6 +347,11 @@ const crumbs = breadcrumbSchema([
           <a class="side__phone" href={settings.phoneHref} data-analytics="call_click">
             {settings.phone}
           </a>
+          {settings.phone2 && (
+            <a class="side__phone side__phone--alt" href={telHref(settings.phone2)} data-analytics="call_click">
+              {settings.phone2}
+            </a>
+          )}
           <a
             class="side__wa"
             href={whatsappLink(settings, 'Plan My Trip')}
@@ -584,6 +589,11 @@ const crumbs = breadcrumbSchema([
     color: var(--color-ink);
   }
 
+  .side__phone--alt {
+    margin-top: 0.2rem;
+    font-size: var(--text-lg);
+  }
+
   .side__wa {
     display: inline-block;
     margin-top: 0.4rem;
@@ -794,7 +804,7 @@ const crumbs = breadcrumbSchema([
     cursor: pointer;
   }
 
-  /* Next is the page's crimson primary, the same treatment as Send it over.
+  /* Next is the page's crimson primary, the same treatment as Send It Over.
      It used to be solid ink: the same fill, shape and height as a selected
      chip, while the crimson sat on the header pill and the aside (round 5,
      #87). Back stays the ink outline and fills ink on hover. */

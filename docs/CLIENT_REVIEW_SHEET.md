@@ -80,6 +80,12 @@ Quick Facts bar. Agency assignments so far:
 The remaining 18 journeys get the same treatment during M5 and will be added
 here.
 
+**The eight short programmes (round 5, 22 Nov).** Their "Ideal for" line is
+your own "Best for" line, shown verbatim, and their best season is yours. Only
+the pace is ours, because your documents do not give one: Relaxed (Periyar) ·
+Moderate (Darjeeling, Kabini, Khajuraho, Ranthambore, Taj and Agra) · Active
+(Golden Triangle short, Jaisalmer). Correct any in /admin (copy register U13).
+
 ## 6. Practical notes — Kerala with Houseboat
 
 The source document has no practical-notes section; a lighter domestic set was
@@ -105,11 +111,20 @@ publish an unverified number.
 `priceFrom` field exists on journeys so the decision stays reversible without
 a schema change. Train pages are exempt permanently.
 
-## 9. Contact details — all placeholder
+## 9. Contact details — done except the WhatsApp wording
 
-**Updated 2026-11-12:** phone and WhatsApp (+91 98102 41121) and email
-(info@india-visit.com) are real and live. Still needed: the WhatsApp prefill
-wording, the postal address (still flagged dummy) and the social handles.
+**Updated 2026-11-22 (round 5):** every contact detail on the site is now yours.
+Main number +91 98102 41121 (calls and WhatsApp), second number
++91 98102 24108 (shown under it in the footer and contact lines), email
+info@india-visit.com, address B-33 Geetanjali Enclave, IInd Floor, New Delhi
+110017, Instagram sheena_sewal and Facebook Sheena.sewal (footer icons, and
+listed to search engines as your profiles). The dummy-address flag is cleared.
+**Still needed:** only your approval of the WhatsApp prefill wording ("Hello
+India Visit, I'd like help planning a trip."). YouTube and LinkedIn stay empty,
+and an empty profile shows nothing.
+
+*History:* on 12 Nov the phone, WhatsApp and email went live; the address and
+socials followed on 22 Nov.
 
 Every value in `siteSettings` is a placeholder, inventoried in that file's
 `_dummyDataFlags` array. Needed before launch: phone, WhatsApp number, the
@@ -640,3 +655,24 @@ other folders are cleared as a whole. Cleared images are swapped through the
 CMS image fields (content only, no code), processed to the site's sizes and
 formats, and each swap is checked side by side so a photograph is only replaced
 by a better one.
+
+## 28. Round 5 — your remarks and the eight short programmes (added 2026-11-22)
+
+Done this round, from your remarks: Title Case on every card, tile and button;
+your address, second number, socials and GSTIN; the TripAdvisor button; the
+eight short programmes as journey pages; and the Instagram section (built,
+waiting for your reels). Five questions:
+
+| # | Question | Where it shows now | Your answer |
+|---|---|---|---|
+| 28.1 | **Your eight short programmes** came labelled "Corporate itineraries", but every one's "Best for" line is leisure (couples, families, photographers). Show them on `/corporate/`, on `/journeys/` as Short Breaks, or both? | **Both**, until you say. On `/journeys/` they sit in the Short Breaks group (every journey of four days or fewer, so Tadoba is there too); on `/corporate/` they are a short "Short programmes" list. Your answer is a checkbox per journey in /admin ("List under Short programmes on the Corporate page"), no code. | |
+| 28.2 | **Your GSTIN in the footer?** It shows on `/corporate/` (under the line that promises GST invoicing) and on `/booking-terms/`. Should it also go in the footer's legal line, on every page? | `/corporate/`, `/booking-terms/` | |
+| 28.3 | **Two programmes have no destination page of their own.** Darjeeling is listed on North East India, and Khajuraho Temples and the Ganges on Rajasthan & the Golden Triangle (which already carries the Golden Triangle with Varanasi). Nearest fit, or would you rather they appear only on `/journeys/`? | Untick "Show on destination pages" in /admin to take either off. The other six sit where they plainly belong: Kerala, Wildlife, Rajasthan & the Golden Triangle (Ranthambore is on both Wildlife and Rajasthan). | |
+| 28.4 | **Instagram reels for the homepage.** The section "Follow along on Instagram" is built and switched off until it has three to six reels. For each, upload a still from the reel (portrait), paste the reel's address and write one caption line, in Site settings → Instagram reels. It links out to Instagram: nothing from Instagram loads on the site. | Not shown until filled | |
+| 28.5 | **The stand-in photographs on the eight new pages** are licensed Unsplash images like the rest (Kabini's shows wild elephants, but not at Kabini). Any of your own for these eight? They swap in through the image field, no code. | The eight journey heroes | |
+
+**Note on "City palaces".** Your remark placed it on `/cities/jaipur/`; it
+rendered on the Rajasthan & the Golden Triangle destination page (`/cities/jaipur/`
+reads "The City Palace"). It is "City Palaces" now, and the sweep covered both
+pages either way.
+

@@ -55,6 +55,7 @@ import { Image } from 'astro:assets';
 
 import { getSiteSettings, whatsappLink } from '../../lib/site-settings';
 import { heroPreload } from '../../lib/hero-image';
+import { durationLabel } from '../../lib/duration';
 import { getCityIndex, cityLinkFor, citiesMentionedIn } from '../../lib/cities';
 import { touristTripSchema, breadcrumbSchema } from '../../lib/schema';
 
@@ -200,7 +201,7 @@ const crumbs = breadcrumbSchema([
   <div class="print-only print-brand">
     <Logo height={36} isHome={true} />
     <p class="print-brand__line">
-      <strong>{settings.siteName}</strong> · {settings.phone} · {settings.email}
+      <strong>{settings.siteName}</strong> · {settings.phone}{settings.phone2 && ` · ${settings.phone2}`} · {settings.email}
       <span class="print-brand__url">{Astro.url.href}</span>
     </p>
   </div>
@@ -220,7 +221,7 @@ const crumbs = breadcrumbSchema([
 
     <p class="hero__badges">
       <span class="badge badge--duration">
-        {journey.nights} Nights · {journey.days} Days
+        {durationLabel(journey.nights, journey.days)}
       </span>
       {journey.signatureFeature && (
         <span class="badge badge--signature">{journey.signatureFeature}</span>
@@ -259,7 +260,7 @@ const crumbs = breadcrumbSchema([
         external={true}
         data-analytics="wa_click"
       >
-        WhatsApp us
+        WhatsApp Us
       </Button>
       {
         /* The PDF is GATED (PRD §8.1 — email + phone), so the hero button goes
@@ -268,7 +269,7 @@ const crumbs = breadcrumbSchema([
            printed in the hero. */
         journey.pdfFile && (
           <Button href="#download" variant="ghost" size="lg" data-analytics="pdf_gate_open">
-            Download the itinerary
+            Download the Itinerary
           </Button>
         )
       }
@@ -284,6 +285,7 @@ const crumbs = breadcrumbSchema([
     pace={journey.pace}
     bestSeason={journey.bestSeason}
     idealFor={journey.idealFor}
+    bestFor={journey.bestFor}
   />
 
   <!-- S3 ----------------------------------------------------------------
@@ -450,7 +452,7 @@ const crumbs = breadcrumbSchema([
       <RelatedJourneys
         journeys={relatedCards}
         viewAllHref={isTrain ? '/luxury-trains/' : '/journeys/'}
-        viewAllLabel={isTrain ? 'All luxury trains' : 'All journeys'}
+        viewAllLabel={isTrain ? 'All Luxury Trains' : 'All Journeys'}
       />
     )
   }

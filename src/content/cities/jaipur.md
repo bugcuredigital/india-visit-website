@@ -49,7 +49,7 @@ experiences:
     text: "The palace of the winds: 953 windows built for watching a street you could not be seen on. Best from the pavement opposite."
     image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-hawa-mahal.jpg
     imageAlt: The Hawa Mahal seen from the street in daylight
-  - name: The bazaars
+  - name: The Bazaars
     text: Johari for jewellery, Bapu for block-printed cloth and slippers, Tripolia for brass. Haggling is expected and cheerful.
     image: /uploads/temp-photos/TEMP-PHOTO-city-jaipur-bazaar.jpg
     imageAlt: Bowls of brightly coloured powders on a market stall

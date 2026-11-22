@@ -1,0 +1,211 @@
+---
+/**
+ * "Follow along on Instagram" — homepage, between the testimonials and the
+ * corporate band (round 5).
+ * ---------------------------------------------------------------------------
+ * STATIC TILES THAT LINK OUT, NOT AN EMBED. Instagram's embed script is a
+ * third-party script in the visitor path: it would sit in front of LCP and
+ * pull a framework's worth of JavaScript onto the homepage, which invariants
+ * #3 and #4 bar outright. So each reel is three CMS fields (a thumbnail the
+ * client uploads, the reel's address and a one-line caption), rendered as a
+ * rounded image with a play mark, and the click goes to instagram.com.
+ * Nothing from Instagram loads here, ever.
+ *
+ * EMPTY = ABSENT. Until the client supplies thumbnails, `siteSettings.reels`
+ * is an empty list and this component renders nothing at all, not a row of grey boxes
+ * (the association-logos rule). The schema holds a populated list to three to
+ * six, so the row never reads as half-built.
+ *
+ * Layout: a swipeable row below 64rem, so three to six tiles never leave an
+ * orphan on a line; one row of equal columns above it.
+ */
+import { Image } from 'astro:assets';
+import type { SiteSettings } from '../lib/site-settings';
+
+interface Props {
+  /** Typed from the schema, so the component cannot drift from it. */
+  reels: SiteSettings['reels'] | null;
+  /** The profile the header links to; the handle is shown as its label. */
+  profileUrl: string | null;
+  handle: string | null;
+}
+
+const { reels, profileUrl, handle } = Astro.props;
+const items = reels ?? [];
+---
+
+{items.length > 0 && (
+  <section class="band reels" aria-labelledby="reels-heading">
+    <div class="container-content">
+      <div class="reels__head">
+        <h2 id="reels-heading">Follow along on Instagram</h2>
+        {profileUrl && handle && (
+          <a class="reels__profile tap-target" href={profileUrl} target="_blank" rel="noopener noreferrer">
+            {handle}
+            <span class="visually-hidden"> on Instagram (opens in a new tab)</span>
+            <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M4 2h6v6M10 2 2.5 9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        )}
+      </div>
+
+      <!-- data-allow-clip: below 64rem this row scrolls sideways by design. -->
+      <ul class="reels__row" data-allow-clip style={`--reels: ${items.length}`}>
+        {items.map((reel) => (
+          <li class="reel">
+            <a class="reel__link" href={reel.url} target="_blank" rel="noopener noreferrer" data-analytics="instagram_reel_click">
+              <span class="reel__frame">
+                <Image
+                  src={reel.thumbnail}
+                  alt={reel.thumbnailAlt}
+                  widths={[240, 360, 480]}
+                  sizes="(min-width: 64rem) 16rem, 62vw"
+                  loading="lazy"
+                  decoding="async"
+                  class="reel__image"
+                />
+                <span class="reel__play" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false"><path d="M9 7.5v9l7.5-4.5Z" fill="currentColor" /></svg>
+                </span>
+              </span>
+              <span class="reel__caption">{reel.caption}</span>
+              <span class="visually-hidden"> (opens Instagram in a new tab)</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
+
+<style>
+  .reels__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .reels__profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-crimson);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .reels__profile:hover {
+    color: var(--color-burgundy);
+    border-color: var(--color-burgundy);
+  }
+
+  .reels__profile svg {
+    width: 12px;
+    height: 12px;
+    flex: none;
+  }
+
+  /* A swipeable row below 64rem: three to six tiles never leave an orphan. */
+  .reels__row {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(62vw, 16rem);
+    gap: 1rem;
+    margin: 0;
+    padding: 0 0 0.5rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+
+  @media (min-width: 64rem) {
+    .reels__row {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(var(--reels), minmax(0, 1fr));
+      gap: 1.5rem;
+      overflow: visible;
+    }
+  }
+
+  /* `position: relative` is load-bearing. Each tile's visually-hidden "(opens
+     Instagram…)" span is absolutely positioned; without a positioned ancestor
+     inside the row, its containing block lay outside the scroller, so the
+     row could not clip it and the last tile's span widened the PAGE to 791px
+     at 390 (check:responsive, 22 Nov). */
+  .reel {
+    position: relative;
+    scroll-snap-align: start;
+  }
+
+  .reel__link {
+    display: block;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  /* 4:5, the template's fixed ratio: a thumbnail swap can never reflow it. */
+  .reel__frame {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-lg);
+    overflow: clip;
+    background-color: var(--color-offwhite);
+  }
+
+  .reel__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Ink, never a colour: it sits over somebody's photograph. */
+  .reel__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin: -1.5rem 0 0 -1.5rem;
+    border-radius: 50%;
+    background-color: rgb(26 21 35 / 0.55);
+    color: var(--color-white);
+  }
+
+  .reel__play svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .reel__caption {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: var(--text-sm);
+    line-height: 1.45;
+    color: var(--color-ink-muted);
+  }
+
+  .reel__link:hover .reel__caption {
+    color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reel__image {
+      transition: transform var(--duration-slow) var(--ease-brand);
+    }
+
+    .reel__link:hover .reel__image {
+      transform: scale(1.04);
+    }
+  }
+</style>
