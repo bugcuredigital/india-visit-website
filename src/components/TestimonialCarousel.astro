@@ -318,15 +318,6 @@ const showNav = testimonials.length > 1;
     list-style: none;
   }
 
-  /* In the phone scroller each card keeps its own height: stretched to a
-     real review beside it, a placeholder became a 640px card with one quiet
-     line floating in it (round 6 check, with test data). */
-  @media (max-width: 63.999rem) {
-    .quotes {
-      align-items: start;
-    }
-  }
-
   /* auto-fit, not three fixed columns (round 6): two cards share the row
      instead of leaving an empty third column beside them. */
   @media (min-width: 64rem) {

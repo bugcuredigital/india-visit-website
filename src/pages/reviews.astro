@@ -384,8 +384,11 @@ const reviewSchemas = realReviews.map((review) =>
   }
 
   /* Short, quiet, unmistakably not a review (word control, round 3). */
+  /* Grows to fill a card stretched to a real review beside it, so the line
+     sits centred and the byline at the foot, as in the homepage carousel. */
   .review__pending {
     display: flex;
+    flex: 1;
     align-items: center;
     gap: 0.6rem;
     margin: 0;
