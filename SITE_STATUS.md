@@ -1,10 +1,13 @@
 # SITE_STATUS.md — where the India Visit website is, right now
 
-**Updated:** 2026-11-22, round 5 (the client's remarks and eight short
-programmes) · **Production:** `main` at PR #31, live 14:09 IST; `main` then
-moves only by docs, https://india-visit-website.pages.dev · **Freeze:** **ON**
-again since 22 Nov, after PR #32 (lifted for round 5 only): no agency merges
-until the next round (the client's own edits through `/admin` stay open)
+**Updated:** 2026-11-24, design round 6 (an external polish spec, ported on a
+branch) · **Production:** `main` at PR #31, live since 22 Nov 14:09 IST; `main`
+then moved only by docs, https://india-visit-website.pages.dev · **Round 6:**
+draft PR #33 (`design-round6-polish`), preview
+https://design-round6-polish.india-visit-website.pages.dev, **not merged**:
+it waits for the design verdict and the owner's ruling (review sheet §29) ·
+**Freeze:** lifted for round 6, which ships only by that verdict; otherwise no
+agency merges (the client's own edits through `/admin` stay open)
 
 This file is the one-page answer to "what is live, what is provisional, and
 what is blocking". It is updated in the same commits as the work it describes.
@@ -21,6 +24,7 @@ Detail lives in `SESSION_LOG.md` (the running narrative), `docs/CLIENT_REVIEW_SH
 | **M7 Tina CMS** *(pulled forward)* | **GATE PASSED** (2026-11-14, by ruling) · `/admin` **fully open** | The first production save (12 Nov) corrupted an image path and broke the build; root cause fixed, and `check:image-paths` guards every build. The live round trip on Tina Cloud (runbook M7 step 4a) passed on 14 Nov: a title and an image swapped on Tadoba changed exactly those two values, the image path stayed `/uploads/…`, the build went green and the swapped hero was served as AVIF/WebP. The test values were restored (PR #25) |
 | M6 Forms, lead function, GTM *(runs after M7)* | **M6-minimal LIVE** (2026-11-12, 18:04 IST) | Enquiry forms and Plan My Trip post to `functions/api/lead.ts` (validation, honeypot, Resend), sent from `enquiries@india-visit.com` to `info@india-visit.com` with the visitor as reply-to. Every test lead landed complete in the inbox: 14:33 on 12 Nov, then the 18:52 post-fix test and a 19:12 Plan My Trip submission that evening, so Plan My Trip is verified end to end before and after the consent fix. The PDF gate and the newsletter still read "Launching shortly". Turnstile, the Sheet webhook, the PDF release and GTM follow after the demo |
 | **Design round 5** (the unslop audit) | **26 high items fixed** (PR #21, 13 Nov) | `docs/UNSLOP_AUDIT.md`. The 54 medium and 14 low items await the client's batch approvals, which arrive with the demo remarks as the round-5 list. Done ahead of it (pre-approved 14 Nov): Best Practices **100**, through Partytown 1.0.5 (PR #26), and with reduced motion a phone hero's primary steps down beside the sticky bar's crimson Enquire (PR #27) |
+| **Design round 6** (external polish spec) | **On a preview, awaiting the verdict** (PR #33, draft) | `docs/design/EXTERNAL_POLISH_AUDIT.md`, written by the owner's outside designer against a static mirror, ported into the components rule by rule (no override stylesheet). Icons now Phosphor throughout. Declines and adaptations are in review sheet §29 and the session log. Checks green, contrast 610 runs all AA (39 of them the tile names now set on photographs) |
 | M8 SEO, analytics, hardening · M9 Launch | not started | PRD §16 checklist |
 
 ## What is on the site

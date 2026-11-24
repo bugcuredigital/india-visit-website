@@ -2055,3 +2055,166 @@ round; the client's own `/admin` edits stay open.
    (footer ©, Nepal and Sri Lanka, timeline milestones).
 2. The first photo the client uploads through `/admin`: read its commit to
    close the upload half of the image path.
+
+## 2026-11-24 — Design round 6: an external polish spec, ported into the components (branch, PR #33, NOT merged)
+
+**Provenance.** This round's design came from OUTSIDE the agency. An auditor
+working for the owner, with no source access, built a UI polish layer against a
+52-page static mirror of production and documented it in full:
+`docs/design/EXTERNAL_POLISH_AUDIT.md` (committed this round, unchanged). The
+live site was never touched by it. The instruction was to treat the file as a
+design specification, not code to merge. Freeze lifted for this round; the
+work goes to a branch and a preview, and nothing merges before the design
+verdict.
+
+**How it was ported** (the three structural rules of the instruction):
+1. **No override layer.** There is no `polish.css` and no last-loaded
+   stylesheet. Every rule is folded into the component that owns the class,
+   or into `tokens.css` / `global.css` where it is truly sitewide (font
+   smoothing, `::selection`, heading tracking, `text-wrap`, the eyebrow). The
+   spec's `:root .x.x` specificity doubling is gone with it. Its `--polish-*`
+   properties became tokens: `--color-burgundy-tint`, `--color-focus-ring`,
+   `--color-focus-ring-on-dark`, `--radius-field`; plus `--shadow-popover`
+   (the nav dropdown) and `--scrim-tile` (the tile wash). The fifth, a
+   resting card shadow, has no token (declined, below).
+2. **Icons: the finding accepted, the implementation changed.** No Lucide.
+   The extractor (`npm run brand:icons`) gained the twelve Phosphor
+   equivalents at the regular weight, which is exactly the spec's 1.5-on-24
+   line (the thin weight would draw 0.5–0.7px at these sizes): car-profile,
+   train, boat, airplane-tilt, footprints, calendar-blank, clock (exported as
+   `clock-regular`, since the trust bar's thin clock keeps its name), path,
+   file-text, money, cloud, phone; plus `quotes` (fill) for the review badge.
+   Every glyph had a direct equivalent; nothing was mixed in. They are applied
+   in the three components that drew them (TransportChip, PracticalNotesGrid,
+   Header), so every page gets them, the ten newer than the mirror included:
+   none of the old paths survives anywhere in `dist/`. Provenance doc updated,
+   with the spec-to-Phosphor table.
+3. **Locked rules win.** Each section was audited against CLAUDE.md first.
+
+**Declined, with the rule each breaks**
+- Resting shadow on cards and card-like containers (twelve of them) — "soft
+  shadow on hover only" (CLAUDE.md, Components). Hairline edges kept; the
+  hover lift kept on the cards that are links.
+- Hover lift on cards that are not links (Why India Visit, reviews) — a card
+  that moves on hover promises a click; the hover affordance belongs to
+  listing cards.
+- Yellow destination name on hover — yellow is legal on burgundy, plum or ink
+  only (invariant #5); a photograph is none. The name underlines instead.
+- The review cards' burgundy wash at rest — colour on a card is a hover state.
+- "Guest review coming soon" as a display-face headline with its lotus
+  hidden, and a quotation badge on placeholder cards — invariant #9: a
+  placeholder is one quiet italic line with the lotus, never styled as the
+  content it stands in for. The badge opens real reviews only.
+- Practical-note text down to small and muted, and highlights down to 16px —
+  the legibility bump to both is a recorded ruling (tokens.css, M4 rev. 2).
+- Filter chips at 40px — the 44px tap target (PRD §9.3, "not negotiable").
+- Dark-ground field borders at 34% — round 5 set 50% for WCAG 1.4.11 (3:1);
+  the spec's hover and focus states were taken.
+- An article column of 46rem with the measure cap lifted (~78ch) — the
+  locked ~68ch measure; the centred column is the measure itself.
+- Policy heading rules in crimson — fine rules are burgundy's job, and five
+  crimson marks a screen outshout the one action.
+
+**Adapted, where the mirror could not see the source**
+- Form fields: "a field is a whisper of contrast against what it sits on".
+  White on the off-white bands (the corporate brief, as the spec asks, and as
+  Plan My Trip already did), off-white on the new white PDF card, so the
+  locked off-white field survives where it reads.
+- Two-column journey intro: only where there are two paragraphs. The eight
+  short programmes (newer than the mirror) open with one, and a paragraph
+  that may not break would have left the second column empty. Counted in
+  the frontmatter: a scoped `:has(:global(p + p))` is left uncompiled by
+  Astro and the browser drops the rule (caught in the first local capture).
+- Selects: the spec's chevron targeted `.form select`; it now covers both
+  enquiry-form selects (light and dark grounds) and Plan My Trip's month.
+- `.philosophy` (About) no longer exists; nothing to port. The single
+  pull-quotes on About and the destination pages render only with a real
+  review and are a different design; the spec's §10 scope (home and
+  `/reviews/`) was kept.
+- The eyebrow lead-in rule is not drawn inside the trains banner's pill tag.
+
+**Text over imagery.** The destination tiles (homepage and `/corporate/`) now
+set their names on the photograph, over `--scrim-tile` (ink, eased over eleven
+stops). Per the coverage contract they joined `check:hero-contrast`: any run
+marked `data-on-image` is discovered from `dist/`, scrolled into view with
+fixed layers hidden, its photograph waited for, and scored like hero copy. A
+page that marks a run the check fails to measure fails it.
+
+**Bugs the checks caught before the branch went up**
+- **Route strips wrapped inside their pills on phones.** The new sitewide
+  `li { text-wrap: pretty }` used the shorthand, which also sets
+  `text-wrap-mode: wrap` and so overrode the route strip's `white-space:
+  nowrap` on every city. "Ha Long Bay" broke inside its pill, the strip grew
+  43px, the bottom-anchored H1 rose into the photograph's sky, and
+  check:hero-contrast failed two phone heroes (Vietnam 2.75:1 and 2.49:1 with
+  reduced motion, North East 2.95:1; both had passed round 5 at 3.25 and
+  3.39). Fixed with the longhand `text-wrap-style: pretty`; both back to
+  their round-5 values.
+- **The two-column intro never applied.** Astro leaves `:global()` inside a
+  scoped `:has()` uncompiled, so the browser dropped the rule. Now a class
+  set from the paragraph count.
+- **The article meta line folded mid-phrase** in the destination pages'
+  four-up grid once the category took the wider tracking ("Planning & /
+  Visas"). It now wraps between its parts.
+- **The review badge's glyph drew at ~12px** in its 48px badge (Phosphor's
+  quote mark fills half its frame); 30px now. Found with a labelled test
+  review in a scratch build, never committed, which also showed a
+  `/reviews/` placeholder beside a real review leaving its byline halfway
+  down (now centred like the carousel's). Letting phone carousel cards keep
+  their own height was tried and dropped: it left a 450px blank above the
+  dots.
+
+**Checks** (local build, 62 pages): build; image paths; CMS images (5 exempt,
+0 outside); links (4,024 references); Template Spec §6 on all 28 journeys;
+transport labels (127); `audit:hardcoded`; tariff grep on the three train
+pages, none. Keyboard on seven pages, no-JS, responsive 360–1440 on fifteen
+pages, hero video (15 checks). **Hero contrast: 42 pages (41 heroes plus
+`/corporate/`, which joined through its tiles), 610 text runs, all AA**: 174
+breadcrumbs and 39 tile names among them, the tightest tile 5.97:1 (the
+`/corporate/` names at 15px on a phone). `astro check`: no new errors, the
+same eight in untouched files. All 28 PDFs reprinted (the print stylesheet
+prints the page's own styles; the two-column intro does not apply at page
+width).
+
+**Lighthouse, mobile** (13.6.0, simulated throttling), the preview against
+production measured the same afternoon. Accessibility and Best Practices 100
+on every page of both. Performance 99–100 on the preview (98–100 production).
+SEO reads 69 on the preview for one reason only: Cloudflare sends
+`x-robots-tag: noindex` on preview deployments, so `is-crawlable` fails; every
+other SEO audit passes, and production is 100.
+
+| Page | LCP, production | LCP, preview |
+|---|---|---|
+| `/` | 1.0s | 1.0s |
+| `/journeys/` | 1.4s (reruns 1.5, 1.4) | 1.5s (reruns 1.3, 1.3) |
+| `/journeys/taj-and-agra-1n-2d/` | 1.4s | 1.4s |
+| `/reviews/` | 1.0s | 1.0s |
+| `/corporate/` | 1.1s (reruns 0.9, 0.9) | 1.3s (reruns 1.3, 1.3) |
+
+CLS 0 throughout. The one gap, `/corporate/`, is the server and not the CSS:
+the LCP element is the same intro paragraph (text) on both, its render delay
+125ms against 106ms, and time to first byte 388ms on the preview deployment
+against 143ms on production. Every budget holds (homepage 2.2s, the rest 2.0s).
+
+**Captures:** `reports/design-round6-2026-11-24/before/` (production) and
+`after/` (the preview), desktop 1280 and phone 390, each set taken with the
+font cache warmed by one visit so both show the display face a returning
+visitor sees (`font-display: optional` can draw the fallback on a cold first
+visit, and the preview's slower first byte made that likelier). Pages: the
+homepage, `/journeys/`, Rajasthan Classic (day-by-day, practical notes,
+included/not included), the Rajasthan destination (tiles), the Kerala
+houseboat article (no contents list, so the centred column), `/reviews/`,
+`/plan-my-trip/`, `/booking-terms/`. `after/review-cards-TEST-DATA-*` is the
+real-review card on the homepage and `/reviews/`, rendered from a labelled test
+entry in a scratch build, because no real review exists yet.
+
+**Not merged.** Draft PR #33, branch `design-round6-polish`, preview
+https://design-round6-polish.india-visit-website.pages.dev. The verdict is the
+user's design review and the owner's ruling (review sheet §29: eight
+questions, the declines among them).
+
+### Exact next action
+
+1. The design verdict on PR #33. On approval: mark it ready, merge, confirm
+   production, re-freeze. On changes: patch forward on the same branch.
+2. Unchanged from round 5: review sheet §28 (five questions) and §14.

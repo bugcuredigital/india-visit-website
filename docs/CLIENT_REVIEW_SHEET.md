@@ -676,3 +676,26 @@ rendered on the Rajasthan & the Golden Triangle destination page (`/cities/jaipu
 reads "The City Palace"). It is "City Palaces" now, and the sweep covered both
 pages either way.
 
+
+## 29. Design round 6 — the outside designer's polish, on a preview (added 2026-11-24)
+
+The polish your outside designer documented has been built into the site, on a
+**preview only** (production is unchanged until you rule): the preview address
+is in pull request #33. Nothing is reworded and no content moves; it is type,
+spacing, edges, icons and a few section treatments. Before-and-after pictures of
+eight pages are in `reports/design-round6-2026-11-24/`.
+
+Most of it went in as written. A few parts were held back because they break
+rules you set in earlier rounds, and a few had to be adapted to pages the
+designer could not see. Your call on each:
+
+| # | Question | What the preview does now | Your answer |
+|---|---|---|---|
+| 29.1 | **Ship the polish?** | Preview only | |
+| 29.2 | **Held back: cards and panels have no shadow until you point at them.** The designer gave many of them a soft resting shadow; your rule since round 3 is "shadow on hover only". Keep the rule, or allow resting shadows? | Hairline edges, no resting shadow; journey and article cards still lift on hover | |
+| 29.3 | **Held back: the review cards and "Why India Visit" cards do not lift on hover**, and the reviews have no pink wash. Cards that move invite a click, and these are not links; colour on a card is a hover state (round 3). | Still, white, with a burgundy top edge on the reviews | |
+| 29.4 | **Held back: the empty review slots stay one quiet line** ("Guest review coming soon", with the lotus). The designer set it as a headline with a quotation badge, which would make an empty slot look like a review (your word-control rule, round 3). The badge appears on real reviews only. | One quiet line | |
+| 29.5 | **Held back: practical notes and highlights keep their larger text.** The designer stepped both down; their size is your M4 ruling. | Unchanged size | |
+| 29.6 | **Destination names now sit on the photographs** (homepage and Corporate). Every name is measured for contrast on every photograph; the tightest is 5.97:1 (the pass mark is 4.5). The designer turned the name yellow on hover; yellow over a photograph breaks the colour rule, so it underlines instead. | On the photograph, underline on hover | |
+| 29.7 | **Form fields.** The designer made every field white with a visible edge. Your rule puts form fields on off-white. The preview reads it as "a field is the other surface from what it sits on": white fields on the off-white bands, off-white fields on the new white download card. | As described | |
+| 29.8 | **Policy pages:** a short rule now opens each section. The designer drew it crimson; the preview uses burgundy, because crimson marks the one action on a screen and these rules would put five on it. | Burgundy | |
