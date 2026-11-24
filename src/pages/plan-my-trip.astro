@@ -491,7 +491,8 @@ const crumbs = breadcrumbSchema([
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.01em;
     color: var(--color-ink-muted);
   }
 
@@ -514,7 +515,7 @@ const crumbs = breadcrumbSchema([
     font-family: var(--font-body);
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-ink-muted);
   }
@@ -527,17 +528,27 @@ const crumbs = breadcrumbSchema([
 
   .next__item {
     display: flex;
+    align-items: flex-start;
     gap: 1rem;
     padding: 1rem 0;
     border-top: 1px solid var(--color-hairline);
   }
 
+  /* The step number in a small burgundy-tint disc (round 6); not crimson,
+     because the one crimson action on this page is the form's Next / Send. */
   .next__no {
     flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-burgundy-tint);
     font-family: var(--font-display);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: 700;
-    color: var(--color-crimson);
+    color: var(--color-burgundy);
   }
 
   .next__title {
@@ -572,7 +583,7 @@ const crumbs = breadcrumbSchema([
   .side__label {
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-ink-muted);
   }
@@ -585,6 +596,7 @@ const crumbs = breadcrumbSchema([
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
     text-decoration: none;
     color: var(--color-ink);
   }
@@ -747,17 +759,51 @@ const crumbs = breadcrumbSchema([
     color: var(--color-ink-muted);
   }
 
+  /* White on the form's off-white card: a field is a whisper of contrast
+     against what it sits on. Round 6 gave it the enquiry form's edge, hover
+     and focus halo, so every field on the site behaves alike. */
   .field {
     width: 100%;
     min-height: 48px;
     margin-top: 0.5rem;
     padding: 0.6rem 0.9rem;
     border: 1px solid var(--color-card-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-field);
     background-color: var(--color-white);
     color: var(--color-ink);
     font-family: var(--font-body);
     font-size: var(--text-base);
+  }
+
+  .field:hover {
+    border-color: color-mix(in srgb, var(--color-burgundy) 42%, transparent);
+  }
+
+  .field:focus {
+    border-color: var(--color-crimson);
+    box-shadow: 0 0 0 4px var(--color-focus-ring);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .field {
+      transition:
+        border-color var(--duration-fast) var(--ease-brand),
+        box-shadow var(--duration-fast) var(--ease-brand);
+    }
+  }
+
+  /* The month select draws the site's own chevron (the accordions' path)
+     instead of the platform's, like the enquiry form's selects (round 6). A
+     data URI cannot read a custom property, so the stroke is
+     --color-ink-muted (#674e59) written out. */
+  select.field {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 2.5rem;
+    background-repeat: no-repeat;
+    background-position: right 0.95rem center;
+    background-size: 12px 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23674e59' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 
   .field--narrow {
@@ -835,8 +881,16 @@ const crumbs = breadcrumbSchema([
   .mini {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
-    gap: clamp(1.5rem, 0.5rem + 2vw, 2.5rem);
+    gap: 1.25rem;
     margin: 2rem 0 0;
+  }
+
+  /* Each question in its own quiet card (round 6). No shadow: not a link. */
+  .mini__item {
+    padding: 1.75rem 1.5rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
   }
 
   .mini__q {

@@ -96,11 +96,34 @@ const {
     display: none;
   }
 
+  /* The same round control as the day-by-day and the FAQ (round 6). */
   .policy__chevron {
+    box-sizing: content-box;
     width: 12px;
     height: 8px;
+    padding: 11px 9px;
     flex: none;
-    color: var(--color-ink-muted);
+    border: 1px solid var(--color-burgundy-hairline);
+    border-radius: 50%;
+    color: var(--color-burgundy);
+  }
+
+  .policy[open] .policy__chevron {
+    border-color: var(--color-burgundy);
+  }
+
+  @media (hover: hover) {
+    .policy__summary:hover .policy__chevron {
+      background-color: var(--color-burgundy);
+      border-color: var(--color-burgundy);
+      color: var(--color-white);
+    }
+  }
+
+  @media (max-width: 39.999rem) {
+    .policy__chevron {
+      padding: 9px 7px;
+    }
   }
 
   .policy__body {
@@ -111,7 +134,11 @@ const {
 
   @media (prefers-reduced-motion: no-preference) {
     .policy__chevron {
-      transition: transform var(--duration-base) var(--ease-brand);
+      transition:
+        transform var(--duration-base) var(--ease-brand),
+        background-color var(--duration-fast) var(--ease-brand),
+        border-color var(--duration-fast) var(--ease-brand),
+        color var(--duration-fast) var(--ease-brand);
     }
 
     .policy[open] .policy__chevron {

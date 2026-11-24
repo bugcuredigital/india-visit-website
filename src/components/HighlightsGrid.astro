@@ -40,7 +40,7 @@ const { highlights, heading = 'Journey Highlights' } = Astro.props;
 
   .highlights {
     display: grid;
-    gap: 1.5rem 3rem;
+    gap: 1rem 1.25rem;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -52,15 +52,27 @@ const { highlights, heading = 'Journey Highlights' } = Astro.props;
     }
   }
 
+  /* Each highlight is a soft off-white panel on the white band (round 6),
+     the lotus in a small white badge at its head. */
   .highlights__item {
     display: flex;
-    align-items: start;
-    gap: 0.85rem;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 1.4rem;
+    background-color: var(--color-offwhite);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
   }
 
   .highlights__glyph {
-    /* Optical alignment with the first line of text. */
-    margin-top: 0.28em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
     color: var(--color-crimson);
     /* A flex item may shrink: beside a wrapping line the 20px lotus fell to
        5-12px at 390 (round 5, #29). The mark keeps its size. */
@@ -68,11 +80,12 @@ const { highlights, heading = 'Journey Highlights' } = Astro.props;
   }
 
   /* A step up from the 16px body floor: the highlights are the section
-     travellers actually scan, so they carry more weight than running copy. */
+     travellers actually scan, so they carry more weight than running copy.
+     (Round 6's spec set it back to 16px; declined, this bump is a recorded
+     ruling — tokens.css. The panel sets the line length now, so no cap.) */
   .highlights__text {
     font-size: var(--text-lg);
     line-height: var(--leading-body);
-    max-width: 46ch;
   }
 
   .highlights__lead {

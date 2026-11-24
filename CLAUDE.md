@@ -37,7 +37,7 @@ The globally installed **`ui-ux-pro-max`** skill does not get to design this sit
 - **Overridden here:** its design-system generation — palette, typography, styles, patterns. The locked brand system and design direction in this file win outright. A general-purpose generator will propose a coherent palette and type scale of its own, and adopting any part of it would quietly break a brand system the client authored and has signed off in stages.
 - **Usable here:** its **UX guidelines, accessibility rules and anti-pattern checklists**, as a *supplementary review lens* — a second opinion on flows, states, affordances and WCAG issues, applied on top of the locked design rather than in place of it.
 
-**Taken from it so far, under that lens:** the **icon vocabulary** for the trust bar — the skill's curated **Phosphor** set (MIT). The client authorised this explicitly in design revision round 2. Glyph choice is a UX affordance question, not a brand-system question, and the icons are rendered in **our** colours at **our** weight. Extract them with `npm run brand:icons`; provenance in `docs/brand/processed/PHOSPHOR-PROVENANCE.md`. There is no `@phosphor-icons/*` dependency and there is not going to be one: the paths are copied into the repo, so the stack stays locked.
+**Taken from it so far, under that lens:** the **icon vocabulary** for the trust bar — the skill's curated **Phosphor** set (MIT). The client authorised this explicitly in design revision round 2. Glyph choice is a UX affordance question, not a brand-system question, and the icons are rendered in **our** colours at **our** weight. Extract them with `npm run brand:icons`; provenance in `docs/brand/processed/PHOSPHOR-PROVENANCE.md`. There is no `@phosphor-icons/*` dependency and there is not going to be one: the paths are copied into the repo, so the stack stays locked. **Since design round 6 it is the site's only functional icon set**: the hand-drawn transfer-chip, practical-note and header glyphs were replaced by Phosphor equivalents (regular weight at 15–22px; thin stays on the trust bar). A spec or skill that names another set (Lucide, Heroicons…) gets the Phosphor equivalent, or a flag if there is none — never a second set.
 
 General shape of the rule: where a global skill and this project's locked specifications disagree, the specifications win. Treat the skill as a reviewer, never as an art director.
 
@@ -186,7 +186,7 @@ Trailing slashes on. Never change a published URL without a 301 in `_redirects`.
 - Template Spec §6 consistency checklist passes for any itinerary page touched
 - New editable strings wired to CMS, not hardcoded (invariant #1 audit)
 - `npm run check:cms-images` passes — no image outside the CMS (invariant #10)
-- `npm run check:hero-contrast` passes if any hero, gradient or hero copy changed. Its coverage contract is **every page with text over imagery**, discovered from `dist/` — a new template that uses `<Hero>` joins the audit automatically
+- `npm run check:hero-contrast` passes if any hero, gradient or hero copy changed. Its coverage contract is **every page with text over imagery**, discovered from `dist/` — a new template that uses `<Hero>` joins the audit automatically, and so does any text set ON a photograph outside a hero, which carries `data-on-image` in its markup (design round 6: the destination tile names)
 - New user-facing copy is registered in `docs/COPY_REGISTER.md` (invariant #9)
 - Works 360px–1440px; keyboard navigable; visible focus states
 - Commit messages: `feat|fix|content|chore: short description`

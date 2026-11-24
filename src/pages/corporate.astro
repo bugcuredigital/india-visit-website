@@ -226,7 +226,9 @@ const crumbs = breadcrumbSchema([
                       class="tile__img"
                     />
                   </span>
-                  <span class="tile__label">{entry.data.shortLabel}</span>
+                  {/* On the photograph since round 6; measured by
+                      check:hero-contrast through data-on-image. */}
+                  <span class="tile__label" data-on-image>{entry.data.shortLabel}</span>
                 </a>
               </li>
             ))}
@@ -323,7 +325,8 @@ const crumbs = breadcrumbSchema([
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.01em;
     color: var(--color-on-dark-muted);
   }
 
@@ -496,6 +499,15 @@ const crumbs = breadcrumbSchema([
     counter-reset: step;
   }
 
+  /* Each step is a translucent panel on the burgundy band (round 6), so the
+     three read as separate stages rather than three columns of copy. */
+  .how__step {
+    padding: 1.5rem;
+    background-color: color-mix(in srgb, var(--color-on-dark) 7%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-on-dark) 16%, transparent);
+    border-radius: var(--radius-lg);
+  }
+
   .how__no {
     font-family: var(--font-display);
     font-size: var(--text-sm);
@@ -523,10 +535,22 @@ const crumbs = breadcrumbSchema([
     gap: clamp(1rem, 0.5rem + 1.4vw, 1.5rem);
   }
 
+  /* The name on the photograph, over the shared ink tile scrim, as on the
+     homepage strip (round 6). */
   .tile__link {
+    position: relative;
     display: block;
     color: inherit;
     text-decoration: none;
+  }
+
+  .tile__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    background-image: var(--scrim-tile);
+    pointer-events: none;
   }
 
   .tile__frame {
@@ -544,11 +568,22 @@ const crumbs = breadcrumbSchema([
   }
 
   .tile__label {
-    display: block;
-    margin-top: 0.6rem;
+    position: absolute;
+    z-index: 1;
+    left: 0.85rem;
+    right: 0.85rem;
+    bottom: 0.8rem;
     font-size: var(--text-sm);
     font-weight: 600;
     letter-spacing: 0.02em;
+    line-height: var(--leading-heading);
+    color: var(--color-white);
+  }
+
+  .tile__link:is(:hover, :focus-visible) .tile__label {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
   }
 
   @media (prefers-reduced-motion: no-preference) {

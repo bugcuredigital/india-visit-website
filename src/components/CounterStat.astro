@@ -49,7 +49,7 @@ const bandClass =
                 component is not reached by a scoped rule here. So the colour
                 and spacing hang on a wrapper that IS in this component, and
                 the glyph inherits them through `fill: currentColor`. */}
-            <span class="stat__icon"><Icon name={stat.icon} size={28} /></span>
+            <span class="stat__icon"><Icon name={stat.icon} size={24} /></span>
             <span class="stat__value" data-countup={stat.value}>{stat.value}</span>
           </dt>
           <dd class="stat__label">{stat.label}</dd>
@@ -173,10 +173,17 @@ const bandClass =
 
   /* Burgundy is the design direction's colour for fine rules and quiet
      details, which is exactly what these are: they support the numbers and
-     must not compete with them. Crimson would read as an action. */
+     must not compete with them. Crimson would read as an action. Since round
+     6 the glyph sits in a soft burgundy-tint badge instead of floating. */
   .stat__icon {
-    display: block;
-    margin-bottom: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-burgundy-tint);
     color: var(--color-burgundy);
   }
 
@@ -184,6 +191,7 @@ const bandClass =
      in the cell and yellow is a micro-dose colour (invariant #5), so the icon
      steps back to muted light rather than doubling the accent. */
   .on-dark .stat__icon {
+    background-color: color-mix(in srgb, var(--color-on-dark) 10%, transparent);
     color: var(--color-on-dark-muted);
   }
 
@@ -209,7 +217,7 @@ const bandClass =
     margin: 0.5rem 0 0;
     font-size: var(--text-sm);
     font-weight: 500;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
     color: var(--color-ink-muted);
     text-wrap: balance;
   }

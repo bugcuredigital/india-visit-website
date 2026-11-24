@@ -125,6 +125,10 @@ const waContext = `${journey.title} (${journey.nights}N/${journey.days}D)`;
    nothing at runtime. */
 const introWordCount = entry.body?.trim().split(/\s+/).length ?? 0;
 const introNeedsExpander = introWordCount > 130;
+/* Two columns on desktop need two paragraphs to set side by side (round 6);
+   the eight short programmes open with one. Counted from the source, because
+   a scoped :has() cannot see into the rendered Markdown. */
+const introParagraphs = entry.body?.trim().split(/\n\s*\n/).filter((block) => block.trim()).length ?? 0;
 
 /* --------------------------------------------------------------- metadata --
    A train page's parent is /luxury-trains/, a custom journey's is /journeys/.
@@ -295,7 +299,13 @@ const crumbs = breadcrumbSchema([
        never the fallback. -->
   <section class="band band-tight intro" id="introduction">
     <div class="container-content">
-      <div class:list={['intro__body', 'prose-measure', { 'intro__body--clamped': introNeedsExpander }]}>
+      <div
+        class:list={[
+          'intro__body',
+          'prose-measure',
+          { 'intro__body--clamped': introNeedsExpander, 'intro__body--columns': introParagraphs >= 2 },
+        ]}
+      >
         <Content />
       </div>
       {
@@ -620,6 +630,28 @@ const crumbs = breadcrumbSchema([
     margin-top: 1.1rem;
   }
 
+  /* Two columns on desktop (round 6): one 68ch column beside an empty half
+     of the band read as unfinished. Only where there are two paragraphs to
+     set side by side: the eight short programmes open with one, and a lone
+     paragraph that may not break would leave the second column empty, the
+     same dead half in a different place. Phones and the printed PDF (narrower
+     than 64rem) keep the single measure. */
+  @media (min-width: 64rem) {
+    .intro__body--columns {
+      max-width: none;
+      columns: 2;
+      column-gap: 4rem;
+    }
+
+    .intro__body--columns :global(p) {
+      break-inside: avoid;
+    }
+
+    .intro__body--columns :global(p + p) {
+      margin-top: 0;
+    }
+  }
+
   .intro__expander {
     margin-top: 0.5rem;
   }
@@ -730,6 +762,17 @@ const crumbs = breadcrumbSchema([
   .pdfgate__detail {
     margin-top: 1rem;
     color: var(--color-ink-muted);
+  }
+
+  /* The download form on its own white card (round 6), so it reads as one
+     thing to fill in rather than fields loose on the band. No shadow: cards
+     lift on hover only. Its fields turn off-white on this card (EnquiryForm,
+     `form--pdf`). */
+  .pdfgate__form {
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 2rem);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
   }
 
   /* ---- print-only brand header ------------------------------------------- */

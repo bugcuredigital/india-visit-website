@@ -350,7 +350,8 @@ const crumbs = breadcrumbSchema([
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.01em;
     color: var(--color-ink-muted);
   }
 
@@ -385,11 +386,13 @@ const crumbs = breadcrumbSchema([
     margin: 0;
   }
 
+  /* The same offset plate as the homepage consultant (round 6). */
   .intro__portrait {
     width: 100%;
     aspect-ratio: 4 / 5;
     object-fit: cover;
     border-radius: var(--radius-lg);
+    box-shadow: 16px 16px 0 var(--color-burgundy-tint);
   }
 
   .intro__caption {
