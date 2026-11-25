@@ -2218,3 +2218,104 @@ questions, the declines among them).
 1. The design verdict on PR #33. On approval: mark it ready, merge, confirm
    production, re-freeze. On changes: patch forward on the same branch.
 2. Unchanged from round 5: review sheet §28 (five questions) and §14.
+
+## 2026-11-25 — Design round 6 approved and live (PR #33); re-frozen (PR #34)
+
+**Verdict.** Round 6 is approved as built, and all ten declines are endorsed.
+The owner's instruction for the round was "exact per the audit except where it
+breaks the locked design system", and that is how it was ported. §29.7 was
+approved as read and is recorded in CLAUDE.md in the terms it was ruled: a form
+field is visible against its ground (the other light surface from the one it
+sits on; on a dark ground, an outline whose resting border clears 3:1). The
+agency resolved the rest of §29 to the same standard and logged the answers in
+the review sheet. The one open call, the destination names on the photographs
+(29.6), is the audit's intent and it complies. Nothing in §29 changes copy,
+brand identity or a client-facing claim, so nothing was escalated. The
+before/after comparison page was skipped, as instructed; it is built only if
+the client asks for one.
+
+**Escalation standard (standing, from this verdict).** For review-sheet and
+audit-triage questions, the agency rules: the audit's intent where it complies
+with the locked rules, the locked rules where it does not. Only an item that
+changes user-facing copy, brand identity or a client-facing claim goes to the
+owner; every other call is logged as an agency ruling in the review sheet.
+
+**Shipped.**
+- `cd7a169` on the branch (`[CF-Pages-Skip]`) records the CLAUDE.md principle
+  and the §29 answers.
+- PR #33 was retitled (it said "do not merge", which would have landed in the
+  merge commit), marked ready and merged at 12:58 IST (`e38c171`).
+- The Cloudflare production build was green, and the site was live at 13:06 IST.
+
+**Production verified: it is the build that was checked.**
+- All 567 files of the merge commit are byte-identical to the tree the round-6
+  checks ran on.
+- Production was fetched page by page and compared with a fresh local build of
+  that tree. 60 of the 62 pages are identical apart from the form fields' ids,
+  which carry a random suffix per build. The other two:
+  - `/admin/` differs by design: Tina's admin is built only with the
+    production credentials.
+  - The homepage's featured row orders its ties differently (below).
+- All 28 PDFs are identical to the repo's. Fonts are served `immutable`, and
+  `/admin/` answers 200.
+
+**Checks.**
+- **Static**, on a fresh local build of the merged tree (62 pages): image
+  paths; CMS images (5 exempt, 0 outside); links (4,024 references); Template
+  Spec §6 on all 28 journeys; transport labels (127); `audit:hardcoded`,
+  including the tariff check on the three train pages.
+- **Browser, against production**: keyboard on seven pages; no-JS;
+  responsive 360–1440 on fifteen pages; hero video (15 checks). **Hero
+  contrast on production: 42 pages, 610 text runs, all AA**, including 174
+  breadcrumbs and the 39 tile names set on photographs.
+- **The network stalled four times during the run**, each for about ten
+  minutes. The checks caught in a stall still passed. Two PDFs fetched during a
+  stall compared as different, and both were identical when fetched again (three
+  times for the second). In the same stretch, one Lighthouse run lost its
+  robots.txt fetch and Taj and Agra scored 95. Both pages were rerun (below).
+
+**Lighthouse, production, mobile** (13.6.0, simulated throttling): 100 for
+Accessibility and Best Practices on every page, SEO 100 once the stalled
+homepage run was rerun, and CLS 0 throughout. Performance was 100 on four
+pages. Taj and Agra scored 95, 100 and 96 over three runs: the two lower runs
+fell in stalls, and the bar is 90.
+
+| Page | LCP | Note |
+|---|---|---|
+| `/` | 1.0s (reruns 1.0, 0.9) | the first run scored SEO 92 because its robots.txt fetch failed in a stall; both reruns scored 100 |
+| `/journeys/` | 1.4s | |
+| `/journeys/taj-and-agra-1n-2d/` | 1.4s (reruns 1.3, 1.5) | Performance 95, 100 and 96 |
+| `/reviews/` | 1.0s | |
+| `/corporate/` | 1.0s | 1.3s on the preview was the preview server's first byte, as recorded |
+
+LCP is unchanged from production before the merge (1.0, 1.4, 1.4, 1.0 and
+1.1s), so round 6 cost nothing, and every budget holds (homepage 2.2s, the
+rest 2.0s). Production still has no robots.txt of its own: Cloudflare's
+comments-only content-signals preamble is served, as recorded earlier, and
+Lighthouse accepts it.
+
+**Found, not shipped: the homepage's featured row orders its ties by file
+order.** `index.astro` sorts the featured journeys by `featured`, then trains
+last, and nothing else. Ties keep the content loader's order, and that order
+differs between this Mac and Cloudflare's Linux builder: production shows
+Kerala with Houseboat before North East India, and a local build shows the
+reverse. The six journeys are the same on both, and Cloudflare's preview and
+production builds agree with each other, so every review capture was
+consistent. No other page has the problem: the page-by-page comparison found
+only this one. It predates round 6. A one-line tie-break on the slug would make
+the order the same on every machine. It goes into the next working session
+rather than shipping during a freeze.
+
+**Re-frozen** after PR #34 (these docs). There are no agency merges until the
+next working session. The client's own `/admin` edits stay open.
+
+### Exact next action
+
+1. **Agency, next working session:** the round-5 medium and low triage (54
+   medium and 14 low items, `docs/UNSLOP_AUDIT.md`). The batch is pre-approved
+   and is ruled under the escalation standard above. First check which items
+   round 6 already answered. The homepage tie-break goes into the same session.
+2. **Client:** review sheet §28 (round 5), §14 (About Us) and §27 (photo
+   rights).
+3. **Later, when scheduled:** M6 proper (Turnstile, the Sheet webhook, the PDF
+   release, GTM), then M8.
