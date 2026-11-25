@@ -50,6 +50,15 @@ CLAUDE.md #5 and PAGE_TEMPLATES.
   button is Title Case since PR #31. Its other half, the three arrow
   treatments (a text →, an SVG, none), is untouched and stays in the low
   batch.
+- **25 Nov (design round 6 verdict).** The medium and low batch is
+  **pre-approved** and goes into the next working session, ruled by the agency
+  to one standard: the audit's intent where it complies with the locked rules
+  in CLAUDE.md, the locked rules where it does not. Only an item that changes
+  words on the site, the brand's identity or a claim made to clients goes back
+  to the owner. Every other call is logged as an agency ruling in the review
+  sheet. Check first which items round 6's polish already answered (PR #33:
+  type tracking, card edges, Phosphor icons throughout, form fields, the
+  accordions), the way round 5's remarks were checked against the high fixes.
 
 ## How to read this
 
