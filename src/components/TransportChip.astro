@@ -7,6 +7,9 @@
  * The icon is decorative; the text carries the meaning, so screen readers get
  * "Flight — Delhi to Udaipur" rather than an unlabelled glyph.
  */
+import Icon from './Icon.astro';
+import type { PhosphorIconName } from '../lib/phosphor-icons';
+
 interface Props {
   mode: 'flight' | 'overnight-train' | 'train' | 'drive' | 'boat' | 'walk';
   detail: string;
@@ -48,21 +51,21 @@ const own = SELF_LABEL[mode]
 const label = own ? own[1] : MODE_LABEL[mode];
 const rest = own ? detail.slice(own[0].length) : detail;
 
-/** Simple stroked glyphs — no icon-font dependency for six shapes. */
-const MODE_PATH: Record<Props['mode'], string> = {
-  flight: 'M2 9.5 14 6l-1.5 4.5L14 15 2 11.5Z',
-  'overnight-train': 'M4 3h8v7H4Zm0 7 1.5 3h5L12 10M6 5.5h4',
-  train: 'M4 3h8v7H4Zm0 7 1.5 3h5L12 10M6 5.5h4',
-  drive: 'M2.5 10h11l-1-3.5h-9ZM4 10v2m8-2v2',
-  boat: 'M2.5 9.5h11L12 13H4Zm5.5 0V4l4 2',
-  walk: 'M8 3.5v3l2.5 2M8 6.5 5.5 9v4m5-2.5V14',
+/** Phosphor glyphs, regular weight (design round 6: these were hand-drawn
+ *  on their own 16px grid; they now come from the one authorised icon set,
+ *  scripts/brand/fetch-phosphor-icons.mjs). */
+const MODE_ICON: Record<Props['mode'], PhosphorIconName> = {
+  flight: 'airplane-tilt',
+  'overnight-train': 'train',
+  train: 'train',
+  drive: 'car-profile',
+  boat: 'boat',
+  walk: 'footprints',
 };
 ---
 
 <span class="chip">
-  <svg class="chip__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-    <path d={MODE_PATH[mode]} fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
+  <span class="chip__icon"><Icon name={MODE_ICON[mode]} size={15} /></span>
   <span class="chip__text">{label} · {rest}</span>
 </span>
 
@@ -70,8 +73,8 @@ const MODE_PATH: Record<Props['mode'], string> = {
   .chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.28rem 0.7rem;
+    gap: 0.45rem;
+    padding: 0.32rem 0.8rem 0.32rem 0.65rem;
     border: 1px solid var(--color-hairline);
     border-radius: var(--radius-pill);
     background-color: var(--color-white);
@@ -87,8 +90,8 @@ const MODE_PATH: Record<Props['mode'], string> = {
   }
 
   .chip__icon {
-    width: 14px;
-    height: 14px;
+    display: inline-flex;
+    flex: none;
     color: var(--color-crimson);
   }
 </style>

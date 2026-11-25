@@ -37,7 +37,7 @@ The globally installed **`ui-ux-pro-max`** skill does not get to design this sit
 - **Overridden here:** its design-system generation — palette, typography, styles, patterns. The locked brand system and design direction in this file win outright. A general-purpose generator will propose a coherent palette and type scale of its own, and adopting any part of it would quietly break a brand system the client authored and has signed off in stages.
 - **Usable here:** its **UX guidelines, accessibility rules and anti-pattern checklists**, as a *supplementary review lens* — a second opinion on flows, states, affordances and WCAG issues, applied on top of the locked design rather than in place of it.
 
-**Taken from it so far, under that lens:** the **icon vocabulary** for the trust bar — the skill's curated **Phosphor** set (MIT). The client authorised this explicitly in design revision round 2. Glyph choice is a UX affordance question, not a brand-system question, and the icons are rendered in **our** colours at **our** weight. Extract them with `npm run brand:icons`; provenance in `docs/brand/processed/PHOSPHOR-PROVENANCE.md`. There is no `@phosphor-icons/*` dependency and there is not going to be one: the paths are copied into the repo, so the stack stays locked.
+**Taken from it so far, under that lens:** the **icon vocabulary** for the trust bar — the skill's curated **Phosphor** set (MIT). The client authorised this explicitly in design revision round 2. Glyph choice is a UX affordance question, not a brand-system question, and the icons are rendered in **our** colours at **our** weight. Extract them with `npm run brand:icons`; provenance in `docs/brand/processed/PHOSPHOR-PROVENANCE.md`. There is no `@phosphor-icons/*` dependency and there is not going to be one: the paths are copied into the repo, so the stack stays locked. **Since design round 6 it is the site's only functional icon set**: the hand-drawn transfer-chip, practical-note and header glyphs were replaced by Phosphor equivalents (regular weight at 15–22px; thin stays on the trust bar). A spec or skill that names another set (Lucide, Heroicons…) gets the Phosphor equivalent, or a flag if there is none — never a second set.
 
 General shape of the rule: where a global skill and this project's locked specifications disagree, the specifications win. Treat the skill as a reviewer, never as an art director.
 
@@ -58,7 +58,7 @@ General shape of the rule: where a global skill and this project's locked specif
 
    The school to translate — **not clone** — is `staralliance.com` (grid discipline, type scale, restraint) plus `airindia.com` (warm premium, photography-led, deep red as accent). Our voice stays warm; theirs does not come with it.
 
-   **Surfaces.** Pure **white `#FFFFFF` is the primary background sitewide.** Off-white `#F7F5F6` is *demoted to secondary*: card fills, alternate sections, form fields — a whisper of contrast, never the base. Dark bands are **rare and intentional**. Everything else lives on white.
+   **Surfaces.** Pure **white `#FFFFFF` is the primary background sitewide.** Off-white `#F7F5F6` is *demoted to secondary*: card fills and alternate sections — a whisper of contrast, never the base. **Form fields are visible against their ground** (the principle the old "off-white fields" wording stood for, ruled in those terms at design round 6, review sheet §29.7): a field takes the other light surface from the one it sits on, so off-white on white and white on off-white; on a dark ground it is an outline whose resting border clears 3:1 (WCAG 1.4.11). Dark bands are **rare and intentional**. Everything else lives on white.
 
    **Which dark — rebalanced in design round 3.** The owner's note was that deep plum "reads blue and kills the warmth", and it was correct: plum was carrying the footer, every ConvertBand, the train cards and How-It-Works, so the cool end of a warm brand was doing most of the visible work. The hierarchy is now:
 
@@ -186,7 +186,7 @@ Trailing slashes on. Never change a published URL without a 301 in `_redirects`.
 - Template Spec §6 consistency checklist passes for any itinerary page touched
 - New editable strings wired to CMS, not hardcoded (invariant #1 audit)
 - `npm run check:cms-images` passes — no image outside the CMS (invariant #10)
-- `npm run check:hero-contrast` passes if any hero, gradient or hero copy changed. Its coverage contract is **every page with text over imagery**, discovered from `dist/` — a new template that uses `<Hero>` joins the audit automatically
+- `npm run check:hero-contrast` passes if any hero, gradient or hero copy changed. Its coverage contract is **every page with text over imagery**, discovered from `dist/` — a new template that uses `<Hero>` joins the audit automatically, and so does any text set ON a photograph outside a hero, which carries `data-on-image` in its markup (design round 6: the destination tile names)
 - New user-facing copy is registered in `docs/COPY_REGISTER.md` (invariant #9)
 - Works 360px–1440px; keyboard navigable; visible focus states
 - Commit messages: `feat|fix|content|chore: short description`

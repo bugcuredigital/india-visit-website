@@ -225,5 +225,11 @@ const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquir
       opacity: 1;
       transform: translate3d(0, 0, 0);
     }
+
+    /* A small swell on hover (round 6), once it has arrived: scaling the
+       entrance state would fight the slide-in. */
+    .floater.is-in:hover {
+      transform: scale(1.06);
+    }
   }
 </style>

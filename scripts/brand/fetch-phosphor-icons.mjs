@@ -52,6 +52,29 @@ const ICONS = [
      pixel wide and reads as a smudge. */
   { name: 'instagram-logo', weight: 'regular', usedFor: 'footer — Instagram profile link' },
   { name: 'facebook-logo', weight: 'regular', usedFor: 'footer — Facebook profile link' },
+  /* Design round 6 (an external polish spec, ported): the site's hand-drawn
+     transfer, practical-note and header glyphs drew at three stroke weights
+     on two grids. They are replaced by Phosphor
+     equivalents, one set, one weight. REGULAR, for the same reason as the
+     social icons: they render at 15–22px, where Phosphor's regular outline is
+     exactly the spec's 1.5-on-24 line and the thin weight would be a 0.5–0.7px
+     hairline. `key` names the export when a glyph is already in the set at
+     another weight (the trust bar's clock is thin). */
+  { name: 'car-profile', weight: 'regular', usedFor: 'day-by-day transfer chip — drive' },
+  { name: 'train', weight: 'regular', usedFor: 'day-by-day transfer chip — train and overnight train' },
+  { name: 'boat', weight: 'regular', usedFor: 'day-by-day transfer chip — boat' },
+  { name: 'airplane-tilt', weight: 'regular', usedFor: 'day-by-day transfer chip — flight; practical notes — getting there (`plane`)' },
+  { name: 'footprints', weight: 'regular', usedFor: 'day-by-day transfer chip — on foot' },
+  { name: 'calendar-blank', weight: 'regular', usedFor: 'practical notes — best time to visit (`calendar`)' },
+  { name: 'clock', key: 'clock-regular', weight: 'regular', usedFor: 'practical notes — ideal duration (`clock`)' },
+  { name: 'path', weight: 'regular', usedFor: 'practical notes — pace, getting around (`pace`)' },
+  { name: 'file-text', weight: 'regular', usedFor: 'practical notes — visas and documents (`passport`)' },
+  { name: 'money', weight: 'regular', usedFor: 'practical notes — currency (`currency`)' },
+  { name: 'cloud', weight: 'regular', usedFor: 'practical notes — weather (`weather`)' },
+  { name: 'phone', weight: 'regular', usedFor: 'header — call link' },
+  /* FILL weight: a solid mark in a burgundy badge, where an outline at 22px
+     would read as a smudge on the dark ground. */
+  { name: 'quotes', weight: 'fill', usedFor: 'testimonial cards — quotation badge (real reviews only; a placeholder keeps its lotus)' },
 ];
 
 const results = [];
@@ -88,8 +111,16 @@ for (const icon of ICONS) {
     console.warn(`  NOTE ${icon.name} — source carries a stroke attribute; check the render`);
   }
 
-  results.push({ ...icon, weight, viewBox, paths, bytes: svg.length, url });
-  console.log(`  ${icon.name.padEnd(14)} ${paths.length} path(s)  viewBox="${viewBox}"`);
+  const key = icon.key ?? icon.name;
+  results.push({ ...icon, key, weight, viewBox, paths, bytes: svg.length, url });
+  console.log(`  ${key.padEnd(14)} ${paths.length} path(s)  viewBox="${viewBox}"`);
+}
+
+const keys = results.map((r) => r.key);
+const dupes = keys.filter((k, i) => keys.indexOf(k) !== i);
+if (dupes.length) {
+  console.error(`\n  Duplicate export key(s): ${dupes.join(', ')} — give one a \`key\`.`);
+  process.exit(1);
 }
 
 if (results.length !== ICONS.length) {
@@ -100,7 +131,7 @@ if (results.length !== ICONS.length) {
 const entries = results
   .map(
     (r) => `  /** ${r.usedFor}${r.weight === WEIGHT ? '' : ` (${r.weight} weight)`}. */
-  '${r.name}': {
+  '${r.key}': {
     viewBox: '${r.viewBox}',
     paths: [\n${r.paths.map((d) => `      '${d}',`).join('\n')}\n    ],
   },`,
@@ -180,11 +211,40 @@ typography, styles and patterns all come from the locked brand system — but it
 UX question. The icons are drawn in our burgundy, at our size, beside our
 typeface.
 
+## Design round 6: the hand-drawn glyphs
+
+An external polish spec (\`docs/design/EXTERNAL_POLISH_AUDIT.md\`) found that the
+site's hand-drawn glyphs (transfer chips, practical notes, the header's call
+link) used three stroke weights (1.3, 1.4, 1.5) on two grids (16 and 20), and
+swapped them for Lucide.
+The finding was accepted and the implementation changed: Lucide is not the
+authorised vocabulary, so each of the spec's twelve glyphs maps to its Phosphor
+equivalent instead, at the regular weight (Phosphor's regular outline is the
+spec's 1.5-on-24 line).
+
+| Spec glyph | Phosphor | Where |
+|---|---|---|
+| car | \`car-profile\` | transfer chip: drive |
+| train | \`train\` | transfer chip: train, overnight train |
+| boat | \`boat\` | transfer chip: boat |
+| plane | \`airplane-tilt\` | transfer chip: flight; practical notes: \`plane\` |
+| walk | \`footprints\` | transfer chip: on foot |
+| calendar | \`calendar-blank\` | practical notes: \`calendar\` |
+| clock | \`clock\` (regular, exported as \`clock-regular\`) | practical notes: \`clock\` |
+| route | \`path\` | practical notes: \`pace\` |
+| file | \`file-text\` | practical notes: \`passport\` |
+| banknote | \`money\` | practical notes: \`currency\` |
+| cloud | \`cloud\` | practical notes: \`weather\` |
+| phone | \`phone\` | header: call link |
+
+Every one had a direct equivalent; nothing was mixed in from another set. The
+spec's review-card quotation mark is Phosphor \`quotes\` (fill weight).
+
 ## The set
 
 | Icon | Used for | Source |
 |---|---|---|
-${results.map((r) => `| \`${r.name}\` | ${r.usedFor} | [${r.weight}](${r.url}) |`).join('\n')}
+${results.map((r) => `| \`${r.key}\`${r.key === r.name ? '' : ` (Phosphor \`${r.name}\`)`} | ${r.usedFor} | [${r.weight}](${r.url}) |`).join('\n')}
 `,
 );
 

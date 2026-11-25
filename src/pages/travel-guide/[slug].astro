@@ -119,7 +119,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
   <Header slot="header" />
 
   <!-- 1 · Slim hero ------------------------------------------------------ -->
-  <article>
+  <article class:list={{ 'article--centred': !showToc }}>
     <header class="band band-tight head">
       <div class="container-content">
         <nav class="crumbs" aria-label="Breadcrumb">
@@ -128,7 +128,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
           <a href="/travel-guide/">Travel Guide</a>
         </nav>
 
-        <p class="head__category">{categoryLabel(post.category)}</p>
+        <p class="eyebrow">{categoryLabel(post.category)}</p>
         <h1 class="head__title prose-measure">{post.title}</h1>
 
         <p class="head__meta">
@@ -278,7 +278,8 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.01em;
     color: var(--color-ink-muted);
   }
 
@@ -287,14 +288,6 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
   }
 
   .crumbs a:hover {
-    color: var(--color-crimson);
-  }
-
-  .head__category {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     color: var(--color-crimson);
   }
 
@@ -341,6 +334,17 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
   .body {
     display: grid;
     gap: 2rem;
+  }
+
+  /* Without a table of contents, the title, the picture and the text share
+     ONE centred column on desktop (round 6), instead of a left-hung measure
+     beside an empty right half. The column is the reading measure itself, so
+     lines stay at the ~68ch cap (the spec's 46rem would have run them to
+     ~78). */
+  @media (min-width: 64rem) {
+    .article--centred :is(.head > .container-content, .body) {
+      max-width: calc(var(--container-prose) + 2 * var(--space-gutter));
+    }
   }
 
   /* Two columns only when there is a table of contents to fill the first.
@@ -413,6 +417,7 @@ const dateLabel = (post.updatedDate ?? post.publishDate).toLocaleDateString('en-
     gap: 1rem;
     margin-top: 3rem;
     padding: 1.5rem;
+    border: 1px solid var(--color-card-border);
     border-radius: var(--radius-lg);
     background-color: var(--color-offwhite);
     max-width: var(--container-prose);

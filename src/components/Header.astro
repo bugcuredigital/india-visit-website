@@ -16,6 +16,7 @@
  */
 import Logo from './Logo.astro';
 import Button from './Button.astro';
+import Icon from './Icon.astro';
 import { NAV_ITEMS } from '../lib/nav';
 import { getSiteSettings, whatsappLink } from '../lib/site-settings';
 import { getCollection } from 'astro:content';
@@ -112,9 +113,7 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
         aria-label={`Call us on ${settings.phone}`}
         data-analytics="call_click"
       >
-        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-          <path d="M4.5 2.5h2.2l1.5 3.6-1.8 1.3a9.4 9.4 0 0 0 4.7 4.7l1.3-1.8 3.6 1.5v2.2a1.5 1.5 0 0 1-1.7 1.5A13.4 13.4 0 0 1 3 4.2 1.5 1.5 0 0 1 4.5 2.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        </svg>
+        <Icon name="phone" size={19} />
       </a>
       <a
         href={whatsappLink(settings)}
@@ -231,6 +230,19 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
     border-bottom: 1px solid var(--color-hairline);
   }
 
+  /* Frosted rather than flat once it is solid (round 6): 94% white with the
+     page blurred beneath, so content scrolling under the bar softens instead
+     of being cut off. Where backdrop-filter is unsupported the bar stays
+     opaque white, which is the rule anyway. */
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .header:not(.header--overlay),
+    .header--overlay.is-solid {
+      background-color: color-mix(in srgb, var(--color-white) 94%, transparent);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+  }
+
   /* Transparent over a hero photograph, then solid white on scroll. */
   .header--overlay {
     position: fixed;
@@ -330,6 +342,7 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
     color: var(--color-ink);
     font-size: var(--text-sm);
     font-weight: 500;
+    letter-spacing: -0.005em;
     text-decoration: none;
     white-space: nowrap;
     border-radius: var(--radius-sm);
@@ -374,12 +387,12 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
     z-index: 60;
     min-width: 15rem;
     margin: 0;
-    padding: 0.4rem;
+    padding: 0.5rem;
     list-style: none;
     background-color: var(--color-white);
     border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lift-hover);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-popover);
   }
 
   .menu__link {

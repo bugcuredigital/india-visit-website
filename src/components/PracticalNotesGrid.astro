@@ -8,7 +8,9 @@
  * known set rather than pasting emoji — and an unknown name falls back to the
  * lotus rather than rendering nothing.
  */
+import Icon from './Icon.astro';
 import Lotus from './Lotus.astro';
+import type { PhosphorIconName } from '../lib/phosphor-icons';
 
 interface Props {
   notes: Array<{ icon: string; label: string; text: string }>;
@@ -18,32 +20,33 @@ interface Props {
 
 const { notes, heading = 'Practical notes', surface = 'offwhite' } = Astro.props;
 
-/** Stroked 20×20 glyphs. Keys are the `icon` values used in content. */
-const ICONS: Record<string, string> = {
-  calendar: 'M4 6h12v10H4Zm0 3.5h12M7.5 4v3m5-3v3',
-  plane: 'M2.5 11 17 6l-2 5.5 2 5.5-14.5-5Z',
-  clock: 'M10 4.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Zm0 2.5V10l2.5 1.5',
-  pace: 'M10 3.5v4l3 2M3.5 10h2m9 0h2M10 14.5v2',
-  passport: 'M5 3.5h10v13H5Zm2.5 3.5h5m-5 3h5m-5 3h3',
-  currency: 'M10 4v12M7 7h4.5a2 2 0 0 1 0 4H7m0 0h5',
-  weather: 'M6 12a3 3 0 1 1 .8-5.9A4 4 0 0 1 14.5 8a2.5 2.5 0 0 1 0 5H6Z',
+/** Content's `icon` values → Phosphor glyphs (design round 6: these were
+ *  hand-drawn at their own stroke weight; they now come from the one
+ *  authorised set, at the regular weight, like the transfer chips). The
+ *  content keys are unchanged, so no entry needed editing. */
+const ICONS: Record<string, PhosphorIconName> = {
+  calendar: 'calendar-blank',
+  plane: 'airplane-tilt',
+  clock: 'clock-regular',
+  pace: 'path',
+  passport: 'file-text',
+  currency: 'money',
+  weather: 'cloud',
 };
+
+/* Resolved once here, so an unknown key is a plain `undefined` (the lotus)
+   rather than an index lookup TypeScript cannot narrow in the template. */
+const items = notes.map((note) => ({ ...note, glyph: ICONS[note.icon] as PhosphorIconName | undefined }));
 ---
 
 <section class:list={['band', surface === 'offwhite' && 'band-offwhite']}>
   <div class="container-content">
     <h2>{heading}</h2>
     <dl class="notes fade-up-stagger">
-      {notes.map((note) => (
+      {items.map((note) => (
         <div class="note">
           <span class="note__icon" aria-hidden="true">
-            {ICONS[note.icon] ? (
-              <svg viewBox="0 0 20 20" focusable="false">
-                <path d={ICONS[note.icon]} fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            ) : (
-              <Lotus size={20} />
-            )}
+            {note.glyph ? <Icon name={note.glyph} size={22} /> : <Lotus size={22} />}
           </span>
           <dt class="note__label">{note.label}</dt>
           <dd class="note__text">{note.text}</dd>
@@ -54,10 +57,20 @@ const ICONS: Record<string, string> = {
 </section>
 
 <style>
+  /* Each note is a quiet card since round 6: white on the band's off-white,
+     a hairline edge, no shadow (shadow is a hover state, and these are not
+     links). */
   .notes {
     display: grid;
-    gap: 2rem 1.75rem;
+    gap: 1.25rem;
     margin: 2.5rem 0 0;
+  }
+
+  .note {
+    padding: 1.5rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
   }
 
   @media (min-width: 40rem) {
@@ -72,26 +85,31 @@ const ICONS: Record<string, string> = {
     }
   }
 
+  /* The glyph in a soft badge rather than floating (round 6). Burgundy, not
+     crimson: four crimson icons per row were four calls to action. */
   .note__icon {
     display: inline-flex;
-    color: var(--color-crimson);
-  }
-
-  .note__icon svg {
-    width: 24px;
-    height: 24px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-burgundy-tint);
+    color: var(--color-burgundy);
   }
 
   .note__label {
-    margin-top: 0.85rem;
+    margin-top: 1.1rem;
     font-family: var(--font-display);
     font-size: var(--text-lg);
     font-weight: 700;
+    letter-spacing: -0.012em;
     color: var(--color-ink);
   }
 
   /* Was --text-sm in ink-muted, which disappeared at a glance. Practical
-     notes are read, not skimmed past. */
+     notes are read, not skimmed past. (Round 6's spec set it back to small
+     and muted; declined, this bump is a recorded ruling — tokens.css.) */
   .note__text {
     margin: 0.4rem 0 0;
     font-size: var(--text-base);

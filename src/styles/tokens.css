@@ -112,6 +112,9 @@
   /* ---- Elevation — shadow appears on HOVER, not at rest --------------- */
   --shadow-lift: 0 1px 2px rgb(26 21 35 / 0.04);
   --shadow-lift-hover: 0 8px 28px rgb(26 21 35 / 0.10);
+  /* Floating layers only (the nav dropdown): they sit OVER the page, so
+     their shadow is depth, not decoration, and it is there at rest. */
+  --shadow-popover: 0 1px 2px rgb(26 21 35 / 0.05), 0 16px 40px rgb(26 21 35 / 0.12);
 
   /* ---- Buttons ---------------------------------------------------------
      Radius and padding are tokens so the shape of every CTA sitewide is one
@@ -131,4 +134,37 @@
   --radius-md: 12px; /* cards: 12–16px */
   --radius-lg: 16px;
   --radius-pill: 999px;
+  --radius-field: 10px; /* form fields: a control, not a card (round 6) */
+
+  /* ---- Tints, rings and the tile scrim — design round 6 ---------------
+     From an external polish spec (docs/design/EXTERNAL_POLISH_AUDIT.md),
+     whose `--polish-*` properties become these. Each is a transparent mix of
+     a brand colour already in the palette above, so the palette stays closed.
+     The spec's resting card shadow has NO token here, on purpose: shadow
+     appears on hover only (CLAUDE.md, Components).                         */
+  --color-burgundy-tint: color-mix(in srgb, var(--color-burgundy) 6%, transparent); /* icon badges, day and trip pills */
+  --color-focus-ring: color-mix(in srgb, var(--color-crimson) 16%, transparent); /* halo round a focused field, light ground */
+  --color-focus-ring-on-dark: color-mix(in srgb, var(--color-yellow) 26%, transparent); /* the same on burgundy/plum/ink */
+
+  /* The ink wash under a label set ON a photograph outside a hero (the
+     destination tiles). Ink, never a hue, per the overlay rule; and eased
+     over eleven stops rather than the spec's three, so there is no point at
+     which the rate of change jumps and draws a line across the picture (the
+     hero gradient's "no perceptible boundary" property). The tiles have a
+     fixed aspect ratio, so a percentage IS a length here. Every label it
+     carries is measured by `npm run check:hero-contrast`. */
+  --scrim-tile: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-ink) 80%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink) 74%, transparent) 6%,
+    color-mix(in srgb, var(--color-ink) 64%, transparent) 12%,
+    color-mix(in srgb, var(--color-ink) 52%, transparent) 18%,
+    color-mix(in srgb, var(--color-ink) 40%, transparent) 24%,
+    color-mix(in srgb, var(--color-ink) 29%, transparent) 30%,
+    color-mix(in srgb, var(--color-ink) 19%, transparent) 36%,
+    color-mix(in srgb, var(--color-ink) 11%, transparent) 42%,
+    color-mix(in srgb, var(--color-ink) 5%, transparent) 48%,
+    color-mix(in srgb, var(--color-ink) 1%, transparent) 54%,
+    transparent 60%
+  );
 }

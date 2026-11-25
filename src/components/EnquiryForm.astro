@@ -243,25 +243,71 @@ const MONTHS = [
        makes a text field responsive; `1fr` alone never does. */
     width: 100%;
     min-width: 0;
-    /* Off-white is the field fill — the secondary-surface role. */
     min-height: 48px;
     padding: 0.7rem 0.9rem;
-    background-color: var(--color-offwhite);
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-sm);
+    /* A field is a whisper of contrast against whatever it sits on (round 6).
+       Both light-ground forms are laid on the off-white band (the corporate
+       brief) or on a white card on it (the PDF form, below), and an off-white
+       field on an off-white band could not be found at all. So: white here,
+       off-white on the white card, as Plan My Trip already does (white fields
+       on its off-white card). The edge is drawn in both cases. */
+    background-color: var(--color-white);
+    border: 1px solid var(--color-burgundy-hairline);
+    border-radius: var(--radius-field);
     font-family: var(--font-body);
     font-size: var(--text-base);
     color: var(--color-ink);
   }
 
+  .form--pdf .form__input {
+    background-color: var(--color-offwhite);
+  }
+
+  .form__input:hover {
+    border-color: color-mix(in srgb, var(--color-burgundy) 42%, transparent);
+  }
+
   .form__input:focus {
     border-color: var(--color-crimson);
     background-color: var(--color-white);
+    box-shadow: 0 0 0 4px var(--color-focus-ring);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .form__input {
+      transition:
+        border-color var(--duration-fast) var(--ease-brand),
+        box-shadow var(--duration-fast) var(--ease-brand),
+        background-color var(--duration-fast) var(--ease-brand);
+    }
   }
 
   textarea.form__input {
     min-height: auto;
     resize: vertical;
+  }
+
+  /* Selects draw the site's own chevron, the accordions' path, instead of the
+     platform's (round 6). A data URI cannot read a custom property, so each
+     stroke is a token written out: --color-ink-muted (#674e59) on light,
+     --color-on-dark (#f7f5f6) on the dark bands. */
+  select.form__input {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 2.5rem;
+    background-repeat: no-repeat;
+    background-position: right 0.95rem center;
+    background-size: 12px 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23674e59' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  .form--on-dark select.form__input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%23f7f5f6' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  /* The open list is drawn by the platform on white: ink, not on-dark. */
+  .form--on-dark select.form__input option {
+    color: var(--color-ink);
   }
 
   .form__consent {
@@ -279,6 +325,7 @@ const MONTHS = [
     height: 20px;
     margin-top: 0.15em;
     flex: none;
+    border-radius: 4px;
     accent-color: var(--color-crimson);
   }
 
@@ -332,9 +379,16 @@ const MONTHS = [
     color: var(--color-on-dark);
   }
 
+  /* Round 6's spec lowered this rest border to 34%; kept at 50%, which is
+     what clears 3:1 above. Its hover and focus states are taken. */
+  .form--on-dark .form__input:hover {
+    border-color: color-mix(in srgb, var(--color-on-dark) 62%, transparent);
+  }
+
   .form--on-dark .form__input:focus {
     border-color: var(--color-yellow);
     background-color: rgb(255 255 255 / 0.14);
+    box-shadow: 0 0 0 4px var(--color-focus-ring-on-dark);
   }
 
   .form--on-dark :is(.form__consent, .form__note, .form__optional) {

@@ -55,6 +55,14 @@ import sharp from 'sharp';
  * photograph rather than solid crimson (Hero.astro, one crimson action per
  * viewport), and it has no Ken Burns, so its ground differs too.
  *
+ * Text ON a photograph outside a hero joins too (design round 6). The
+ * destination tiles moved their names onto the picture, over an ink scrim, and
+ * that is text over imagery like any hero line. Every such run carries
+ * `data-on-image` in the markup; a page with one is discovered the same way a
+ * hero page is, each run is scrolled into view, its photograph waited for,
+ * and the ground behind it scored like hero copy. A page that marks a run this
+ * check then fails to measure fails it, the same rule as the breadcrumbs.
+ *
  * Pass URLs explicitly to audit a subset; with no arguments the contract is
  * the whole site.
  */
@@ -77,7 +85,7 @@ const discoverHeroPages = async () => {
   const pages = [];
   for (const file of await walk(DIST)) {
     const html = await readFile(file, 'utf8');
-    if (!/class="hero hero--/.test(html)) continue;
+    if (!/class="hero hero--/.test(html) && !/data-on-image/.test(html)) continue;
     const route = '/' + relative(DIST, file).replace(/index\.html$/, '').replaceAll('\\', '/');
     if (route.startsWith('/dev/')) continue;
     pages.push(route);
@@ -92,7 +100,7 @@ if (!urls.length) {
     console.error('No built pages with a <Hero> found in dist/ — run `npm run build` first.');
     process.exit(1);
   }
-  console.log(`\nCoverage contract: ${discovered.length} page(s) with text over imagery, discovered from dist/\n`);
+  console.log(`\nCoverage contract: ${discovered.length} page(s) with text over imagery (heroes, and data-on-image runs), discovered from dist/\n`);
   urls.push(...discovered.map((path) => `http://localhost:4321${path}`));
 }
 
@@ -181,6 +189,54 @@ const contrastOn = ([tr, tg, tb, ta], ground) => {
 
 const failures = [];
 const rows = [];
+
+/** Score every box against the ground pixels in one viewport capture. */
+const scoreBoxes = async (png, list, url, viewport, kind) => {
+  const { data: raw, info } = await sharp(png).raw().toBuffer({ resolveWithObject: true });
+  for (const box of list) {
+    const colour = parseColour(box.colour);
+    let worst = Infinity;
+    let worstPixel = null;
+    const x0 = Math.max(0, box.x);
+    const y0 = Math.max(0, box.y);
+    const x1 = Math.min(info.width, box.x + box.w);
+    const y1 = Math.min(info.height, box.y + box.h);
+    for (let y = y0; y < y1; y++) {
+      for (let x = x0; x < x1; x++) {
+        const i = (y * info.width + x) * info.channels;
+        const value = contrastOn(colour, [raw[i], raw[i + 1], raw[i + 2]]);
+        if (value < worst) {
+          worst = value;
+          worstPixel = [raw[i], raw[i + 1], raw[i + 2]];
+        }
+      }
+    }
+    if (!worstPixel) continue;
+
+    const required = box.large ? 3 : 4.5;
+    const ok = worst >= required;
+    rows.push({
+      url,
+      viewport: viewport.label,
+      text: box.text,
+      colour: box.colour,
+      crumb: Boolean(box.crumb),
+      kind,
+      size: box.size,
+      large: box.large,
+      worst,
+      required,
+      pixel: worstPixel,
+      ok,
+    });
+    if (!ok) {
+      failures.push(
+        `${url} [${viewport.label}]${kind === 'on-image' ? ' (on image)' : ''} "${box.text}" — ${worst.toFixed(2)}:1 ` +
+          `(${box.colour} on rgb(${worstPixel})) needs ${required}:1 (${box.size}px${box.large ? ', large' : ''})`,
+      );
+    }
+  }
+};
 
 for (const url of urls) {
   for (const viewport of VIEWPORTS) {
@@ -271,76 +327,121 @@ for (const url of urls) {
       return { out, crumbs, hero: { h: Math.round(heroBox.height) } };
     })()`);
 
-    if (!boxes) {
-      await send('Target.closeTarget', { targetId });
-      continue;
+    if (boxes) {
+      /* Hide the type, keep everything behind it exactly as it was. */
+      await evaluate(`(() => {
+        const style = document.createElement('style');
+        style.id = 'iv-hide-hero-text';
+        style.textContent =
+          '.hero__content, header a, header button { visibility: hidden !important; }';
+        document.head.append(style);
+      })()`);
+      await sleep(350);
+
+      const { data } = await send(
+        'Page.captureScreenshot',
+        { format: 'png', captureBeyondViewport: false },
+        sessionId,
+      );
+
+      // Coverage, stated rather than assumed: a hero that renders a breadcrumb
+      // must yield at least one measured breadcrumb run.
+      if (boxes.crumbs && !boxes.out.some((box) => box.crumb)) {
+        failures.push(`${url} [${viewport.label}] has a hero breadcrumb but no breadcrumb text was measured`);
+      }
+
+      await scoreBoxes(Buffer.from(data, 'base64'), boxes.out, url, viewport, 'hero');
     }
 
-    /* Hide the type, keep everything behind it exactly as it was. */
-    await evaluate(`(() => {
+    /* ---- Text ON a photograph outside the hero (data-on-image) ------------
+       Fixed and sticky layers are hidden (the header, the phone action bar):
+       they are not the ground under a tile. Entrance animations are settled,
+       and smooth scrolling is turned off so a jump lands where it is sent. */
+    const marked = await evaluate(`(() => {
+      const runs = document.querySelectorAll('[data-on-image]');
+      if (!runs.length) return 0;
       const style = document.createElement('style');
-      style.id = 'iv-hide-hero-text';
+      style.id = 'iv-on-image-prep';
       style.textContent =
-        '.hero__content, header a, header button { visibility: hidden !important; }';
+        'html { scroll-behavior: auto !important; } ' +
+        '*, *::before, *::after { transition: none !important; animation: none !important; } ' +
+        'html.js .fade-up, html.js .fade-up-stagger > * { opacity: 1 !important; transform: none !important; }';
       document.head.append(style);
+      for (const el of document.querySelectorAll('body *')) {
+        const position = getComputedStyle(el).position;
+        if (position === 'fixed' || position === 'sticky') el.style.setProperty('visibility', 'hidden', 'important');
+      }
+      return runs.length;
     })()`);
-    await sleep(350);
 
-    const { data } = await send(
-      'Page.captureScreenshot',
-      { format: 'png', captureBeyondViewport: false },
-      sessionId,
-    );
-    const png = Buffer.from(data, 'base64');
-    const { data: raw, info } = await sharp(png).raw().toBuffer({ resolveWithObject: true });
+    const measured = new Set();
+    for (let pass = 0; marked && measured.size < marked && pass < 60; pass++) {
+      const { result } = await send(
+        'Runtime.evaluate',
+        {
+          awaitPromise: true,
+          returnByValue: true,
+          expression: `(async () => {
+            const runs = [...document.querySelectorAll('[data-on-image]')];
+            const done = ${JSON.stringify([...measured])};
+            const next = runs.findIndex((el, i) => !done.includes(i));
+            if (next < 0) return [];
+            runs[next].scrollIntoView({ block: 'center', behavior: 'instant' });
+            await new Promise((r) => setTimeout(r, 300));
+            // The photograph behind the run, and every other one in view,
+            // must be loaded and decoded before the capture means anything.
+            const inView = [...document.images].filter((img) => {
+              const r = img.getBoundingClientRect();
+              return r.bottom > 0 && r.top < innerHeight;
+            });
+            const t0 = performance.now();
+            while (inView.some((img) => !img.complete || !img.naturalWidth) && performance.now() - t0 < 8000) {
+              await new Promise((r) => setTimeout(r, 100));
+            }
+            await Promise.all(inView.map((img) => img.decode().catch(() => {})));
+            await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+            const out = [];
+            runs.forEach((el, i) => {
+              if (done.includes(i)) return;
+              const r = el.getBoundingClientRect();
+              const whole = r.top >= 0 && r.bottom <= innerHeight;
+              if (!(whole || i === next) || r.width < 4 || r.height < 4) return;
+              const st = getComputedStyle(el);
+              const size = parseFloat(st.fontSize);
+              const weight = Number(st.fontWeight) || 400;
+              out.push({
+                i,
+                text: (el.textContent || '').trim().slice(0, 44),
+                colour: st.color,
+                large: size >= 24 || (size >= 18.66 && weight >= 700),
+                size: Math.round(size),
+                x: Math.round(r.left), y: Math.round(Math.max(0, r.top)),
+                w: Math.round(r.width), h: Math.round(Math.min(r.bottom, innerHeight) - Math.max(0, r.top)),
+              });
+            });
+            return out;
+          })()`,
+        },
+        sessionId,
+      );
+      const batch = result.value || [];
+      if (!batch.length) break;
 
-    // Coverage, stated rather than assumed: a hero that renders a breadcrumb
-    // must yield at least one measured breadcrumb run.
-    if (boxes.crumbs && !boxes.out.some((box) => box.crumb)) {
-      failures.push(`${url} [${viewport.label}] has a hero breadcrumb but no breadcrumb text was measured`);
+      await evaluate(`(() => {
+        const style = document.createElement('style');
+        style.id = 'iv-hide-on-image';
+        style.textContent = '[data-on-image] { visibility: hidden !important; }';
+        document.head.append(style);
+      })()`);
+      await sleep(120);
+      const { data } = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false }, sessionId);
+      await evaluate(`document.getElementById('iv-hide-on-image')?.remove()`);
+
+      await scoreBoxes(Buffer.from(data, 'base64'), batch, url, viewport, 'on-image');
+      for (const box of batch) measured.add(box.i);
     }
-
-    for (const box of boxes.out) {
-      const colour = parseColour(box.colour);
-      let worst = Infinity;
-      let worstPixel = null;
-      const x0 = Math.max(0, box.x);
-      const y0 = Math.max(0, box.y);
-      const x1 = Math.min(info.width, box.x + box.w);
-      const y1 = Math.min(info.height, box.y + box.h);
-      for (let y = y0; y < y1; y++) {
-        for (let x = x0; x < x1; x++) {
-          const i = (y * info.width + x) * info.channels;
-          const value = contrastOn(colour, [raw[i], raw[i + 1], raw[i + 2]]);
-          if (value < worst) {
-            worst = value;
-            worstPixel = [raw[i], raw[i + 1], raw[i + 2]];
-          }
-        }
-      }
-      if (!worstPixel) continue;
-
-      const required = box.large ? 3 : 4.5;
-      const ok = worst >= required;
-      rows.push({
-        url,
-        viewport: viewport.label,
-        text: box.text,
-        colour: box.colour,
-        crumb: box.crumb,
-        size: box.size,
-        large: box.large,
-        worst,
-        required,
-        pixel: worstPixel,
-        ok,
-      });
-      if (!ok) {
-        failures.push(
-          `${url} [${viewport.label}] "${box.text}" — ${worst.toFixed(2)}:1 ` +
-            `(${box.colour} on rgb(${worstPixel})) needs ${required}:1 (${box.size}px${box.large ? ', large' : ''})`,
-        );
-      }
+    if (marked && measured.size < marked) {
+      failures.push(`${url} [${viewport.label}] marks ${marked} run(s) data-on-image but measured ${measured.size}`);
     }
 
     await send('Target.closeTarget', { targetId });
@@ -352,11 +453,13 @@ for (const row of rows) {
   console.log(
     `  ${row.ok ? 'ok  ' : 'FAIL'}  ${row.worst.toFixed(2).padStart(5)}:1 ` +
       `(needs ${String(row.required).padEnd(3)})  ${row.viewport.padEnd(9)} ` +
-      `${row.size}px${row.large ? ' L' : '  '}${row.crumb ? ' crumb' : '      '}  "${row.text}"  ${row.colour}`,
+      `${row.size}px${row.large ? ' L' : '  '}${row.crumb ? ' crumb' : row.kind === 'on-image' ? ' image' : '      '}  "${row.text}"  ${row.colour}`,
   );
 }
 const crumbRows = rows.filter((row) => row.crumb);
 console.log(`\n  Breadcrumb runs measured: ${crumbRows.length} (${crumbRows.filter((row) => !row.ok).length} failing)`);
+const imageRows = rows.filter((row) => row.kind === 'on-image');
+console.log(`  On-image runs measured (outside heroes): ${imageRows.length} (${imageRows.filter((row) => !row.ok).length} failing)`);
 
 if (failures.length) {
   console.error(`\n  ${failures.length} contrast FAILURE(S):`);

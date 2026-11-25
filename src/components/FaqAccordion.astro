@@ -90,17 +90,27 @@ const headingId = `${id ?? 'faq'}-heading`;
     list-style: none;
   }
 
-  .faq__panel {
-    border-top: 1px solid var(--color-hairline);
+  /* Each question is its own panel since round 6, rather than a row between
+     two rules. The open one firms its edge; no shadow (a hover state, and an
+     open answer is not hovering). */
+  .faq__item + .faq__item {
+    margin-top: 0.75rem;
   }
 
-  .faq__item:last-child .faq__panel {
-    border-bottom: 1px solid var(--color-hairline);
+  .faq__panel {
+    padding-inline: 1.5rem;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .faq__panel[open] {
+    border-color: var(--color-burgundy-hairline);
   }
 
   .faq__summary {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 1rem;
     /* 44px+ target across the full row. */
@@ -115,16 +125,45 @@ const headingId = `${id ?? 'faq'}-heading`;
 
   .faq__question {
     font-family: var(--font-display);
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     font-weight: 700;
     line-height: var(--leading-heading);
+    overflow-wrap: break-word;
     color: var(--color-ink);
   }
 
+  .faq__summary:hover .faq__question {
+    color: var(--color-burgundy);
+  }
+
+  /* The same round control as the day-by-day (DayAccordion). */
   .faq__chevron {
+    box-sizing: content-box;
+    flex: none;
     width: 12px;
     height: 8px;
-    color: var(--color-ink-muted);
+    padding: 11px 9px;
+    border: 1px solid var(--color-burgundy-hairline);
+    border-radius: 50%;
+    color: var(--color-burgundy);
+  }
+
+  .faq__panel[open] .faq__chevron {
+    border-color: var(--color-burgundy);
+  }
+
+  @media (hover: hover) {
+    .faq__summary:hover .faq__chevron {
+      background-color: var(--color-burgundy);
+      border-color: var(--color-burgundy);
+      color: var(--color-white);
+    }
+  }
+
+  @media (max-width: 39.999rem) {
+    .faq__chevron {
+      padding: 9px 7px;
+    }
   }
 
   .faq__answer {
@@ -134,7 +173,15 @@ const headingId = `${id ?? 'faq'}-heading`;
 
   @media (prefers-reduced-motion: no-preference) {
     .faq__chevron {
-      transition: transform var(--duration-base) var(--ease-brand);
+      transition:
+        transform var(--duration-base) var(--ease-brand),
+        background-color var(--duration-fast) var(--ease-brand),
+        border-color var(--duration-fast) var(--ease-brand),
+        color var(--duration-fast) var(--ease-brand);
+    }
+
+    .faq__question {
+      transition: color var(--duration-fast) var(--ease-brand);
     }
 
     .faq__panel[open] .faq__chevron {

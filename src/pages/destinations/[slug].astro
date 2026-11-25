@@ -319,7 +319,8 @@ const faq = faqSchema(destination.faq);
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.01em;
     color: var(--color-white);
   }
 
@@ -429,6 +430,17 @@ const faq = faqSchema(destination.faq);
     height: 10px;
   }
 
+  /* The arrow leans toward where it goes (round 6). */
+  @media (prefers-reduced-motion: no-preference) {
+    .pill svg {
+      transition: transform var(--duration-fast) var(--ease-brand);
+    }
+
+    .pill:hover svg {
+      transform: translate3d(3px, 0, 0);
+    }
+  }
+
   .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
@@ -445,10 +457,19 @@ const faq = faqSchema(destination.faq);
     list-style: none;
   }
 
+  /* Each experience is a card since round 6: the photograph bleeds to the
+     card's top edge and the copy is inset below it. White with a hairline,
+     no shadow (these are not links, and shadow is a hover state). */
+  .tile {
+    overflow: clip;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+  }
+
   .tile__frame {
     display: block;
     aspect-ratio: 4 / 3;
-    border-radius: var(--radius-lg);
     overflow: clip;
     background-color: var(--color-offwhite);
   }
@@ -460,12 +481,15 @@ const faq = faqSchema(destination.faq);
   }
 
   .tile__name {
-    margin-top: 1rem;
-    font-size: var(--text-2xl);
+    margin-top: 1.15rem;
+    padding-inline: 1.25rem;
+    font-size: var(--text-xl);
   }
 
   .tile__text {
     margin-top: 0.5rem;
+    padding: 0 1.25rem 1.4rem;
+    font-size: var(--text-sm);
     color: var(--color-ink-muted);
   }
 

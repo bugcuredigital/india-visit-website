@@ -36,7 +36,14 @@
     font-size: var(--text-base);
     line-height: var(--leading-body);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Selected text in the brand's dark ground (round 6). */
+  ::selection {
+    background-color: var(--color-burgundy);
+    color: var(--color-on-dark);
   }
 
   @media (min-width: 48rem) {
@@ -58,22 +65,37 @@
     color: var(--color-ink);
   }
 
+  /* Tracking steps with size (round 6): the expanded display face reads
+     tighter and calmer at its largest, and loosens as it comes down. */
   h1 {
     font-size: var(--text-h1);
     line-height: var(--leading-display);
+    letter-spacing: -0.022em;
   }
 
   h2 {
     font-size: var(--text-h2);
+    letter-spacing: -0.018em;
   }
 
   h3 {
     font-size: var(--text-2xl);
+    letter-spacing: -0.012em;
   }
 
   p {
     margin: 0;
     text-wrap: pretty;
+  }
+
+  /* The LONGHAND on purpose. `text-wrap` is a shorthand that also sets
+     text-wrap-mode: wrap, which overrode every `white-space: nowrap` list on
+     its items: the journey hero's route strip wrapped "Ha Long Bay" inside its
+     pill, grew 43px, pushed the H1 up into the photograph's sky and failed
+     check:hero-contrast on two phone heroes (round 6). */
+  li,
+  dd {
+    text-wrap-style: pretty;
   }
 
   a {
@@ -221,13 +243,31 @@
   }
 
   /* ---- Eyebrow: small crimson label above a heading ------------------- */
+  /* Round 6: one eyebrow style sitewide, smaller and wider-tracked, so it
+     reads as a quiet label rather than a second heading. A short lead-in rule
+     in the eyebrow's own colour opens it, unless it already opens with the
+     lotus (ConvertBand): two marks in a row would be one too many. The rule is
+     `::before`, so a page that spells an eyebrow differently can take the same
+     style with this class and nothing else. */
   .eyebrow {
     font-family: var(--font-body);
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-crimson);
+  }
+
+  .eyebrow:not(:has(.lotus))::before {
+    content: '';
+    display: inline-block;
+    width: 1.75rem;
+    height: 2px;
+    margin-right: 0.7rem;
+    border-radius: 2px;
+    background-color: currentColor;
+    vertical-align: middle;
+    translate: 0 -1px;
   }
 
   .on-dark .eyebrow {

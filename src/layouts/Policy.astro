@@ -100,7 +100,8 @@ const crumbs = breadcrumbSchema([
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
+    letter-spacing: 0.01em;
     color: var(--color-on-dark-muted);
   }
 
@@ -135,15 +136,36 @@ const crumbs = breadcrumbSchema([
     margin-bottom: 2.5rem;
     padding: 1rem 1.25rem;
     border-left: 3px solid var(--color-burgundy);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
     background-color: var(--color-offwhite);
     font-size: var(--text-sm);
     color: var(--color-ink-muted);
   }
 
+  /* Each heading opens a clearly separate block (round 6): a hairline above
+     every section after the first, and a short rule over each heading, so a
+     long legal page can be scanned by its sections. Burgundy, not the spec's
+     crimson: fine rules are burgundy's job, and five crimson marks a screen
+     would outshout the page's one action. */
   .policy :global(h2) {
     margin-top: 2.5rem;
     font-size: var(--text-2xl);
     scroll-margin-top: 6rem;
+  }
+
+  .policy :global(h2:not(:first-child)) {
+    padding-top: 2.25rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .policy :global(h2::before) {
+    content: '';
+    display: block;
+    width: 1.75rem;
+    height: 2px;
+    margin-bottom: 0.9rem;
+    border-radius: 2px;
+    background-color: var(--color-burgundy);
   }
 
   .policy :global(h2:first-child) {
@@ -162,6 +184,19 @@ const crumbs = breadcrumbSchema([
 
   .policy :global(li + li) {
     margin-top: 0.5rem;
+  }
+
+  .policy :global(li::marker) {
+    color: var(--color-crimson);
+  }
+
+  .policy :global(a) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .policy :global(a:hover) {
+    text-decoration-thickness: 2px;
   }
 
   .policy :global(table) {

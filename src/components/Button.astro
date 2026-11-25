@@ -69,6 +69,7 @@ const tagProps = href
     font-weight: 600;
     font-size: var(--text-base);
     line-height: 1.2;
+    letter-spacing: -0.005em;
     text-align: center;
     text-decoration: none;
     cursor: pointer;
@@ -191,6 +192,12 @@ const tagProps = href
 
     .btn--primary:hover:not(:disabled) {
       box-shadow: var(--shadow-lift-hover);
+    }
+
+    /* Pressed: the lift gives way to a 1px press (round 6). After the hover
+       rule on purpose, at the same specificity, so it wins while held. */
+    .btn:active:not(:disabled) {
+      transform: translate3d(0, 1px, 0);
     }
   }
 </style>
