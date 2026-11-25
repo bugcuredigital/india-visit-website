@@ -58,7 +58,7 @@ General shape of the rule: where a global skill and this project's locked specif
 
    The school to translate — **not clone** — is `staralliance.com` (grid discipline, type scale, restraint) plus `airindia.com` (warm premium, photography-led, deep red as accent). Our voice stays warm; theirs does not come with it.
 
-   **Surfaces.** Pure **white `#FFFFFF` is the primary background sitewide.** Off-white `#F7F5F6` is *demoted to secondary*: card fills, alternate sections, form fields — a whisper of contrast, never the base. Dark bands are **rare and intentional**. Everything else lives on white.
+   **Surfaces.** Pure **white `#FFFFFF` is the primary background sitewide.** Off-white `#F7F5F6` is *demoted to secondary*: card fills and alternate sections — a whisper of contrast, never the base. **Form fields are visible against their ground** (the principle the old "off-white fields" wording stood for, ruled in those terms at design round 6, review sheet §29.7): a field takes the other light surface from the one it sits on, so off-white on white and white on off-white; on a dark ground it is an outline whose resting border clears 3:1 (WCAG 1.4.11). Dark bands are **rare and intentional**. Everything else lives on white.
 
    **Which dark — rebalanced in design round 3.** The owner's note was that deep plum "reads blue and kills the warmth", and it was correct: plum was carrying the footer, every ConvertBand, the train cards and How-It-Works, so the cool end of a warm brand was doing most of the visible work. The hierarchy is now:
 
