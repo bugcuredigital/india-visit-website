@@ -11,7 +11,8 @@
  *   · TravelAgency on every page: name, url, logo, address (PostalAddress)
  *   · BreadcrumbList on every inner page: positions 1..n, a name each, an item
  *     URL each, the last one the page's canonical
- *   · TouristTrip on every journey: name, description, url = canonical, image, duration
+ *   · TouristTrip on every journey: name, description, url = canonical, image, an
+ *     itinerary ItemList, and no `duration` (schema.org Trip has none)
  *   · Article on every post: headline (≤ 110 characters), image, datePublished,
  *     dateModified not before it, author.name
  *   · FAQPage: at least one question, each with an answer, and each question
@@ -113,7 +114,12 @@ for (const file of (await walk(DIST)).sort()) {
     else {
       for (const key of ['name', 'description', 'image']) if (!trip[key]) fail(`TouristTrip has no ${key}`);
       if (trip.url !== canonical) fail(`TouristTrip url ${trip.url} is not the canonical`);
-      if (!/^P\d+D$/.test(trip.duration ?? '')) fail(`TouristTrip duration ${trip.duration}`);
+      if (trip.duration !== undefined) fail('TouristTrip carries duration, which schema.org Trip does not define');
+      const stops = trip.itinerary?.itemListElement ?? [];
+      if (trip.itinerary?.['@type'] !== 'ItemList' || !stops.length) fail('TouristTrip has no itinerary ItemList');
+      stops.forEach((stop, i) => {
+        if (stop.position !== i + 1 || !stop.item?.name) fail(`TouristTrip itinerary stop ${i + 1} is incomplete`);
+      });
     }
   }
 

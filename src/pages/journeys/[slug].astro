@@ -156,8 +156,6 @@ const tripSchema = touristTripSchema({
   name: journey.title,
   description: journey.seo.metaDescription,
   image: new URL(journey.heroImage.src, Astro.site).href,
-  days: journey.days,
-  nights: journey.nights,
   routeCities: journey.routeCities,
 });
 

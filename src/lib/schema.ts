@@ -84,8 +84,6 @@ export function touristTripSchema(input: {
   name: string;
   description: string;
   image?: string;
-  days: number;
-  nights: number;
   routeCities: string[];
 }): Json {
   return compact({
@@ -95,8 +93,9 @@ export function touristTripSchema(input: {
     description: input.description,
     url: input.url,
     image: input.image,
-    /** ISO 8601 duration — 12 days reads as P12D. */
-    duration: `P${input.days}D`,
+    // No `duration`: TouristTrip (schema.org Trip) has no such property, and
+    // the Schema.org validator flagged it on every journey (26 Nov 2026). The
+    // length is in the name and the itinerary.
     itinerary: {
       '@type': 'ItemList',
       itemListElement: input.routeCities.map((city, i) => ({
