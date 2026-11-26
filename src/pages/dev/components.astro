@@ -11,6 +11,7 @@
  * component's props drift.
  */
 import Base from '../../layouts/Base.astro';
+import { byId } from '../../lib/order';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Hero from '../../components/Hero.astro';
@@ -47,7 +48,7 @@ if (kerala.data.variant !== 'A' || pow.data.variant !== 'B') {
   throw new Error('M3 demo expects Kerala as Variant A and Palace on Wheels as Variant B');
 }
 
-const testimonials = (await getCollection('testimonials')).map((entry) => ({
+const testimonials = (await getCollection('testimonials')).sort(byId).map((entry) => ({
   name: entry.data.name,
   origin: entry.data.origin,
   tripLabel: entry.data.tripLabel,

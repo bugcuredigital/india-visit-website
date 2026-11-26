@@ -37,6 +37,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 
 import { heroPreload } from '../../lib/hero-image';
 import { journeysForDestination } from '../../lib/destination-journeys';
+import { byId } from '../../lib/order';
 import { breadcrumbSchema, faqSchema } from '../../lib/schema';
 
 export async function getStaticPaths() {
@@ -64,15 +65,16 @@ const journeys = await journeysForDestination(entry);
 /* One destination-specific testimonial, and only with recorded consent.
    `beyond-india` destinations take an international voice. */
 const wantedCategory = destination.region === 'india' ? 'india' : 'international';
-const testimonial = (await getCollection('testimonials', ({ data }) => data.consentConfirmed)).find(
-  (item) => item.data.category === wantedCategory,
-);
+const testimonial = (await getCollection('testimonials', ({ data }) => data.consentConfirmed))
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || byId(a, b))
+  .find((item) => item.data.category === wantedCategory);
 
 /* Related articles: posts that embed one of this destination's journeys. A
    computed relation rather than a second list to keep in step by hand. */
 const journeyIds = new Set(journeys.map((journey) => journey!.id));
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .filter((post) => post.data.embeddedJourneys.some((ref) => journeyIds.has(ref.id)))
+  .sort(byId)
   .slice(0, 3);
 
 const pageUrl = new URL(`/destinations/${entry.id}/`, Astro.site).href;
