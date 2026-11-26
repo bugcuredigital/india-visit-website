@@ -2319,3 +2319,185 @@ next working session. The client's own `/admin` edits stay open.
    rights).
 3. **Later, when scheduled:** M6 proper (Turnstile, the Sheet webhook, the PDF
    release, GTM), then M8.
+
+## 2026-11-26 — Launch prep: everything that does not need the client (PR #35, #36); re-frozen
+
+**Instruction.** Clear everything that does not need the client, so that launch
+day is only policies live, noindex lift, domain attach. Freeze lifted for the
+session, escalation standard throughout (session log, 25 Nov). Six items: the
+homepage tie-break; the round-5 medium/low triage; Turnstile and the Sheet
+copy of every lead; GTM reading its ID from settings, with the M6 events;
+the M8 remainder (the /contact/ 301, security headers with a
+Partytown-compatible CSP, rich-results validation, sitemap and robots); and
+`LAUNCH_DAY.md`. Then the full suite and the re-freeze. The keys and IDs
+needed from the user were reported early in the session, with the steps.
+
+**PR #35, merged 13:14 IST, live 13:21 IST (`c4f9b98`).**
+
+**1. Deterministic order.** The homepage's featured row sorted on `featured`
+and "trains last" and left ties to the loader, whose order differs between
+this Mac and Cloudflare's builder. Every sort now ends with `byId`
+(`src/lib/order.ts`, plain code-unit comparison of the slug). By the client's
+one-call-site rule all of them were checked: ten sorts in the first pass, then
+three reads the preview compare exposed (the component library's
+testimonials, and on the destination pages the testimonial `.find` and the
+related-articles `.slice(0, 3)`). Cloudflare's loader is alphabetical, so
+production's order is unchanged: a local build matched production on all 61
+public pages before the merge, and matched the preview on all 61 after it.
+
+**2. The round-5 medium/low batch** (`docs/UNSLOP_AUDIT.md`, status 26 Nov).
+Done by a subagent briefed with the escalation standard and a list of files
+it must not touch; its changes to those files came back as a patch, applied
+after review. All 68 ruled: **43 fixed, 5 already settled** (round 6 or
+earlier), **20 escalated** because each changes words or a claim (review
+sheet §30, with proposed wording), **3 parts declined** on locked rules
+(#15's per-page footer, T14; #17's breadcrumb in the journey hero, Template
+Spec S1; #72's casing, CLAUDE.md #7). New in the code: `Breadcrumb.astro`,
+the 34em measure, the 56/96px tight rhythm, the same-colour band rule,
+underlined-ink ghost buttons, `on-dark-solid` as the one action on a dark
+band, one drawn arrow. Recorded in CLAUDE.md. One factual gap found on the
+way: the three trains' cancellation slabs leave day 95 and day 34 in no band
+(§30.4).
+
+**3. Form hardening** (`functions/api/lead.ts`).
+- Order: honeypot, which form, validation, **Turnstile siteverify** (after
+  validation, so a typo never spends the single-use token), Resend, the
+  answer, then the **Sheet row** after the answer (`waitUntil`). A definite
+  "no" from siteverify refuses; siteverify unreachable lets the lead through
+  and logs it.
+- Turnstile's script is the one third-party script outside Partytown (it
+  must draw its frame on the main thread); it loads on a visitor's first touch
+  of a form, never on page load (CLAUDE.md invariant #3 records the exception).
+- The Sheet: `scripts/sheet-webhook/lead-sheet.gs`, refuses anything without
+  the shared secret, fixed columns plus a Details column for every other
+  field, formula-injection guarded. A Resend failure still writes the row,
+  marked.
+- UTM: the first `utm_*` of a visit is kept in sessionStorage and written into
+  each form's hidden `utm` field (which existed but was never filled).
+- Limits on every field (40 fields, 3,000 characters, the token 4,096).
+- **PDF release** (runbook M6 2a: the site must not launch with the PDFs
+  public). `/downloads/*` is answered by `functions/downloads/[[path]].ts`;
+  a PDF is released only through a link signed with `PDF_LINK_SECRET`, valid
+  an hour (`src/lib/pdf-link.ts`). A bare path 302s to its journey page. The
+  PDF form stays "Launching Shortly" (`PDF_GATE_LIVE`) until the two new lines
+  (COPY_REGISTER §V, DRAFT) are approved and a test passes. A journey without
+  a built PDF gets the enquiry answer, and the agency email says so.
+- Every key switches its own step on; production behaves as before until the
+  keys are set.
+- `npm run test:lead`: 28 offline tests, every outside service stubbed. Then
+  under `wrangler pages dev` with Turnstile's test keys: a token came back on
+  first touch, a missing token was refused, a test token passed Cloudflare's
+  real siteverify, the signed link served the exact PDF, bare and forged links
+  redirected.
+
+**4. GTM.** It already read `gtmContainerId` from settings and rendered
+nothing while null. Added `src/scripts/tracking.ts`: `wa_click` and
+`call_click` (with `click_location` and `journey_slug`), `lead_form_submit`,
+`corporate_submit` and `pdf_download` on an accepted lead, and
+`virtual_page_view` for router navigations, which a tag in Partytown's worker
+cannot see. Partytown's forwarder does not keep the main-thread `push`, so the
+events were verified with a spy on `dataLayer.push`. With a dummy container ID
+in a scratch build (settings restored and checked identical to main), Partytown
+booted its sandbox and service worker under the CSP with zero violations.
+**Lighthouse with GTM firing needs the real container ID** (pending).
+
+**5. M8.**
+- `public/_redirects`: `/contact/` to Plan My Trip, and the old India Visit
+  site's sections. The Internet Archive shows a site on india-visit.com from
+  2002 to 2011 (`/rajasthan-tour-packages`, `/palace-on-wheels`, …) and a parked
+  page in 2024; the domain answers 522 today (proxied, origin down). Its hotel
+  listings have no equivalent and are left to 404.
+- `public/_headers`: HSTS, nosniff, SAMEORIGIN, referrer and permissions
+  policies, an enforced CSP, detached on `/~partytown/*` (GTM's sandbox
+  evaluates tag code) and `/admin/*` (Tina). Zero violations on five page types
+  with Turnstile loaded, and with Partytown running.
+- Structured data: the organisation gained `logo` and `image`. New
+  `npm run check:structured-data` checks every block on every page against
+  Google's requirements for its type, and that every URL in it is on the
+  canonical origin. The Schema.org validator on one page per type of the
+  preview: 0 errors, one warning, `duration` on TouristTrip, which schema.org
+  Trip does not define. Removed, and the check now fails on it.
+- `robots.txt` is generated from SITE_URL (production previously served only
+  Cloudflare's comments-only preamble). The provisional policies are one list,
+  `src/lib/policies.mjs`, shared by the pages and the sitemap.
+- A build with `SITE_URL=https://india-visit.com` moves every canonical, the
+  sitemap's 57 URLs and robots.txt to the domain, with no pages.dev URL left
+  anywhere, and passes the structured-data check.
+
+**6. `LAUNCH_DAY.md`.** Part A before the day (decisions D1–D6, Turnstile
+Preview-first, the Sheet, GTM and GA4, the PDF release, the authorised tests,
+the rollback drill, Tina Cloud's site URLs); B the policies; C the domain
+(apex, www redirect rule, pages.dev bulk redirect, SITE_URL, keeping Email
+Routing's and Resend's DNS records); D smoke tests with expected answers; E
+Search Console; F rollback by symptom.
+
+**Also.** `astro check` is at **0 errors** for the first time (the eight old
+ones were in files this session rewrote, plus one stale prop on the component
+library). Hero contrast now measures 559 runs where round 6 measured 610: the
+breadcrumb separators became CSS in the new component, the same white as the
+measured links beside them.
+
+**Checks (local build, 62 pages):** build; image paths; CMS images (5 exempt,
+0 outside); links; Template Spec §6 on all 28; transport labels (127);
+`audit:hardcoded` with the tariff check; structured data; `test:lead` (28);
+`astro check` 0 errors; keyboard on 7 pages; no-JS; responsive 360–1440 on
+20 pages; hero video (15); **hero contrast 42 pages, 559 runs, all AA**; all
+28 PDFs reprinted.
+
+**Lighthouse, mobile** (13.6.0, simulated throttling), preview against
+production the same afternoon, before the merge:
+
+| Page | Production | Preview |
+|---|---|---|
+| `/` | 1.1s | 1.2s |
+| `/journeys/` | 1.5s | 1.6s |
+| `/journeys/taj-and-agra-1n-2d/` | 1.5s | 1.5s |
+| `/reviews/` | 0.9s | 1.0s |
+| `/corporate/` | 1.0s | 1.1s |
+
+Performance, Accessibility and Best Practices 100 on every page of both, CLS
+0. The preview's SEO 69 is its noindex header only. The enforced CSP and the
+new headers cost nothing.
+
+**Production, verified after the merge (the full suite).**
+- It is the build that was checked: all 580 files of the merge commit are
+  byte-identical to the tree the suite ran on, and production matches a local
+  build of it on all 61 public pages (form-field ids normalised; `/admin/` is
+  built only on production).
+- Keyboard on 7 pages, no-JS, responsive 360–1440 on 20 pages, hero video (15):
+  all pass. **Hero contrast on production: 42 pages, 559 runs, all AA.**
+- All 28 PDFs gated (each bare path 302s to its journey); the CSP and the
+  other headers served, none on the Partytown sandbox and none on `/admin/`
+  (which answers 200); `/contact/` and the old site's paths 301; robots.txt
+  with its rules and Sitemap line.
+- **Lighthouse, production, after the merge:** 100 for Performance,
+  Accessibility, Best Practices and SEO on all five pages; LCP `/` 1.2s,
+  `/journeys/` 1.4s, Taj and Agra 1.4s, `/reviews/` 1.0s, `/corporate/` 1.0s;
+  CLS 0. Every budget holds.
+
+**Captures:** `reports/launch-prep-2026-11-26/before/` (production before the
+merge) and `after/` (the preview), seventeen pages at desktop 1280 and phone
+390, warm font cache. `triage-report.md` beside them is the subagent's full
+report. One capture artifact, checked against the live DOM: a sticky column
+past the first 900px viewport is not painted in a full-page capture, so Plan
+My Trip's last reassurance line looks cut in `after/`; nothing is clipped.
+
+**Traps of the day, for the next session.** In zsh a loop variable named
+`path` empties PATH (again: the memory note was right). Cloudflare answers a
+Python `urllib` request with 403 (bot protection); curl is fine.
+
+**Re-frozen** after PR #36 (these docs). No agency merges until launch work;
+the client's own `/admin` edits stay open.
+
+### Exact next action
+
+1. **The user:** the keys and IDs, with the steps in `LAUNCH_DAY.md` part A:
+   Turnstile (Preview first), the Sheet's `/exec` URL and secret,
+   `PDF_LINK_SECRET`, the GTM container ID. Then the go-ahead for the
+   authorised test leads on a preview (A5).
+2. **Agency, when the keys land:** redeploy; the A5 tests; Lighthouse with GTM
+   firing; Turnstile into Production once A5 passes; flip `PDF_GATE_LIVE` once
+   §V is approved.
+3. **Client:** review sheet §30 (three decisions, five facts, the wording),
+   §28, §14, §27, and the legal copy (§19).
+4. **Launch day:** `LAUNCH_DAY.md` parts B to E.
