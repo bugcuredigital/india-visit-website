@@ -26,9 +26,13 @@ interface Props {
   overlay?: boolean;
   /** Suppresses the logo link and marks the current page for a11y. */
   isHome?: boolean;
+  /** The nav item to mark current when the URL alone would pick the wrong
+   *  one: a train's page lives under /journeys/ but its parent is
+   *  /luxury-trains/ (round 5, #16), as its breadcrumb schema says. */
+  current?: string;
 }
 
-const { overlay = false, isHome = false } = Astro.props;
+const { overlay = false, isHome = false, current } = Astro.props;
 
 const settings = await getSiteSettings();
 const currentPath = Astro.url.pathname;
@@ -37,7 +41,8 @@ const destinations = (await getCollection('destinations'))
   .sort((a, b) => a.data.order - b.data.order)
   .map((entry) => ({ label: entry.data.name, href: `/destinations/${entry.id}/` }));
 
-const isCurrent = (href: string) => currentPath === href || currentPath.startsWith(href);
+const isCurrent = (href: string) =>
+  current ? href === current : currentPath === href || currentPath.startsWith(href);
 
 // On Plan My Trip the pill would be a crimson link to the page you are on,
 // competing with the form's own Next for the page's one crimson action
@@ -173,6 +178,9 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
       burger.setAttribute('aria-expanded', String(open));
       burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
       panel.hidden = !open;
+      // A transparent header turns solid while its menu is open, so the white
+      // panel never hangs under a see-through bar (round 5, #16).
+      burger.closest('[data-header]')?.classList.toggle('is-open', open);
     };
 
     const boot = () => {
@@ -236,7 +244,7 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
      opaque white, which is the rule anyway. */
   @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .header:not(.header--overlay),
-    .header--overlay.is-solid {
+    .header--overlay:is(.is-solid, .is-open) {
       background-color: color-mix(in srgb, var(--color-white) 94%, transparent);
       -webkit-backdrop-filter: blur(16px);
       backdrop-filter: blur(16px);
@@ -279,7 +287,7 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
   /* Over the photograph the crimson ring measured 1.75:1; yellow is legal on
      the ink wash and clears 6:1 (round 5, #5). The white dropdown panel keeps
      the light-ground ring, and a solid header goes back to crimson. */
-  .header--overlay:not(.is-solid) .header__inner :focus-visible {
+  .header--overlay:not(.is-solid, .is-open) .header__inner :focus-visible {
     outline-color: var(--color-yellow);
   }
 
@@ -287,14 +295,14 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
     outline-color: var(--color-crimson);
   }
 
-  .header--overlay.is-solid {
+  .header--overlay:is(.is-solid, .is-open) {
     background-color: var(--color-white);
     background-image: none;
     border-bottom-color: var(--color-hairline);
     color: var(--color-ink);
   }
 
-  .header--overlay.is-solid :is(.header__link, .header__icon, .header__summary) {
+  .header--overlay:is(.is-solid, .is-open) :is(.header__link, .header__icon, .header__summary) {
     color: var(--color-ink);
   }
 
@@ -380,12 +388,15 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
     transform: rotate(180deg);
   }
 
+  /* As wide as its longest entry: at 15rem "Rajasthan & the Golden
+     Triangle" wrapped into a 69px row among 44px rows (round 5, #16). */
   .menu__panel {
     position: absolute;
     top: calc(100% + 0.35rem);
     left: 0;
     z-index: 60;
     min-width: 15rem;
+    width: max-content;
     margin: 0;
     padding: 0.5rem;
     list-style: none;
@@ -398,6 +409,7 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
   .menu__link {
     display: block;
     padding: 0.6rem 0.75rem;
+    white-space: nowrap;
     color: var(--color-ink);
     font-size: var(--text-sm);
     text-decoration: none;
@@ -513,6 +525,30 @@ const onPlanPage = currentPath.startsWith('/plan-my-trip/');
 
   .header__burger-bars::after {
     top: 4px;
+  }
+
+  /* Open, the bars become an X (round 5, #16): the menu had no visible open
+     state. The middle bar goes; the outer two meet at the centre and turn. */
+  .header__burger[aria-expanded='true'] .header__burger-bars {
+    background-color: transparent;
+  }
+
+  .header__burger[aria-expanded='true'] .header__burger-bars::before {
+    transform: translate3d(0, 6px, 0) rotate(45deg);
+  }
+
+  .header__burger[aria-expanded='true'] .header__burger-bars::after {
+    transform: translate3d(0, -5.75px, 0) rotate(-45deg);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .header__burger-bars,
+    .header__burger-bars::before,
+    .header__burger-bars::after {
+      transition:
+        transform var(--duration-fast) var(--ease-brand),
+        background-color var(--duration-fast) var(--ease-brand);
+    }
   }
 
   .header__mobile {

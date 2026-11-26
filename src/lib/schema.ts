@@ -62,6 +62,11 @@ export function travelAgencySchema(settings: SiteSettings, siteUrl: string): Jso
     legalName: settings.legalEntity,
     description: settings.tagline,
     url: siteUrl,
+    // Google's Organization / LocalBusiness guidance recommends both (launch
+    // prep, 26 Nov 2026). Stable public files, never hashed build assets: the
+    // badge's 180px touch icon (logos must be at least 112px) and the brand card.
+    logo: new URL('apple-touch-icon.png', siteUrl).href,
+    image: new URL('og-default.jpg', siteUrl).href,
     telephone: isPlaceholder(settings, 'phone') ? null : settings.phone,
     email: isPlaceholder(settings, 'email') ? null : settings.email,
     address: isPlaceholder(settings, 'address') ? null : postalAddress(settings.address),

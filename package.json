@@ -34,6 +34,8 @@
     "check:cms-images": "node scripts/check-cms-images.mjs",
     "check:image-paths": "node scripts/check-image-paths.mjs",
     "check:transport-labels": "node scripts/check-transport-labels.mjs",
+    "check:structured-data": "node scripts/check-structured-data.mjs",
+    "test:lead": "npx -y tsx@4.19.2 scripts/test-lead-function.mts",
     "pdf:build": "node scripts/build-pdfs.mjs",
     "dev:astro": "astro dev",
     "build:astro": "astro build",

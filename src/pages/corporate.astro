@@ -46,7 +46,7 @@ import BandWatermark from '../components/BandWatermark.astro';
 import EnquiryForm from '../components/EnquiryForm.astro';
 import StickyMobileBar from '../components/StickyMobileBar.astro';
 import JsonLd from '../components/JsonLd.astro';
-import Lotus from '../components/Lotus.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 
 import { getSiteSettings, telHref } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
@@ -115,7 +115,6 @@ const STEPS = [
     title: 'We Run the Whole Trip',
     detail:
       'Including the parts you would otherwise be doing at midnight: the manifest, the rooming list, the transfers, the one delegate whose flight moved.',
-    lotus: true,
   },
 ];
 
@@ -139,11 +138,13 @@ const crumbs = breadcrumbSchema([
   <section class="band band-tight band-ink band-watermarked on-dark intro">
     <BandWatermark side="right" />
     <div class="container-content">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">Corporate</span>
-      </nav>
+      <Breadcrumb
+        tone="dark"
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Corporate' },
+        ]}
+      />
       <h1 class="intro__title">Corporate travel &amp; offsites</h1>
       <p class="intro__lede prose-measure">
         One vendor, GST invoicing, and a single person who answers the phone
@@ -191,10 +192,7 @@ const crumbs = breadcrumbSchema([
           STEPS.map((step, index) => (
             <li class="how__step">
               <span class="how__no">{String(index + 1).padStart(2, '0')}</span>
-              <h3 class="how__title">
-                {step.title}
-                {step.lotus && <Lotus size={16} tone="yellow" class="how__mark" />}
-              </h3>
+              <h3 class="how__title">{step.title}</h3>
               <p class="how__detail">{step.detail}</p>
             </li>
           ))
@@ -318,23 +316,6 @@ const crumbs = breadcrumbSchema([
      `.on-dark .eyebrow` and set "How we work with companies" burgundy on the
      burgundy band, 1.00:1 (round 5, #77). On a dark band it is yellow again. */
   .on-dark .eyebrow {
-    color: var(--color-yellow);
-  }
-
-  .crumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-on-dark-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-on-dark-muted);
-  }
-
-  .crumbs a:hover {
     color: var(--color-yellow);
   }
 
@@ -499,6 +480,24 @@ const crumbs = breadcrumbSchema([
     counter-reset: step;
   }
 
+  /* Three across, the steps share their rows (subgrid), so a title that
+     wraps to two lines no longer starts its body lower than its neighbours'
+     (round 5, #81: 289, 315 and 289px). One row of steps, so the row gap
+     would only ever fall inside a step: it is the step's own spacing here. */
+  @media (min-width: 52rem) {
+    .how {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      row-gap: 0;
+    }
+
+    .how__step {
+      display: grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      align-content: start;
+    }
+  }
+
   /* Each step is a translucent panel on the burgundy band (round 6), so the
      three read as separate stages rather than three columns of copy. */
   .how__step {
@@ -517,9 +516,6 @@ const crumbs = breadcrumbSchema([
   }
 
   .how__title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
     margin-top: 0.6rem;
     font-size: var(--text-2xl);
   }

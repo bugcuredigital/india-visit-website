@@ -151,6 +151,24 @@
     padding-block: var(--space-section-tight);
   }
 
+  /* Two bands of one colour in a row stacked their padding into one 190–220px
+     gap (journey intro to highlights 188px, destination notes to FAQ 218px;
+     round 5, #10). The follower drops its top padding, so the gap between
+     them is one section's rhythm, not two. A band that ends on a hairline
+     (`band-ruled`) keeps both: the rule divides the space, so each half is
+     its own. A band hidden by a filter (the travel guide's lead article)
+     hands its follower back its padding. */
+  .band:not(.band-offwhite, .band-burgundy, .band-ink, .band-plum, .band-ruled, [hidden])
+    + .band:not(.band-offwhite, .band-burgundy, .band-ink, .band-plum),
+  .band-offwhite:not(.band-ruled, [hidden]) + .band-offwhite {
+    padding-block-start: 0;
+  }
+
+  /* A hairline under a band: the compact page intros. */
+  .band-ruled {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
   .band-offwhite {
     background-color: var(--color-offwhite);
   }

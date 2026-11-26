@@ -28,6 +28,7 @@ import Footer from '../components/Footer.astro';
 import Button from '../components/Button.astro';
 import Lotus from '../components/Lotus.astro';
 import JsonLd from '../components/JsonLd.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 
 import { getSiteSettings, telHref, whatsappLink } from '../lib/site-settings';
 import { breadcrumbSchema } from '../lib/schema';
@@ -110,11 +111,7 @@ const crumbs = breadcrumbSchema([
            Now: intro, form, reassurance. From 64rem the intro and the
            reassurance share the left column and the form spans both rows. -->
       <div class="plan__intro">
-        <nav class="crumbs" aria-label="Breadcrumb">
-          <a href="/">Home</a>
-          <span aria-hidden="true">/</span>
-          <span aria-current="page">Plan My Trip</span>
-        </nav>
+        <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Plan My Trip' }]} />
 
         <h1 class="side__title">Tell us the shape of it</h1>
         <p class="side__lede">
@@ -123,195 +120,217 @@ const crumbs = breadcrumbSchema([
         </p>
       </div>
 
-      <!-- ---- the form -------------------------------------------------- -->
-      <div class="formwrap">
-        <form
-          class="form"
-          method="post"
-          action="/api/lead"
-          data-lead-form
-          data-success-text={LEAD_SUCCESS}
-          data-error-text={LEAD_ERROR}
-          {...(LEADS_LIVE ? { 'data-live': '' } : {})}
-          data-stepper
-          data-astro-reload
-          novalidate
-        >
-          <input type="hidden" name="leadType" value="general" />
-          <input type="hidden" name="pageUrl" value={Astro.url.pathname} />
-          <input type="hidden" name="utm" value="" data-utm />
+      <!-- ---- the form, and under it the mini-FAQ -------------------------
+           Under the form rather than a band of its own (round 5, #90): at
+           1280 the step-1 card was 407px tall beside an 885px reassurance
+           column, with ~480px of white beneath it. The objections it answers
+           ("Is this free?") belong next to the thing they are about. -->
+      <div class="plan__main">
+        <div class="formwrap">
+          <form
+            class="form"
+            method="post"
+            action="/api/lead"
+            data-lead-form
+            data-success-text={LEAD_SUCCESS}
+            data-error-text={LEAD_ERROR}
+            {...(LEADS_LIVE ? { 'data-live': '' } : {})}
+            data-stepper
+            data-astro-reload
+            novalidate
+          >
+            <input type="hidden" name="leadType" value="general" />
+            <input type="hidden" name="pageUrl" value={Astro.url.pathname} />
+            <input type="hidden" name="utm" value="" data-utm />
 
-          <!-- Honeypot, matching EnquiryForm: off-screen rather than
-               display:none, which some bots detect. Its name and label must
-               mean nothing to browser AutoFill (src/lib/forms.ts). -->
-          <div class="form__honeypot" aria-hidden="true" data-allow-clip>
-            <label for="leave-empty">Leave this field empty</label>
-            <input id="leave-empty" name={HONEYPOT_FIELD} type="text" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other" />
-          </div>
+            <!-- Honeypot, matching EnquiryForm: off-screen rather than
+                 display:none, which some bots detect. Its name and label must
+                 mean nothing to browser AutoFill (src/lib/forms.ts). -->
+            <div class="form__honeypot" aria-hidden="true" data-allow-clip>
+              <label for="leave-empty">Leave this field empty</label>
+              <input id="leave-empty" name={HONEYPOT_FIELD} type="text" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other" />
+            </div>
 
-          <!-- Progress dots. Hidden without JS, because without JS every
-               fieldset is visible and there is no progress to show. -->
-          <ol class="dots" data-dots aria-hidden="true">
-            {STEPS.map((step) => <li class="dots__dot" data-dot={step.id}>{step.label}</li>)}
-          </ol>
+            <!-- Progress dots. Hidden without JS, because without JS every
+                 fieldset is visible and there is no progress to show. -->
+            <ol class="dots" data-dots aria-hidden="true">
+              {STEPS.map((step) => <li class="dots__dot" data-dot={step.id}>{step.label}</li>)}
+            </ol>
 
-          <fieldset class="step" data-step="1">
-            <legend class="step__legend">Where do you want to go?</legend>
-            <p class="step__hint">Pick as many as you like, or tell us you are not sure yet.</p>
-            <ul class="chips">
-              {
-                DESTINATIONS.map((destination) => (
-                  <li>
-                    <input
-                      class="chip__input"
-                      type="checkbox"
-                      id={`dest-${destination.slug}`}
-                      name="destinations"
-                      value={destination.label}
-                    />
-                    <label class="chip" for={`dest-${destination.slug}`}>
-                      {destination.label}
-                    </label>
-                  </li>
-                ))
-              }
-              <li>
-                <input class="chip__input" type="checkbox" id="dest-unsure" name="destinations" value="Not sure yet" />
-                <label class="chip" for="dest-unsure">Not sure yet</label>
-              </li>
-            </ul>
-          </fieldset>
+            <fieldset class="step" data-step="1">
+              <legend class="step__legend">Where do you want to go?</legend>
+              <p class="step__hint">Pick as many as you like, or tell us you are not sure yet.</p>
+              <ul class="chips">
+                {
+                  DESTINATIONS.map((destination) => (
+                    <li>
+                      <input
+                        class="chip__input"
+                        type="checkbox"
+                        id={`dest-${destination.slug}`}
+                        name="destinations"
+                        value={destination.label}
+                      />
+                      <label class="chip" for={`dest-${destination.slug}`}>
+                        {destination.label}
+                      </label>
+                    </li>
+                  ))
+                }
+                <li>
+                  <input class="chip__input" type="checkbox" id="dest-unsure" name="destinations" value="Not sure yet" />
+                  <label class="chip" for="dest-unsure">Not sure yet</label>
+                </li>
+              </ul>
+            </fieldset>
 
-          <fieldset class="step" data-step="2">
-            <legend class="step__legend">When, and for how long?</legend>
+            <fieldset class="step" data-step="2">
+              <legend class="step__legend">When, and for how long?</legend>
 
-            <label class="field__label" for="month">Travel month</label>
-            <select class="field" id="month" name="month">
-              {MONTHS.map((month) => <option value={month}>{month}</option>)}
-            </select>
+              <label class="field__label" for="month">Travel month</label>
+              <select class="field" id="month" name="month">
+                {MONTHS.map((month) => <option value={month}>{month}</option>)}
+              </select>
 
-            <p class="field__label" id="duration-label">Roughly how long</p>
-            <ul class="chips" role="group" aria-labelledby="duration-label">
-              {
-                DURATIONS.map((duration, index) => (
-                  <li>
-                    <input
-                      class="chip__input"
-                      type="radio"
-                      id={`dur-${index}`}
-                      name="duration"
-                      value={duration}
-                      checked={index === DURATIONS.length - 1}
-                    />
-                    <label class="chip" for={`dur-${index}`}>{duration}</label>
-                  </li>
-                ))
-              }
-            </ul>
-          </fieldset>
+              <p class="field__label" id="duration-label">Roughly how long</p>
+              <ul class="chips" role="group" aria-labelledby="duration-label">
+                {
+                  DURATIONS.map((duration, index) => (
+                    <li>
+                      <input
+                        class="chip__input"
+                        type="radio"
+                        id={`dur-${index}`}
+                        name="duration"
+                        value={duration}
+                        checked={index === DURATIONS.length - 1}
+                      />
+                      <label class="chip" for={`dur-${index}`}>{duration}</label>
+                    </li>
+                  ))
+                }
+              </ul>
+            </fieldset>
 
-          <fieldset class="step" data-step="3">
-            <legend class="step__legend">Who is travelling?</legend>
+            <fieldset class="step" data-step="3">
+              <legend class="step__legend">Who is travelling?</legend>
 
-            <ul class="chips" role="group" aria-label="Who is travelling">
-              {
-                PARTIES.map((party, index) => (
-                  <li>
-                    <input class="chip__input" type="radio" id={`party-${index}`} name="party" value={party} />
-                    <label class="chip" for={`party-${index}`}>{party}</label>
-                  </li>
-                ))
-              }
-            </ul>
+              <ul class="chips" role="group" aria-label="Who is travelling">
+                {
+                  PARTIES.map((party, index) => (
+                    <li>
+                      <input class="chip__input" type="radio" id={`party-${index}`} name="party" value={party} />
+                      <label class="chip" for={`party-${index}`}>{party}</label>
+                    </li>
+                  ))
+                }
+              </ul>
 
-            <label class="field__label" for="travellers">How many of you</label>
-            <input class="field field--narrow" id="travellers" name="travellers" type="number" min="1" inputmode="numeric" />
+              <label class="field__label" for="travellers">How many of you</label>
+              <input class="field field--narrow" id="travellers" name="travellers" type="number" min="1" inputmode="numeric" />
 
-            <p class="field__label" id="budget-label">
-              Budget band <span class="field__optional">(optional)</span>
-            </p>
-            <ul class="chips" role="group" aria-labelledby="budget-label">
-              {
-                BUDGETS.map((budget, index) => (
-                  <li>
-                    <input
-                      class="chip__input"
-                      type="radio"
-                      id={`budget-${index}`}
-                      name="budget"
-                      value={budget}
-                      checked={index === 0}
-                    />
-                    <label class="chip" for={`budget-${index}`}>{budget}</label>
-                  </li>
-                ))
-              }
-            </ul>
-          </fieldset>
+              <p class="field__label" id="budget-label">
+                Budget band <span class="field__optional">(optional)</span>
+              </p>
+              <ul class="chips" role="group" aria-labelledby="budget-label">
+                {
+                  BUDGETS.map((budget, index) => (
+                    <li>
+                      <input
+                        class="chip__input"
+                        type="radio"
+                        id={`budget-${index}`}
+                        name="budget"
+                        value={budget}
+                        checked={index === 0}
+                      />
+                      <label class="chip" for={`budget-${index}`}>{budget}</label>
+                    </li>
+                  ))
+                }
+              </ul>
+            </fieldset>
 
-          <fieldset class="step" data-step="4">
-            <legend class="step__legend">How do we reach you?</legend>
+            <fieldset class="step" data-step="4">
+              <legend class="step__legend">How do we reach you?</legend>
 
-            <label class="field__label" for="name">Your name</label>
-            <input class="field" id="name" name="name" type="text" autocomplete="name" required />
+              <label class="field__label" for="name">Your name</label>
+              <input class="field" id="name" name="name" type="text" autocomplete="name" required />
 
-            <label class="field__label" for="phone">Phone or WhatsApp</label>
-            <input class="field" id="phone" name="phone" type="tel" autocomplete="tel" required />
+              <label class="field__label" for="phone">Phone or WhatsApp</label>
+              <input class="field" id="phone" name="phone" type="tel" autocomplete="tel" required />
 
-            <label class="field__label" for="email">Email</label>
-            <input class="field" id="email" name="email" type="email" autocomplete="email" required />
+              <label class="field__label" for="email">Email</label>
+              <input class="field" id="email" name="email" type="email" autocomplete="email" required />
 
-            <p class="field__label" id="contact-label">Preferred way to be contacted</p>
-            <ul class="chips" role="group" aria-labelledby="contact-label">
-              {
-                CONTACT.map((method, index) => (
-                  <li>
-                    <input
-                      class="chip__input"
-                      type="radio"
-                      id={`contact-${index}`}
-                      name="contactMethod"
-                      value={method}
-                      checked={index === 0}
-                    />
-                    <label class="chip" for={`contact-${index}`}>{method}</label>
-                  </li>
-                ))
-              }
-            </ul>
+              <p class="field__label" id="contact-label">Preferred way to be contacted</p>
+              <ul class="chips" role="group" aria-labelledby="contact-label">
+                {
+                  CONTACT.map((method, index) => (
+                    <li>
+                      <input
+                        class="chip__input"
+                        type="radio"
+                        id={`contact-${index}`}
+                        name="contactMethod"
+                        value={method}
+                        checked={index === 0}
+                      />
+                      <label class="chip" for={`contact-${index}`}>{method}</label>
+                    </li>
+                  ))
+                }
+              </ul>
 
-            <label class="field__label" for="notes">
-              Anything else we should know <span class="field__optional">(optional)</span>
-            </label>
-            <textarea class="field" id="notes" name="notes" rows="4"></textarea>
+              <label class="field__label" for="notes">
+                Anything else we should know <span class="field__optional">(optional)</span>
+              </label>
+              <textarea class="field" id="notes" name="notes" rows="4"></textarea>
 
-            <label class="consent">
-              <input type="checkbox" name="consent" required />
-              <span>
-                I agree to India Visit contacting me about this enquiry, per the
-                <a href="/privacy/">privacy policy</a>.
+              <label class="consent">
+                <input type="checkbox" name="consent" required />
+                <span>
+                  I agree to India Visit contacting me about this enquiry, per the
+                  <a href="/privacy/">privacy policy</a>.
+                </span>
+              </label>
+
+              <!-- Turnstile mounts here (lead-form.ts): invisible unless
+                   Cloudflare asks this visitor for a click. -->
+              <div class="turnstile" data-turnstile></div>
+            </fieldset>
+
+            <div class="nav">
+              <button type="button" class="nav__back tap-target" data-back hidden>Back</button>
+              <button type="button" class="nav__next tap-target" data-next hidden>Next</button>
+              <span class="nav__submit" data-submit>
+                <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit" disabled={!LEADS_LIVE}>
+                  {LEADS_LIVE ? 'Send It Over' : FORMS_PENDING_LABEL}
+                </Button>
               </span>
-            </label>
+              {LEADS_LIVE && <p class="form__status" data-lead-status role="status" aria-live="polite"></p>}
+            </div>
 
-            <!-- Turnstile mounts here in M6. -->
-            <div data-turnstile></div>
-          </fieldset>
+            <p class="form__reassure">
+              No obligation, no call centre. Your details go only to India Visit.
+            </p>
+          </form>
+        </div>
 
-          <div class="nav">
-            <button type="button" class="nav__back tap-target" data-back hidden>Back</button>
-            <button type="button" class="nav__next tap-target" data-next hidden>Next</button>
-            <span class="nav__submit" data-submit>
-              <Button type="submit" variant="primary" size="lg" data-analytics="plan_submit" disabled={!LEADS_LIVE}>
-                {LEADS_LIVE ? 'Send It Over' : FORMS_PENDING_LABEL}
-              </Button>
-            </span>
-            {LEADS_LIVE && <p class="form__status" data-lead-status role="status" aria-live="polite"></p>}
-          </div>
-
-          <p class="form__reassure">
-            No obligation, no call centre. Your details go only to India Visit.
-          </p>
-        </form>
+        <!-- 3 · Mini-FAQ — objection handling, and the only other content here -->
+        <section class="plan__mini" aria-labelledby="mini-heading">
+          <h2 id="mini-heading" class="plan__mini-heading">Before you send it</h2>
+          <dl class="mini">
+            {
+              MINI_FAQ.map((item) => (
+                <div class="mini__item">
+                  <dt class="mini__q">{item.question}</dt>
+                  <dd class="mini__a">{item.answer}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
       </div>
 
       <!-- ---- reassurance column ---------------------------------------- -->
@@ -363,23 +382,6 @@ const crumbs = breadcrumbSchema([
           </a>
         </div>
       </aside>
-    </div>
-  </section>
-
-  <!-- 3 · Mini-FAQ — objection handling, and the only other content here -->
-  <section class="band band-tight band-offwhite" aria-labelledby="mini-heading">
-    <div class="container-content">
-      <h2 id="mini-heading">Before you send it</h2>
-      <dl class="mini">
-        {
-          MINI_FAQ.map((item) => (
-            <div class="mini__item">
-              <dt class="mini__q">{item.question}</dt>
-              <dd class="mini__a">{item.answer}</dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
   </section>
 
@@ -476,7 +478,7 @@ const crumbs = breadcrumbSchema([
       grid-area: intro;
     }
 
-    .formwrap {
+    .plan__main {
       grid-area: form;
     }
 
@@ -485,19 +487,6 @@ const crumbs = breadcrumbSchema([
       position: sticky;
       top: 6rem;
     }
-  }
-
-  .crumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-ink-muted);
   }
 
   .side__title {
@@ -878,17 +867,25 @@ const crumbs = breadcrumbSchema([
   }
 
   /* ---- mini FAQ ----------------------------------------------------------- */
-  .mini {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
-    gap: 1.25rem;
-    margin: 2rem 0 0;
+  .plan__mini {
+    margin-top: clamp(2.5rem, 1.5rem + 3vw, 4rem);
   }
 
-  /* Each question in its own quiet card (round 6). No shadow: not a link. */
+  .plan__mini-heading {
+    font-size: var(--text-2xl);
+  }
+
+  .mini {
+    display: grid;
+    gap: 1rem;
+    margin: 1.25rem 0 0;
+  }
+
+  /* Each question in its own quiet card (round 6). No shadow: not a link.
+     Off-white on the white page, the other light surface. */
   .mini__item {
-    padding: 1.75rem 1.5rem;
-    background-color: var(--color-white);
+    padding: 1.5rem;
+    background-color: var(--color-offwhite);
     border: 1px solid var(--color-card-border);
     border-radius: var(--radius-lg);
   }
@@ -902,5 +899,10 @@ const crumbs = breadcrumbSchema([
   .mini__a {
     margin: 0.5rem 0 0;
     color: var(--color-ink-muted);
+  }
+
+  /* Empty until Cloudflare asks for a click (lead-form.ts); then it needs room. */
+  .turnstile:not(:empty) {
+    margin-top: 1rem;
   }
 </style>

@@ -23,6 +23,14 @@ const {
   bookingTermsUrl = '/booking-terms/',
   heading = 'Cabin Categories',
 } = Astro.props;
+
+/* "Top tier" ranks one cabin against others; a train with a single cabin
+   class has nothing to rank it against (round 5, #38). */
+const ranked = cabins.length > 1;
+/* Columns follow the count, so one or two cabins do not sit in a row built
+   for four (#38): Golden Chariot's one card used a quarter of it. */
+const columns = Math.min(Math.max(cabins.length, 1), 4);
+const gridStyle = `--cabin-columns: ${columns}; --cabin-columns-md: ${Math.min(columns, 2)}`;
 ---
 
 <section class="band" id="cabins">
@@ -36,10 +44,10 @@ const {
       </p>
     )}
 
-    <ul class="cabins fade-up-stagger">
+    <ul class:list={['cabins', 'fade-up-stagger', { 'cabins--single': columns === 1 }]} style={gridStyle}>
       {cabins.map((cabin) => (
-        <li class:list={['cabin', { 'cabin--flagship': cabin.flagship }]}>
-          {cabin.flagship && <p class="cabin__flag">Top tier</p>}
+        <li class:list={['cabin', { 'cabin--flagship': ranked && cabin.flagship }]}>
+          {ranked && cabin.flagship && <p class="cabin__flag">Top tier</p>}
           <h3 class="cabin__name">{cabin.name}</h3>
           <ul class="cabin__facilities">
             {cabin.facilities.map((facility) => <li>{facility}</li>)}
@@ -57,7 +65,8 @@ const {
     margin-top: 1.25rem;
     padding: 1rem 1.15rem;
     background-color: var(--color-offwhite);
-    border-left: 3px solid var(--color-crimson);
+    /* Burgundy, as every other rule on the page (round 5, #40). */
+    border-left: 3px solid var(--color-burgundy);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     font-size: var(--text-sm);
     color: var(--color-ink-muted);
@@ -73,14 +82,19 @@ const {
 
   @media (min-width: 40rem) {
     .cabins {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(var(--cabin-columns-md, 2), minmax(0, 1fr));
     }
   }
 
   @media (min-width: 64rem) {
     .cabins {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(var(--cabin-columns, 4), minmax(0, 1fr));
     }
+  }
+
+  /* A lone cabin keeps a card's width rather than spanning the container. */
+  .cabins--single {
+    max-width: 24rem;
   }
 
   .cabin {
@@ -111,9 +125,13 @@ const {
     font-size: var(--text-2xl);
   }
 
+  /* `align-content: start`: the list fills the card's spare height (so every
+     price line sits level), but its items keep their own height instead of
+     stretching two one-line facilities into 135px bars (round 5, #37). */
   .cabin__facilities {
     flex: 1;
     display: grid;
+    align-content: start;
     gap: 0.5rem;
     margin: 1rem 0 1.25rem;
     padding: 0;
@@ -136,16 +154,7 @@ const {
     color: var(--color-ink);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .cabin {
-      transition:
-        transform var(--duration-fast) var(--ease-brand),
-        box-shadow var(--duration-fast) var(--ease-brand);
-    }
-
-    .cabin:hover {
-      transform: translate3d(0, -3px, 0);
-      box-shadow: var(--shadow-lift-hover);
-    }
-  }
+  /* No hover lift: a cabin card holds no link, and a card that moves under
+     the pointer promises a click (round 5, #37; the round-6 rule for the Why
+     India Visit and review cards). */
 </style>

@@ -48,6 +48,10 @@ const enquire = {
 };
 
 const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquire];
+/* The crimson fill goes on the action the layout leads with: Enquire by
+   default, Call on /corporate/ (round 5, #80; T5 §7). It stayed on the form
+   while Call moved first, so the bar said two different things. */
+const lead = layout === 'corporate' ? call.key : enquire.key;
 ---
 
 <div id="bar-sentinel" aria-hidden="true"></div>
@@ -60,7 +64,7 @@ const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquir
   <nav class="bar__inner" aria-label="Contact us">
     {actions.map((action) => (
       <a
-        class:list={['bar__action', `bar__action--${action.key}`]}
+        class:list={['bar__action', `bar__action--${action.key}`, { 'bar__action--lead': action.key === lead }]}
         href={action.href}
         data-analytics={action.analytics}
         {...(action.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
@@ -163,7 +167,7 @@ const actions = layout === 'corporate' ? [call, enquire, wa] : [wa, call, enquir
   }
 
   /* Exactly one crimson action in the bar, per the colour ruling. */
-  .bar__action--enquire {
+  .bar__action--lead {
     background-color: var(--color-crimson);
     color: var(--color-white);
   }

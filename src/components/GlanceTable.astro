@@ -6,9 +6,13 @@
  * Each row anchors to its day in the accordion below (Template Spec S5), so
  * the day IDs here and in DayAccordion must agree — both use `day-{n}`.
  *
- * Rendered as a real <table> on desktop and a definition-style list on
- * mobile via one markup tree, so screen readers get proper row semantics at
- * every width rather than a div grid pretending to be tabular.
+ * Rendered as a real <table> on desktop and as stacked rows on a phone via
+ * one markup tree. Below 48rem each row is a block (day and destination on
+ * one line, the experience under them) instead of three columns of 84, 123
+ * and 148px that ran Kerala's twelve days to 1,618px (round 5, #33). The
+ * explicit ARIA roles keep the row semantics when the display changes,
+ * because Safari drops a table's semantics once its rows stop being
+ * table-rows.
  */
 interface Props {
   rows: Array<{ dayNo: number; destination: string; signatureExperience: string }>;
@@ -23,27 +27,27 @@ const { rows, heading = 'Itinerary at a Glance' } = Astro.props;
     <h2 class="glance__heading">{heading}</h2>
     <!-- data-allow-clip: a wide table scrolls inside its own box by design. -->
     <div class="glance__scroll" data-allow-clip>
-      <table class="glance">
+      <table class="glance" role="table">
         <caption class="visually-hidden">
           Day-by-day summary. Each row links to that day's full description.
         </caption>
-        <thead>
-          <tr>
-            <th scope="col">Day</th>
-            <th scope="col">Destination</th>
-            <th scope="col">Signature experience</th>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th scope="col" role="columnheader">Day</th>
+            <th scope="col" role="columnheader">Destination</th>
+            <th scope="col" role="columnheader">Signature experience</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody role="rowgroup">
           {rows.map((row) => (
-            <tr>
-              <th scope="row" class="glance__day">
+            <tr role="row">
+              <th scope="row" role="rowheader" class="glance__day">
                 <a href={`#day-${row.dayNo}`} class="glance__anchor">
                   Day {String(row.dayNo).padStart(2, '0')}
                 </a>
               </th>
-              <td class="glance__dest">{row.destination}</td>
-              <td>{row.signatureExperience}</td>
+              <td role="cell" class="glance__dest">{row.destination}</td>
+              <td role="cell" class="glance__exp">{row.signatureExperience}</td>
             </tr>
           ))}
         </tbody>
@@ -105,18 +109,66 @@ const { rows, heading = 'Itinerary at a Glance' } = Astro.props;
     font-weight: 700;
   }
 
+  /* Burgundy at rest, crimson on hover (round 5, #13): twelve crimson day
+     labels down one table were twelve calls to action. */
   .glance__anchor {
-    color: var(--color-crimson);
+    color: var(--color-burgundy);
     text-decoration: none;
   }
 
   .glance__anchor:hover {
+    color: var(--color-crimson);
     text-decoration: underline;
   }
 
   .glance__dest {
     font-weight: 600;
     color: var(--color-ink);
+  }
+
+  /* ---- Phones: one stacked row per day ---------------------------------- */
+  @media (max-width: 47.999rem) {
+    .glance__scroll {
+      padding-inline: 1.15rem;
+    }
+
+    .glance thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .glance tbody,
+    .glance tbody tr {
+      display: block;
+    }
+
+    .glance tbody tr {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 0.85rem;
+      padding-block: 0.9rem;
+      border-bottom: 1px solid var(--color-hairline);
+    }
+
+    .glance tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    .glance tbody :is(th, td) {
+      display: block;
+      padding: 0;
+      border-bottom: 0;
+    }
+
+    .glance__exp {
+      grid-column: 1 / -1;
+      margin-top: 0.3rem;
+      color: var(--color-ink-muted);
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {

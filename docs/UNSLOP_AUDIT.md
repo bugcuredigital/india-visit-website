@@ -60,6 +60,87 @@ CLAUDE.md #5 and PAGE_TEMPLATES.
   type tracking, card edges, Phosphor icons throughout, form fields, the
   accordions), the way round 5's remarks were checked against the high fixes.
 
+- **26 Nov (launch prep): the medium and low batch, ruled.** All 68 items, by
+  the escalation standard above: **41 fixed, 5 already settled** (by round 6 or
+  earlier), **20 escalated** to the owner because each changes words or a claim
+  (CLIENT_REVIEW_SHEET §30, with the proposed wording), and **2 fixed in files
+  the coordinating session held** (#15's button, #90's Plan My Trip layout).
+  Three items had one part declined, each on a locked rule: #15's per-page
+  footer (PAGE_TEMPLATES T14, one footer), #17's breadcrumb in the journey hero
+  (Template Spec S1, which wins on itinerary structure) and #72's casing
+  change (CLAUDE.md #7). Item by item:
+
+| # | Sev | Subject | Ruling | What was done, or why |
+|---|---|---|---|---|
+| 10 | med | Tight section padding below the rhythm floor; neighbouring same-colour bands stack their padding | FIXED | `--space-section-tight` is now `clamp(3.5rem, 2rem + 5vw, 6rem)`: 56px at 390, 96px from 1280. In global.css, a band that follows a band of the same colour drops its top padding, so 188–218px gaps become one section's worth. New `band-ruled` utility (a hairline under the band) keeps both paddings and replaces 5 page-local intro borders. The Reviews intro now gets its colour from `band-offwhite` rather than scoped CSS. Probed on 16 pages: every collapsed pair is the same colour. |
+| 11 | med | Uppercase crimson eyebrows everywhere; echo eyebrows | ESCALATED (style SETTLED-R6) | The single uppercase, tracked eyebrow with its lead-in rule was round 6's approved sitewide style, so the styling is settled. Removing the echo eyebrows removes words: escalation §2. The wrap of "Speak to a person, not a portal" is a copy question (#18). |
+| 12 | med | `68ch` measure runs 85–108 characters a line | FIXED + reserved part | `--container-prose: 34em`. Measured at 1280: articles 64 average / 74 max characters per line (was 69/92), booking-terms 63/79 (was 80/97), day narratives 66/75 (was 82/93). FAQ panels keep their round-6 width (46rem) and the answers hold to the measure. The Policy notice box at the prose width is in Policy.astro (reserved): §3. |
+| 13 | med | Crimson at rest: card CTAs, glance numerals, transport icons, stepper | FIXED (part SETTLED-R6) | Now burgundy at rest: JourneyCard "View journey", GlanceTable day links (crimson on hover), TransportChip icon, BookingStepper rules and numerals. Round 6 had already made the day-number pills and the practical-note icons burgundy. |
+| 14 | med | `ghost` button is crimson text | FIXED | Ghost is now underlined ink text (burgundy on hover), the design direction's secondary. The on-dark ghost is unchanged. Affects "Start a Conversation", "Read More Reviews" and the 404. |
+| 15 | med | ConvertBand has no primary; second form in the footer | NEEDS-RESERVED-FILE; footer half DECLINED | Added a Button variant `on-dark-solid` (light fill, burgundy text: today's outline hover state at rest). The ConvertBand submit needs one line in EnquiryForm.astro (§3; tested in a scratch build). **Declined:** the Footer prop that drops the form column. PAGE_TEMPLATES T14 says "one Footer component sitewide, no per-page variants", and T10 allows "footer only". CLAUDE.md: page structure comes from PAGE_TEMPLATES. The T14 footer reference is still with the client. |
+| 16 | med | Header: no burger open state; transparent header under the open menu; 240px panel wraps; "Journeys" current on trains | FIXED | The burger turns to an X (transform only, inside reduced-motion). The overlay header goes solid while the menu is open (`is-open`, set by the existing toggle). The menu panel is `max-content` and its links don't wrap. Header has a new `current` prop, so train pages mark Luxury Trains current. |
+| 17 | med | Breadcrumbs hand-built on 12 templates; the article trail omits the current page; journeys have none | FIXED + reserved part; journey half DECLINED | New `Breadcrumb.astro` (ol/li, drawn separator with empty alt text, tones light/image/dark), used on 9 page templates. The article trail now ends on the article. Policy.astro and plan-my-trip.astro are reserved: §3. **Declined:** a breadcrumb in the journey hero. The Itinerary Template Spec S1 has none, and CLAUDE.md says the Template Spec wins on itinerary page structure. BreadcrumbList JSON-LD is already present, and #32 says that hero is already crowded. |
+| 18 | med | "X, not Y" tic; "call centre" repeated | ESCALATED | Copy. §2. |
+| 19 | med | Practical-note icons; fifth note alone on a row | FIXED (icons SETTLED-R6) | Round 6 moved to Phosphor glyphs in a badge. Columns now follow the note count (3 or 4, whichever leaves the fuller last row; 5 notes → 3+2, 3 notes → 3). Content still maps "Fitness" and "Sightings" to the clock icon. That is an editor's icon pick in the CMS; I left it for M5 content. |
+| 20 | low | Type scale documented differently from tokens | SETTLED-EARLIER | CLAUDE.md has recorded the M4 rev-2 scale since 13 Nov. |
+| 22 | med | Trust numerals bigger than the H1 | FIXED | CounterStat uses `--text-stat` (2.75rem cap). |
+| 23 | med | Stat 3 flush against its divider from 768px | FIXED | At 48rem every cell's inline padding is reset, odd and even cells included. |
+| 24 | med | How It Works rail misaligned | SETTLED-R6 | Round 6 rebuilt the connector from each marker to the next. |
+| 25 | med | Soft destination tiles; Vietnam alone at 390 | FIXED | `sizes` is 24rem and a 760w file was added. Below 40rem an odd last tile spans both columns at 8:5, the same height as its neighbours. **Text over a photograph: needs check:hero-contrast.** |
+| 26 | med | Why India Visit #4 body is a three-word label | ESCALATED | Copy. §2. |
+| 27 | med | "20 years" ×6; "curated" ×3 | ESCALATED | Copy. §2. |
+| 28 | low | CTA casing; three arrow treatments | FIXED (casing SETTLED-EARLIER) | Casing was settled by PR #31. Arrows follow one rule now: onward text links get the drawn SVG arrow (new Button `arrow` prop, the JourneyCard CTA, the day city chips, the dev page), outline and filled buttons get none, and ↗ stays only for off-site links. The typed → is gone from "Start a Conversation" (ghost + arrow) and "Corporate Travel" (outline, no arrow). The audit's note that "Corporate Travel" repeats its eyebrow is copy: §2. |
+| 32 | med | Crowded phone hero; place names broken at 1280 | FIXED + ESCALATED | On phones the two ghost CTAs share a row (16px text, 44px targets kept), saving one 60px row. Runs of capitalised words are held together from 48rem ("Ha Long Bay", "Root Bridges", "The Golden Triangle"); measured: no mid-name break at 1280 or 768. Capping `signatureFeature` at ~40 characters means rewriting 20 of 28 lines, which is copy: §2. **Hero layout changed: needs check:hero-contrast.** |
+| 33 | med | Glance table stays three columns on phones | FIXED | Below 48rem each row stacks: day and destination on one line, the experience under them. Explicit ARIA table roles keep row semantics in Safari. Kerala's 12 days are far shorter. |
+| 34 | low | "Explore Kochi" on transfer and departure days | FIXED | Chips follow the overnight city. On a night aboard (train, houseboat) they use the place before the title's colon. Departure days get none. Kerala days 3 and 12 lost the chip; train days keep theirs. |
+| 35 | low | Day titles leave one-word last lines; the day label floats mid-title | FIXED | `text-wrap: balance` on day titles. The day pill is baseline-aligned to the first line. |
+| 37 | med | Cabin facility lists stretch; cards lift with no link | FIXED | `align-content: start`. The hover lift is removed (round 6's rule for non-link cards). |
+| 38 | med | One cabin flagged "Top tier" in a four-column row | FIXED + ESCALATED | "Top tier" renders only when there is more than one cabin. Columns follow the count, and a lone cabin is held to 24rem. The singular heading "Cabin Category" is a new string: §2. |
+| 39 | med | Availability band body repeats its heading | ESCALATED | Copy (C4/M6 DRAFT). §2. |
+| 40 | low | Six-column stepper; crimson disclosure rule | FIXED | 3×2 from 48rem, burgundy rules and numerals. The cabin disclosure rule is burgundy. |
+| 41 | low | Inclusion headings small; half-empty grid with no exclusions | FIXED (headings SETTLED-R6) | With no exclusions there is one panel at the measure (Jhalana, Jawai, Tadoba). Round 6's approved two-panel design set the headings as panel titles. "One H2 over two H3s" would need a new heading string, so I left it. |
+| 45 | med | `auto-fill` builds four columns; one card fills 23% | FIXED | Destination card rows are at most three across. With one or two cards (journeys or reading) the row uses the FAQ layout: heading and pill on the left, cards on the right. |
+| 46 | med | Kerala and Ladakh pages contradict themselves | ESCALATED | Copy and facts. §2. |
+| 47 | med | "What defines" repeats the city pages; no link to /cities/ | ESCALATED | Copy, plus a schema field for a tile link (schema changes still stop and ask). §2. |
+| 48 | med | South & West reads like one journey's page | ESCALATED | Copy. §2. |
+| 49 | med | Intensifiers, "rather than" ×31, a superlative used twice | ESCALATED | Copy. §2. |
+| 50 | low | FAQ H2 stacks into one word per line; tagline widows | SETTLED-R6 | Round 6 set `h2 { text-wrap: balance }` and `p { text-wrap: pretty }` sitewide. What remains is word length at the locked H2 size in an 18rem column. |
+| 52 | med | Nine hooks all "A, B and C" | ESCALATED | Copy. §2. |
+| 53 | low | Counts in three formats (count eyebrows) | ESCALATED | Removing the "6 destinations" / "3 destinations" eyebrows removes words. §2. |
+| 54 | med | "About Jaipur" H2 styled as an eyebrow; three label styles | FIXED | It is now a normal H2 (`--text-h2`). The quick-fact labels match the journey Quick Facts style (0.14em). |
+| 55 | med | Three notes in four columns; six cards break 4+2 | FIXED | Notes via #19. City journey cards are three-up (Jaipur 3+3, Kochi 3+2). |
+| 56 | med | City prose repeats itself and states unconfirmed claims | ESCALATED | Copy and claims. §2. |
+| 59 | med | The "slim" article hero is all photograph | FIXED + ESCALATED | The hero photo is 21:9 from 48rem (16:9 on phones). The excerpt as a lede is copy in a new place, and T9 §1 lists no lede: §2. |
+| 60 | med | Mobile table of contents is an open list | FIXED | Below 64rem the contents list is a closed `<details>`. The desktop sticky list is unchanged. The hidden copy is `display:none`, so nothing is announced twice. |
+| 61 | med | Article lists have no bullets or numbers | FIXED | `disc` and `decimal` restored (round 6's crimson marker now shows). |
+| 62 | med | Required journey card after the last paragraph | FIXED | The card sits mid-body (T9 §3): the rendered HTML is split before the H2 that opens the second half. Verified on all 8 articles (e.g. Ladakh: after "Month by month"). It is ruled at the text column's width; a single card stands beside its heading. If a body has fewer than 2 H2s, or contains Astro image placeholders, the card falls back to after the body. |
+| 63 | med | Related posts = newest three (file order) | FIXED | Ranked: +2 for the same category, +1 per shared destination of the embedded journeys, then date, then id. |
+| 64 | med | Eight drafts share one formula | ESCALATED | Copy. §2. |
+| 65 | med | Vietnam guide contradicts itself on season | ESCALATED | Copy and claim. §2. |
+| 66 | med | Kerala houseboat guide is a stub under a long excerpt | ESCALATED | Copy. §2. |
+| 67 | med | Golden Triangle guide: "5 nights / 6 days" and a title matching no itinerary | ESCALATED | Copy (title and body). §2. |
+| 69 | med | Travel guide grid runs 3+3+1 | FIXED | The grid takes 3 or 4 columns, whichever leaves the fuller last row: today 4+3. The audit proposed featuring two posts; I kept one, because T8 §2 says "full-width card". |
+| 70 | med | Every card reads "September 2026"; featured post picked by file order | FIXED | ArticleCard shows "Category · N min read" (T8 §4), with the publish date dropped from cards; article pages keep it. A drawn dot never ends a line. The Ladakh guide is pinned with `featured: true`, a content flag reversible in /admin. It is the demo-path article, and the homepage guide row now leads with it (same three posts). |
+| 71 | med | "actually" ×6 on the guide page | ESCALATED | Copy. §2. |
+| 72 | low | Filter counts; featured ignores the filter; casing | FIXED; casing DECLINED | Chips count all 8 posts, and the lead article is filtered with the grid. **Declined:** "Travel guide" H1 vs "Travel Guide" crumb. Invariant #7 sets page headings in sentence case and nav labels in Title Case, so both are right. The audit gave no fix for the chips wrapping at 390, so they still wrap. |
+| 73 | med | "Why by train" describes one train | ESCALATED | Copy and claim. §2. |
+| 74 | med | Deccan Odyssey first on the trains page | FIXED | Sorted featured first, then nights, then id: Palace on Wheels, Deccan Odyssey, Golden Chariot. `featured` is the CMS toggle the homepage already uses. |
+| 75 | med | The disclosure note has a section of its own (188px gaps) | FIXED + ESCALATED | The same words now sit as the FAQ section's last line, through a new FaqAccordion slot. The tighter wording is copy: §2. |
+| 76 | low | Lotus and yellow semibold on a legal line | FIXED | Lotus dropped. The line is white, regular weight. **Hero text changed: needs check:hero-contrast** (white measures higher than yellow). |
+| 79 | med | Corporate: one selling point made four times; mixed number styles | ESCALATED | Copy. §2. |
+| 80 | med | Corporate sticky bar fills "Form", not Call | FIXED | The crimson fill goes on the layout's lead action: Call on /corporate/, Enquire elsewhere. |
+| 81 | low | Stray lotus on step 03; step bodies misaligned | FIXED | Lotus removed. At ≥52rem the three steps share rows (subgrid), so bodies align. |
+| 82 | med | About repeats itself and changes voice | SETTLED-EARLIER | The page was rebuilt on 21 Nov from the client's own About Us (COPY_REGISTER §T, APPROVED). |
+| 83 | low | About philosophy: three lotus columns | SETTLED-EARLIER | The section no longer exists since the 21 Nov rebuild. |
+| 84 | low | About hero copy centred on the portrait | FIXED | `align-items: start`. |
+| 85 | med | Review chips count placeholder slots | FIXED (wall SETTLED-R6) | Chips count real reviews only, show only when real reviews span two categories, and the status text skips slots. Round 6's auto-fit wall already fills the row. |
+| 86 | low | Trip pill "Palace on Wheels, 7N/8D" | FIXED | Punctuation only, per invariant #7: "Palace on Wheels · 7N · 8D" and "Kerala with Houseboat · 11N · 12D". The Tina field hint now shows that format. |
+| 90 | med | Plan My Trip: 480px of white under the step-1 card | NEEDS-RESERVED-FILE | Patch tested: the mini-FAQ moves under the form in the right column. §3. |
+| 91 | med | Policy pages show no "Last updated"; slabs set as run-in text | ESCALATED | A table restates approved legal text, and a date is a statement about the document. §2. |
+| 92 | med | 404 has three crimson actions in a row | FIXED | On the new band: filled on-dark "Back to the Homepage", on-dark ghosts for the other two. No crimson on the band. |
+| 93 | med | 404 lotus margin computes to 0; Lotus note wrong | FIXED | A wrapper the page owns carries the spacing. Lotus.astro's note is corrected: under Astro's `attribute` scoping, a caller's scoped rule reaches neither colour nor layout. Swept per the one-call-site rule: the two `.quote__mark` rules (About, destinations) now use the working `:global` pattern, and the dead `.author__mark` rule is removed. Plan My Trip's `.side__mark { flex:none }` is equally dead but harmless (reserved file). |
+| 94 | med | 404 is the stock composition; off-palette SVG; filler lede | FIXED + ESCALATED | Full-width burgundy band with the BandWatermark (T13). The road SVG is palette-only (#3D0A1E and #2A1520 became ink). The lede rewrite is copy: §2. |
+
 ## How to read this
 
 - Each line: `N. [TEMPLATE|PAGE-SPECIFIC] [severity] [category] — what. Where. Rule. Fix.`

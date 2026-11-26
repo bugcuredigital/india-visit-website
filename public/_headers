@@ -1,5 +1,46 @@
 # Cloudflare Pages response headers. Astro copies this file to dist/ as is.
+# Rules apply in file order, and a later "! Header" removes one an earlier
+# rule set (Cloudflare Pages docs, "Headers"). These headers do not reach
+# responses made by Pages Functions (/api/lead, /downloads/*): those set their own.
+
+# ---------------------------------------------------------------- security --
+# Runbook M8 step 3, reviewed 26 Nov 2026.
 #
+# Content-Security-Policy, source by source:
+#   script-src  'self' for the site's bundles; 'unsafe-inline' for the small
+#               inline scripts Astro and the layout write (the `js` class, the
+#               router, the hero video loader, Partytown's stub);
+#               challenges.cloudflare.com for Turnstile, loaded when a visitor
+#               starts a form; the Google Tag Manager and Cloudflare Web
+#               Analytics hosts, in case a tag ever runs on the main thread.
+#   style-src   'unsafe-inline': every stylesheet is inlined into the page
+#               (astro.config.mjs, inlineStylesheets: 'always').
+#   img-src     https: as well as 'self' and data: (the select chevrons), so a
+#               tag's tracking pixel cannot break a page.
+#   connect-src the lead endpoint ('self'), Turnstile, and the analytics hosts.
+#   frame-src   Turnstile's challenge frame, and Partytown's same-origin sandbox.
+#   worker-src  Partytown's service worker ('self') and its blob worker.
+# GTM itself runs inside Partytown's sandbox (/~partytown/), which has its own
+# document and its own blob worker, and Partytown evaluates tag code there with
+# `new Function`. The sandbox therefore carries no CSP (detached below):
+# allowing eval site-wide would weaken every page to accommodate one iframe.
+# The Tina editor at /admin/ is a third-party application with its own needs
+# and is detached too.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://*.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; media-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://cloudflareinsights.com; frame-src 'self' https://challenges.cloudflare.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests
+
+/~partytown/*
+  ! Content-Security-Policy
+
+/admin/*
+  ! Content-Security-Policy
+
+# ----------------------------------------------------------------- caching --
 # Everything under /_astro/ is content-hashed by Vite (fonts, scripts, styles
 # and optimised images), so a changed file is a new URL and a cached copy can
 # never go stale: cache it for a year and never revalidate. Pages' default was

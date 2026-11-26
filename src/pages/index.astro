@@ -54,6 +54,7 @@ import Lotus from '../components/Lotus.astro';
 import { getSiteSettings, instagramHandle, verifiedTrustStats } from '../lib/site-settings';
 import { heroPreload } from '../lib/hero-image';
 import { DESTINATIONS, REGION_COUNT } from '../lib/destinations-strip';
+import { byId } from '../lib/order';
 
 /* Neutral grey 4:5 slot. A stock photograph of a stranger is deliberately NOT
    used for the founder — see the `founder` schema note in content.config.ts. */
@@ -91,7 +92,7 @@ const featuredJourneys = [...journeys]
   .sort((a, b) => {
     const byFeatured = Number(b.data.featured) - Number(a.data.featured);
     if (byFeatured !== 0) return byFeatured;
-    return Number(a.data.variant === 'B') - Number(b.data.variant === 'B');
+    return Number(a.data.variant === 'B') - Number(b.data.variant === 'B') || byId(a, b);
   })
   .slice(0, 6);
 
@@ -129,7 +130,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => {
     const byFeatured = Number(b.data.featured) - Number(a.data.featured);
     if (byFeatured !== 0) return byFeatured;
-    return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+    return b.data.publishDate.getTime() - a.data.publishDate.getTime() || byId(a, b);
   })
   .slice(0, 3);
 
@@ -139,7 +140,9 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
    the schema refuses it. */
 const testimonials = (
   await getCollection('testimonials', ({ data }) => data.placeholder || data.consentConfirmed)
-).map((entry) => ({
+)
+  .sort(byId)
+  .map((entry) => ({
   name: entry.data.name,
   origin: entry.data.origin,
   tripLabel: entry.data.tripLabel,
@@ -281,15 +284,22 @@ const WHY_US = [
 
       <ul class="tiles fade-up-stagger">
         {
-          destinationTiles.map((tile) => (
+          destinationTiles.map((tile, index) => (
             <li class="tile">
               <a class="tile__link" href={`/destinations/${tile.slug}/`}>
                 <span class="tile__frame">
+                  {/* sizes: each tile is a third of the 1200px row, 24rem, and
+                      was drawn from a 256px file stretched to 384 (round 5,
+                      #25). The odd last tile spans both phone columns. */}
                   <Image
                     src={tile.image}
                     alt={tile.alt}
-                    widths={[240, 360, 520]}
-                    sizes="(min-width: 64rem) 16rem, (min-width: 40rem) 30vw, 45vw"
+                    widths={[240, 360, 520, 760]}
+                    sizes={
+                      index === destinationTiles.length - 1 && destinationTiles.length % 2 === 1
+                        ? '(min-width: 64rem) 24rem, (min-width: 40rem) 30vw, 92vw'
+                        : '(min-width: 64rem) 24rem, (min-width: 40rem) 30vw, 45vw'
+                    }
                     loading="lazy"
                     class="tile__image"
                   />
@@ -405,7 +415,7 @@ const WHY_US = [
         <p class="consultant__lines">{settings.founder.quote}</p>
 
         <p class="consultant__action">
-          <Button href="/plan-my-trip/" variant="ghost">Start a Conversation →</Button>
+          <Button href="/plan-my-trip/" variant="ghost" arrow>Start a Conversation</Button>
         </p>
       </div>
     </div>
@@ -510,7 +520,7 @@ const WHY_US = [
         </p>
       </div>
       <p class="corp__action">
-        <Button href="/corporate/" variant="on-dark">Corporate Travel →</Button>
+        <Button href="/corporate/" variant="on-dark">Corporate Travel</Button>
       </p>
     </div>
   </section>
@@ -546,8 +556,7 @@ const WHY_US = [
                 excerpt={post.data.excerpt}
                 image={post.data.heroImage}
                 imageAlt={post.data.heroImageAlt}
-                publishDate={post.data.publishDate}
-                updatedDate={post.data.updatedDate}
+                body={post.body ?? ''}
               />
             ))}
           </div>
@@ -855,6 +864,19 @@ const WHY_US = [
     border-radius: var(--radius-lg);
     aspect-ratio: 4 / 5;
     background-color: var(--color-offwhite);
+  }
+
+  /* Two phone columns and nine tiles left Vietnam alone on the fifth row
+     (round 5, #25): an odd last tile spans the row, at the same height as
+     its neighbours (two 4:5 frames side by side are about 8:5). */
+  @media (max-width: 39.999rem) {
+    .tile:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
+    .tile:last-child:nth-child(odd) .tile__frame {
+      aspect-ratio: 8 / 5;
+    }
   }
 
   .tile__image {

@@ -19,11 +19,12 @@ interface Props {
 }
 
 const { inclusions, exclusions, standardisedCaveat = false } = Astro.props;
+const hasExclusions = Boolean(exclusions && exclusions.length > 0);
 ---
 
 <section class="band">
   <div class="container-content">
-    <div class="incl">
+    <div class:list={['incl', { 'incl--single': !hasExclusions }]}>
       <div>
         <h2 class="incl__heading">What's included</h2>
         <ul class="incl__list">
@@ -42,7 +43,7 @@ const { inclusions, exclusions, standardisedCaveat = false } = Astro.props;
         )}
       </div>
 
-      {exclusions && exclusions.length > 0 && (
+      {hasExclusions && exclusions && (
         <div>
           <h2 class="incl__heading">Not included</h2>
           <ul class="incl__list incl__list--plain">
@@ -66,6 +67,12 @@ const { inclusions, exclusions, standardisedCaveat = false } = Astro.props;
   @media (min-width: 48rem) {
     .incl {
       grid-template-columns: 1fr 1fr;
+    }
+
+    /* No exclusions list: one panel at the reading measure, not one panel
+       beside an empty half (round 5, #41; Jhalana, Jawai, Tadoba). */
+    .incl--single {
+      grid-template-columns: minmax(0, calc(var(--container-prose) + 4.5rem));
     }
   }
 

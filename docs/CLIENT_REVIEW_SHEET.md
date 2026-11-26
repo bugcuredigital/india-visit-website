@@ -709,3 +709,62 @@ sit (29.6), was ruled by the agency to the same standard: it is the designer's
 intent, and it complies, because every name is measured and passes. Anything in
 this section would have come back to you only if it changed words on the site,
 the brand's identity, or a claim made to clients. Nothing here does.
+
+## 30. Launch preparation: three decisions, five facts to confirm, and the wording we propose (added 2026-11-26)
+
+Everything that did not need you is done: the forms are hardened, the itinerary
+PDFs are now released only to someone who fills in the form, the site's
+security settings are in place, and the go-live steps are written out
+(`LAUNCH_DAY.md`). The audit's remaining 68 design points are settled: 43 fixed,
+5 already done, and these 20 come to you because each changes words on the site
+or a claim it makes. Nothing below has been changed on the site.
+
+### 30a. Decisions before launch day
+
+| # | Question | What we recommend | Your answer |
+|---|---|---|---|
+| 30.1 | **The site's address.** | `india-visit.com`: your email already uses it, and nothing is served there today (the old site has been gone for years) | |
+| 30.2 | **With or without "www".** | `india-visit.com` as the address, and `www.india-visit.com` forwarding to it | |
+| 30.3 | **The two new lines on the PDF form** (COPY_REGISTER §V), shown once a visitor has filled it in: "Your itinerary is ready." and a link, "Download the PDF". The PDF form stays "Launching Shortly" until you approve them. | As written | |
+
+Also needed before launch, already listed elsewhere: the legal copy for the three
+policy pages (§19), photo rights (§27), and Deccan Odyssey's provisional days (§22).
+
+### 30b. Facts only you can confirm ⚑
+
+| # | Where | What the site says now | Question | Your answer |
+|---|---|---|---|---|
+| 30.4 | Palace on Wheels, Golden Chariot and Deccan Odyssey, cancellation terms | "More than 95 days… 65–94 days… 35–64 days… less than 34 days" | **Day 95 and day 34 fall in no band** (the operators' own wording). Which band takes them? We would also like to show these as a small table. | |
+| 30.5 | `/cities/jaipur/` | "We do not arrange elephant rides" · "a dealer we have used for years" · "a number of our travellers fly in and out of Jaipur" | Each is a statement about your business. True as written, reworded, or cut? | |
+| 30.6 | Vietnam guide | Best time "December to March, when the north is cool and clear", while the same article calls February and March "damp and grey" | We propose "October to December, and April, when the north is dry and mild". Right? | |
+| 30.7 | Homepage, "With You the Whole Way" | "24/7 On-Trip Support" | We propose "Someone you know is on the phone, day or night, for every day of the trip." It restates the 24/7 promise, so it must be one you keep. | |
+| 30.8 | `/luxury-trains/`, "Why by train" | "a better one than most of the cities it stops in can offer" · "Seven cities in eight days… without the 6am transfers" | Fits Palace on Wheels only; Golden Chariot and Deccan Odyssey differ. We propose H2 "A week of India, unpacked once", cutting the first line, and "A week of cities without a single hotel check-in, and without the early transfers a road itinerary would demand." | |
+
+### 30c. Wording we propose
+
+Approve all, strike any, or reword. "Now" → "Proposed".
+
+| # | Where | Change | Your answer |
+|---|---|---|---|
+| 30.9 | Every page's closing band | "Speak to a person, not a portal" → "Speak to a person" (it also stops the line wrapping on phones) | |
+| 30.10 | Lines built on "not this, but that" | Homepage step 1: "A conversation, not a form-filling exercise. Where you want to go…" → "Start with a conversation: where you want to go, how long you have, what kind of days you enjoy." · Homepage "Curated, Not Catalogued" → "Planned Around You" · About closing band: drop "Not a booking form, a conversation." · Corporate step 2 → "A costed plan with the properties named, and one person to take your questions about it." · Plan My Trip next steps → "A person reads it. If something needs a question, we ask before we plan." · "…and a price, written for this trip." · "We expect them." | |
+| 30.11 | "No call centre" | Keep your own two (About, and your quote). Drop it from homepage step 3, the homepage closing band ("No obligation."), the Plan My Trip note ("No obligation. Your details go only to India Visit.") and the enquiry form note ("We reply personally.") | |
+| 30.12 | "20 years" (six times on the homepage) | Keep "20+ Years of Experience" and the footer's "20+ years". Hero line → "Unhurried, private travel, from Rajasthan to the backwaters and the Himalayas to Bhutan, Bali and Vietnam." · "Twenty Years of It" → "Know-How on the Ground", body "We know which hill station is worth the drive in July, and which is not." | |
+| 30.13 | Homepage corporate button | "Corporate Travel" (repeats the label above it) → "Plan a Company Trip" | |
+| 30.14 | Small repeated labels | Remove "Journeys" above "Journeys in {region}" and "Trips that visit {city}", "What defines it" above "What defines {region}", and "6 destinations" / "3 destinations" on `/destinations/` | |
+| 30.15 | Journey hero lines | Twenty are longer than 40 characters and wrap awkwardly. Shorter versions, e.g. Bhutan "Three Valleys and the Tiger's Nest", Taj and Agra "Sunrise at the Taj Mahal", Root Bridges "Root Bridges and the River Island", Kerala & Southern Coast "Kanyakumari, the Backwaters and the Hills". We would send you all twenty. | |
+| 30.16 | Luxury trains | Golden Chariot's single cabin headed "Cabin Category" · availability text opens with the next step: "Tell us your dates and preferred cabin and we will check live availability with the operator." · the operator line → "Each train is run by its operator, and the operator's terms govern your booking. Full detail is in our booking terms." | |
+| 30.17 | Destination pages | Kerala: cut the repeated "More about" paragraph and "We run three."; "a twelve-day journey here covers" → "a journey here covers". Ladakh: "roughly May to September" → "June to September"; heights in one format ("between 3,350 and 5,500 metres", Leh "3,500 metres"). South & West: "Who is South and West India for?", cut "the longest of any route we run". The one-line hooks: one fact each (e.g. Kerala "A coast of backwaters, with tea country two hours inland."; Bali "The one Hindu island in Indonesia, terraced for rice."). Rajasthan's three Jaipur tiles: link them to the Jaipur page, or swap two for "Desert Camps" and "Lake Palaces". | |
+| 30.18 | Words that recur | "actually", "really", "exactly" in eight FAQ questions and six article summaries (e.g. "When can you actually go?" → "When can you go?"); "rather than" used 31 times; Ladakh "the least Indian-feeling part of India" → "Its culture is closer to Tibet's than to the plains below." | |
+| 30.19 | Travel guide | Article openings that end "Here is…" rewritten from each subject; the Kerala houseboat summary → "What a night aboard a kettuvallam is like, and which stretch of backwater to choose."; Golden Triangle title → "Golden Triangle: Six Days or Ten? Which Itinerary Suits You" and "5 Nights · 6 Days" in its text; each article's summary shown under its title | |
+| 30.20 | Corporate and 404 | Corporate: "Three steps, one point of contact" → "How a company trip comes together"; "Twenty to two hundred people" → "20 to 200 people". 404: "No harm done. The good stuff is all one click away." → "The homepage, every journey and a WhatsApp line to us are one click away below." | |
+
+### 30d. The agency's rulings on the other 48 (logged, not questions)
+
+By your standing rule these did not need you: each follows the audit where it
+fits the rules you set, and your rules where it does not. Item by item, with
+what changed, in `docs/UNSLOP_AUDIT.md` (status, 26 Nov).
+
+- **Fixed (43):** #10 section spacing · #12 line length · #13 crimson only on the one action · #14 quieter text buttons · #15 one clear button on each dark band · #16 header menus · #17 breadcrumbs · #19 practical-note columns · #22, #23 trust figures · #25 destination tiles · #28 one arrow style · #32 the phone journey hero · #33 at-a-glance table on phones · #34 "Explore Kochi" on the right days · #35 day titles · #37, #38, #40 cabin and booking cards · #41 included/not included · #45 destination rows · #54, #55 city pages · #59 article photo · #60 contents list on phones · #61 list bullets · #62 the journey card inside the article · #63 related reading · #69, #70 travel guide grid and cards · #72 filter counts · #74 train order · #75 operator line placement · #76 lotus on the legal line · #80 corporate phone bar · #81 corporate steps · #84 About hero · #85 review counts · #86 trip labels · #90 Plan My Trip layout · #92–#94 the 404 page
+- **Already settled (5):** #20 and #82–#83 (recorded or rebuilt earlier), #24 and #50 (round 6)
+- **Declined in part (3), on your earlier rules:** a different footer per page (#15; one footer, T14) · a breadcrumb inside the journey photo (#17; the itinerary template has none) · changing the filter labels' capitals (#72; your capitalisation ruling)

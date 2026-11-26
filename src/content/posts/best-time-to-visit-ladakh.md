@@ -7,6 +7,7 @@ category: best-time
 excerpt: Ladakh has a short season and a hard edge to it. When the passes open, when the lakes are reachable, what the altitude does to a plan, and the two months we would actually pick.
 publishDate: 2026-09-12
 author: India Visit
+featured: true
 
 # TEMP-PHOTO — temporary Unsplash image for design review only (replaced by the client's archive)
 heroImage: /uploads/temp-photos/TEMP-PHOTO-dest-ladakh.jpg

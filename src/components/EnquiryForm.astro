@@ -9,10 +9,21 @@
  *     lead arrives tagged (PRD §8.2)
  *   · consent checkbox referencing the Privacy Policy, required
  *   · labels tied to inputs, no placeholder-as-label
- *   · Turnstile mounts into the marked container in M6
+ *   · Turnstile mounts into the marked container (src/scripts/lead-form.ts,
+ *     26 Nov 2026), only when a site key was set at build time
  */
 import Button from './Button.astro';
-import { LEADS_LIVE, PDF_GATE_LIVE, FORMS_PENDING_LABEL, LEAD_SUCCESS, LEAD_ERROR, HONEYPOT_FIELD, BUDGET_BANDS } from '../lib/forms';
+import {
+  LEADS_LIVE,
+  PDF_GATE_LIVE,
+  FORMS_PENDING_LABEL,
+  LEAD_SUCCESS,
+  LEAD_ERROR,
+  HONEYPOT_FIELD,
+  BUDGET_BANDS,
+  PDF_READY,
+  PDF_DOWNLOAD_LABEL,
+} from '../lib/forms';
 
 interface Props {
   /** Tags the lead so corporate enquiries route separately. */
@@ -78,6 +89,7 @@ const MONTHS = [
   data-lead-form
   data-success-text={LEAD_SUCCESS}
   data-error-text={LEAD_ERROR}
+  {...(isPdf ? { 'data-download-text': PDF_READY, 'data-download-label': PDF_DOWNLOAD_LABEL } : {})}
   {...(live ? { 'data-live': '' } : {})}
   data-astro-reload
   novalidate
@@ -176,10 +188,11 @@ const MONTHS = [
     </label>
   </p>
 
-  <!-- Turnstile mounts here in M6; invisible, so no visible CAPTCHA friction. -->
-  <div data-turnstile></div>
+  <!-- Turnstile mounts here (lead-form.ts). Interaction-only: empty and
+       invisible unless Cloudflare asks this visitor for a click. -->
+  <div class="form__turnstile" data-turnstile></div>
 
-  <Button type="submit" variant={onDark ? 'on-dark' : 'primary'} size={isFooter ? 'md' : 'lg'} block disabled={!live}>
+  <Button type="submit" variant={onDark ? (isFooter ? 'on-dark' : 'on-dark-solid') : 'primary'} size={isFooter ? 'md' : 'lg'} block disabled={!live}>
     {!live ? FORMS_PENDING_LABEL : isFooter ? 'Send Enquiry' : isPdf ? 'Send Me the Itinerary' : isCorporate ? 'Send the Brief' : 'Start Planning'}
   </Button>
 
@@ -357,6 +370,32 @@ const MONTHS = [
     font-family: var(--font-display);
     font-size: var(--text-lg);
     line-height: 1.35;
+  }
+
+  /* The PDF gate's released link, written in by lead-form.ts. */
+  .form :global(.form__download) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    color: var(--color-crimson);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .form :global(.form__download:hover) {
+    text-decoration-thickness: 2px;
+  }
+
+  .form--on-dark :global(.form__download) {
+    color: var(--color-on-dark);
+  }
+
+  /* Empty until Cloudflare asks for a click; then it needs room above the button. */
+  .form__turnstile:not(:empty) {
+    margin-bottom: 1rem;
   }
 
   .form__note {

@@ -133,7 +133,7 @@ const sections = [
       <div class="demo__row">
         <Button href="/plan-my-trip/">Plan My Trip</Button>
         <Button href="/journeys/" variant="secondary">Explore Journeys</Button>
-        <Button href="/journeys/" variant="ghost">View all →</Button>
+        <Button href="/journeys/" variant="ghost" arrow>View all</Button>
       </div>
       <div class="demo__row">
         <Button variant="primary" size="lg">Large primary</Button>
@@ -226,7 +226,6 @@ const sections = [
     <PoliciesAccordion
       policies={pow.data.policies}
       operatorDisclosure={pow.data.operatorDisclosure}
-      operatorName={pow.data.operatorName}
       bookingTermsUrl={pow.data.bookingTermsUrl}
     />
   </div>

@@ -17,24 +17,36 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import StickyMobileBar from '../../components/StickyMobileBar.astro';
 import Button from '../../components/Button.astro';
 import JsonLd from '../../components/JsonLd.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 import { breadcrumbSchema } from '../../lib/schema';
+import { byId } from '../../lib/order';
 import { CATEGORY_LABELS } from '../../lib/posts';
 import { NEWSLETTER_LIVE, FORMS_PENDING_LABEL } from '../../lib/forms';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort((a, b) => {
   const byFeatured = Number(b.data.featured) - Number(a.data.featured);
   if (byFeatured !== 0) return byFeatured;
-  return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+  return b.data.publishDate.getTime() - a.data.publishDate.getTime() || byId(a, b);
 });
 
 const [featured, ...rest] = posts;
 
 /* Chips are built from what actually exists, so a category with no articles
-   is not offered as a filter that returns nothing. */
+   is not offered as a filter that returns nothing. They count EVERY article,
+   the featured one included, and the filter hides the featured card too when
+   it is not in the chosen category: "All 7" over eight articles, and a lead
+   card that ignored the filter, were two ways of disagreeing with the page
+   (round 5, #72). */
 const categories = (Object.keys(CATEGORY_LABELS) as Array<keyof typeof CATEGORY_LABELS>)
-  .map((key) => ({ key, label: CATEGORY_LABELS[key], count: rest.filter((p) => p.data.category === key).length }))
+  .map((key) => ({ key, label: CATEGORY_LABELS[key], count: posts.filter((p) => p.data.category === key).length }))
   .filter((category) => category.count > 0);
+
+/* Three or four across, whichever leaves the fuller last row (round 5,
+   #69): seven cards in three columns left Kerala alone on a third row, the
+   leftover row the client ruled out for the homepage destinations. */
+const lastRowFill = (cols: number) => (rest.length % cols || cols) / cols;
+const gridColumns = rest.length > 4 && lastRowFill(4) > lastRowFill(3) ? 4 : 3;
 
 const crumbs = breadcrumbSchema([
   { name: 'Home', url: new URL('/', Astro.site).href },
@@ -53,13 +65,14 @@ const crumbs = breadcrumbSchema([
   <Header slot="header" />
 
   <!-- 1 · Compact hero --------------------------------------------------- -->
-  <section class="band band-tight intro">
+  <section class="band band-tight band-ruled intro">
     <div class="container-content">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">Travel Guide</span>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Travel Guide' },
+        ]}
+      />
       <h1 class="intro__title">Travel guide</h1>
       <p class="intro__lede prose-measure">
         The things we end up explaining on the phone anyway: when to go, what
@@ -71,7 +84,12 @@ const crumbs = breadcrumbSchema([
   <!-- 2 · Featured article ------------------------------------------------ -->
   {
     featured && (
-      <section class="band band-tight" aria-labelledby="featured-heading">
+      <section
+        class="band band-tight"
+        aria-labelledby="featured-heading"
+        data-featured-band
+        data-category={featured.data.category}
+      >
         <div class="container-content">
           <h2 id="featured-heading" class="visually-hidden">Latest article</h2>
           <div class="featured fade-up">
@@ -82,8 +100,7 @@ const crumbs = breadcrumbSchema([
               excerpt={featured.data.excerpt}
               image={featured.data.heroImage}
               imageAlt={featured.data.heroImageAlt}
-              publishDate={featured.data.publishDate}
-              updatedDate={featured.data.updatedDate}
+              body={featured.body ?? ''}
               featured
             />
           </div>
@@ -102,7 +119,7 @@ const crumbs = breadcrumbSchema([
           {categories.length > 1 && (
             <div class="filter" role="group" aria-label="Filter articles by category">
               <button type="button" class="filter__btn tap-target" data-filter="all" aria-pressed="true">
-                All <span class="filter__count">{rest.length}</span>
+                All <span class="filter__count">{posts.length}</span>
               </button>
               {categories.map((category) => (
                 <button
@@ -119,7 +136,7 @@ const crumbs = breadcrumbSchema([
 
           <p class="filter__status visually-hidden" role="status" aria-live="polite" />
 
-          <ul class="grid fade-up-stagger" data-article-grid>
+          <ul class:list={['grid', 'fade-up-stagger', { 'grid--four': gridColumns === 4 }]} data-article-grid>
             {rest.map((post) => (
               <li class="grid__item" data-category={post.data.category}>
                 <ArticleCard
@@ -129,8 +146,7 @@ const crumbs = breadcrumbSchema([
                   excerpt={post.data.excerpt}
                   image={post.data.heroImage}
                   imageAlt={post.data.heroImageAlt}
-                  publishDate={post.data.publishDate}
-                  updatedDate={post.data.updatedDate}
+                  body={post.body ?? ''}
                 />
               </li>
             ))}
@@ -202,7 +218,9 @@ const crumbs = breadcrumbSchema([
     const buttons = document.querySelectorAll('[data-filter]');
     const status = document.querySelector('.filter__status');
     if (!grid || !buttons.length) return;
-    const items = Array.from(grid.children);
+    // The featured band is filtered with the grid (round 5, #72).
+    const lead = document.querySelector('[data-featured-band]');
+    const items = [...(lead ? [lead] : []), ...Array.from(grid.children)];
 
     const apply = (key) => {
       let shown = 0;
@@ -224,27 +242,6 @@ const crumbs = breadcrumbSchema([
 </script>
 
 <style>
-  .intro {
-    border-bottom: 1px solid var(--color-hairline);
-  }
-
-  .crumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a:hover {
-    color: var(--color-crimson);
-  }
-
   .intro__title {
     font-size: var(--text-h1);
   }
@@ -306,6 +303,12 @@ const crumbs = breadcrumbSchema([
     margin: 1.5rem 0 0;
     padding: 0;
     list-style: none;
+  }
+
+  @media (min-width: 64rem) {
+    .grid--four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
   .grid__item {

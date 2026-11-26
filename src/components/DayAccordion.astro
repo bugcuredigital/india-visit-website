@@ -130,7 +130,10 @@ const hasProvisional = days.some((day) => day.provisional);
                   {day.cities.map((city) => (
                     <a class="day__city" href={city.href}>
                       <span>Explore {city.name}</span>
-                      <span aria-hidden="true">→</span>
+                      {/* The drawn arrow every onward link carries (round 5, #28). */}
+                      <svg class="day__city-arrow" viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+                        <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
                     </a>
                   ))}
                 </p>
@@ -232,8 +235,11 @@ const hasProvisional = days.some((day) => day.provisional);
   }
 
   /* The day number is a soft burgundy pill (round 6): a label, so it steps
-     back from crimson, which is for actions. */
+     back from crimson, which is for actions. It sits on the title's FIRST
+     line, by baseline, so it stays level with the start of a phone's
+     three-line title instead of floating to the middle of it (round 5, #35). */
   .day__no {
+    align-self: baseline;
     padding: 0.3rem 0.7rem;
     border-radius: var(--radius-pill);
     background-color: var(--color-burgundy-tint);
@@ -247,11 +253,14 @@ const hasProvisional = days.some((day) => day.provisional);
   }
 
   .day__title {
+    align-self: baseline;
     font-family: var(--font-display);
     font-size: var(--text-2xl);
     font-weight: 700;
     line-height: var(--leading-heading);
     overflow-wrap: break-word;
+    /* No one-word last line on a phone (round 5, #35). */
+    text-wrap: balance;
     color: var(--color-ink);
   }
 
@@ -374,6 +383,12 @@ const hasProvisional = days.some((day) => day.provisional);
   .day__city:hover {
     border-color: var(--color-crimson);
     color: var(--color-crimson);
+  }
+
+  .day__city-arrow {
+    flex: none;
+    width: 14px;
+    height: 9px;
   }
 
   .day__overnight {

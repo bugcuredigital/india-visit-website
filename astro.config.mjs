@@ -3,6 +3,7 @@ import partytown from '@astrojs/partytown';
 import tailwindcss from '@tailwindcss/vite';
 
 import sitemap from '@astrojs/sitemap';
+import { PROVISIONAL_POLICY_PATHS } from './src/lib/policies.mjs';
 
 // DUMMY DATA — the production domain is not confirmed yet (PRD Open Question #7).
 // Cloudflare Pages can override this with a SITE_URL environment variable, so the
@@ -24,14 +25,15 @@ export default defineConfig({
     config: { forward: ['dataLayer.push'] },
   }),
     // Auto sitemap (CLAUDE.md SEO requirements; M5 gate — "sitemap contains
-    // all routes"). The component library is a dev page and the three
-    // provisional policy pages are `noindex` until real copy lands
-    // (CLIENT_REVIEW_SHEET §19); a sitemap must not invite crawlers to
-    // pages that then tell them to go away.
+    // all routes"). The component library is a dev page, and the provisional
+    // policy pages are `noindex` until real copy lands (CLIENT_REVIEW_SHEET
+    // §19); a sitemap must not invite crawlers to pages that then tell them
+    // to go away. The policy list is src/lib/policies.mjs, the one launch-day
+    // switch it shares with the pages.
     sitemap({
       filter: (page) =>
         !page.includes('/dev/') &&
-        !/\/(privacy|terms|cancellation)\/$/.test(page),
+        !PROVISIONAL_POLICY_PATHS.some((path) => new URL(page).pathname === path),
     }),
   ],
   vite: {

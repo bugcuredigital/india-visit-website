@@ -17,6 +17,11 @@
  *
  * No height animation. Animating a <details> panel means animating height,
  * which the motion spec forbids outright (PRD §9.4).
+ *
+ * The default slot renders under the list, inside the same section: a page's
+ * last word on the subject (the trains landing's operator note) sits there
+ * rather than in a section of its own, with a full band of space above and
+ * below one line (round 5, #75).
  */
 interface Props {
   faq: Array<{ question: string; answer: string }>;
@@ -61,6 +66,11 @@ const headingId = `${id ?? 'faq'}-heading`;
         </li>
       ))}
     </ul>
+    {Astro.slots.has('default') && (
+      <div class="faq__after">
+        <slot />
+      </div>
+    )}
   </div>
 </section>
 
@@ -83,11 +93,24 @@ const headingId = `${id ?? 'faq'}-heading`;
     }
   }
 
+  /* The panels keep their round-6 width; the answer text inside them is
+     what holds to the reading measure. */
   .faq {
-    max-width: var(--container-prose);
+    max-width: 46rem;
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  /* Under the list, in the answer column. */
+  .faq__after {
+    max-width: 46rem;
+  }
+
+  @media (min-width: 64rem) {
+    .faq__after {
+      grid-column: 2;
+    }
   }
 
   /* Each question is its own panel since round 6, rather than a row between
@@ -167,6 +190,7 @@ const headingId = `${id ?? 'faq'}-heading`;
   }
 
   .faq__answer {
+    max-width: var(--container-prose);
     padding-bottom: 1.6rem;
     color: var(--color-ink-muted);
   }

@@ -33,6 +33,7 @@ import ConvertBand from '../../components/ConvertBand.astro';
 import StickyMobileBar from '../../components/StickyMobileBar.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import Lotus from '../../components/Lotus.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 import { heroPreload } from '../../lib/hero-image';
 import { journeysForDestination } from '../../lib/destination-journeys';
@@ -106,13 +107,14 @@ const faq = faqSchema(destination.faq);
 
   <!-- 1 · Hero ---------------------------------------------------------- -->
   <Hero image={destination.heroImage} alt={destination.heroImageAlt} height="short">
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/">Home</a>
-      <span aria-hidden="true">/</span>
-      <a href="/destinations/">Destinations</a>
-      <span aria-hidden="true">/</span>
-      <span aria-current="page">{destination.shortLabel}</span>
-    </nav>
+    <Breadcrumb
+      tone="image"
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Destinations', href: '/destinations/' },
+        { label: destination.shortLabel },
+      ]}
+    />
     <h1 class="dest__title">{destination.name}</h1>
     <p class="dest__tagline">{destination.tagline}</p>
   </Hero>
@@ -154,7 +156,7 @@ const faq = faqSchema(destination.faq);
   {
     journeys.length > 0 && (
       <section class="band band-offwhite" aria-labelledby="journeys-heading">
-        <div class="container-content">
+        <div class:list={['container-content', { few: journeys.length <= 2 }]}>
           <div class="sectionhead">
             <div>
               <p class="eyebrow">Journeys</p>
@@ -267,7 +269,7 @@ const faq = faqSchema(destination.faq);
   {
     posts.length > 0 && (
       <section class="band band-tight" aria-labelledby="reading-heading">
-        <div class="container-content">
+        <div class:list={['container-content', { few: posts.length <= 2 }]}>
           <!-- The shared section head: without it the H2 sat flush on the
                photographs, 0px, descenders touching (round 5, #43). -->
           <div class="sectionhead">
@@ -285,8 +287,7 @@ const faq = faqSchema(destination.faq);
                 excerpt={post.data.excerpt}
                 image={post.data.heroImage}
                 imageAlt={post.data.heroImageAlt}
-                publishDate={post.data.publishDate}
-                updatedDate={post.data.updatedDate}
+                body={post.body ?? ''}
               />
             ))}
           </div>
@@ -311,27 +312,6 @@ const faq = faqSchema(destination.faq);
 
 <style>
   /* ---- hero copy -------------------------------------------------------- */
-  /* White: over the photograph the muted pink measured 3.0-3.9:1 against the
-     lightest ground pixel, and even on-dark (#F7F5F6) 4.25:1 on Ladakh at 390
-     (round 5, #6; check:hero-contrast now scores each run in its own colour). */
-  .crumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-white);
-  }
-
-  .crumbs a {
-    color: var(--color-white);
-  }
-
-  .crumbs a:hover {
-    text-decoration-thickness: 2px;
-  }
-
   .dest__title {
     font-size: var(--text-hero);
     line-height: var(--leading-display);
@@ -447,6 +427,36 @@ const faq = faqSchema(destination.faq);
     gap: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
   }
 
+  /* Three up at most, the homepage's journey row: `auto-fill` built four
+     columns at 1280 whatever the count (round 5, #45).
+
+     ONE OR TWO cards take the FAQ's layout instead, heading left and content
+     right. A lone card in a four-column row filled 23% of it, twice a page on
+     Ladakh, Bhutan, Bali and Vietnam, with the "All Journeys" pill stranded
+     at the far end of the row. */
+  @media (min-width: 64rem) {
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .few {
+      display: grid;
+      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .few .sectionhead {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 0;
+    }
+
+    .few .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   /* ---- 4 · experience tiles ---------------------------------------------- */
   .tiles {
     display: grid;
@@ -500,7 +510,9 @@ const faq = faqSchema(destination.faq);
     text-align: center;
   }
 
-  .quote__mark {
+  /* `:global`, scoped under the figure: the class lands on Lotus's own
+     element, which a plain scoped rule cannot reach (round 5, #93 sweep). */
+  .quote :global(.quote__mark) {
     margin-inline: auto;
   }
 

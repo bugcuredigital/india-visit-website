@@ -37,12 +37,20 @@ const ICONS: Record<string, PhosphorIconName> = {
 /* Resolved once here, so an unknown key is a plain `undefined` (the lotus)
    rather than an index lookup TypeScript cannot narrow in the template. */
 const items = notes.map((note) => ({ ...note, glyph: ICONS[note.icon] as PhosphorIconName | undefined }));
+
+/* Columns on a wide screen follow the count, so no row is left mostly empty
+   (round 5, #19 and #55): three notes sat in four columns, and a fifth note
+   stood alone on its own row. Three or four across; whichever leaves the
+   fuller last row, four on a tie. */
+const count = items.length;
+const lastRowFill = (cols: number) => (count % cols || cols) / cols;
+const columns = count <= 4 ? Math.max(count, 1) : lastRowFill(4) >= lastRowFill(3) ? 4 : 3;
 ---
 
 <section class:list={['band', surface === 'offwhite' && 'band-offwhite']}>
   <div class="container-content">
     <h2>{heading}</h2>
-    <dl class="notes fade-up-stagger">
+    <dl class="notes fade-up-stagger" style={`--notes-columns: ${columns}`}>
       {items.map((note) => (
         <div class="note">
           <span class="note__icon" aria-hidden="true">
@@ -81,7 +89,7 @@ const items = notes.map((note) => ({ ...note, glyph: ICONS[note.icon] as Phospho
 
   @media (min-width: 64rem) {
     .notes {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(var(--notes-columns, 4), 1fr);
     }
   }
 

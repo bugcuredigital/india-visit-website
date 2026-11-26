@@ -4,15 +4,20 @@
  * ---------------------------------------------------------------------------
  * Crimson is punctuation (design direction): the solid crimson `primary` marks
  * the single most important action in a viewport. Everything else is
- * `secondary` (outline ink) or `ghost` (text). If a screen has two crimson
- * buttons competing, one of them is wrong.
+ * `secondary` (outline ink) or `ghost` (underlined ink text). If a screen has
+ * two crimson buttons competing, one of them is wrong.
+ *
+ * On a dark band crimson lacks contrast, so the band's one action is
+ * `on-dark-solid` (filled light, burgundy text) and the rest are `on-dark`
+ * outlines (round 5, #15: the ConvertBand's three actions shared one outline
+ * style, so it had no primary at all).
  *
  * Renders an <a> when given `href`, otherwise a <button> — so a CTA is always
  * the correct element for what it does.
  */
 interface Props {
   href?: string;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'on-dark';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'on-dark' | 'on-dark-solid';
   size?: 'sm' | 'md' | 'lg';
   type?: 'button' | 'submit';
   /** Full width on mobile, auto from 480px up — the common CTA pattern. */
@@ -25,6 +30,10 @@ interface Props {
   id?: string;
   disabled?: boolean;
   'data-analytics'?: string;
+  /** An onward arrow after the label, drawn (round 5, #28): the site had a
+   *  typed →, an SVG and nothing, three ways. One glyph now, the same one
+   *  the section pills carry. */
+  arrow?: boolean;
 }
 
 const {
@@ -36,6 +45,7 @@ const {
   external = false,
   class: className = '',
   disabled = false,
+  arrow = false,
   ...rest
 } = Astro.props;
 
@@ -51,6 +61,11 @@ const tagProps = href
   {...rest}
 >
   <span class="btn__label"><slot /></span>
+  {arrow && (
+    <svg class="btn__arrow" viewBox="0 0 16 10" aria-hidden="true" focusable="false">
+      <path d="M1 5h13M10 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )}
   {external && <span class="visually-hidden">(opens in a new tab)</span>}
 </Tag>
 
@@ -87,7 +102,9 @@ const tagProps = href
     color: var(--color-ink-muted);
   }
 
-  .btn--on-dark:disabled {
+  .btn--on-dark:disabled,
+  .btn--on-dark-solid:disabled {
+    background-color: transparent;
     border-color: color-mix(in srgb, var(--color-on-dark) 35%, transparent);
     color: var(--color-on-dark-muted);
   }
@@ -115,13 +132,22 @@ const tagProps = href
     color: var(--color-white);
   }
 
+  /* Ink, underlined (round 5, #14): it was borderless crimson, so every
+     secondary action on white ("Start a Conversation", the 404's two) was a
+     second crimson call beside the primary. Ink is the design direction's
+     secondary; the underline is what says "link" without a box. */
   .btn--ghost {
     padding-inline: 0.5rem;
-    color: var(--color-crimson);
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+    text-underline-offset: 0.3em;
   }
 
   .btn--ghost:hover:not(:disabled) {
     color: var(--color-burgundy);
+    text-decoration-color: currentColor;
   }
 
   /* A ghost on a dark ground (a hero's second action): on-dark text, since
@@ -129,9 +155,7 @@ const tagProps = href
      link without a box around it. */
   :global(.on-dark) .btn--ghost {
     color: var(--color-on-dark);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.3em;
+    text-decoration-color: currentColor;
   }
 
   :global(.on-dark) .btn--ghost:hover:not(:disabled) {
@@ -148,6 +172,26 @@ const tagProps = href
   .btn--on-dark:hover:not(:disabled) {
     background-color: var(--color-on-dark);
     color: var(--color-burgundy);
+  }
+
+  /* The one action on a dark band: the outline's hover state, at rest. Its
+     own hover goes to white, with the lift every button has. */
+  .btn--on-dark-solid {
+    background-color: var(--color-on-dark);
+    border-color: var(--color-on-dark);
+    color: var(--color-burgundy);
+  }
+
+  .btn--on-dark-solid:hover:not(:disabled) {
+    background-color: var(--color-white);
+    border-color: var(--color-white);
+    color: var(--color-burgundy);
+  }
+
+  .btn__arrow {
+    flex: none;
+    width: 16px;
+    height: 10px;
   }
 
   /* ---- Sizes ---------------------------------------------------------- */
@@ -190,8 +234,18 @@ const tagProps = href
       transform: translate3d(0, -2px, 0);
     }
 
-    .btn--primary:hover:not(:disabled) {
+    .btn--primary:hover:not(:disabled),
+    .btn--on-dark-solid:hover:not(:disabled) {
       box-shadow: var(--shadow-lift-hover);
+    }
+
+    /* The arrow leans toward where it goes, as on the section pills. */
+    .btn__arrow {
+      transition: transform var(--duration-fast) var(--ease-brand);
+    }
+
+    .btn:hover:not(:disabled) .btn__arrow {
+      transform: translate3d(3px, 0, 0);
     }
 
     /* Pressed: the lift gives way to a 1px press (round 6). After the hover

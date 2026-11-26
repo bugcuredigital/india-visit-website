@@ -33,11 +33,20 @@ export const LEAD_SUCCESS = "Thank you — we'll reply personally within a day."
 export const LEAD_ERROR = 'Sorry, that did not go through. Please call or WhatsApp us.';
 
 /**
+ * The itinerary-PDF gate's success state: one line and the download link,
+ * shown in place of the form once the lead function releases the file.
+ * Agency drafts (COPY_REGISTER §V, escalated for the owner's approval with
+ * the PDF release; the gate stays off until then).
+ */
+export const PDF_READY = 'Your itinerary is ready.';
+export const PDF_DOWNLOAD_LABEL = 'Download the PDF';
+
+/**
  * Why a form was refused, field by field. Written under the button by the
  * browser script and returned by the lead function, so the two never disagree.
  * Agency drafts (COPY_REGISTER §R4).
  */
-export const FIELD_MESSAGES: Record<string, string> = {
+export const FIELD_MESSAGES = {
   name: 'Please tell us your name.',
   phone: 'Please give a phone or WhatsApp number.',
   email: 'Please check your email address.',
@@ -45,7 +54,11 @@ export const FIELD_MESSAGES: Record<string, string> = {
   consent: 'Please tick the consent box so we can reply.',
   tooLong: 'That is longer than we can take.',
   fallback: 'Please check the form and try again.',
-};
+} as const satisfies Record<string, string>;
+
+/** A field's message by its name, or the fallback for a field without one. */
+export const fieldMessage = (name: string): string =>
+  (FIELD_MESSAGES as Record<string, string | undefined>)[name] ?? FIELD_MESSAGES.fallback;
 
 /**
  * Budget bands, deliberately without figures. One list for the Plan My Trip

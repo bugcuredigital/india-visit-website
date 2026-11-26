@@ -39,8 +39,10 @@ import StickyMobileBar from '../components/StickyMobileBar.astro';
 import JsonLd from '../components/JsonLd.astro';
 import Lotus from '../components/Lotus.astro';
 import Button from '../components/Button.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 
 import { getSiteSettings, verifiedTrustStats } from '../lib/site-settings';
+import { byId } from '../lib/order';
 import { breadcrumbSchema } from '../lib/schema';
 import { REGION_COUNT } from '../lib/destinations-strip';
 
@@ -59,7 +61,7 @@ const stats = verifiedTrustStats(settings, {
    to say. The section renders when there is something to put in it. */
 const testimonial = (await getCollection('testimonials', ({ data }) => data.consentConfirmed))
   .filter((entry) => !entry.data.placeholder)
-  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured))[0];
+  .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || byId(a, b))[0];
 
 const { siteName, legalEntity, foundingYear, founder } = settings;
 
@@ -97,14 +99,15 @@ const crumbs = breadcrumbSchema([
   <Header slot="header" />
 
   <!-- 1 · Hero — portrait-led, her opening -------------------------------- -->
-  <section class="band band-tight intro">
+  <section class="band band-tight band-ruled intro">
     <div class="container-content intro__grid">
       <div>
-        <nav class="crumbs" aria-label="Breadcrumb">
-          <a href="/">Home</a>
-          <span aria-hidden="true">/</span>
-          <span aria-current="page">About</span>
-        </nav>
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'About' },
+          ]}
+        />
         <p class="eyebrow">Curating soulful journeys</p>
         <h1 class="intro__title">Travel that feels personal</h1>
         <p class="intro__lede">
@@ -329,14 +332,12 @@ const crumbs = breadcrumbSchema([
 </Base>
 
 <style>
-  .intro {
-    border-bottom: 1px solid var(--color-hairline);
-  }
-
+  /* Top-aligned (round 5, #84): centred on the portrait, the breadcrumb sat
+     ~100px lower than on every sibling page. */
   .intro__grid {
     display: grid;
     gap: 2rem;
-    align-items: center;
+    align-items: start;
   }
 
   @media (min-width: 64rem) {
@@ -344,23 +345,6 @@ const crumbs = breadcrumbSchema([
       grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
       gap: 4rem;
     }
-  }
-
-  .crumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a:hover {
-    color: var(--color-crimson);
   }
 
   .intro__title {
@@ -523,7 +507,9 @@ const crumbs = breadcrumbSchema([
     text-align: center;
   }
 
-  .quote__mark {
+  /* `:global`, scoped under the figure: the class lands on Lotus's own
+     element, which a plain scoped rule cannot reach (round 5, #93 sweep). */
+  .quote :global(.quote__mark) {
     margin-inline: auto;
   }
 

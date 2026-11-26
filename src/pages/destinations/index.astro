@@ -28,6 +28,7 @@ import Footer from '../../components/Footer.astro';
 import ConvertBand from '../../components/ConvertBand.astro';
 import StickyMobileBar from '../../components/StickyMobileBar.astro';
 import JsonLd from '../../components/JsonLd.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { journeysForDestination } from '../../lib/destination-journeys';
 
 import { breadcrumbSchema } from '../../lib/schema';
@@ -92,13 +93,14 @@ const crumbs = breadcrumbSchema([
   <Header slot="header" />
 
   <!-- 1 · Compact hero — a band, not a photograph ----------------------- -->
-  <section class="band band-tight intro">
+  <section class="band band-tight band-ruled intro">
     <div class="container-content">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">Destinations</span>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Destinations' },
+        ]}
+      />
       <h1 class="intro__title">Where we go</h1>
       <p class="intro__lede prose-measure">
         Nine regions we have been arranging journeys through for twenty years,
@@ -178,27 +180,6 @@ const crumbs = breadcrumbSchema([
 </Base>
 
 <style>
-  .intro {
-    border-bottom: 1px solid var(--color-hairline);
-  }
-
-  .crumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a:hover {
-    color: var(--color-crimson);
-  }
-
   .intro__title {
     font-size: var(--text-h1);
   }
