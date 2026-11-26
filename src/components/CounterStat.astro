@@ -139,8 +139,15 @@ const bandClass =
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .stat {
+    /* Every cell's inline padding is reset here, the odd and even ones
+       included: the phone's odd-child reset outranked a plain `.stat` and
+       left the third numeral flush against its divider, 0px against 20px on
+       either side of the others (round 5, #23). */
+    .stat,
+    .stat:nth-child(odd),
+    .stat:nth-child(even) {
       padding-block: 0;
+      padding-inline: 1.25rem;
       border-inline-end: 1px solid var(--color-hairline);
     }
 
@@ -198,9 +205,11 @@ const bandClass =
   .stat__value {
     display: block;
     font-family: var(--font-display);
-    /* A step up from --text-stat: these numerals are meant to be the second
-       loudest thing on the homepage, after the hero H1. */
-    font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+    /* The ruled stat size, capped at 2.75rem. A private clamp here ran to
+       57.6px at 1280 and 40px on a phone, larger than the hero H1 beside it
+       (56/34px): the numerals are the second loudest thing on the page, not
+       the first (round 5, #22). */
+    font-size: var(--text-stat);
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.03em;

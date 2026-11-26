@@ -607,7 +607,7 @@ const testimonials: Collection = {
     { type: 'string', name: 'name', label: 'Guest name', description: 'Real reviews only.' },
     { type: 'string', name: 'origin', label: 'City or country' },
     journeyRef('tripRef', 'Journey taken (optional)'),
-    { type: 'string', name: 'tripLabel', label: 'Trip label', required: true, description: 'e.g. "Kerala with Houseboat, 11N/12D".' },
+    { type: 'string', name: 'tripLabel', label: 'Trip label', required: true, description: 'Trip, then nights and days, as the journey cards write them: e.g. "Kerala with Houseboat · 11N · 12D".' },
     { type: 'string', name: 'quote', label: 'Quote', ui: { component: 'textarea' } },
     imageField('photo', 'Guest photo (optional — only with photo consent)', undefined, false),
     {

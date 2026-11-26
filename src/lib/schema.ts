@@ -62,6 +62,11 @@ export function travelAgencySchema(settings: SiteSettings, siteUrl: string): Jso
     legalName: settings.legalEntity,
     description: settings.tagline,
     url: siteUrl,
+    // Google's Organization / LocalBusiness guidance recommends both (launch
+    // prep, 26 Nov 2026). Stable public files, never hashed build assets: the
+    // badge's 180px touch icon (logos must be at least 112px) and the brand card.
+    logo: new URL('apple-touch-icon.png', siteUrl).href,
+    image: new URL('og-default.jpg', siteUrl).href,
     telephone: isPlaceholder(settings, 'phone') ? null : settings.phone,
     email: isPlaceholder(settings, 'email') ? null : settings.email,
     address: isPlaceholder(settings, 'address') ? null : postalAddress(settings.address),
@@ -79,8 +84,6 @@ export function touristTripSchema(input: {
   name: string;
   description: string;
   image?: string;
-  days: number;
-  nights: number;
   routeCities: string[];
 }): Json {
   return compact({
@@ -90,8 +93,9 @@ export function touristTripSchema(input: {
     description: input.description,
     url: input.url,
     image: input.image,
-    /** ISO 8601 duration — 12 days reads as P12D. */
-    duration: `P${input.days}D`,
+    // No `duration`: TouristTrip (schema.org Trip) has no such property, and
+    // the Schema.org validator flagged it on every journey (26 Nov 2026). The
+    // length is in the name and the itinerary.
     itinerary: {
       '@type': 'ItemList',
       itemListElement: input.routeCities.map((city, i) => ({

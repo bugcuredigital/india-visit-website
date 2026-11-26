@@ -438,3 +438,21 @@ and not yours are DRAFT, as always.
 | U11 | The eight short programmes: hero badge | Your tagline in Title Case, e.g. "Sunrise from Tiger Hill and a Walk Through the Tea Gardens". Kabini's is shortened to its first half for the badge: "Boat and Jeep Safaris on the Kabini Backwaters" | **APPROVED** (assembled) | |
 | U12 | The eight short programmes: day titles, highlights (five or six each), at-a-glance rows, practical-note labels, page titles and search descriptions | e.g. "Bagdogra to Darjeeling: Up Through the Hills" · "Watch sunrise over the Himalaya from Tiger Hill, where on a clear morning the first light on Kanchenjunga is hard to forget." · "Best time to visit" | **APPROVED** (assembled) | Built only from your sentences: the template needs a "Place: phrase" title on every day and five to eight verb-led highlights, and your documents have neither as such. Darjeeling's "Getting there" note restates your Day 1 (Bagdogra, via Delhi or Kolkata, three to four hours) with your hill-roads line. |
 | U13 | The eight short programmes: pace | Relaxed (Periyar) · Moderate (Darjeeling, Kabini, Khajuraho, Ranthambore, Taj and Agra) · Active (Golden Triangle short, Jaisalmer) | **PROVISIONAL** | Your documents do not give a pace, and the template needs one. Ours, from the length of each day, like the pace on the other twenty (review sheet §5). |
+
+## V. Launch prep: the itinerary PDF release (26 November 2026)
+
+The PDF download form on every journey page becomes real at launch: a visitor
+who fills it in gets the itinerary there and then, through a link that works
+for an hour. The form, its button ("Send Me the Itinerary") and its note are
+unchanged. Two new lines replace the form once the PDF is released. They are
+ours, so DRAFT, and the form stays "Launching Shortly" until you approve them
+and a test on the live site has passed.
+
+| # | Where | String | Status | Note |
+|---|---|---|---|---|
+| V1 | Journey pages, the PDF form, in place of the form once the PDF is released | "Your itinerary is ready." | **DRAFT** | One line, the same size as R1, the enquiry thank-you. |
+| V2 | Under V1, the link that opens the PDF | "Download the PDF" | **DRAFT** | A link styled as a link (Title Case as a button-styled action, CLAUDE.md #7). It also appears on the plain page a visitor without JavaScript sees. |
+
+A visitor on a journey whose PDF has not been built yet (one added through
+/admin after the last PDF build) gets R1, the enquiry thank-you, and you get
+the request by email with a note to send the itinerary yourself. No new words.

@@ -149,5 +149,10 @@ const gtmId = siteSettings.gtmContainerId;
     <slot name="footer" />
     <slot name="after-footer" />
     <RevealScript />
+    <!-- GTM events and the visit's campaign (src/scripts/tracking.ts). Tiny,
+         deferred, and harmless while no container is set. -->
+    <script>
+      import '../scripts/tracking';
+    </script>
   </body>
 </html>

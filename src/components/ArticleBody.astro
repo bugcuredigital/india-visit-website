@@ -40,9 +40,25 @@ const { class: className = '' } = Astro.props;
     margin-top: 2.25rem;
   }
 
+  /* Tailwind's reset sets `list-style: none` on every list, so until round 5
+     (#61) a list in an article showed no bullets and no numbers: the Palace
+     on Wheels guide's "six steps" were six unnumbered lines. */
   .prose :global(ul),
   .prose :global(ol) {
     padding-left: 1.5rem;
+  }
+
+  .prose :global(ul) {
+    list-style: disc;
+  }
+
+  .prose :global(ol) {
+    list-style: decimal;
+  }
+
+  .prose :global(ol > li::marker) {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
 
   .prose :global(li + li) {

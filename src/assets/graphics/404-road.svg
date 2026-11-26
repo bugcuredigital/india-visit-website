@@ -6,17 +6,21 @@
 
      Recoloured in round 3: the sky ran plum -> burgundy -> crimson, which put
      the demoted colour at the top of the frame where the eye lands. It now
-     runs burgundy -> crimson through a warm ink horizon. -->
+     runs burgundy -> crimson through a warm ink horizon.
+
+     Palette only since round 5 (#94): the sky's top stop (#3D0A1E) and the
+     ground's (#2A1520) were near-misses outside the closed palette. Both are
+     ink now. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" role="img"
      aria-label="An empty road running to the horizon">
   <defs>
     <linearGradient id="sky-404" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3D0A1E"/>
+      <stop offset="0%" stop-color="#1A1523"/>
       <stop offset="62%" stop-color="#741238"/>
       <stop offset="100%" stop-color="#C3163A"/>
     </linearGradient>
     <linearGradient id="ground-404" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#2A1520"/>
+      <stop offset="0%" stop-color="#1A1523"/>
       <stop offset="100%" stop-color="#1A1523"/>
     </linearGradient>
   </defs>

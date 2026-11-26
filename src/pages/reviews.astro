@@ -31,8 +31,10 @@ import JsonLd from '../components/JsonLd.astro';
 import Lotus from '../components/Lotus.astro';
 import Button from '../components/Button.astro';
 import Icon from '../components/Icon.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 
 import { getSiteSettings } from '../lib/site-settings';
+import { byId } from '../lib/order';
 import { breadcrumbSchema, reviewSchema } from '../lib/schema';
 
 const settings = await getSiteSettings();
@@ -42,7 +44,7 @@ const settings = await getSiteSettings();
    filter status and — most importantly — the structured data below. */
 const reviews = (
   await getCollection('testimonials', ({ data }) => data.placeholder || data.consentConfirmed)
-).sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+).sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || byId(a, b));
 
 const realReviews = reviews.filter((review) => !review.data.placeholder);
 
@@ -53,9 +55,12 @@ const CATEGORY_LABELS: Record<string, string> = {
   corporate: 'Corporate',
 };
 
-/* Chips come from what exists, so no chip ever filters to nothing. */
+/* Chips count REAL reviews only, and appear only once real reviews span two
+   categories (round 5, #85): counting placeholder slots put "All 2 · India 1 ·
+   Trains 1" over two empty cards, a count of reviews that do not exist
+   (invariant #9). Chips come from what exists, so none filters to nothing. */
 const categories = Object.keys(CATEGORY_LABELS)
-  .map((key) => ({ key, label: CATEGORY_LABELS[key], count: reviews.filter((r) => r.data.category === key).length }))
+  .map((key) => ({ key, label: CATEGORY_LABELS[key], count: realReviews.filter((r) => r.data.category === key).length }))
   .filter((category) => category.count > 0);
 
 const crumbs = breadcrumbSchema([
@@ -87,13 +92,14 @@ const reviewSchemas = realReviews.map((review) =>
   <Header slot="header" />
 
   <!-- 1 · Compact hero ---------------------------------------------------- -->
-  <section class="band band-tight intro">
+  <section class="band band-tight band-offwhite band-ruled intro">
     <div class="container-content">
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">Reviews</span>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Reviews' },
+        ]}
+      />
       <h1 class="intro__title">Guest stories</h1>
       {
         /* Only with a verified figure. No stars, no "rated by N travellers",
@@ -137,7 +143,7 @@ const reviewSchemas = realReviews.map((review) =>
         categories.length > 1 && (
           <div class="filter" role="group" aria-label="Filter reviews">
             <button type="button" class="filter__btn tap-target" data-filter="all" aria-pressed="true">
-              All <span class="filter__count">{reviews.length}</span>
+              All <span class="filter__count">{realReviews.length}</span>
             </button>
             {categories.map((category) => (
               <button type="button" class="filter__btn tap-target" data-filter={category.key} aria-pressed="false">
@@ -217,7 +223,8 @@ const reviewSchemas = realReviews.map((review) =>
       for (const item of items) {
         const match = key === 'all' || item.dataset.category === key;
         item.hidden = !match;
-        if (match) shown += 1;
+        // An empty slot is not a review, here as in the chip counts.
+        if (match && !item.querySelector('.review--empty')) shown += 1;
       }
       for (const button of buttons) {
         button.setAttribute('aria-pressed', String(button.dataset.filter === key));
@@ -233,28 +240,9 @@ const reviewSchemas = realReviews.map((review) =>
 
 <style>
   /* The intro sits on the off-white secondary surface (round 6), so the
-     page opens as a distinct block above the white review wall. */
-  .intro {
-    background-color: var(--color-offwhite);
-    border-bottom: 1px solid var(--color-hairline);
-  }
-
-  .crumbs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a {
-    color: var(--color-ink-muted);
-  }
-
-  .crumbs a:hover {
-    color: var(--color-crimson);
-  }
+     page opens as a distinct block above the white review wall: the
+     surface and its hairline are the shared `band-offwhite band-ruled`
+     classes, so the band rhythm rules can see them (round 5, #10). */
 
   .intro__title {
     font-size: var(--text-h1);

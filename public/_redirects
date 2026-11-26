@@ -1,0 +1,34 @@
+# Cloudflare Pages redirects. Astro copies this file to dist/ as is.
+# Every entry is a 301: a published URL never changes without one (CLAUDE.md).
+
+# There is no /contact/ page: contact is Plan My Trip (CLAUDE.md URL structure).
+/contact                          /plan-my-trip/                              301
+/contact/                         /plan-my-trip/                              301
+
+# The old India Visit site on india-visit.com (2002–2011, per the Internet
+# Archive) used these sections. Nothing has been served there for years (the
+# domain answered 522 on 26 Nov 2026), but old links and bookmarks may survive.
+# Each section goes to its nearest page today; its old hotel listings have no
+# equivalent and are left to 404, since a redirect to an unrelated page reads
+# as a soft 404 anyway.
+/rajasthan-tour-packages          /destinations/rajasthan-golden-triangle/     301
+/rajasthan-tour-packages/*        /destinations/rajasthan-golden-triangle/     301
+/rajasthan-tour-packages.html     /destinations/rajasthan-golden-triangle/     301
+/golden-triangle-tour-packages    /destinations/rajasthan-golden-triangle/     301
+/golden-triangle-tour-packages/*  /destinations/rajasthan-golden-triangle/     301
+/golden-triangle-tour-packages.html /destinations/rajasthan-golden-triangle/   301
+/south-india-tour-packages        /destinations/south-west-india/              301
+/south-india-tour-packages/*      /destinations/south-west-india/              301
+/south-india-tour-packages.html   /destinations/south-west-india/              301
+/north-india-tour-packages        /destinations/                               301
+/north-india-tour-packages/*      /destinations/                               301
+/north-india-tour-packages.html   /destinations/                               301
+/east-india-tour-package          /destinations/north-east-india/              301
+/east-india-tour-package.html     /destinations/north-east-india/              301
+/palace-on-wheels                 /journeys/palace-on-wheels-7n-8d/            301
+/palace-on-wheels/*               /journeys/palace-on-wheels-7n-8d/            301
+/palace-on-wheels.html            /journeys/palace-on-wheels-7n-8d/            301
+/taj-tiger-tour-package           /destinations/wildlife/                      301
+/taj-tiger-tour-package.html      /destinations/wildlife/                      301
+/kerala-hotels-india              /destinations/kerala/                        301
+/kerala-hotels-india/*            /destinations/kerala/                        301

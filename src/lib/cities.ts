@@ -15,6 +15,7 @@
  * a city without one stays plain text. Nothing on this site ever links to a
  * page that does not exist, and nothing renders a "coming soon" city.
  */
+import { byId } from './order';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type City = CollectionEntry<'cities'>;
@@ -121,7 +122,7 @@ export async function journeysForCity(city: City): Promise<Journey[]> {
   automatic.sort((a, b) => {
     const byVariant = Number(a.data.variant === 'B') - Number(b.data.variant === 'B');
     if (byVariant !== 0) return byVariant;
-    return b.data.nights - a.data.nights;
+    return b.data.nights - a.data.nights || byId(a, b);
   });
 
   return [...manual, ...automatic];

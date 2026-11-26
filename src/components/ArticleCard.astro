@@ -10,7 +10,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
-import { categoryLabel } from '../lib/posts';
+import { categoryLabel, readingTime } from '../lib/posts';
 
 interface Props {
   slug: string;
@@ -19,8 +19,11 @@ interface Props {
   excerpt: string;
   image: ImageMetadata;
   imageAlt: string;
-  publishDate: Date;
-  updatedDate?: Date;
+  /** The article's markdown body, for its reading time. T8 §4 asks cards for
+   *  reading time, and while seven of eight posts shared one publish date
+   *  every card read "September 2026", which told nobody anything (round 5,
+   *  #70). The article page itself still carries the date. */
+  body: string;
   /** The Travel Guide index's lead article (T8 §2): a 21:9 frame across the
    *  container, files sized for that width, an H2-scale title. Until round 5
    *  (#68) the index styled a class this card does not have, so the lead
@@ -28,14 +31,9 @@ interface Props {
   featured?: boolean;
 }
 
-const { slug, title, category, excerpt, image, imageAlt, publishDate, updatedDate, featured = false } =
-  Astro.props;
+const { slug, title, category, excerpt, image, imageAlt, body, featured = false } = Astro.props;
 
-const shown = updatedDate ?? publishDate;
-const dateLabel = shown.toLocaleDateString('en-GB', {
-  year: 'numeric',
-  month: 'long',
-});
+const minutes = readingTime(body);
 ---
 
 <article class:list={['post', { 'post--featured': featured }]}>
@@ -52,10 +50,13 @@ const dateLabel = shown.toLocaleDateString('en-GB', {
   </div>
 
   <p class="post__meta">
-    <span class="post__category">{categoryLabel(category)}</span>
-    <span class="post__dot" aria-hidden="true">·</span>
-    <time datetime={shown.toISOString()}>{dateLabel}</time>
-    {updatedDate && <span class="visually-hidden">(updated)</span>}
+    <!-- data-allow-clip: clipping the line-start dot is the technique. -->
+    <span class="post__metaclip" data-allow-clip>
+      <span class="post__metarow">
+        <span class="post__category">{categoryLabel(category)}</span>
+        <span class="post__time">{minutes} min read</span>
+      </span>
+    </span>
   </p>
 
   <h3 class="post__title">
@@ -124,18 +125,43 @@ const dateLabel = shown.toLocaleDateString('en-GB', {
   /* Wraps BETWEEN its parts, never inside one: in a narrow four-up grid the
      wider-tracked category (round 6) left "Planning & / Visas" and the date
      folding mid-phrase. Now the date drops to its own line instead. */
+  /* The parts are joined by a middle dot that never ends a line: each part
+     carries its dot in front, the row is pulled one dot-width left, and a
+     clipping box (inside the card's padding, so the padding cannot show it)
+     cuts it off, so whichever part starts a line loses its dot.
+     In a narrow card the category and the reading time wrap onto two clean
+     lines instead of leaving a dot hanging at the end of the first. */
   .post__meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.15rem 0.4rem;
     margin: 1rem 0 0;
     font-size: var(--text-xs);
     color: var(--color-ink-muted);
   }
 
-  .post__meta > * {
+  .post__metaclip {
+    display: block;
+    overflow: hidden;
+  }
+
+  .post__metarow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 0.15rem;
+    margin-left: -1.2em;
+  }
+
+  .post__metarow > * {
     white-space: nowrap;
+  }
+
+  .post__metarow > *::before {
+    content: '·';
+    content: '·' / '';
+    display: inline-block;
+    width: 1.2em;
+    text-align: center;
+    color: var(--color-ink-muted);
+    letter-spacing: 0;
   }
 
   .post__category {

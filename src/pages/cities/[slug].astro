@@ -28,6 +28,7 @@ import FaqAccordion from '../../components/FaqAccordion.astro';
 import ConvertBand from '../../components/ConvertBand.astro';
 import StickyMobileBar from '../../components/StickyMobileBar.astro';
 import JsonLd from '../../components/JsonLd.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 import { heroPreload } from '../../lib/hero-image';
 import { journeysForCity } from '../../lib/cities';
@@ -86,13 +87,14 @@ const QUICK_FACTS = [
 
   <!-- a · Hero ---------------------------------------------------------- -->
   <Hero image={city.heroImage} alt={city.heroImageAlt} height="short">
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/">Home</a>
-      <span aria-hidden="true">/</span>
-      <a href="/destinations/">Destinations</a>
-      <span aria-hidden="true">/</span>
-      <span aria-current="page">{city.name}</span>
-    </nav>
+    <Breadcrumb
+      tone="image"
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Destinations', href: '/destinations/' },
+        { label: city.name },
+      ]}
+    />
     <p class="city__state">{city.state}</p>
     <h1 class="city__title">{city.name}</h1>
     <p class="city__hook">{city.hook}</p>
@@ -115,7 +117,7 @@ const QUICK_FACTS = [
   <!-- c · Intro ---------------------------------------------------------- -->
   <section class="band band-tight" aria-labelledby="intro-heading">
     <div class="container-content intro__layout">
-      <h2 id="intro-heading" class="eyebrow">About {city.name}</h2>
+      <h2 id="intro-heading" class="intro__heading">About {city.name}</h2>
       <div class="intro prose-measure fade-up">
         {city.intro.map((paragraph) => <p class="intro__p">{paragraph}</p>)}
       </div>
@@ -256,27 +258,6 @@ const QUICK_FACTS = [
 
 <style>
   /* ---- hero copy ------------------------------------------------------- */
-  /* White: over the photograph the muted pink measured 3.0-3.9:1 against the
-     lightest ground pixel, and even on-dark (#F7F5F6) 4.25:1 on Ladakh at 390
-     (round 5, #6; check:hero-contrast now scores each run in its own colour). */
-  .crumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-size: var(--text-xs);
-    letter-spacing: 0.01em;
-    color: var(--color-white);
-  }
-
-  .crumbs a {
-    color: var(--color-white);
-  }
-
-  .crumbs a:hover {
-    text-decoration-thickness: 2px;
-  }
-
   /* Its own burgundy ground, the journey trip-type tag's pattern: yellow
      straight on the photograph measured 3.55:1 (Jaipur) and 3.85:1 (Kochi) at
      1280, and an opaque ground makes the contrast a property of the design,
@@ -328,10 +309,12 @@ const QUICK_FACTS = [
     }
   }
 
+  /* The journey Quick Facts label exactly (round 5, #54): one small-caps
+     label style per page, not three. */
   .facts__label {
     font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-ink-muted);
   }
@@ -347,7 +330,7 @@ const QUICK_FACTS = [
   /* ---- c · intro --------------------------------------------------------
      Two columns on a wide screen for the same reason the FAQ has them: a 68ch
      measure alone in a 1280px container reads as an unfinished page rather
-     than as generous space. The label earns its place — it is the only thing
+     than as generous space. The heading earns its place: it is the only thing
      naming the section, which until now was visually hidden. */
   .intro__layout {
     display: grid;
@@ -360,6 +343,13 @@ const QUICK_FACTS = [
       gap: 4rem;
       align-items: start;
     }
+  }
+
+  /* A section heading at the section-heading size (round 5, #54): it was an
+     H2 dressed as a 13px crimson eyebrow, beside a 36px FAQ heading in the
+     same two-column layout. */
+  .intro__heading {
+    font-size: var(--text-h2);
   }
 
   .intro__p + .intro__p {
@@ -461,10 +451,18 @@ const QUICK_FACTS = [
     }
   }
 
+  /* Three up at most, the homepage's journey row (round 5, #55): four
+     columns broke Jaipur's six trips 4+2 and Kochi's five 4+1. */
   .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
     gap: clamp(1rem, 0.5rem + 1.5vw, 1.75rem);
+  }
+
+  @media (min-width: 64rem) {
+    .cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   /* ---- f · photo strip --------------------------------------------------- */

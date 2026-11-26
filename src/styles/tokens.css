@@ -91,12 +91,20 @@
 
   /* ---- Layout ---------------------------------------------------------- */
   --container-content: 1280px;
-  --container-prose: 68ch; /* editorial measure cap */
+  /* The editorial measure: about 68 CHARACTERS a line, which is what "~68ch"
+     means typographically. It was the CSS unit `68ch` until round 5 (#12),
+     and a CSS `ch` is the width of a zero, about 1.3x Inter's average glyph:
+     68ch measured 90-108 characters a line at 17px (articles, policies, the
+     About story). 34em sets 68-75. In `em` so it scales with the text it
+     holds, as a measure should. */
+  --container-prose: 34em;
 
   /* Section rhythm: 96–128px desktop, 56–72px mobile. Whitespace is the
-     luxury signal — when in doubt add space, not decoration. */
+     luxury signal — when in doubt add space, not decoration. The tight step
+     ran 79px at 1280 and 48px on a phone, under both floors (round 5, #10);
+     it now lands on them: 56px on a phone, 96px from 1280. */
   --space-section: clamp(3.5rem, 2rem + 6vw, 8rem);
-  --space-section-tight: clamp(3rem, 1.75rem + 4vw, 6rem);
+  --space-section-tight: clamp(3.5rem, 2rem + 5vw, 6rem);
   --space-gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
 
   /* ---- Motion (PRD §9.4) -----------------------------------------------

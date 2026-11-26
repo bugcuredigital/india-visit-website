@@ -45,16 +45,14 @@ const { steps, heading = 'How booking works' } = Astro.props;
     }
   }
 
-  @media (min-width: 64rem) {
-    .stepper {
-      grid-template-columns: repeat(6, 1fr);
-      gap: 1.25rem;
-    }
-  }
-
+  /* Three across at every wide width (round 5, #40): six 183px columns ran
+     the 15px body to ten lines, and a title that wrapped pushed its body
+     21px below its neighbours'. A 3x2 grid gives each step a readable column.
+     Rules and numerals are burgundy, the fine-detail colour (#13): crimson
+     drew six marks in one viewport and none of them is an action. */
   .step {
     padding-top: 1rem;
-    border-top: 2px solid var(--color-crimson);
+    border-top: 2px solid var(--color-burgundy);
   }
 
   .step__no {
@@ -63,7 +61,7 @@ const { steps, heading = 'How booking works' } = Astro.props;
     font-size: var(--text-sm);
     font-weight: 700;
     letter-spacing: 0.06em;
-    color: var(--color-crimson);
+    color: var(--color-burgundy);
   }
 
   .step__title {

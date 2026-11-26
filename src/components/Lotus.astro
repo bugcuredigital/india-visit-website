@@ -29,8 +29,16 @@
  * left the pattern intact everywhere else.
  *
  * So the colour is a PROP, resolved in this file where the scoping works.
- * `class` still exists for layout — margins, flex behaviour — which is not
- * inherited and therefore not affected by the same trap.
+ *
+ * LAYOUT HAS THE SAME TRAP. This note used to say `class` was safe for
+ * margins and flex because they are not inherited; that was wrong. The
+ * trap is not inheritance, it is the scope: under Astro's default
+ * `attribute` style strategy the caller's `.x[data-astro-cid-<caller>]`
+ * never matches this element, whatever the property. The 404's
+ * `.lost__mark { margin-top }` computed to 0 for exactly this reason
+ * (round 5, #93). Space a lotus with a wrapper the calling page authors,
+ * as the homepage's `.why__mark` does. `class` is passed through only for a
+ * GLOBAL class (or a hook for scripts), never for the caller's scoped CSS.
  */
 import lotusRaw from '../assets/brand/lotus.svg?raw';
 
@@ -43,7 +51,8 @@ interface Props {
    * colour, which is right inside a coloured line of type.
    */
   tone?: 'inherit' | 'crimson' | 'burgundy' | 'yellow' | 'on-dark';
-  /** Layout only — margins, flex. Colour will not reach the glyph. */
+  /** A global class or script hook only. The caller's SCOPED rules reach
+   *  neither colour nor layout here: wrap the lotus to space it. */
   class?: string;
   /** Decorative by default; give it a label only when it carries meaning. */
   label?: string;

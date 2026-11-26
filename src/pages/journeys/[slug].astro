@@ -54,6 +54,7 @@ import JsonLd from '../../components/JsonLd.astro';
 import { Image } from 'astro:assets';
 
 import { getSiteSettings, whatsappLink } from '../../lib/site-settings';
+import { byId } from '../../lib/order';
 import { heroPreload } from '../../lib/hero-image';
 import { durationLabel } from '../../lib/duration';
 import { getCityIndex, cityLinkFor, citiesMentionedIn } from '../../lib/cities';
@@ -89,7 +90,7 @@ const manualRelated = (
 
 const autoFill = allJourneys
   .filter((item) => item.id !== entry.id && !manualRelated.some((m) => m.id === item.id))
-  .sort((a, b) => Number(b.data.variant === journey.variant) - Number(a.data.variant === journey.variant));
+  .sort((a, b) => Number(b.data.variant === journey.variant) - Number(a.data.variant === journey.variant) || byId(a, b));
 
 const relatedEntries = [...manualRelated, ...autoFill].slice(0, 3);
 
@@ -120,6 +121,15 @@ const convertBody =
 
 const waContext = `${journey.title} (${journey.nights}N/${journey.days}D)`;
 
+/* A place name does not break across two lines of the H1 on a wide screen
+   (round 5, #32: "Root / Bridges", "Ha / Long Bay" at 1280). Each run of
+   capitalised words is held together from 48rem; on a phone it may break,
+   because "North East India" alone is wider than a 34px phone line. */
+const titleRuns = journey.title
+  .split(/(\p{Lu}[\p{L}'’-]*(?:\s+\p{Lu}[\p{L}'’-]*)+)/u)
+  .map((text, index) => ({ text, keep: index % 2 === 1 }))
+  .filter((run) => run.text);
+
 /* Intro length decides whether the expander appears at all (S3: ~120 words
    visible, "read more" beyond). Counted on the raw markdown, so it costs
    nothing at runtime. */
@@ -146,8 +156,6 @@ const tripSchema = touristTripSchema({
   name: journey.title,
   description: journey.seo.metaDescription,
   image: new URL(journey.heroImage.src, Astro.site).href,
-  days: journey.days,
-  nights: journey.nights,
   routeCities: journey.routeCities,
 });
 
@@ -167,10 +175,19 @@ const routeChips = journey.routeCities.map((cityName) => ({
   link: cityLinkFor(cityIndex, cityName),
 }));
 
-const itineraryDays = journey.itineraryDays.map((day) => ({
-  ...day,
-  cities: citiesMentionedIn(cityIndex, day.title),
-}));
+/* The city a day is SPENT in, not every city its title names (round 5, #34):
+   matched on the title, "Explore Kochi" showed on "Kochi to Munnar" and on the
+   departure day. The overnight line decides. A night aboard (a train, a
+   houseboat) names no city, so there the place before the title's colon does
+   ("Jaipur: The Pink City"); a departure day names none and links nowhere. */
+const itineraryDays = journey.itineraryDays.map((day) => {
+  const aboard = /\baboard\b|\bon board\b/i.test(day.overnight);
+  const place = day.title.includes(':') ? day.title.slice(0, day.title.indexOf(':')) : '';
+  return {
+    ...day,
+    cities: citiesMentionedIn(cityIndex, aboard ? place : day.overnight),
+  };
+});
 
 const crumbs = breadcrumbSchema([
   { name: 'Home', url: siteUrl },
@@ -198,7 +215,9 @@ const crumbs = breadcrumbSchema([
     <JsonLd schema={crumbs} />
   </Fragment>
 
-  <Header slot="header" />
+  <!-- A train's parent is Luxury Trains, in the nav as in the breadcrumb
+       schema (round 5, #16). -->
+  <Header slot="header" current={isTrain ? '/luxury-trains/' : undefined} />
 
   <!-- Print only: the brand line at the top of the PDF (scripts/build-pdfs.mjs).
        Everything in it is siteSettings, so the PDF cannot carry a stale number. -->
@@ -220,7 +239,7 @@ const crumbs = breadcrumbSchema([
   >
     <p class="hero__tag">{journey.tripTypeTag}</p>
     <h1 class="hero__title" transition:name={`journey-title-${entry.id}`}>
-      {journey.title}
+      {titleRuns.map((run) => (run.keep ? <span class="hero__keep">{run.text}</span> : run.text))}
     </h1>
 
     <p class="hero__badges">
@@ -515,6 +534,12 @@ const crumbs = breadcrumbSchema([
     text-wrap: balance;
   }
 
+  @media (min-width: 48rem) {
+    .hero__keep {
+      white-space: nowrap;
+    }
+  }
+
   .hero__badges {
     display: flex;
     flex-wrap: wrap;
@@ -618,6 +643,22 @@ const crumbs = breadcrumbSchema([
     flex-wrap: wrap;
     gap: 0.75rem;
     margin: 1.75rem 0 0;
+  }
+
+  /* On a phone the two secondary actions share a row under the primary
+     (round 5, #32): stacked, three CTAs of uneven width took 120px more of a
+     hero whose copy already filled 588 of its 717px. They are underlined
+     text, so a step down in size costs them nothing; the 44px target stays. */
+  @media (max-width: 47.999rem) {
+    .hero__actions {
+      column-gap: 0.25rem;
+    }
+
+    .hero__actions :global(.btn--ghost) {
+      min-height: 44px;
+      padding-inline: 0.4rem;
+      font-size: var(--text-base);
+    }
   }
 
   /* ---- S3 intro ------------------------------------------------------- */
